@@ -9301,4 +9301,10 @@
     github = "fzakaria";
     githubId = 605070;
   };
+  patrickod = {
+    name = "Patrick O'Doherty";
+    email = "hello@patrickod.com";
+    github = "patrickod";
+    githubId = 84262;
+  };
 }
