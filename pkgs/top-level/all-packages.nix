@@ -27784,4 +27784,6 @@ in
   navidrome = callPackage ../servers/misc/navidrome {};
 
   vfio-isolate = callPackage ../applications/virtualization/vfio-isolate {};
+
+  cartography = callPackage ../tools/security/cartography {};
 }
