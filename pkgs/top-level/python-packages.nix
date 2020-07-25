@@ -7661,6 +7661,16 @@ in {
 
   rxv     = callPackage ../development/python-modules/rxv     { };
 
+  policyuniverse = callPackage ../development/python-modules/policyuniverse {};
+
+  neo4j = callPackage ../development/python-modules/neo4j {};
+
+  neobolt = callPackage ../development/python-modules/neo4j/neobolt.nix {};
+
+  neotime = callPackage ../development/python-modules/neo4j/neotime.nix {};
+
+  okta = callPackage ../development/python-modules/okta {};
+
 });
 
 in fix' (extends overrides packages)
