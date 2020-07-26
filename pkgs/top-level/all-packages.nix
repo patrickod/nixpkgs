@@ -27404,4 +27404,6 @@ in
   navidrome = callPackage ../servers/misc/navidrome {};
 
   cartography = callPackage ../tools/security/cartography {};
+
+  noson = libsForQt5.callPackage ../applications/audio/noson { };
 }
