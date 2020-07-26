@@ -28762,4 +28762,6 @@ in
   psftools = callPackage ../os-specific/linux/psftools {};
 
   lc3tools = callPackage ../development/tools/lc3tools {};
+
+  noson = libsForQt5.callPackage ../applications/audio/noson { };
 }
