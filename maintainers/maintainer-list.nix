@@ -9534,4 +9534,10 @@
       fingerprint = "F1C5 760E 45B9 9A44 72E9  6BFB D65C 9AFB 4C22 4DA3";
     }];
   };
+  patrickod = {
+    name = "Patrick O'Doherty";
+    email = "hello@patrickod.com";
+    github = "patrickod";
+    githubId = 84262;
+  };
 }

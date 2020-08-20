@@ -27782,4 +27782,6 @@ in
   gpio-utils = callPackage ../os-specific/linux/kernel/gpio-utils.nix { };
 
   navidrome = callPackage ../servers/misc/navidrome {};
+
+  vfio-isolate = callPackage ../applications/virtualization/vfio-isolate {};
 }
