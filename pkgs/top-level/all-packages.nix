@@ -27788,4 +27788,6 @@ in
   vfio-isolate = callPackage ../applications/virtualization/vfio-isolate {};
 
   cartography = callPackage ../tools/security/cartography {};
+
+  cargo-hf2 = callPackage ../development/tools/hf2-rs/cargo-hf2.nix {} ;
 }
