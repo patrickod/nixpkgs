@@ -1,7 +1,9 @@
 { stdenv,
   fetchFromGitHub,
   rustPlatform,
-  lib
+  lib,
+  pkgconfig,
+  libusb
 }:
 
 rustPlatform.buildRustPackage rec {
@@ -9,15 +11,21 @@ rustPlatform.buildRustPackage rec {
   version = "0.3.0";
 
   src = fetchFromGitHub {
-    owner = "jacobbrosenthal";
+    owner = "jacobrosenthal";
     repo = "hf2-rs";
     rev = "v${version}";
-    sha256 = "0l7yvpc59mbzh87lngj6pj8w586fwa07829l5x9mmxnkf6srapmc";
+    sha256 = "0z4vf6w29zy4ip8s8fnx33vly0a79wfg8ifqlznbnh4y69gxm9qy";
   };
 
-  source = "source/hf2-cli";
+  source = "source/cargo-hf2";
 
-  cargoSha256 = "1gwv6slbfm4f8m9slzsxlaapiw51gssaz3vjnnl47jcaaq3g8hvq";
+  cargoPatches = [
+    ./cargo-lock.patch
+  ];
+  cargoSha256 = "15vg9n31kw4vyz7qfn9myfdjgagrafcpyjf1nv2xaz6a146id3xz";
+
+  nativeBuildInputs = [pkgconfig];
+  buildInputs = [libusb];
 
   meta = with stdenv.lib; {
     description = "Replaces the cargo build command to include flashing over USB to UF2 devices";
@@ -25,6 +33,7 @@ rustPlatform.buildRustPackage rec {
     licenses = licenses.mit;
     maintainers = with maintainers; [ patrickod ];
     platforms = platforms.all;
+    inherit version;
   };
 
 }
