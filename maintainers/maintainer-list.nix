@@ -9536,7 +9536,7 @@
   };
   patrickod = {
     name = "Patrick O'Doherty";
-    email = "hello@patrickod.com";
+    email = "p@trickod.com";
     github = "patrickod";
     githubId = 84262;
   };
