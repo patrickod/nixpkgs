@@ -377,6 +377,8 @@ in {
   else
     callPackage ../development/python-modules/ase { };
 
+  asgi-csrf = callPackage ../development/python-modules/asgi-csrf { };
+
   asgiref = callPackage ../development/python-modules/asgiref { };
 
   asn1ate = callPackage ../development/python-modules/asn1ate { };
@@ -675,6 +677,8 @@ in {
 
   azure-mgmt-subscription = callPackage ../development/python-modules/azure-mgmt-subscription { };
 
+  azure-mgmt-synapse = callPackage ../development/python-modules/azure-mgmt-synapse { };
+
   azure-mgmt-trafficmanager = callPackage ../development/python-modules/azure-mgmt-trafficmanager { };
 
   azure-mgmt-web = callPackage ../development/python-modules/azure-mgmt-web { };
@@ -702,6 +706,10 @@ in {
   azure-storage-nspkg = callPackage ../development/python-modules/azure-storage-nspkg { };
 
   azure-storage-queue = callPackage ../development/python-modules/azure-storage-queue { };
+
+  azure-synapse-accesscontrol = callPackage ../development/python-modules/azure-synapse-accesscontrol { };
+
+  azure-synapse-spark = callPackage ../development/python-modules/azure-synapse-spark { };
 
   Babel = callPackage ../development/python-modules/Babel { };
 
@@ -839,6 +847,8 @@ in {
   bkcharts = callPackage ../development/python-modules/bkcharts { };
 
   black = callPackage ../development/python-modules/black { };
+
+  black-macchiato = callPackage ../development/python-modules/black-macchiato { };
 
   bleach = callPackage ../development/python-modules/bleach { };
 
@@ -1608,6 +1618,8 @@ in {
 
   django-multiselectfield = callPackage ../development/python-modules/django-multiselectfield { };
 
+  django-maintenance-mode = callPackage ../development/python-modules/django-maintenance-mode { };
+
   django_nose = callPackage ../development/python-modules/django_nose { };
 
   django-oauth-toolkit = callPackage ../development/python-modules/django-oauth-toolkit { };
@@ -1692,7 +1704,13 @@ in {
 
   dnslib = callPackage ../development/python-modules/dnslib { };
 
-  dnspython = callPackage ../development/python-modules/dnspython { };
+  dnspython = if isPy3k then
+    callPackage ../development/python-modules/dnspython { }
+  else
+    self.dnspython_1;
+
+  dnspython_1 = callPackage ../development/python-modules/dnspython/1.nix { };
+
   dns = self.dnspython; # Alias for compatibility, 2017-12-10
 
   doc8 = callPackage ../development/python-modules/doc8 { };
@@ -2683,6 +2701,8 @@ in {
 
   httpbin = callPackage ../development/python-modules/httpbin { };
 
+  httpcore = callPackage ../development/python-modules/httpcore { };
+
   http-ece = callPackage ../development/python-modules/http-ece { };
 
   httplib2 = callPackage ../development/python-modules/httplib2 { };
@@ -3222,8 +3242,6 @@ in {
 
   libarchive-c = callPackage ../development/python-modules/libarchive-c { inherit (pkgs) libarchive; };
 
-  libarchive = self.python-libarchive; # The latter is the name upstream uses
-
   libarcus = callPackage ../development/python-modules/libarcus { inherit (pkgs) protobuf; };
 
   libasyncns = callPackage ../development/python-modules/libasyncns { inherit (pkgs) libasyncns pkgconfig; };
@@ -3472,8 +3490,6 @@ in {
 
   mailchimp = callPackage ../development/python-modules/mailchimp { };
 
-  maildir-deduplicate = callPackage ../development/python-modules/maildir-deduplicate { };
-
   mailman = callPackage ../servers/mail/mailman { };
 
   mailmanclient = callPackage ../development/python-modules/mailmanclient { };
@@ -3588,6 +3604,8 @@ in {
   memory_profiler = callPackage ../development/python-modules/memory_profiler { };
 
   mercurial = disabledIf (!isPy3k) (toPythonModule (pkgs.mercurial.override { python3Packages = self; }));
+
+  mergedeep = callPackage ../development/python-modules/mergedeep { };
 
   merkletools = callPackage ../development/python-modules/merkletools { };
 
@@ -4382,8 +4400,6 @@ in {
   pims = callPackage ../development/python-modules/pims { };
 
   pint = callPackage ../development/python-modules/pint { };
-
-  pip2nix = callPackage ../development/python-modules/pip2nix { };
 
   pip = callPackage ../development/python-modules/pip { };
 
@@ -5630,8 +5646,6 @@ in {
 
   python-Levenshtein = callPackage ../development/python-modules/python-levenshtein { };
 
-  python-libarchive = callPackage ../development/python-modules/python-libarchive { };
-
   python-logstash = callPackage ../development/python-modules/python-logstash { };
 
   python-ly = callPackage ../development/python-modules/python-ly { };
@@ -5909,8 +5923,6 @@ in {
   querystring_parser = callPackage ../development/python-modules/querystring-parser { };
 
   queuelib = callPackage ../development/python-modules/queuelib { };
-
-  qutip = callPackage ../development/python-modules/qutip { };
 
   r2pipe = callPackage ../development/python-modules/r2pipe { };
 
@@ -7644,8 +7656,6 @@ in {
   zope_filerepresentation = callPackage ../development/python-modules/zope_filerepresentation { };
 
   zope-hookable = callPackage ../development/python-modules/zope-hookable { };
-
-  zope_i18n = callPackage ../development/python-modules/zope_i18n { };
 
   zope_i18nmessageid = callPackage ../development/python-modules/zope_i18nmessageid { };
 
