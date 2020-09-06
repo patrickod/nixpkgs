@@ -4959,6 +4959,8 @@ in
 
   minergate-cli = callPackage ../applications/misc/minergate-cli { };
 
+  minica = callPackage ../tools/security/minica { };
+
   minidlna = callPackage ../tools/networking/minidlna { };
 
   minisign = callPackage ../tools/security/minisign { };
@@ -7613,6 +7615,8 @@ in
   volatility = callPackage ../tools/security/volatility { };
 
   vbetool = callPackage ../tools/system/vbetool { };
+
+  vcsi = callPackage ../tools/video/vcsi { };
 
   vde2 = callPackage ../tools/networking/vde2 { };
 
