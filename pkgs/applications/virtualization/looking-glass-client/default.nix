@@ -6,15 +6,19 @@
 
 stdenv.mkDerivation rec {
   pname = "looking-glass-client";
-  version = "B2-rc2";
+  version = "B2-rc4";
 
   src = fetchFromGitHub {
     owner = "gnif";
     repo = "LookingGlass";
     rev = version;
-    sha256 = "0xcnvn7b621sxzld53csrm257agz5bizxl4bnjqwx8djpj0yhv6x";
+    sha256 = "0w8wkrnnvab22jqvii62h6j07kfrv90813ch7yhrs4yhqiv97wm8";
     fetchSubmodules = true;
   };
+
+  preConfigure = ''
+    export CFLAGS="-march=znver2 -mtune=znver2"
+  '';
 
   nativeBuildInputs = [ pkgconfig ];
 
