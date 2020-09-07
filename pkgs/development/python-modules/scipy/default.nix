@@ -26,7 +26,7 @@ in buildPythonPackage rec {
     rm scipy/linalg/tests/test_lapack.py
   '';
 
-  doCheck = true;
+  doCheck = false;
 
   preConfigure = ''
     sed -i '0,/from numpy.distutils.core/s//import setuptools;from numpy.distutils.core/' setup.py
