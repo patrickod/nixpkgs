@@ -1,5 +1,5 @@
 { newScope, config, stdenv, fetchurl, makeWrapper
-, llvmPackages_10, llvmPackages_11, ed, gnugrep, coreutils
+, llvmPackages_10, llvmPackages_11, ed, gnugrep, coreutils, xdg_utils
 , glib, gtk3, gnome3, gsettings-desktop-schemas, gn, fetchgit
 , libva ? null
 , pipewire_0_2
@@ -53,6 +53,17 @@ let
           url = "https://gn.googlesource.com/gn";
           rev = "3028c6a426a4aaf6da91c4ebafe716ae370225fe";
           sha256 = "0h3wf4152zdvrbb0jbj49q6814lfl3rcy5mj8b2pl9s0ahvkbc6q";
+        };
+      });
+    } // lib.optionalAttrs (lib.versionAtLeast upstream-info.version "87") {
+      llvmPackages = llvmPackages_11;
+      useOzone = true; # YAY: https://chromium-review.googlesource.com/c/chromium/src/+/2382834 \o/
+      gnChromium = gn.overrideAttrs (oldAttrs: {
+        version = "2020-08-17";
+        src = fetchgit {
+          url = "https://gn.googlesource.com/gn";
+          rev = "6f13aaac55a977e1948910942675c69f2b4f7a94";
+          sha256 = "01hpma1sllpdx09mvr4d6073sg6zmk6iv44kd3r28khymcj4s251";
         };
       });
     });
@@ -203,6 +214,9 @@ in stdenv.mkDerivation {
     export LD_PRELOAD="\$(echo -n "\$LD_PRELOAD" | ${coreutils}/bin/tr ':' '\n' | ${gnugrep}/bin/grep -v /lib/libredirect\\\\.so$ | ${coreutils}/bin/tr '\n' ':')"
 
     export XDG_DATA_DIRS=$XDG_ICON_DIRS:$GSETTINGS_SCHEMAS_PATH\''${XDG_DATA_DIRS:+:}\$XDG_DATA_DIRS
+
+    # Mainly for xdg-open but also other xdg-* tools:
+    export PATH="${xdg_utils}/bin\''${PATH:+:}\$PATH"
 
     .
     w
