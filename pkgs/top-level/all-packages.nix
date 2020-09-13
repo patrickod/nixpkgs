@@ -27971,4 +27971,5 @@ in
 
   unifi-poller = callPackage ../servers/monitoring/unifi-poller {};
 
+  probe-run = callPackage ../development/tools/probe-run {};
 }
