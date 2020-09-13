@@ -1,13 +1,13 @@
 { lib, rustPlatform, fetchFromGitHub, libusb1, pkgconfig, glib, dbus, rustfmt }:
 rustPlatform.buildRustPackage rec {
   pname = "probe-run";
-  version = "0.1.3";
+  version = "main";
 
   src = fetchFromGitHub {
     owner = "knurling-rs";
     repo = "probe-run";
-    rev = "v${version}";
-    sha256 = "0r1asnsslzq0mxhnbwzc3fg6j1i1621p11923yp649lqmz598mcx";
+    rev = "${version}";
+    sha256 = "026c53cgcrfhr31n2zzdgik9cr1j7fk4x9r5q82ph66qbqvyvkkj";
   };
 
   nativeBuildInputs = [pkgconfig rustfmt];
@@ -17,7 +17,8 @@ rustPlatform.buildRustPackage rec {
       libusb1
     ];
 
-  cargoSha256 = "14rw1q329r9xs28qyy5qhjmw9v8bjab74gdzslky1di6ynkwizd5";
+  cargoSha256 = "0whazdc22vw076p1fsl2qfs81kq3zpvr2jyxz27799zifzzk812m";
+  cargoBuildFlags = ["--features=defmt"];
 
   meta = with lib; {
     description = "a custom Cargo runner that transparently runs Rust firmware on a remote device";
