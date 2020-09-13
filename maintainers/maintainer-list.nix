@@ -4924,6 +4924,12 @@
     githubId = 1202012;
     name = "Ignat Loskutov";
   };
+  lostnet = {
+    email = "lost.networking@gmail.com";
+    github = "lostnet";
+    githubId = 1422781;
+    name = "Will Young";
+  };
   louisdk1 = {
     email = "louis@louis.dk";
     github = "louisdk1";
@@ -5892,6 +5898,12 @@
     github = "MtP76";
     githubId = 2176611;
     name = "Marko Poikonen";
+  };
+  mtreca = {
+    email = "maxime@treca.dev";
+    name = "Maxime Tréca";
+    github = "mtreca";
+    githubId = 16440823;
   };
   mtreskin = {
     email = "zerthurd@gmail.com";

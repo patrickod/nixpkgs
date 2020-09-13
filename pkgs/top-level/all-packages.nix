@@ -619,7 +619,7 @@ in
 
   aescrypt = callPackage ../tools/misc/aescrypt { };
 
-  acme-client = callPackage ../tools/networking/acme-client { inherit (darwin) apple_sdk; };
+  acme-client = callPackage ../tools/networking/acme-client { inherit (darwin) apple_sdk; stdenv = gccStdenv; };
 
   amass = callPackage ../tools/networking/amass { };
 
@@ -772,6 +772,8 @@ in
 
   asciinema = callPackage ../tools/misc/asciinema {};
 
+  asciinema-scenario = callPackage ../tools/misc/asciinema-scenario {};
+
   asciiquarium = callPackage ../applications/misc/asciiquarium {};
 
   ashuffle = callPackage ../applications/audio/ashuffle {};
@@ -873,6 +875,8 @@ in
 
   automirror = callPackage ../tools/misc/automirror { };
 
+  barman = python3Packages.callPackage ../tools/misc/barman { };
+
   bash-my-aws = callPackage ../tools/admin/bash-my-aws { };
 
   bashcards = callPackage ../tools/misc/bashcards { };
@@ -925,6 +929,8 @@ in
     kernel = null;
     withDriver = false;
   };
+
+  chroma = callPackage ../tools/text/chroma { };
 
   clair = callPackage ../tools/admin/clair { };
 
@@ -1512,7 +1518,10 @@ in
 
   caddy = callPackage ../servers/caddy { buildGoModule = buildGo114Module; };  # https://github.com/lucas-clemente/quic-go/issues/2614
   caddy1 = callPackage ../servers/caddy/v1.nix { buildGoModule = buildGo114Module; };
-  traefik = callPackage ../servers/traefik { };
+
+  # Traefik 2.2 uses go1.14, pinning can be removed with 2.3
+  # https://github.com/containous/traefik/issues/7234#issuecomment-684950612
+  traefik = callPackage ../servers/traefik { buildGoModule = buildGo114Module; };
 
   calamares = libsForQt514.callPackage ../tools/misc/calamares {
     python = python3;
@@ -1618,6 +1627,8 @@ in
   colord-kde = libsForQt5.callPackage ../tools/misc/colord-kde {};
 
   colpack = callPackage ../applications/science/math/colpack { };
+
+  commitizen = callPackage ../applications/version-management/commitizen {};
 
   compactor = callPackage ../applications/networking/compactor { };
 
@@ -3395,6 +3406,8 @@ in
   carp = callPackage ../development/compilers/carp { };
 
   cholmod-extra = callPackage ../development/libraries/science/math/cholmod-extra { };
+
+  choose = callPackage ../tools/text/choose { };
 
   emscripten = callPackage ../development/compilers/emscripten { };
 
@@ -9462,7 +9475,7 @@ in
 
   nim = callPackage ../development/compilers/nim { };
   nim-unwrapped = nim.unwrapped;
-  nim-stdlib = nim.stdlib;
+
   nrpl = callPackage ../development/tools/nrpl { };
 
   neko = callPackage ../development/compilers/neko { };
@@ -9855,6 +9868,8 @@ in
   z88dk = callPackage ../development/compilers/z88dk { };
 
   zulip = callPackage ../applications/networking/instant-messengers/zulip { };
+
+  zulip-term = callPackage ../applications/networking/instant-messengers/zulip-term { };
 
   zulu8 = callPackage ../development/compilers/zulu/8.nix { };
   zulu = callPackage ../development/compilers/zulu { };
@@ -14453,6 +14468,8 @@ in
 
   nettle = callPackage ../development/libraries/nettle { };
 
+  newman = callPackage ../development/web/newman {};
+
   newt = callPackage ../development/libraries/newt { };
 
   nghttp2 = callPackage ../development/libraries/nghttp2 { };
@@ -16251,6 +16268,11 @@ in
   couchdb2 = callPackage ../servers/http/couchdb/2.0.0.nix {
     spidermonkey = spidermonkey_1_8_5;
     erlang = erlangR21;
+  };
+
+  couchdb3 = callPackage ../servers/http/couchdb/3.nix {
+    spidermonkey = spidermonkey_68;
+    erlang = erlangR22;
   };
 
   couchpotato = callPackage ../servers/couchpotato {};
@@ -18231,6 +18253,8 @@ in
 
   pam_ccreds = callPackage ../os-specific/linux/pam_ccreds { };
 
+  pam_gnupg = callPackage ../os-specific/linux/pam_gnupg { };
+
   pam_krb5 = callPackage ../os-specific/linux/pam_krb5 { };
 
   pam_ldap = callPackage ../os-specific/linux/pam_ldap { };
@@ -20122,7 +20146,7 @@ in
 
   electron-cash = libsForQt514.callPackage ../applications/misc/electron-cash { };
 
-  electrum = libsForQt514.callPackage ../applications/misc/electrum { };
+  electrum = libsForQt5.callPackage ../applications/misc/electrum { };
 
   electrum-dash = callPackage ../applications/misc/electrum/dash.nix { };
 
@@ -20544,11 +20568,9 @@ in
   });
 
   firefox-unwrapped = firefoxPackages.firefox;
-  firefox-esr-68-unwrapped = firefoxPackages.firefox-esr-68;
   firefox-esr-78-unwrapped = firefoxPackages.firefox-esr-78;
   firefox = wrapFirefox firefox-unwrapped { };
   firefox-wayland = wrapFirefox firefox-unwrapped { forceWayland = true; };
-  firefox-esr-68 = wrapFirefox firefox-esr-68-unwrapped { };
   firefox-esr-78 = wrapFirefox firefox-esr-78-unwrapped { };
   firefox-esr = firefox-esr-78;
 
@@ -20896,6 +20918,8 @@ in
 
   hackrf = callPackage ../applications/radio/hackrf { };
 
+  hacksaw = callPackage ../tools/misc/hacksaw {};
+
   hakuneko = callPackage ../tools/misc/hakuneko { };
 
   hamster = callPackage ../applications/misc/hamster { };
@@ -21208,10 +21232,6 @@ in
   inkscape-with-extensions = callPackage ../applications/graphics/inkscape/with-extensions.nix { };
 
   inkscape-extensions = recurseIntoAttrs (callPackages ../applications/graphics/inkscape/extensions.nix {});
-
-  inkscape_0 = callPackage ../applications/graphics/inkscape/0.x.nix {
-    lcms = lcms2;
-  };
 
   inspectrum = libsForQt514.callPackage ../applications/radio/inspectrum { };
 
@@ -21960,6 +21980,7 @@ in
   mpv = wrapMpv mpv-unwrapped {};
 
   mpvScripts = recurseIntoAttrs {
+    autoload = callPackage ../applications/video/mpv/scripts/autoload.nix {};
     convert = callPackage ../applications/video/mpv/scripts/convert.nix {};
     mpris = callPackage ../applications/video/mpv/scripts/mpris.nix {};
     simple-mpv-webui = callPackage ../applications/video/mpv/scripts/simple-mpv-webui.nix {};
@@ -22947,6 +22968,8 @@ in
 
   seq24 = callPackage ../applications/audio/seq24 { };
 
+  seq66 = qt5.callPackage ../applications/audio/seq66 { };
+
   setbfree = callPackage ../applications/audio/setbfree { };
 
   sfizz = callPackage ../applications/audio/sfizz { };
@@ -23117,6 +23140,8 @@ in
   printrun = callPackage ../applications/misc/printrun { };
 
   prusa-slicer = callPackage ../applications/misc/prusa-slicer { };
+
+  super-slicer = callPackage ../applications/misc/prusa-slicer/super-slicer.nix { };
 
   robustirc-bridge = callPackage ../servers/irc/robustirc-bridge { };
 
@@ -26826,7 +26851,7 @@ in
     icu = icu58;
   };
 
-  mamba = callPackage ../applications/audio/mamba{ };
+  mamba = callPackage ../applications/audio/mamba { };
 
   mame = libsForQt514.callPackage ../misc/emulators/mame {
     inherit (darwin.apple_sdk.frameworks) CoreAudioKit ForceFeedback;
@@ -27596,6 +27621,8 @@ in
 
   xteddy = callPackage ../applications/misc/xteddy { };
 
+  xva-img = callPackage ../tools/virtualization/xva-img { };
+
   xwiimote = callPackage ../misc/drivers/xwiimote { };
 
   xzoom = callPackage ../tools/X11/xzoom {};
@@ -27649,7 +27676,7 @@ in
   snes9x-gtk = callPackage ../misc/emulators/snes9x-gtk { };
 
   openmsx = callPackage ../misc/emulators/openmsx {
-    python = python27;
+    python = python3;
   };
 
   higan = callPackage ../misc/emulators/higan {

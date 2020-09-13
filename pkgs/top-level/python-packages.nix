@@ -270,6 +270,8 @@ in {
 
   amazon_kclpy = callPackage ../development/python-modules/amazon_kclpy { };
 
+  amply = callPackage ../development/python-modules/amply { };
+
   amqp = callPackage ../development/python-modules/amqp { };
 
   amqplib = callPackage ../development/python-modules/amqplib { };
@@ -5744,6 +5746,10 @@ in {
 
   python-slugify = callPackage ../development/python-modules/python-slugify { };
 
+  python-snap7 = callPackage ../development/python-modules/python-snap7 {
+    inherit (pkgs) snap7;
+  };
+
   python-snappy = callPackage ../development/python-modules/python-snappy { inherit (pkgs) snappy; };
 
   python-socketio = callPackage ../development/python-modules/python-socketio { };
@@ -7247,6 +7253,8 @@ in {
 
   urwidtrees = callPackage ../development/python-modules/urwidtrees { };
 
+  urwid-readline = callPackage ../development/python-modules/urwid-readline { };
+
   usbtmc = callPackage ../development/python-modules/usbtmc { };
 
   us = callPackage ../development/python-modules/us { };
@@ -7709,6 +7717,8 @@ in {
   zstandard = callPackage ../development/python-modules/zstandard { };
 
   zstd = callPackage ../development/python-modules/zstd { inherit (pkgs) zstd pkgconfig; };
+
+  zulip = callPackage ../development/python-modules/zulip { };
 
   zxcvbn = callPackage ../development/python-modules/zxcvbn { };
 
