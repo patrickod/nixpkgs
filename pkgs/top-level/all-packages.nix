@@ -962,6 +962,8 @@ in
 
   cozy = callPackage ../applications/audio/cozy-audiobooks { };
 
+  cpuid = callPackage ../os-specific/linux/cpuid { };
+
   ctrtool = callPackage ../tools/archivers/ctrtool { };
 
   crowbar = callPackage ../tools/security/crowbar { };
@@ -3466,6 +3468,7 @@ in
     python = python3;
   };
 
+  embree = callPackage ../development/libraries/embree { };
   embree2 = callPackage ../development/libraries/embree/2.x.nix { };
 
   emem = callPackage ../applications/misc/emem { };
@@ -5453,6 +5456,8 @@ in
   mgba = libsForQt5.callPackage ../misc/emulators/mgba { };
 
   microcom = callPackage ../applications/misc/microcom { };
+
+  microserver = callPackage ../servers/microserver { };
 
   midisheetmusic = callPackage ../applications/audio/midisheetmusic { };
 
@@ -17414,6 +17419,8 @@ in
 
   gmailctl = callPackage ../applications/networking/gmailctl {};
 
+  gomp = callPackage ../applications/version-management/gomp { };
+
   gpm = callPackage ../servers/gpm {
     ncurses = null;  # Keep curses disabled for lack of value
   };
@@ -22189,10 +22196,6 @@ in
     };
   };
 
-  sky = callPackage ../applications/networking/instant-messengers/sky {
-    qt5 = qt514;
-  };
-
   smplayer = libsForQt5.callPackage ../applications/video/smplayer { };
 
   smtube = libsForQt514.callPackage ../applications/video/smtube {};
@@ -22995,10 +22998,6 @@ in
   scribusUnstable = libsForQt514.callPackage ../applications/office/scribus/unstable.nix { };
 
   seafile-client = libsForQt514.callPackage ../applications/networking/seafile-client { };
-
-  seeks = callPackage ../tools/networking/p2p/seeks {
-    protobuf = protobuf3_1;
-  };
 
   sent = callPackage ../applications/misc/sent { };
 
