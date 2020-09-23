@@ -150,6 +150,8 @@ in {
 
   accupy = callPackage ../development/python-modules/accupy { };
 
+  acebinf = callPackage ../development/python-modules/acebinf { };
+
   acme = callPackage ../development/python-modules/acme { };
 
   acme-tiny = callPackage ../development/python-modules/acme-tiny { };
@@ -981,6 +983,8 @@ in {
 
   bx-python = callPackage ../development/python-modules/bx-python { inherit (pkgs) zlib; };
 
+  bwapy = callPackage ../development/python-modules/bwapy { };
+
   bytecode = callPackage ../development/python-modules/bytecode { };
 
   bz2file = callPackage ../development/python-modules/bz2file { };
@@ -1188,6 +1192,8 @@ in {
 
   clize = callPackage ../development/python-modules/clize { };
 
+  clldutils = callPackage ../development/python-modules/clldutils { };
+
   closure-linter = callPackage ../development/python-modules/closure-linter { };
 
   cloudflare = callPackage ../development/python-modules/cloudflare { };
@@ -1355,6 +1361,8 @@ in {
 
   csvs-to-sqlite = callPackage ../development/python-modules/csvs-to-sqlite { };
 
+  csvw = callPackage ../development/python-modules/csvw { };
+
   cucumber-tag-expressions = callPackage ../development/python-modules/cucumber-tag-expressions { };
 
   cufflinks = callPackage ../development/python-modules/cufflinks { };
@@ -1461,6 +1469,8 @@ in {
   dbf = callPackage ../development/python-modules/dbf { };
 
   dbfread = callPackage ../development/python-modules/dbfread { };
+
+  dbus-next = callPackage ../development/python-modules/dbus-next { };
 
   dbus-python = callPackage ../development/python-modules/dbus { inherit (pkgs) dbus pkgconfig; };
 
@@ -2461,6 +2471,10 @@ in {
 
   google-compute-engine = callPackage ../tools/virtualization/google-compute-engine { };
 
+  google-crc32c = callPackage ../development/python-modules/google-crc32c {
+    inherit (pkgs) crc32c;
+  };
+
   google-i18n-address = callPackage ../development/python-modules/google-i18n-address { };
 
   google-music = callPackage ../development/python-modules/google-music { };
@@ -2717,6 +2731,8 @@ in {
   http-ece = callPackage ../development/python-modules/http-ece { };
 
   httplib2 = callPackage ../development/python-modules/httplib2 { };
+
+  http-parser = callPackage ../development/python-modules/http-parser { };
 
   httpretty = if isPy3k then
     callPackage ../development/python-modules/httpretty { }
@@ -5011,6 +5027,8 @@ in {
 
   pyjwt = callPackage ../development/python-modules/pyjwt { };
 
+  pykdl = callPackage ../development/python-modules/pykdl { };
+
   pykdtree = callPackage ../development/python-modules/pykdtree { inherit (pkgs.llvmPackages) openmp; };
 
   pykeepass = callPackage ../development/python-modules/pykeepass { };
@@ -5420,6 +5438,8 @@ in {
   pystringtemplate = callPackage ../development/python-modules/stringtemplate { };
 
   pysvn = callPackage ../development/python-modules/pysvn { };
+
+  pytabix = callPackage ../development/python-modules/pytabix { };
 
   pytado = callPackage ../development/python-modules/pytado { };
 
@@ -5914,6 +5934,8 @@ in {
 
   pyxml = disabledIf isPy3k (callPackage ../development/python-modules/pyxml { });
 
+  pyxnat = callPackage ../development/python-modules/pyxnat { };
+
   pyyaml = callPackage ../development/python-modules/pyyaml { };
 
   pyzmq = callPackage ../development/python-modules/pyzmq { };
@@ -6348,6 +6370,8 @@ in {
   secure = callPackage ../development/python-modules/secure { };
 
   seekpath = callPackage ../development/python-modules/seekpath { };
+
+  segments = callPackage ../development/python-modules/segments { };
 
   selectors2 = callPackage ../development/python-modules/selectors2 { };
 

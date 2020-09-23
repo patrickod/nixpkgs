@@ -1858,6 +1858,8 @@ in
 
   dua = callPackage ../tools/misc/dua { };
 
+  duf = callPackage ../tools/misc/duf { };
+
   inherit (ocamlPackages) dune dune_2 dune-release;
 
   duperemove = callPackage ../tools/filesystems/duperemove { };
@@ -7595,6 +7597,8 @@ in
 
   ua = callPackage ../tools/networking/ua { };
 
+  ubidump = python3Packages.callPackage ../tools/filesystems/ubidump { };
+
   ubridge = callPackage ../tools/networking/ubridge { };
 
   ucl = callPackage ../development/libraries/ucl { };
@@ -9374,6 +9378,12 @@ in
 
   lizardfs = callPackage ../tools/filesystems/lizardfs { };
 
+  lobster = callPackage ../development/compilers/lobster {
+    inherit (darwin) cf-private;
+    inherit (darwin.apple_sdk.frameworks)
+      Cocoa AudioToolbox OpenGL Foundation ForceFeedback;
+  };
+
   lld = llvmPackages.lld;
   lld_5 = llvmPackages_5.lld;
   lld_6 = llvmPackages_6.lld;
@@ -9549,9 +9559,14 @@ in
 
   ocaml-crunch = ocamlPackages.crunch.bin;
 
-  ocamlformat = callPackage ../development/tools/ocaml/ocamlformat { };
+  inherit (callPackage ../development/tools/ocaml/ocamlformat { })
+    ocamlformat # latest version
+    ocamlformat_0_11_0 ocamlformat_0_12 ocamlformat_0_13_0 ocamlformat_0_14_0
+    ocamlformat_0_14_1 ocamlformat_0_14_2 ocamlformat_0_15_0;
 
   orc = callPackage ../development/compilers/orc { };
+
+  orocos-kdl = callPackage ../development/libraries/orocos-kdl { };
 
   metaocaml_3_09 = callPackage ../development/compilers/ocaml/metaocaml-3.09.nix { };
 
@@ -10210,10 +10225,10 @@ in
 
   pythonInterpreters = callPackage ./../development/interpreters/python {
     # Overrides that apply to all Python interpreters
-    pkgs = pkgs // {
-      qt5 = pkgs.qt514;
-      libsForQt5 = pkgs.libsForQt514;
-    };
+    pkgs = pkgs.extend (final: _: {
+      qt5 = final.qt514;
+      libsForQt5 = final.libsForQt514;
+    });
   };
   inherit (pythonInterpreters) python27 python36 python37 python38 python39 python3Minimal pypy27 pypy36;
 
@@ -10861,8 +10876,8 @@ in
     if stdenv.targetPlatform.isi686
       then gcc6.cc
     else if stdenv.targetPlatform == stdenv.hostPlatform && targetPackages.stdenv.cc.isGNU
-	  # Can only do this is in the native case, otherwise we might get infinite
-	  # recursion if `targetPackages.stdenv.cc.cc` itself uses `gccForLibs`.
+    # Can only do this is in the native case, otherwise we might get infinite
+    # recursion if `targetPackages.stdenv.cc.cc` itself uses `gccForLibs`.
       then targetPackages.stdenv.cc.cc
     else gcc.cc;
 
@@ -11908,6 +11923,8 @@ in
   aqbanking = callPackage ../development/libraries/aqbanking { };
 
   aubio = callPackage ../development/libraries/aubio { };
+
+  audiality2 = callPackage ../development/libraries/audiality2 { };
 
   audiofile = callPackage ../development/libraries/audiofile {
     inherit (darwin.apple_sdk.frameworks) AudioUnit CoreServices;
@@ -17459,6 +17476,8 @@ in
 
   fwupd = callPackage ../os-specific/linux/firmware/fwupd { };
 
+  firmware-manager = callPackage ../os-specific/linux/firmware/firmware-manager { };
+
   fwts = callPackage ../os-specific/linux/fwts { };
 
   gobi_loader = callPackage ../os-specific/linux/gobi_loader { };
@@ -18266,6 +18285,8 @@ in
   numad = callPackage ../os-specific/linux/numad { };
 
   nvme-cli = callPackage ../os-specific/linux/nvme-cli { };
+
+  system76-firmware = callPackage ../os-specific/linux/firmware/system76-firmware { };
 
   open-vm-tools = callPackage ../applications/virtualization/open-vm-tools { };
   open-vm-tools-headless = open-vm-tools.override { withX = false; };
@@ -21748,6 +21769,10 @@ in
 
   linuxband = callPackage ../applications/audio/linuxband { };
 
+  littlegptracker = callPackage ../applications/audio/littlegptracker {
+    inherit (darwin.apple_sdk.frameworks) Foundation;
+  };
+
   ledger = callPackage ../applications/office/ledger { };
 
   ledger-autosync = callPackage  ../applications/office/ledger-autosync { };
@@ -22951,19 +22976,14 @@ in
   quodlibet-xine-full = quodlibet-full.override { xineBackend = true; tag = "-xine-full"; };
 
   qutebrowser = let
-    libsForQt5 = libsForQt515;
-    qt5 = qt515;
-    python = python3.override {
-      packageOverrides = self: super: {
-        pkgs = pkgs // {
-          inherit libsForQt5 qt5;
-        };
-      };
-      self = python3;
-    };
-  in libsForQt5.callPackage ../applications/networking/browsers/qutebrowser {
-    python3 = python;
-  };
+    pkgs_ = pkgs.extend(_: prev: {
+      pythonInterpreters = prev.pythonInterpreters.override(oldAttrs: {
+        pkgs = oldAttrs.pkgs.extend(_: _: {
+          inherit (pkgs) qt5 libsForQt5;
+        });
+      });
+    });
+  in pkgs_.libsForQt5.callPackage ../applications/networking/browsers/qutebrowser { };
 
   rabbitvcs = callPackage ../applications/version-management/rabbitvcs {};
 
@@ -23237,7 +23257,7 @@ in
 
   maestral = with python3Packages; toPythonApplication maestral;
 
-  maestral-gui = libsForQt514.callPackage ../applications/networking/maestral-qt { };
+  maestral-gui = libsForQt5.callPackage ../applications/networking/maestral-qt { };
 
   insync = callPackage ../applications/networking/insync { };
 
@@ -25062,6 +25082,12 @@ in
 
   kobodeluxe = callPackage ../games/kobodeluxe { };
 
+  koboredux = callPackage ../games/koboredux { };
+
+  koboredux-free = callPackage ../games/koboredux {
+    useProprietaryAssets = false;
+  };
+
   leela-zero = libsForQt5.callPackage ../games/leela-zero { };
 
   legendary-gl = python38Packages.callPackage ../games/legendary-gl { };
@@ -26272,6 +26298,7 @@ in
 
   cvc3 = callPackage ../applications/science/logic/cvc3 {
     gmp = lib.overrideDerivation gmp (a: { dontDisableStatic = true; });
+    stdenv = gccStdenv;
   };
   cvc4 = callPackage ../applications/science/logic/cvc4 {
     jdk = jdk8; # TODO: remove override https://github.com/NixOS/nixpkgs/pull/89731
