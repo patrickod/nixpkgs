@@ -1530,8 +1530,11 @@ in
     '';
   });
 
-  caddy = callPackage ../servers/caddy { buildGoModule = buildGo114Module; };  # https://github.com/lucas-clemente/quic-go/issues/2614
-  caddy1 = callPackage ../servers/caddy/v1.nix { buildGoModule = buildGo114Module; };
+  caddy = callPackage ../servers/caddy { };
+  caddy1 = callPackage ../servers/caddy/v1.nix {
+    # https://github.com/lucas-clemente/quic-go/issues/2614
+    buildGoModule = buildGo114Module;
+  };
 
   # Traefik 2.2 uses go1.14, pinning can be removed with 2.3
   # https://github.com/containous/traefik/issues/7234#issuecomment-684950612
@@ -2634,9 +2637,7 @@ in
 
   davix = callPackage ../tools/networking/davix { };
 
-  cantata = libsForQt5.callPackage ../applications/audio/cantata {
-    inherit vlc;
-  };
+  cantata = libsForQt5.callPackage ../applications/audio/cantata { };
 
   can-utils = callPackage ../os-specific/linux/can-utils { };
 
@@ -14668,6 +14669,7 @@ in
     inherit (darwin.apple_sdk.frameworks) OpenCL Cocoa;
   };
   opencascade-occt = callPackage ../development/libraries/opencascade-occt { };
+  opencascade-occt730 = callPackage ../development/libraries/opencascade-occt/7.3.nix { };
 
   opencl-headers = callPackage ../development/libraries/opencl-headers { };
 
@@ -15143,8 +15145,6 @@ in
     soqt = callPackage ../development/libraries/soqt { };
 
     telepathy = callPackage ../development/libraries/telepathy/qt { };
-
-    vlc = callPackage ../applications/video/vlc {};
 
     qtwebkit-plugins = callPackage ../development/libraries/qtwebkit-plugins { };
 
@@ -16527,7 +16527,7 @@ in
 
   hashi-ui = callPackage ../servers/hashi-ui {};
 
-  hasura-graphql-engine = haskellPackages.graphql-engine;
+  hasura-graphql-engine = haskell.lib.justStaticExecutables haskellPackages.graphql-engine;
 
   hasura-cli = callPackage ../servers/hasura/cli.nix { };
 
@@ -16966,6 +16966,7 @@ in
     postgresql_10
     postgresql_11
     postgresql_12
+    postgresql_13
   ;
   postgresql = postgresql_11.override { this = postgresql; };
   postgresqlPackages = recurseIntoAttrs postgresql.pkgs;
@@ -20800,7 +20801,10 @@ in
 
   freecad = libsForQt514.callPackage ../applications/graphics/freecad {
     mpi = openmpi;
-    # pyside2 5.12 is broken under python 3.8
+  };
+  freecadStable = libsForQt514.callPackage ../applications/graphics/freecad/stable.nix {
+    mpi = openmpi;
+    opencascade-occt = opencascade-occt730;
     python3Packages = python37Packages;
   };
 
@@ -22234,6 +22238,8 @@ in
   node-problem-detector = callPackage ../applications/networking/cluster/node-problem-detector { };
 
   ninjas2 = callPackage ../applications/audio/ninjas2 {};
+
+  nncp = callPackage ../tools/misc/nncp { };
 
   notion = callPackage ../applications/window-managers/notion { };
 
@@ -23928,9 +23934,18 @@ in
 
   vkeybd = callPackage ../applications/audio/vkeybd {};
 
-  vlc = libsForQt514.vlc;
+  vlc = libsForQt514.callPackage ../applications/video/vlc {};
 
   vlc_qt5 = vlc;
+
+  libvlc = vlc.override {
+    withQt5 = false;
+    qtbase = null;
+    qtsvg = null;
+    qtx11extras = null;
+    wrapQtAppsHook = null;
+    onlyLibVLC = true;
+  };
 
   vmpk = callPackage ../applications/audio/vmpk { };
 
