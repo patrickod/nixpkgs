@@ -2405,6 +2405,8 @@ in
 
   bash-supergenpass = callPackage ../tools/security/bash-supergenpass { };
 
+  swappy = callPackage ../applications/misc/swappy { gtk = gtk3; };
+
   sweep-visualizer = callPackage ../tools/misc/sweep-visualizer { };
 
   syscall_limiter = callPackage ../os-specific/linux/syscall_limiter {};
@@ -3405,6 +3407,8 @@ in
   wl-clipboard = callPackage ../tools/misc/wl-clipboard { };
 
   wob = callPackage ../tools/misc/wob { };
+
+  wtype = callPackage ../tools/wayland/wtype { };
 
   wrangler = callPackage ../development/tools/wrangler { };
 
@@ -9601,7 +9605,8 @@ in
   picat = callPackage ../development/compilers/picat { };
 
   ponyc = callPackage ../development/compilers/ponyc {
-    llvm = llvm_7;
+    # Upstream pony has dropped support for versions compiled with gcc.
+    stdenv = clangStdenv;
   };
 
   pony-stable = callPackage ../development/compilers/ponyc/pony-stable.nix { };
@@ -17367,7 +17372,7 @@ in
 
   inherit (callPackages ../os-specific/linux/apparmor { python = python3; })
     libapparmor apparmor-utils apparmor-bin-utils apparmor-parser apparmor-pam
-    apparmor-profiles apparmor-kernel-patches;
+    apparmor-profiles apparmor-kernel-patches apparmorRulesFromClosure;
 
   atop = callPackage ../os-specific/linux/atop { };
 
@@ -23077,6 +23082,10 @@ in
 
   rofi-systemd = callPackage ../tools/system/rofi-systemd { };
 
+  rofimoji = callPackage ../applications/misc/rofimoji {
+    inherit (python3Packages) buildPythonApplication ConfigArgParse pyxdg;
+  };
+
   rootlesskit = callPackage ../tools/virtualization/rootlesskit {};
 
   rpcs3 = libsForQt514.callPackage ../misc/emulators/rpcs3 { };
@@ -26532,6 +26541,8 @@ in
   librepcb = libsForQt5.callPackage ../applications/science/electronics/librepcb { };
 
   ngspice = callPackage ../applications/science/electronics/ngspice { };
+
+  openems = callPackage ../applications/science/electronics/openems { };
 
   pcb = callPackage ../applications/science/electronics/pcb { };
 

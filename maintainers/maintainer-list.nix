@@ -806,6 +806,12 @@
     githubId = 574938;
     name = "Jonathan Glines";
   };
+  austinbutler = {
+    email = "austinabutler@gmail.com";
+    github = "austinbutler";
+    githubId = 354741;
+    name = "Austin Butler";
+  };
   avaq = {
     email = "nixpkgs@account.avaq.it";
     github = "avaq";
@@ -3491,6 +3497,12 @@
     githubId = 39689;
     name = "Hugo Tavares Reis";
   };
+  hugolgst = {
+    email = "hugo.lageneste@pm.me";
+    github = "hugolgst";
+    githubId = 15371828;
+    name = "Hugo Lageneste";
+  };
   hyphon81 = {
     email = "zero812n@gmail.com";
     github = "hyphon81";
@@ -4239,7 +4251,7 @@
     name = "Julien Dehos";
   };
   julm = {
-    email = "julm+nix@sourcephile.fr";
+    email = "julm+nixpkgs@sourcephile.fr";
     github = "ju1m";
     githubId = 21160136;
     name = "Julien Moutinho";
@@ -4249,6 +4261,12 @@
     github = "jumper149";
     githubId = 39434424;
     name = "Felix Springer";
+  };
+  justinlovinger = {
+    email = "git@justinlovinger.com";
+    github = "JustinLovinger";
+    githubId = 7183441;
+    name = "Justin Lovinger";
   };
   justinwoo = {
     email = "moomoowoo@gmail.com";
