@@ -7090,6 +7090,8 @@ in
 
   soapui = callPackage ../applications/networking/soapui { };
 
+  ssh-askpass-fullscreen = callPackage ../tools/networking/ssh-askpass-fullscreen { };
+
   sshguard = callPackage ../tools/security/sshguard {};
 
   sshping = callPackage ../tools/networking/sshping {};
@@ -9609,6 +9611,7 @@ in
     stdenv = clangStdenv;
   };
 
+  pony-corral = callPackage ../development/compilers/ponyc/pony-corral.nix { };
   pony-stable = callPackage ../development/compilers/ponyc/pony-stable.nix { };
 
   qbe = callPackage ../development/compilers/qbe { };
@@ -18114,7 +18117,7 @@ in
   # Hardened Linux
   hardenedLinuxPackagesFor = kernel': overrides:
     let # Note: We use this hack since the hardened patches can lag behind and we don't want to delay updates:
-      linux_latest_for_hardened = pkgs.linux_5_7;
+      linux_latest_for_hardened = pkgs.linux_5_8;
       kernel = (if kernel' == pkgs.linux_latest then linux_latest_for_hardened else kernel').override overrides;
     in linuxPackagesFor (kernel.override {
       structuredExtraConfig = import ../os-specific/linux/kernel/hardened/config.nix {
@@ -23004,6 +23007,8 @@ in
     });
   in pkgs_.libsForQt5.callPackage ../applications/networking/browsers/qutebrowser { };
 
+  qxw = callPackage ../applications/editors/qxw {};
+
   rabbitvcs = callPackage ../applications/version-management/rabbitvcs {};
 
   rakarrack = callPackage ../applications/audio/rakarrack {
@@ -23815,7 +23820,7 @@ in
 
   vimiv = callPackage ../applications/graphics/vimiv { };
 
-  macvim = callPackage ../applications/editors/vim/macvim.nix { stdenv = clangStdenv; };
+  macvim = callPackage ../applications/editors/vim/macvim-configurable.nix { stdenv = clangStdenv; };
 
   vimHugeX = vim_configurable;
 

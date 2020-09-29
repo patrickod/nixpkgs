@@ -494,6 +494,8 @@ in {
 
   aws-xray-sdk = callPackage ../development/python-modules/aws-xray-sdk { };
 
+  azure-appconfiguration = callPackage ../development/python-modules/azure-appconfiguration { };
+
   azure-applicationinsights = callPackage ../development/python-modules/azure-applicationinsights { };
 
   azure-batch = callPackage ../development/python-modules/azure-batch { };
@@ -519,6 +521,8 @@ in {
   azure-identity = callPackage ../development/python-modules/azure-identity { };
 
   azure-keyvault = callPackage ../development/python-modules/azure-keyvault { };
+
+  azure-keyvault-administration = callPackage ../development/python-modules/azure-keyvault-administration { };
 
   azure-keyvault-certificates = callPackage ../development/python-modules/azure-keyvault-certificates { };
 
@@ -1149,6 +1153,8 @@ in {
   cjson = callPackage ../development/python-modules/cjson { };
 
   ckcc-protocol = callPackage ../development/python-modules/ckcc-protocol { };
+
+  class-registry = callPackage ../development/python-modules/class-registry { };
 
   cld2-cffi = callPackage ../development/python-modules/cld2-cffi { };
 
