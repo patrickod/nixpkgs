@@ -1536,9 +1536,7 @@ in
     buildGoModule = buildGo114Module;
   };
 
-  # Traefik 2.2 uses go1.14, pinning can be removed with 2.3
-  # https://github.com/containous/traefik/issues/7234#issuecomment-684950612
-  traefik = callPackage ../servers/traefik { buildGoModule = buildGo114Module; };
+  traefik = callPackage ../servers/traefik { };
 
   calamares = libsForQt514.callPackage ../tools/misc/calamares {
     python = python3;
@@ -7278,6 +7276,8 @@ in
   swiften = callPackage ../development/libraries/swiften { };
 
   t = callPackage ../tools/misc/t { };
+
+  tabnine = callPackage ../development/tools/tabnine { };
 
   t1utils = callPackage ../tools/misc/t1utils { };
 
@@ -16926,7 +16926,7 @@ in
     asciidoc = asciidoc-full;
   };
 
-  timescale-prometheus = callPackage ../servers/monitoring/timescale-prometheus { };
+  promscale = callPackage ../servers/monitoring/prometheus/promscale.nix { };
 
   timescaledb-parallel-copy = callPackage ../development/tools/database/timescaledb-parallel-copy { };
 
@@ -28193,4 +28193,6 @@ in
   probe-run = callPackage ../development/tools/probe-run {};
 
   fac-build = callPackage ../development/tools/build-managers/fac {};
+
+  bottom = callPackage ../tools/system/bottom {};
 }
