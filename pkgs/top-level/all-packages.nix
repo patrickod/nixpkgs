@@ -9336,6 +9336,8 @@ in
     asciidoc = asciidoc-full;
   };
 
+  knightos-patchrom = callPackage ../development/tools/knightos/patchrom { };
+
   knightos-scas = callPackage ../development/tools/knightos/scas { };
 
   kotlin = callPackage ../development/compilers/kotlin { };
@@ -9365,7 +9367,7 @@ in
   lld_10 = llvmPackages_10.lld;
   lld_11 = llvmPackages_11.lld;
 
-  lldb = llvmPackages.lldb;
+  lldb = llvmPackages_latest.lldb;
   lldb_5 = llvmPackages_5.lldb;
   lldb_6 = llvmPackages_6.lldb;
   lldb_7 = llvmPackages_7.lldb;
@@ -11189,6 +11191,8 @@ in
 
   jenkins-job-builder = with python3Packages; toPythonApplication jenkins-job-builder;
 
+  jpexs = callPackage ../development/tools/jpexs { };
+
   julius = callPackage ../games/julius { };
 
   augustus = callPackage ../games/augustus { };
@@ -11520,6 +11524,8 @@ in
   sauce-connect = callPackage ../development/tools/sauce-connect { };
 
   scaff = callPackage ../development/tools/scaff { };
+
+  sd-local = callPackage ../development/tools/sd-local { };
 
   selenium-server-standalone = callPackage ../development/tools/selenium/server { };
 
@@ -20112,8 +20118,6 @@ in
 
   das_watchdog = callPackage ../tools/system/das_watchdog { };
 
-  dbvisualizer = callPackage ../applications/misc/dbvisualizer {};
-
   dd-agent = callPackage ../tools/networking/dd-agent/5.nix { };
   datadog-agent = callPackage ../tools/networking/dd-agent/datadog-agent.nix {
     pythonPackages = datadog-integrations-core {};
@@ -27615,6 +27619,8 @@ in
   terraform-landscape = callPackage ../applications/networking/cluster/terraform-landscape {};
 
   terragrunt = callPackage ../applications/networking/cluster/terragrunt {};
+
+  terranix = callPackage ../applications/networking/cluster/terranix {};
 
   tilt = callPackage ../applications/networking/cluster/tilt {};
 
