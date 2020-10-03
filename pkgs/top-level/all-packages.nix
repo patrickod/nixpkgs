@@ -1531,10 +1531,6 @@ in
   });
 
   caddy = callPackage ../servers/caddy { };
-  caddy1 = callPackage ../servers/caddy/v1.nix {
-    # https://github.com/lucas-clemente/quic-go/issues/2614
-    buildGoModule = buildGo114Module;
-  };
 
   traefik = callPackage ../servers/traefik { };
 
@@ -6813,6 +6809,8 @@ in
 
   samplicator = callPackage ../tools/networking/samplicator { };
 
+  sandboxfs = callPackage ../tools/filesystems/sandboxfs { };
+
   sasquatch = callPackage ../tools/filesystems/sasquatch { };
 
   sasview = callPackage ../applications/science/misc/sasview {};
@@ -11831,6 +11829,8 @@ in
   activemq = callPackage ../development/libraries/apache-activemq { };
 
   adns = callPackage ../development/libraries/adns { };
+
+  adslib = callPackage ../development/libraries/adslib { };
 
   afflib = callPackage ../development/libraries/afflib { };
 
@@ -19840,6 +19840,8 @@ in
     inherit (darwin.apple_sdk.frameworks) Cocoa CoreGraphics ForceFeedback OpenAL OpenGL;
   };
 
+  blogc = callPackage ../applications/misc/blogc { };
+
   bluefish = callPackage ../applications/editors/bluefish {
     gtk = gtk3;
   };
@@ -21215,9 +21217,7 @@ in
 
   swaylock-effects = callPackage ../applications/window-managers/sway/lock-effects.nix { };
 
-  waybar = callPackage ../applications/misc/waybar {
-    pulseSupport = config.pulseaudio or false;
-  };
+  waybar = callPackage ../applications/misc/waybar { };
 
   hikari = callPackage ../applications/window-managers/hikari { };
 
