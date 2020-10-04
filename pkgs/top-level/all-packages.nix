@@ -5596,6 +5596,13 @@ in
 
   nabi = callPackage ../tools/inputmethods/nabi { };
 
+  hime = callPackage ../tools/inputmethods/hime {};
+
+  hime-all = callPackage ../tools/inputmethods/hime {
+    enableChewing = true;
+    enableAnthy = true;
+  };
+
   nahid-fonts = callPackage ../data/fonts/nahid-fonts { };
 
   namazu = callPackage ../tools/text/namazu { };
@@ -6465,7 +6472,9 @@ in
 
   pywal = with python3Packages; toPythonApplication pywal;
 
-  rbw = callPackage ../tools/security/rbw { };
+  rbw = callPackage ../tools/security/rbw {
+    inherit (darwin.apple_sdk.frameworks) Security;
+  };
 
   remarshal = callPackage ../development/tools/remarshal { };
 
@@ -11876,6 +11885,10 @@ in
 
   argp-standalone = callPackage ../development/libraries/argp-standalone {};
 
+  aribb25 = callPackage ../development/libraries/aribb25 {
+    inherit (darwin.apple_sdk.frameworks) PCSC;
+  };
+
   armadillo = callPackage ../development/libraries/armadillo {};
 
   arrayfire = callPackage ../development/libraries/arrayfire {};
@@ -16550,7 +16563,7 @@ in
 
   jitsi-videobridge = callPackage ../servers/jitsi-videobridge { };
 
-  kapow = callPackage ../servers/kapow { };
+  kapowbang = callPackage ../servers/kapowbang { };
 
   keycloak = callPackage ../servers/keycloak { };
 
@@ -17519,6 +17532,8 @@ in
   gmailctl = callPackage ../applications/networking/gmailctl {};
 
   gomp = callPackage ../applications/version-management/gomp { };
+
+  gomplate = callPackage ../development/tools/gomplate {};
 
   gpm = callPackage ../servers/gpm {
     ncurses = null;  # Keep curses disabled for lack of value
@@ -21485,6 +21500,8 @@ in
 
   kapitonov-plugins-pack = callPackage ../applications/audio/kapitonov-plugins-pack { };
 
+  kapow = libsForQt5.callPackage ../applications/misc/kapow { };
+
   kdeApplications =
     let
       mkApplications = import ../applications/kde;
@@ -22971,11 +22988,11 @@ in
     pkgs_ = pkgs.extend(_: prev: {
       pythonInterpreters = prev.pythonInterpreters.override(oldAttrs: {
         pkgs = oldAttrs.pkgs.extend(_: _: {
-          inherit (pkgs) qt5 libsForQt5;
+          inherit (pkgs) qt5 libsForQt514;
         });
       });
     });
-  in pkgs_.libsForQt5.callPackage ../applications/networking/browsers/qutebrowser { };
+  in pkgs_.libsForQt514.callPackage ../applications/networking/browsers/qutebrowser { };
 
   qxw = callPackage ../applications/editors/qxw {};
 
@@ -23824,7 +23841,7 @@ in
 
   neovim = wrapNeovim neovim-unwrapped { };
 
-  neovim-qt = libsForQt514.callPackage ../applications/editors/neovim/qt.nix { };
+  neovim-qt = libsForQt5.callPackage ../applications/editors/neovim/qt.nix { };
 
   olifant = callPackage ../applications/misc/olifant { };
 

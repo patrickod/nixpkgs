@@ -9734,4 +9734,10 @@
     github = "wenngle";
     githubId = 63376671;
   };
+  yanganto = {
+    name = "Antonio Yang";
+    email = "yanganto@gmail.com";
+    github = "yanganto";
+    githubId = 10803111;
+  };
 }

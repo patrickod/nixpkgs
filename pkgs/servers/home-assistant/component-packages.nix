@@ -4,7 +4,7 @@
 {
   version = "0.115.6";
   components = {
-    "abode" = ps: with ps; [ ]; # missing inputs: abodepy
+    "abode" = ps: with ps; [ abodepy ];
     "accuweather" = ps: with ps; [ ]; # missing inputs: accuweather
     "acer_projector" = ps: with ps; [ pyserial ];
     "acmeda" = ps: with ps; [ ]; # missing inputs: aiopulse
@@ -526,7 +526,7 @@
     "nederlandse_spoorwegen" = ps: with ps; [ ]; # missing inputs: nsapi
     "nello" = ps: with ps; [ ]; # missing inputs: pynello
     "ness_alarm" = ps: with ps; [ ]; # missing inputs: nessclient
-    "nest" = ps: with ps; [ ]; # missing inputs: python-nest
+    "nest" = ps: with ps; [ python-nest ];
     "netatmo" = ps: with ps; [ aiohttp-cors hass-nabucasa pyatmo ];
     "netdata" = ps: with ps; [ ]; # missing inputs: netdata
     "netgear" = ps: with ps; [ ]; # missing inputs: pynetgear
