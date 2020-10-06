@@ -4075,6 +4075,8 @@ in {
 
   notify = callPackage ../development/python-modules/notify { };
 
+  notify-py = callPackage ../development/python-modules/notify-py { };
+
   notmuch = callPackage ../development/python-modules/notmuch { inherit (pkgs) notmuch; };
 
   nototools = callPackage ../data/fonts/noto-fonts/tools.nix { };
@@ -6539,6 +6541,8 @@ in {
   skein = callPackage ../development/python-modules/skein {
     jre = pkgs.jre8; # TODO: remove override https://github.com/NixOS/nixpkgs/pull/89731
   };
+
+  skidl = callPackage ../development/python-modules/skidl { };
 
   sklearn-deap = callPackage ../development/python-modules/sklearn-deap { };
 

@@ -2462,6 +2462,8 @@ in
     libmaxminddb = null;
   };
 
+  xmlsort = perlPackages.XMLFilterSort;
+
   xmousepasteblock = callPackage ../tools/X11/xmousepasteblock { };
 
   mar1d = callPackage ../games/mar1d { } ;
@@ -5714,7 +5716,7 @@ in
   nm-tray = libsForQt5.callPackage ../tools/networking/network-manager/tray.nix { };
 
   newsboat = callPackage ../applications/networking/feedreaders/newsboat {
-    inherit (darwin.apple_sdk.frameworks) Security;
+    inherit (darwin.apple_sdk.frameworks) Security Foundation;
   };
 
   grocy = callPackage ../servers/grocy { };
@@ -8558,9 +8560,7 @@ in
 
   cmucl_binary = pkgsi686Linux.callPackage ../development/compilers/cmucl/binary.nix { };
 
-  compcert = callPackage ../development/compilers/compcert {
-    inherit (coqPackages_8_10) coq;
-  };
+  compcert = callPackage ../development/compilers/compcert {};
 
   computecpp-unwrapped = callPackage ../development/compilers/computecpp {};
   computecpp = wrapCCWith rec {
@@ -9351,6 +9351,11 @@ in
 
   lazarus = callPackage ../development/compilers/fpc/lazarus.nix {
     fpc = fpc;
+  };
+
+  lazarus-qt = libsForQt5.callPackage ../development/compilers/fpc/lazarus.nix {
+    fpc = fpc;
+    withQt = true;
   };
 
   lessc = nodePackages.less;
@@ -11523,6 +11528,7 @@ in
   rolespec = callPackage ../development/tools/misc/rolespec { };
 
   rr = callPackage ../development/tools/analysis/rr { };
+  rr-unstable = callPackage ../development/tools/analysis/rr/unstable.nix { }; # This is a temporary attribute, please see the corresponding file for details.
 
   samurai = callPackage ../development/tools/build-managers/samurai { };
 
@@ -14070,7 +14076,7 @@ in
 
   libqalculate = callPackage ../development/libraries/libqalculate { };
 
-  libqt5pas = callPackage ../development/compilers/fpc/libqt5pas.nix { };
+  libqt5pas = libsForQt5.callPackage ../development/compilers/fpc/libqt5pas.nix { };
 
   libroxml = callPackage ../development/libraries/libroxml { };
 
@@ -14705,7 +14711,9 @@ in
 
   opendmarc = callPackage ../development/libraries/opendmarc { };
 
-  ois = callPackage ../development/libraries/ois {};
+  ois = callPackage ../development/libraries/ois {
+    inherit (darwin.apple_sdk.frameworks) Cocoa IOKit Kernel;
+  };
 
   openh264 = callPackage ../development/libraries/openh264 { };
 
@@ -16500,9 +16508,7 @@ in
 
   gofish = callPackage ../servers/gopher/gofish { };
 
-  grafana = callPackage ../servers/monitoring/grafana {
-    buildGoModule = buildGo114Module;
-  };
+  grafana = callPackage ../servers/monitoring/grafana { };
 
   grafana-loki = callPackage ../servers/monitoring/loki {
     buildGoPackage = buildGo114Package;
@@ -27034,6 +27040,8 @@ in
   utsushi = callPackage ../misc/drivers/utsushi { };
 
   idsk = callPackage ../tools/filesystems/idsk { };
+
+  logtop = callPackage ../tools/misc/logtop { };
 
   igraph = callPackage ../development/libraries/igraph { };
 
