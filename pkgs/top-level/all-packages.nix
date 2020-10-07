@@ -4370,12 +4370,6 @@ in
     mpi = null;
   };
 
-  hdf5_1_8 = callPackage ../tools/misc/hdf5/1_8.nix {
-    gfortran = null;
-    szip = null;
-    mpi = null;
-  };
-
   hdf5-mpi = appendToName "mpi" (hdf5.override {
     szip = null;
     mpi = pkgs.openmpi;
@@ -5721,7 +5715,7 @@ in
   grocy = callPackage ../servers/grocy { };
 
   inherit (callPackage ../servers/nextcloud {})
-    nextcloud17 nextcloud18 nextcloud19;
+    nextcloud17 nextcloud18 nextcloud19 nextcloud20;
 
   nextcloud-client = libsForQt514.callPackage ../applications/networking/nextcloud-client { };
 
@@ -9922,7 +9916,12 @@ in
 
   z88dk = callPackage ../development/compilers/z88dk { };
 
-  zulip = callPackage ../applications/networking/instant-messengers/zulip { };
+  zulip = callPackage ../applications/networking/instant-messengers/zulip {
+    # Bubblewrap breaks zulip, see https://github.com/NixOS/nixpkgs/pull/97264#issuecomment-704454645
+    appimageTools = pkgs.appimageTools.override {
+      buildFHSUserEnv = pkgs.buildFHSUserEnv;
+    };
+  };
 
   zulip-term = callPackage ../applications/networking/instant-messengers/zulip-term { };
 
@@ -10679,6 +10678,8 @@ in
   });
 
   black = with python3Packages; toPythonApplication black;
+
+  blackfire = callPackage ../development/tools/misc/blackfire { };
 
   black-macchiato = with python3Packages; toPythonApplication black-macchiato;
 
@@ -13927,9 +13928,7 @@ in
 
   libmilter = callPackage ../development/libraries/libmilter { };
 
-  libminc = callPackage ../development/libraries/libminc {
-    hdf5 = hdf5_1_8;
-  };
+  libminc = callPackage ../development/libraries/libminc { };
 
   libmirage = callPackage ../misc/emulators/cdemu/libmirage.nix { };
 
@@ -16366,6 +16365,8 @@ in
     asterisk asterisk-stable asterisk-lts
     asterisk_13 asterisk_15 asterisk_16;
 
+  asterisk-module-sccp = callPackage ../servers/asterisk/sccp { };
+
   sabnzbd = callPackage ../servers/sabnzbd { };
 
   bftpd = callPackage ../servers/ftp/bftpd {};
@@ -16514,6 +16515,8 @@ in
   };
 
   grafana_reporter = callPackage ../servers/monitoring/grafana-reporter { };
+
+  gerbera = callPackage ../servers/gerbera { };
 
   gobetween = callPackage ../servers/gobetween { };
 
@@ -17363,7 +17366,7 @@ in
 
   inherit (callPackages ../os-specific/linux/apparmor { python = python3; })
     libapparmor apparmor-utils apparmor-bin-utils apparmor-parser apparmor-pam
-    apparmor-profiles apparmor-kernel-patches apparmorRulesFromClosure;
+    apparmor-profiles apparmor-kernel-patches;
 
   atop = callPackage ../os-specific/linux/atop { };
 
@@ -18648,9 +18651,6 @@ in
     ubootUtilite
     ubootWandboard
     ;
-
-  # Non-upstream U-Boots:
-  ubootNanonote = callPackage ../misc/uboot/nanonote.nix { };
 
   uclibc = callPackage ../os-specific/linux/uclibc { };
 
