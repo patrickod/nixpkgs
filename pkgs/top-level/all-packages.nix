@@ -3227,6 +3227,8 @@ in
     inherit (darwin.apple_sdk.frameworks) CoreBluetooth ForceFeedback IOKit OpenGL;
   };
 
+  domoticz = callPackage ../servers/domoticz { };
+
   doomseeker = qt5.callPackage ../applications/misc/doomseeker { };
 
   doom-bcc = callPackage ../games/zdoom/bcc-git.nix { };
@@ -9497,6 +9499,8 @@ in
    enableX11 = true;
   };
 
+  miranda = callPackage ../development/compilers/miranda {};
+
   mkcl = callPackage ../development/compilers/mkcl {};
 
   mlkit = callPackage ../development/compilers/mlkit {};
@@ -13323,6 +13327,8 @@ in
   inherit (libav_all) libav_0_8 libav_11 libav_12;
 
   libavc1394 = callPackage ../development/libraries/libavc1394 { };
+
+  libavif = callPackage ../development/libraries/libavif { };
 
   libb2 = callPackage ../development/libraries/libb2 { };
 
@@ -18805,7 +18811,7 @@ in
 
   ant-bloody-theme = callPackage ../data/themes/ant-theme/ant-bloody.nix { };
 
-  ant-dracula-theme = callPackage ../data/themes/ant-theme/ant-dracula.nix { };
+  dracula-theme = callPackage ../data/themes/dracula-theme { };
 
   ant-nebula-theme = callPackage ../data/themes/ant-theme/ant-nebula.nix { };
 
@@ -23512,6 +23518,8 @@ in
 
   sunvox = callPackage ../applications/audio/sunvox { };
 
+  swaglyrics = callPackage ../tools/misc/swaglyrics { };
+
   swh_lv2 = callPackage ../applications/audio/swh-lv2 { };
 
   swift-im = libsForQt514.callPackage ../applications/networking/instant-messengers/swift-im {
@@ -25788,6 +25796,7 @@ in
     draw-on-your-screen = callPackage ../desktops/gnome-3/extensions/draw-on-your-screen { };
     drop-down-terminal = callPackage ../desktops/gnome-3/extensions/drop-down-terminal { };
     emoji-selector = callPackage ../desktops/gnome-3/extensions/emoji-selector { };
+    freon = callPackage ../desktops/gnome-3/extensions/freon { };
     gsconnect = callPackage ../desktops/gnome-3/extensions/gsconnect { };
     icon-hider = callPackage ../desktops/gnome-3/extensions/icon-hider { };
     impatience = callPackage ../desktops/gnome-3/extensions/impatience { };
@@ -26435,6 +26444,7 @@ in
     });
 
     java = openjdk11;
+    z3 = z3_4_4_0;
   };
 
   iprover = callPackage ../applications/science/logic/iprover { };
@@ -26527,6 +26537,10 @@ in
   };
 
   z3 = callPackage ../applications/science/logic/z3 { python = python2; };
+  z3_4_4_0 = callPackage ../applications/science/logic/z3/4.4.0.nix {
+    python = python2;
+    stdenv = gcc49Stdenv;
+  };
   z3-tptp = callPackage ../applications/science/logic/z3/tptp.nix {};
 
   tlaplus = callPackage ../applications/science/logic/tlaplus {
