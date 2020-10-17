@@ -2729,6 +2729,12 @@
     githubId = 1847524;
     name = "Evan Stoll";
   };
+  evax = {
+    email = "nixos@evax.fr";
+    github = "evax";
+    githubId = 599997;
+    name = "evax";
+  };
   evck = {
     email = "eric@evenchick.com";
     github = "ericevenchick";
@@ -6255,6 +6261,12 @@
     githubId = 40049608;
     name = "Andy Chun";
   };
+  norfair = {
+    email = "syd@cs-syd.eu";
+    github = "NorfairKing";
+    githubId = 3521180;
+    name = "Tom Sydney Kerckhove";
+  };
   notthemessiah = {
     email = "brian.cohen.88@gmail.com";
     github = "notthemessiah";
@@ -6388,6 +6400,12 @@
     github = "omnipotententity";
     githubId = 1538622;
     name = "Michael Reilly";
+  };
+  onny = {
+    email = "onny@project-insanity.org";
+    github = "onny";
+    githubId = 757752;
+    name = "Jonas Heinrich";
   };
   OPNA2608 = {
     email = "christoph.neidahl@gmail.com";
@@ -9242,6 +9260,12 @@
     githubId = 1322287;
     name = "William O'Hanley";
   };
+  wolfangaukang = {
+    email = "liquid.query960@4wrd.cc";
+    github = "wolfangaukang";
+    githubId = 8378365;
+    name = "P. R. d. O.";
+  };
   womfoo = {
     email = "kranium@gikos.net";
     github = "womfoo";
@@ -9483,6 +9507,12 @@
     github = "zagy";
     githubId = 568532;
     name = "Christian Zagrodnick";
+  };
+  zakame = {
+    email = "zakame@zakame.net";
+    github = "zakame";
+    githubId = 110625;
+    name = "Zak B. Elep";
   };
   zalakain = {
     email = "ping@umazalakain.info";
