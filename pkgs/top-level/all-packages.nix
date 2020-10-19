@@ -2366,6 +2366,8 @@ in
 
   pixiecore = callPackage ../tools/networking/pixiecore {};
 
+  waitron = callPackage ../tools/networking/waitron {};
+
   pyCA = python3Packages.callPackage ../applications/video/pyca {};
 
   pyrit = callPackage ../tools/security/pyrit {};
@@ -9325,17 +9327,7 @@ in
 
   javacard-devkit = pkgsi686Linux.callPackage ../development/compilers/javacard-devkit { };
 
-  julia_07 = callPackage ../development/compilers/julia/0.7.nix {
-    gmp = gmp6;
-    inherit (darwin.apple_sdk.frameworks) CoreServices ApplicationServices;
-  };
-
   julia_10 = callPackage ../development/compilers/julia/1.0.nix {
-    gmp = gmp6;
-    inherit (darwin.apple_sdk.frameworks) CoreServices ApplicationServices;
-  };
-
-  julia_11 = callPackage ../development/compilers/julia/1.1.nix {
     gmp = gmp6;
     inherit (darwin.apple_sdk.frameworks) CoreServices ApplicationServices;
   };
@@ -9576,7 +9568,7 @@ in
   inherit (callPackage ../development/tools/ocaml/ocamlformat { })
     ocamlformat # latest version
     ocamlformat_0_11_0 ocamlformat_0_12 ocamlformat_0_13_0 ocamlformat_0_14_0
-    ocamlformat_0_14_1 ocamlformat_0_14_2 ocamlformat_0_15_0;
+    ocamlformat_0_14_1 ocamlformat_0_14_2 ocamlformat_0_14_3 ocamlformat_0_15_0;
 
   orc = callPackage ../development/compilers/orc { };
 
@@ -14717,7 +14709,6 @@ in
     inherit (darwin.apple_sdk.frameworks) OpenCL Cocoa;
   };
   opencascade-occt = callPackage ../development/libraries/opencascade-occt { };
-  opencascade-occt730 = callPackage ../development/libraries/opencascade-occt/7.3.nix { };
 
   opencl-headers = callPackage ../development/libraries/opencl-headers { };
 
@@ -16645,6 +16636,8 @@ in
   micronaut = callPackage ../development/tools/micronaut {};
 
   minio = callPackage ../servers/minio { };
+
+  mkchromecast = libsForQt5.callPackage ../applications/networking/mkchromecast { };
 
   # Backwards compatibility.
   mod_dnssd = pkgs.apacheHttpdPackages.mod_dnssd;
@@ -20740,7 +20733,7 @@ in
 
   gradio = callPackage ../applications/audio/gradio { };
 
-  puddletag = callPackage ../applications/audio/puddletag { };
+  puddletag = libsForQt5.callPackage ../applications/audio/puddletag { };
 
   w_scan = callPackage ../applications/video/w_scan { };
 
@@ -20855,11 +20848,6 @@ in
 
   freecad = libsForQt5.callPackage ../applications/graphics/freecad {
     mpi = openmpi;
-  };
-  freecadStable = libsForQt5.callPackage ../applications/graphics/freecad/stable.nix {
-    mpi = openmpi;
-    opencascade-occt = opencascade-occt730;
-    python3Packages = python37Packages;
   };
 
   freemind = callPackage ../applications/misc/freemind {
@@ -22132,8 +22120,7 @@ in
     mopidy
     mopidy-gmusic
     mopidy-iris
-    mopidy-local-images
-    mopidy-local-sqlite
+    mopidy-local
     mopidy-moped
     mopidy-mopify
     mopidy-mpd
@@ -24173,7 +24160,9 @@ in
 
   wofi = callPackage ../applications/misc/wofi { };
 
-  wordnet = callPackage ../applications/misc/wordnet { };
+  wordnet = callPackage ../applications/misc/wordnet {
+    inherit (darwin.apple_sdk.frameworks) Cocoa;
+  };
 
   wordgrinder = callPackage ../applications/office/wordgrinder { };
 
