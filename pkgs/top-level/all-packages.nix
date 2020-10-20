@@ -1999,6 +1999,8 @@ in
 
   futhark = haskell.lib.justStaticExecutables haskellPackages.futhark;
 
+  inherit (nodePackages) fx;
+
   tllist = callPackage ../development/libraries/tllist { };
 
   fcft = callPackage ../development/libraries/fcft { };
@@ -10019,7 +10021,7 @@ in
   inherit (beam.interpreters)
     erlang erlangR23 erlangR22 erlangR21 erlangR20 erlangR19 erlangR18
     erlang_odbc erlang_javac erlang_odbc_javac erlang_nox erlang_basho_R16B02
-    elixir elixir_1_10 elixir_1_9 elixir_1_8 elixir_1_7;
+    elixir elixir_1_11 elixir_1_10 elixir_1_9 elixir_1_8 elixir_1_7;
 
   inherit (beam.packages.erlang)
     rebar rebar3
@@ -10258,7 +10260,7 @@ in
     pkgs = pkgs.extend (final: _: {
     });
   };
-  inherit (pythonInterpreters) python27 python36 python37 python38 python39 python3Minimal pypy27 pypy36;
+  inherit (pythonInterpreters) python27 python36 python37 python38 python39 python310 python3Minimal pypy27 pypy36;
 
   # Python package sets.
   python27Packages = lib.hiPrioSet (recurseIntoAttrs python27.pkgs);
@@ -10266,6 +10268,7 @@ in
   python37Packages = recurseIntoAttrs python37.pkgs;
   python38Packages = recurseIntoAttrs python38.pkgs;
   python39Packages = python39.pkgs;
+  python310Packages = python310.pkgs;
   pypyPackages = pypy.pkgs;
   pypy2Packages = pypy2.pkgs;
   pypy27Packages = pypy27.pkgs;
@@ -12043,7 +12046,9 @@ in
   boost170 = callPackage ../development/libraries/boost/1.70.nix { };
   boost171 = callPackage ../development/libraries/boost/1.71.nix { };
   boost172 = callPackage ../development/libraries/boost/1.72.nix { };
-  boost17x = boost172;
+  boost173 = callPackage ../development/libraries/boost/1.73.nix { };
+  boost174 = callPackage ../development/libraries/boost/1.74.nix { };
+  boost17x = boost174;
   boost = boost16x;
 
   boost_process = callPackage ../development/libraries/boost-process { };
@@ -17249,7 +17254,8 @@ in
 
   inherit (callPackages ../servers/unifi { })
     unifiLTS
-    unifiStable;
+    unifiStable
+    unifiBeta;
   unifi = unifiStable;
 
   urserver = callPackage ../servers/urserver { };
@@ -20944,6 +20950,11 @@ in
   gnucash = callPackage ../applications/office/gnucash { };
 
   goffice = callPackage ../development/libraries/goffice { };
+
+  hydrus = python3Packages.callPackage ../applications/graphics/hydrus {
+    inherit miniupnpc_2 swftools;
+    inherit (qt5) wrapQtAppsHook;
+  };
 
   jetbrains = (recurseIntoAttrs (callPackages ../applications/editors/jetbrains {
     jdk = jetbrains.jdk;
