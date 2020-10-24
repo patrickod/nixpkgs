@@ -6003,6 +6003,12 @@
     githubId = 788953;
     name = "Matthijs Steen";
   };
+  mstrangfeld = {
+    email = "marvin@strangfeld.io";
+    github = "mstrangfeld";
+    githubId = 36842980;
+    name = "Marvin Strangfeld";
+  };
   mt-caret = {
     email = "mtakeda.enigsol@gmail.com";
     github = "mt-caret";
@@ -9617,6 +9623,12 @@
     github = "zoomulator";
     githubId = 1069303;
     name = "Kim Simmons";
+  };
+  zopieux = {
+    email = "zopieux@gmail.com";
+    github = "zopieux";
+    githubId = 81353;
+    name = "Alexandre Macabies";
   };
   zowoq = {
     email = "59103226+zowoq@users.noreply.github.com";
