@@ -5904,6 +5904,8 @@ in
 
   nwdiag = with python3Packages; toPythonApplication nwdiag;
 
+  nxdomain = python3.pkgs.callPackage ../tools/networking/nxdomain { };
+
   nxpmicro-mfgtools = callPackage ../development/tools/misc/nxpmicro-mfgtools { };
 
   nyancat = callPackage ../tools/misc/nyancat { };
@@ -7771,6 +7773,8 @@ in
   vit = callPackage ../applications/misc/vit { };
 
   viu = callPackage ../tools/graphics/viu { };
+
+  vix = callPackage ../tools/misc/vix { };
 
   vnc2flv = callPackage ../tools/video/vnc2flv {};
 
@@ -23482,7 +23486,11 @@ in
 
   libspotify = callPackage ../development/libraries/libspotify (config.libspotify or {});
 
-  sourcetrail = callPackage ../development/tools/sourcetrail { };
+  sourcetrail = libsForQt5.callPackage ../development/tools/sourcetrail {
+    jdk = jdk8;
+    llvmPackages = llvmPackages_10;
+    pythonPackages = python3Packages;
+  };
 
   spotifywm = callPackage ../applications/audio/spotifywm { };
 
