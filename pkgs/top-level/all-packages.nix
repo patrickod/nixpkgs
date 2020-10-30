@@ -144,6 +144,8 @@ in
 
   avro-tools = callPackage ../development/tools/avro-tools { };
 
+  bacnet-stack = callPackage ../tools/networking/bacnet-stack {};
+
   # Zip file format only allows times after year 1980, which makes e.g. Python wheel building fail with:
   # ValueError: ZIP does not support timestamps before 1980
   ensureNewerSourcesForZipFilesHook = ensureNewerSourcesHook { year = "1980"; };
@@ -1326,7 +1328,7 @@ in
 
   aria2 = callPackage ../tools/networking/aria2 {
     inherit (darwin.apple_sdk.frameworks) Security;
-    inherit (pythonPackages) sphinx;
+    inherit (python3Packages) sphinx;
   };
   aria = aria2;
 
@@ -2852,16 +2854,13 @@ in
 
   circus = callPackage ../tools/networking/circus { };
 
-  citrix_workspace = citrix_workspace_20_09_0;
+  citrix_workspace = citrix_workspace_20_10_0;
 
   inherit (callPackage ../applications/networking/remote/citrix-workspace { })
-    citrix_workspace_19_6_0
-    citrix_workspace_19_8_0
-    citrix_workspace_19_10_0
-    citrix_workspace_19_12_0
     citrix_workspace_20_04_0
     citrix_workspace_20_06_0
     citrix_workspace_20_09_0
+    citrix_workspace_20_10_0
   ;
 
   citra = libsForQt5.callPackage ../misc/emulators/citra { };
@@ -6824,7 +6823,7 @@ in
   rkrlv2 = callPackage ../applications/audio/rkrlv2 {};
 
   rmlint = callPackage ../tools/misc/rmlint {
-    inherit (pythonPackages) sphinx;
+    inherit (python3Packages) sphinx;
   };
 
   rng-tools = callPackage ../tools/security/rng-tools { };
@@ -8777,6 +8776,8 @@ in
   flutterPackages =
     recurseIntoAttrs (callPackage ../development/compilers/flutter { });
   flutter = flutterPackages.stable;
+  flutter-beta = flutterPackages.beta;
+  flutter-dev = flutterPackages.dev;
 
   fpc = callPackage ../development/compilers/fpc { };
 
@@ -12071,8 +12072,6 @@ in
   aspellWithDicts = callPackage ../development/libraries/aspell/aspell-with-dicts.nix {
     aspell = aspell.override { searchNixProfiles = false; };
   };
-
-  attica = callPackage ../development/libraries/attica { };
 
   attr = callPackage ../development/libraries/attr { };
 
@@ -18012,6 +18011,10 @@ in
     inherit kernel;
     inherit (kernel) stdenv; # in particular, use the same compiler by default
 
+    # to help determine module compatibility
+    inherit (kernel) isXen isZen isHardened isLibre;
+    inherit (kernel) kernelOlder kernelAtLeast;
+
     # Obsolete aliases (these packages do not depend on the kernel).
     inherit (pkgs) odp-dpdk pktgen; # added 2018-05
 
@@ -18275,6 +18278,7 @@ in
         kernelPatches.hardened.${kernel.meta.branch}
       ];
       modDirVersionArg = kernel.modDirVersion + "-hardened";
+      isHardened = true;
   });
 
   linuxPackages_hardened = recurseIntoAttrs (hardenedLinuxPackagesFor pkgs.linux { });
@@ -21055,7 +21059,7 @@ in
 
   git-quick-stats = callPackage ../development/tools/git-quick-stats {};
 
-  git-review = callPackage ../applications/version-management/git-review { };
+  git-review = python3Packages.callPackage ../applications/version-management/git-review { };
 
   github-cli = gitAndTools.gh;
 
@@ -21706,7 +21710,7 @@ in
     kaddressbook kalzium kapptemplate kapman kate katomic
     kblackbox kblocks kbounce
     kcachegrind kcalc kcharselect kcolorchooser
-    kdenlive kdf kdialog kdiamond
+    kdeconnect-kde kdenlive kdf kdialog kdiamond
     keditbookmarks
     kfind kfloppy
     kget kgpg
@@ -21730,8 +21734,6 @@ in
   okteta = libsForQt5.callPackage ../applications/editors/okteta { };
 
   k4dirstat = libsForQt5.callPackage ../applications/misc/k4dirstat { };
-
-  kdeconnect = libsForQt512.callPackage ../applications/misc/kdeconnect { };
 
   inherit (kdeFrameworks) kdesu;
 
@@ -22936,7 +22938,7 @@ in
 
   plex-mpv-shim = python3Packages.callPackage ../applications/video/plex-mpv-shim { };
 
-  plover = recurseIntoAttrs (libsForQt514.callPackage ../applications/misc/plover { });
+  plover = recurseIntoAttrs (libsForQt5.callPackage ../applications/misc/plover { });
 
   plugin-torture = callPackage ../applications/audio/plugin-torture { };
 
@@ -28273,7 +28275,7 @@ in
   undervolt = callPackage ../os-specific/linux/undervolt { };
 
   alibuild = callPackage ../development/tools/build-managers/alibuild {
-    python = python27;
+    python = python3;
   };
 
   tsung = callPackage ../applications/networking/tsung {};
