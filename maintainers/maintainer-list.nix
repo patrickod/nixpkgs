@@ -6613,6 +6613,12 @@
     githubId = 131844;
     name = "Igor Pashev";
   };
+  pasqui23 = {
+    email = "p3dimaria@hotmail.it";
+    github = "pasqui23";
+    githubId = 6931743;
+    name = "pasqui23";
+  };
   patryk27 = {
     email = "wychowaniec.patryk@gmail.com";
     github = "Patryk27";
@@ -9334,7 +9340,7 @@
     email = "worldofpeace@protonmail.ch";
     github = "worldofpeace";
     githubId = 28888242;
-    name = "worldofpeace";
+    name = "WORLDofPEACE";
   };
   wscott = {
     email = "wsc9tt@gmail.com";
@@ -9891,5 +9897,11 @@
     email = "wilsonehusin@gmail.com";
     github = "wilsonehusin";
     githubId = 14004487;
+  };
+  bb2020 = {
+    email = "bb2020@users.noreply.github.com";
+    github = "bb2020";
+    githubId = 19290397;
+    name = "Tunc Uzlu";
   };
 }

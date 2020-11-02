@@ -41,6 +41,7 @@ mapAliases ({
   ag = silver-searcher; # added 2018-04-25
   aircrackng = aircrack-ng; # added 2016-01-14
   alienfx = throw "alienfx has been removed."; # added 2019-12-08
+  amazon-glacier-cmd-interface = throw "amazon-glacier-cmd-interface has been removed due to it being unmaintained."; # added 2020-10-30
   ammonite-repl = ammonite; # added 2017-05-02
   antimicro = throw "antimicro has been removed as it was broken, see antimicroX instead."; # added 2020-08-06
   arduino_core = arduino-core;  # added 2015-02-04
@@ -527,6 +528,7 @@ mapAliases ({
   skrooge2 = skrooge; # added 2017-02-18
   sky = throw "sky has been removed from nixpkgs (2020-09-16)";
   skype = skypeforlinux; # added 2017-07-27
+  skype_call_recorder = throw "skype_call_recorder has been removed from nixpkgs, because it stopped working when classic Skype was retired."; # added 2020-10-31
   skydive = throw "skydive has been removed from nixpkgs (2019-09-10)";
   slack-dark = slack; # added 2020-03-27
   slic3r-prusa3d = prusa-slicer; # added 2019-05-21
@@ -625,6 +627,7 @@ mapAliases ({
   ubootBeagleboneBlack = ubootAmx335xEVM; # added 2020-01-21
   ucsFonts = ucs-fonts; # added 2016-07-15
   ultrastardx-beta = ultrastardx; # added 2017-08-12
+  unicorn-emu = unicorn; # added 2020-10-29
   usb_modeswitch = usb-modeswitch; # added 2016-05-10
   usbguard-nox = usbguard; # added 2019-09-04
   uzbl = throw "uzbl has been removed from nixpkgs, as it's unmaintained and uses insecure libraries";
@@ -749,5 +752,61 @@ mapAliases ({
   riot-web = throw "riot-web is now element-web";
 
   ant-dracula-theme = throw "ant-dracula-theme is now dracula-theme, and theme name is Dracula instead of Ant-Dracula.";
+
+  /* If these are in the scope of all-packages.nix, they cause collisions
+  between mixed versions of qt. See:
+  https://github.com/NixOS/nixpkgs/pull/101369 */
+
+  inherit (kdeFrameworks) breeze-icons oxygen-icons5;
+  inherit (kdeApplications)
+    akonadi akregator ark
+    bomber bovo
+    dolphin dragon
+    elisa
+    ffmpegthumbs filelight
+    granatier gwenview
+    k3b
+    kaddressbook kalzium kapptemplate kapman kate katomic
+    kblackbox kblocks kbounce
+    kcachegrind kcalc kcharselect kcolorchooser
+    kdenlive kdf kdialog kdiamond
+    keditbookmarks
+    kfind kfloppy
+    kget kgpg
+    khelpcenter
+    kig kigo killbots kitinerary
+    kleopatra klettres klines
+    kmag kmail kmines kmix kmplot
+    knavalbattle knetwalk knights
+    kollision kolourpaint kompare konsole kontact korganizer
+    kpkpass
+    krdc kreversi krfb
+    kshisen ksquares ksystemlog
+    kteatime ktimer ktouch kturtle
+    kwalletmanager kwave
+    marble minuet
+    okular
+    picmi
+    spectacle
+    yakuake
+  ;
+  inherit (plasma5)
+    bluedevil breeze-gtk breeze-qt5 breeze-grub breeze-plymouth discover
+    kactivitymanagerd kde-cli-tools kde-gtk-config kdeplasma-addons kgamma5
+    kinfocenter kmenuedit kscreen kscreenlocker ksshaskpass ksysguard
+    kwallet-pam kwayland-integration kwin kwrited milou oxygen plasma-browser-integration
+    plasma-desktop plasma-integration plasma-nm plasma-pa plasma-vault plasma-workspace
+    plasma-workspace-wallpapers polkit-kde-agent powerdevil sddm-kcm
+    systemsettings user-manager xdg-desktop-portal-kde
+  ;
+  inherit (plasma5.thirdParty)
+    plasma-applet-caffeine-plus
+    kwin-dynamic-workspaces
+    kwin-tiling
+    krohnkite
+  ;
+  inherit (libsForQt5)
+    sddm
+  ;
 
 })
