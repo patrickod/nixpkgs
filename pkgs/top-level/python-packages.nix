@@ -4306,6 +4306,8 @@ in {
   else
     callPackage ../development/python-modules/pandas/2.nix { };
 
+  pandas-datareader = callPackage ../development/python-modules/pandas-datareader { };
+
   pandoc-attributes = callPackage ../development/python-modules/pandoc-attributes { };
 
   pandocfilters = callPackage ../development/python-modules/pandocfilters { };
@@ -4846,7 +4848,7 @@ in {
 
   pybullet = callPackage ../development/python-modules/pybullet { };
 
-  pycairo = callPackage ../development/python-modules/pycairo { inherit (pkgs) meson pkgconfig; };
+  pycairo = callPackage ../development/python-modules/pycairo { inherit (pkgs) meson pkg-config; };
 
   pycallgraph = callPackage ../development/python-modules/pycallgraph { };
 
@@ -6651,10 +6653,6 @@ in {
   smmap = callPackage ../development/python-modules/smmap { };
 
   smpplib = callPackage ../development/python-modules/smpplib { };
-
-  smugline = callPackage ../development/python-modules/smugline { };
-
-  smugpy = callPackage ../development/python-modules/smugpy { };
 
   snack = toPythonModule (pkgs.newt.override { inherit (self) python; });
 

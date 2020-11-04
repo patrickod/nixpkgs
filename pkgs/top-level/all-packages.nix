@@ -1214,6 +1214,8 @@ in
 
   hime = callPackage ../tools/inputmethods/hime {};
 
+  hostctl = callPackage ../tools/system/hostctl { };
+
   hpe-ltfs = callPackage ../tools/backup/hpe-ltfs { };
 
   http2tcp = callPackage ../tools/networking/http2tcp { };
@@ -4494,7 +4496,9 @@ in
 
   halibut = callPackage ../tools/typesetting/halibut { };
 
-  halide = callPackage ../development/compilers/halide { };
+  halide = callPackage ../development/compilers/halide {
+    llvmPackages = llvmPackages_9;
+  };
 
   ham = pkgs.perlPackages.ham;
 
@@ -7183,8 +7187,6 @@ in
 
   smu = callPackage ../tools/text/smu { };
 
-  smugline = python3Packages.smugline;
-
   sn0int = callPackage ../tools/security/sn0int { };
 
   snabb = callPackage ../tools/networking/snabb { } ;
@@ -8452,9 +8454,7 @@ in
   zssh = callPackage ../tools/networking/zssh { };
 
   zstd = callPackage ../tools/compression/zstd {
-    cmake = buildPackages.cmake.override {
-      libarchive = buildPackages.libarchive.override { zstd = null; };
-    };
+    cmake = buildPackages.cmakeMinimal;
   };
 
   zsync = callPackage ../tools/compression/zsync { };
@@ -9397,6 +9397,10 @@ in
     inherit (darwin) libiconv libobjc libresolv;
   }) mx jvmci8 graalvm8;
 
+  inherit (callPackages ../development/compilers/graalvm/community-edition.nix { })
+    graalvm8-ce
+    graalvm11-ce;
+
   inherit (callPackages ../development/compilers/graalvm/enterprise-edition.nix { })
     graalvm8-ee
     graalvm11-ee;
@@ -9782,15 +9786,15 @@ in
     inherit (darwin.apple_sdk.frameworks) CoreFoundation Security;
     llvmPackages = if stdenv.cc.isClang then llvmPackages_5 else llvmPackages_10;
   };
-  rust_1_46 = callPackage ../development/compilers/rust/1_46.nix {
+  rust_1_47 = callPackage ../development/compilers/rust/1_47.nix {
     inherit (darwin.apple_sdk.frameworks) CoreFoundation Security;
-    llvmPackages = if stdenv.cc.isClang then llvmPackages_5 else llvmPackages_10;
+    llvmPackages = if stdenv.cc.isClang then llvmPackages_5 else llvmPackages_11;
   };
-  rust = rust_1_46;
+  rust = rust_1_47;
 
   rustPackages_1_45 = rust_1_45.packages.stable;
-  rustPackages_1_46 = rust_1_46.packages.stable;
-  rustPackages = rustPackages_1_46;
+  rustPackages_1_47 = rust_1_47.packages.stable;
+  rustPackages = rustPackages_1_47;
 
   inherit (rustPackages) cargo clippy rustc rustPlatform;
 
@@ -10863,6 +10867,8 @@ in
 
   buildkite-cli = callPackage ../development/tools/continuous-integration/buildkite-cli { };
 
+  bump = callPackage ../development/tools/github/bump { };
+
   libbpf = callPackage ../os-specific/linux/libbpf { };
 
   bpftool = callPackage ../os-specific/linux/bpftool { };
@@ -10965,6 +10971,10 @@ in
   cmake_2_8 = callPackage ../development/tools/build-managers/cmake/2.8.nix { };
 
   cmake = libsForQt5.callPackage ../development/tools/build-managers/cmake { };
+
+  cmakeMinimal = libsForQt5.callPackage ../development/tools/build-managers/cmake {
+    isBootstrap = true;
+  };
 
   cmakeCurses = cmake.override { useNcurses = true; };
 
@@ -18424,7 +18434,7 @@ in
     # udev is the same package as systemd which depends on cryptsetup
     # which depends on lvm2 again.  But we only need the libudev part
     # which does not depend on cryptsetup.
-    udev = udev.override { cryptsetup = null; };
+    udev = systemdMinimal;
   };
   lvm2_dmeventd = callPackage ../os-specific/linux/lvm2 {
     enableDmeventd = true;
@@ -18691,6 +18701,8 @@ in
 
   roccat-tools = callPackage ../os-specific/linux/roccat-tools { };
 
+  rtsp-simple-server = callPackage ../servers/rtsp-simple-server { };
+
   rtkit = callPackage ../os-specific/linux/rtkit { };
 
   rt5677-firmware = callPackage ../os-specific/linux/firmware/rt5677 { };
@@ -18775,8 +18787,23 @@ in
       bzip2 = null;
     };
   };
+  systemdMinimal = systemd.override {
+    pname = "systemd-minimal";
+    withResolved = false;
+    withLogind = false;
+    withHostnamed = false;
+    withLocaled = false;
+    withTimedated = false;
+    withHwdb = false;
+    withEfi = false;
+    withImportd = false;
+    withCryptsetup = false;
+    cryptsetup = null;
+    lvm2 = null;
+  };
 
-  udev = systemd; # TODO: move to aliases.nix
+
+  udev = systemd; # TODO: change to systemdMinimal
 
   systemd-wait = callPackage ../os-specific/linux/systemd-wait { };
 
@@ -19166,6 +19193,8 @@ in
   font-awesome_4 = (callPackage ../data/fonts/font-awesome-5 { }).v4;
   font-awesome_5 = (callPackage ../data/fonts/font-awesome-5 { }).v5;
   font-awesome = font-awesome_5;
+
+  fraunces = callPackage ../data/fonts/fraunces { };
 
   freefont_ttf = callPackage ../data/fonts/freefont-ttf { };
 
@@ -19950,6 +19979,8 @@ in
   cheesecutter = callPackage ../applications/audio/cheesecutter { };
 
   milkytracker = callPackage ../applications/audio/milkytracker { };
+
+  ptcollab = libsForQt5.callPackage ../applications/audio/ptcollab { };
 
   schismtracker = callPackage ../applications/audio/schismtracker { };
 
@@ -23720,6 +23751,8 @@ in
 
   teleprompter = callPackage ../applications/misc/teleprompter {};
 
+  tempo = callPackage ../servers/tracing/tempo {};
+
   tendermint = callPackage ../tools/networking/tendermint { };
 
   termdown = python3Packages.callPackage ../applications/misc/termdown { };
@@ -24767,12 +24800,6 @@ in
 
   bitcoin-gold = libsForQt514.callPackage ../applications/blockchains/bitcoin-gold.nix { boost = boost165; withGui = true; };
   bitcoind-gold = callPackage ../applications/blockchains/bitcoin-gold.nix { boost = boost165; withGui = false; };
-
-  btc1 = callPackage ../applications/blockchains/btc1.nix {
-    inherit (darwin.apple_sdk.frameworks) AppKit;
-    boost = boost165;
-  };
-  btc1d = btc1.override { withGui = false; };
 
   btcpayserver = callPackage ../applications/blockchains/btcpayserver { };
 
