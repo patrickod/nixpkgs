@@ -514,6 +514,12 @@
     githubId = 69135;
     name = "Andrea Bedini";
   };
+  andreasfelix = {
+    email = "fandreas@physik.hu-berlin.de";
+    github = "andreasfelix";
+    githubId = 24651767;
+    name = "Felix Andreas";
+  };
   andres = {
     email = "ksnixos@andres-loeh.de";
     github = "kosmikus";
@@ -1265,6 +1271,12 @@
     github = "bugworm";
     githubId = 7214361;
     name = "Roman Gerasimenko";
+  };
+  bburdette = {
+    email = "bburdette@protonmail.com";
+    github = "bburdette";
+    githubId = 157330;
+    name = "Ben Burdette";
   };
   bzizou = {
     email = "Bruno@bzizou.net";
@@ -2827,6 +2839,12 @@
       fingerprint = "50B7 11F4 3DFD 2018 DCE6  E8D0 8A52 A140 BEBF 7D2C";
     }];
   };
+  fabianhjr = {
+    email = "fabianhjr@protonmail.com";
+    github = "fabianhjr";
+    githubId = 303897;
+    name = "Fabián Heredia Montiel";
+  };
   fadenb = {
     email = "tristan.helmich+nixos@gmail.com";
     github = "fadenb";
@@ -3486,6 +3504,12 @@
   hinton = {
     email = "t@larkery.com";
     name = "Tom Hinton";
+  };
+  hjones2199 = {
+    email = "hjones2199@gmail.com";
+    github = "hjones2199";
+    githubId = 5525217;
+    name = "Hunter Jones";
   };
   hkjn = {
     email = "me@hkjn.me";
