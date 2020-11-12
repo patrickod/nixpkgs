@@ -3883,6 +3883,8 @@
   };
   jcumming = {
     email = "jack@mudshark.org";
+    github = "jcumming";
+    githubId = 1982341;
     name = "Jack Cummings";
   };
   jD91mZM2 = {
@@ -9975,5 +9977,11 @@
     github = "bb2020";
     githubId = 19290397;
     name = "Tunc Uzlu";
+  };
+  pulsation = {
+    name = "Philippe Sam-Long";
+    email = "1838397+pulsation@users.noreply.github.com";
+    github = "pulsation";
+    githubId = 1838397;
   };
 }

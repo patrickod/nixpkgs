@@ -8582,6 +8582,8 @@ in
 
   ### DEVELOPMENT / COMPILERS
 
+  _4th = callPackage ../development/compilers/4th { };
+
   abcl = callPackage ../development/compilers/abcl {
     jre = jre8; # TODO: remove override https://github.com/NixOS/nixpkgs/pull/89731
     jdk = jdk8; # TODO: remove override https://github.com/NixOS/nixpkgs/pull/89731
@@ -11958,7 +11960,9 @@ in
 
   travis = callPackage ../development/tools/misc/travis { };
 
-  tree-sitter = callPackage ../development/tools/parsing/tree-sitter { };
+  tree-sitter = callPackage ../development/tools/parsing/tree-sitter {
+    inherit (darwin.apple_sdk.frameworks) Security;
+  };
 
   trellis = callPackage ../development/tools/trellis { };
 
@@ -17042,6 +17046,12 @@ in
   system-sendmail = lowPrio (callPackage ../servers/mail/system-sendmail { });
 
   # PulseAudio daemons
+
+  hsphfpd = callPackage ../servers/pulseaudio/hsphfpd.nix { };
+
+  pulseaudio-hsphfpd = callPackage ../servers/pulseaudio/pali.nix {
+    inherit (darwin.apple_sdk.frameworks) CoreServices AudioUnit Cocoa;
+  };
 
   pulseaudio = callPackage ../servers/pulseaudio {
     inherit (darwin.apple_sdk.frameworks) CoreServices AudioUnit Cocoa;
@@ -23297,6 +23307,8 @@ in
 
   quilter = callPackage ../applications/editors/quilter { };
 
+  quisk = python38Packages.callPackage ../applications/radio/quisk { };
+
   quiterss = libsForQt514.callPackage ../applications/networking/newsreaders/quiterss {};
 
   falkon = libsForQt514.callPackage ../applications/networking/browsers/falkon { };
@@ -24989,6 +25001,8 @@ in
   sumokoin = callPackage ../applications/blockchains/sumokoin.nix { boost = boost165; };
 
   tessera = callPackage ../applications/blockchains/tessera.nix { };
+
+  turbo-geth = callPackage ../applications/blockchains/turbo-geth.nix { };
 
   vertcoin  = libsForQt514.callPackage ../applications/blockchains/vertcoin.nix { boost = boost165; withGui = true; };
   vertcoind = callPackage ../applications/blockchains/vertcoin.nix { boost = boost165; withGui = false; };
