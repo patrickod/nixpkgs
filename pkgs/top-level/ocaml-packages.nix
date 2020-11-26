@@ -531,7 +531,11 @@ let
 
     metrics = callPackage ../development/ocaml-modules/metrics { };
 
+    metrics-influx = callPackage ../development/ocaml-modules/metrics/influx.nix { };
+
     metrics-lwt = callPackage ../development/ocaml-modules/metrics/lwt.nix { };
+
+    metrics-mirage = callPackage ../development/ocaml-modules/metrics/mirage.nix { };
 
     metrics-unix = callPackage ../development/ocaml-modules/metrics/unix.nix {
       inherit (pkgs) gnuplot;
@@ -1252,6 +1256,8 @@ in let inherit (pkgs) callPackage; in rec
   ocamlPackages_4_10 = mkOcamlPackages (callPackage ../development/compilers/ocaml/4.10.nix { });
 
   ocamlPackages_4_11 = mkOcamlPackages (callPackage ../development/compilers/ocaml/4.11.nix { });
+
+  ocamlPackages_4_12 = mkOcamlPackages (callPackage ../development/compilers/ocaml/4.12.nix { });
 
   ocamlPackages_latest = ocamlPackages_4_11;
 

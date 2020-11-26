@@ -3193,12 +3193,6 @@
     githubId = 313929;
     name = "Gabriel Ebner";
   };
-  genesis = {
-    email = "ronan@aimao.org";
-    github = "bignaux";
-    githubId = 149484;
-    name = "Ronan Bignaux";
-  };
   georgewhewell = {
     email = "georgerw@gmail.com";
     github = "georgewhewell";
@@ -4807,12 +4801,6 @@
       fingerprint = "5A9A 1C9B 2369 8049 3B48  CF5B 81A1 5409 4816 2372";
     }];
   };
-  kylewlacy = {
-    email = "kylelacy+nix@pm.me";
-    github = "kylewlacy";
-    githubId = 1362179;
-    name = "Kyle Lacy";
-  };
   laikq = {
     email = "gwen@quasebarth.de";
     github = "laikq";
@@ -5502,6 +5490,12 @@
     githubId = 1191859;
     name = "Maxim Krivchikov";
   };
+  mazurel = {
+    email = "mateusz.mazur@yahoo.com";
+    github = "Mazurel";
+    githubId = 22836301;
+    name = "Mateusz Mazur";
+  };
   mbakke = {
     email = "mbakke@fastmail.com";
     github = "mbakke";
@@ -6159,10 +6153,10 @@
     githubId = 6455574;
     name = "Matt Votava";
   };
-  mwilsoninsight = {
-    email = "max.wilson@insight.com";
-    github = "mwilsoninsight";
-    githubId = 47782621;
+  maxwilson = {
+    email = "nixpkgs@maxwilson.dev";
+    github = "mwilsoncoding";
+    githubId = 43796009;
     name = "Max Wilson";
   };
   myrl = {
@@ -10009,5 +10003,11 @@
     email = "1838397+pulsation@users.noreply.github.com";
     github = "pulsation";
     githubId = 1838397;
+  };
+  zupo = {
+    name = "Nejc Zupan";
+    email = "nejczupan+nix@gmail.com";
+    github = "zupo";
+    githubId = 311580;
   };
 }
