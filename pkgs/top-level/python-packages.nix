@@ -1227,6 +1227,8 @@ in {
 
   clint = callPackage ../development/python-modules/clint { };
 
+  clintermission = callPackage ../development/python-modules/clintermission { };
+
   clize = callPackage ../development/python-modules/clize { };
 
   clldutils = callPackage ../development/python-modules/clldutils { };
@@ -1252,6 +1254,8 @@ in {
   cntk = callPackage ../development/python-modules/cntk { };
 
   cnvkit = callPackage ../development/python-modules/cnvkit { };
+
+  coapthon3 = callPackage ../development/python-modules/coapthon3 { };
 
   coconut = callPackage ../development/python-modules/coconut { };
 
@@ -2909,6 +2913,8 @@ in {
   image-match = callPackage ../development/python-modules/image-match { };
 
   imagesize = callPackage ../development/python-modules/imagesize { };
+
+  imantics = callPackage ../development/python-modules/imantics { };
 
   IMAPClient = callPackage ../development/python-modules/imapclient { };
 
@@ -4698,6 +4704,8 @@ in {
   pprintpp = callPackage ../development/python-modules/pprintpp { };
 
   pproxy = callPackage ../development/python-modules/pproxy { };
+
+  ppscore = callPackage ../development/python-modules/ppscore { };
 
   pq = callPackage ../development/python-modules/pq { };
 

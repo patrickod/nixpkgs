@@ -3134,6 +3134,23 @@ let
      };
   };
 
+  CommandRunner = buildPerlModule {
+    pname = "Command-Runner";
+    version = "0.103";
+    src = fetchurl {
+      url = "mirror://cpan/authors/id/S/SK/SKAJI/Command-Runner-0.103.tar.gz";
+      sha256 = "0f180b5c3b3fc9db7b83d4a5fdd959db34f7d6d2472f817dbf8b4b795a9dc82a";
+    };
+    buildInputs = [ ModuleBuildTiny ];
+    propagatedBuildInputs = [ CaptureTiny StringShellQuote Win32ShellQuote ];
+    meta = {
+      homepage = "https://github.com/skaji/Command-Runner";
+      description = "Run external commands and Perl code refs";
+      license = with stdenv.lib.licenses; [ artistic1 gpl1Plus ];
+      maintainers = [ maintainers.zakame ];
+    };
+  };
+
   commonsense = buildPerlPackage {
     pname = "common-sense";
     version = "3.75";
@@ -15704,6 +15721,22 @@ let
       license = with stdenv.lib.licenses; [ artistic1 gpl1Plus ];
     };
     propagatedBuildInputs = [ Moo ];
+  };
+
+  ParallelPipes = buildPerlModule {
+    pname = "Parallel-Pipes";
+    version = "0.005";
+    src = fetchurl {
+      url = "mirror://cpan/authors/id/S/SK/SKAJI/Parallel-Pipes-0.005.tar.gz";
+      sha256 = "44bd9e2be33d7b314f81c9b886a95d53514689090635f9fad53181f2d3051fd5";
+    };
+    buildInputs = [ ModuleBuildTiny ];
+    meta = {
+      homepage = "https://github.com/skaji/Parallel-Pipes";
+      description = "Parallel processing using pipe(2) for communication and synchronization";
+      license = with stdenv.lib.licenses; [ artistic1 gpl1Plus ];
+      maintainers = [ maintainers.zakame ];
+    };
   };
 
   ParallelPrefork = buildPerlPackage {

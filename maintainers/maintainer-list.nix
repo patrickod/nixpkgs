@@ -1152,9 +1152,9 @@
     githubId = 50839;
     name = "Brian Jones";
   };
-  boothead = {
+  commandodev = {
     email = "ben@perurbis.com";
-    github = "boothead";
+    github = "commandodev";
     githubId = 87764;
     name = "Ben Ford";
   };
@@ -6129,6 +6129,12 @@
     githubId = 5139265;
     name = "James Wood";
   };
+  mudrii = {
+    email = "mudreac@gmail.com";
+    github = "mudrii";
+    githubId = 220262;
+    name = "Ion Mudreac";
+  };
   muflax = {
     email = "mail@muflax.com";
     github = "muflax";
@@ -9034,6 +9040,12 @@
     github = "uralbash";
     githubId = 619015;
     name = "Svintsov Dmitry";
+  };
+  urbas = {
+    email = "matej.urbas@gmail.com";
+    github = "urbas";
+    githubId = 771193;
+    name = "Matej Urbas";
   };
   uri-canva = {
     email = "uri@canva.com";

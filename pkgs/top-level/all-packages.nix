@@ -2494,6 +2494,8 @@ in
 
   pev = callPackage ../development/tools/analysis/pev { };
 
+  phd2 = callPackage ../applications/science/astronomy/phd2 { };
+
   phoronix-test-suite = callPackage ../tools/misc/phoronix-test-suite { };
 
   photon = callPackage ../tools/networking/photon { };
@@ -3696,6 +3698,8 @@ in
   ensemble-chorus = callPackage ../applications/audio/ensemble-chorus { stdenv = gcc8Stdenv; };
 
   entr = callPackage ../tools/misc/entr { };
+
+  envchain = callPackage ../tools/misc/envchain { inherit (pkgs.darwin.apple_sdk.frameworks) Security; };
 
   eot_utilities = callPackage ../tools/misc/eot-utilities { };
 
@@ -7135,6 +7139,8 @@ in
 
   sewer = callPackage ../tools/admin/sewer { };
 
+  sftpman = callPackage ../tools/filesystems/sftpman { };
+
   screenfetch = callPackage ../tools/misc/screenfetch { };
 
   sg3_utils = callPackage ../tools/system/sg3_utils { };
@@ -8883,6 +8889,8 @@ in
   };
   fasm-bin = callPackage ../development/compilers/fasm/bin.nix { };
 
+  fasmg = callPackage ../development/compilers/fasmg { };
+
   flyctl = callPackage ../development/web/flyctl { };
 
   flutterPackages =
@@ -9584,6 +9592,10 @@ in
   julia = julia_15;
 
   jwasm =  callPackage ../development/compilers/jwasm { };
+
+  knightos-genkfs = callPackage ../development/tools/knightos/genkfs {
+    asciidoc = asciidoc-full;
+  };
 
   knightos-kcc = callPackage ../development/tools/knightos/kcc { };
 
@@ -14944,8 +14956,6 @@ in
 
   non = callPackage ../applications/audio/non { };
 
-  noise-suppression-for-voice = callPackage ../development/libraries/noise-suppression-for-voice { };
-
   ntl = callPackage ../development/libraries/ntl { };
 
   nspr = callPackage ../development/libraries/nspr {
@@ -17298,7 +17308,7 @@ in
 
   checkSSLCert = callPackage ../servers/monitoring/nagios/plugins/check_ssl_cert.nix { };
 
-  pynagsystemd = callPackage ../servers/monitoring/nagios/plugins/pynagsystemd.nix { };
+  check_systemd = callPackage ../servers/monitoring/nagios/plugins/check_systemd.nix { };
 
   neo4j = callPackage ../servers/nosql/neo4j { };
 
@@ -23074,6 +23084,8 @@ in
 
   pbrt = callPackage ../applications/graphics/pbrt { };
 
+  pcloud = callPackage ../applications/networking/pcloud { };
+
   pcsxr = callPackage ../misc/emulators/pcsxr {
     ffmpeg = ffmpeg_2;
   };
@@ -23256,7 +23268,7 @@ in
 
   properties-cpp = callPackage ../development/libraries/properties-cpp { };
 
-  protonmail-bridge = libsForQt5.callPackage ../applications/networking/protonmail-bridge { };
+  protonmail-bridge = callPackage ../applications/networking/protonmail-bridge { };
 
   protonvpn-cli = callPackage ../applications/networking/protonvpn-cli { };
 
@@ -24846,6 +24858,8 @@ in
   xkb-switch = callPackage ../tools/X11/xkb-switch { };
 
   xkblayout-state = callPackage ../applications/misc/xkblayout-state { };
+
+  xlife = callPackage ../applications/graphics/xlife { };
 
   xmobar = haskellPackages.xmobar;
 
