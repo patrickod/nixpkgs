@@ -1755,6 +1755,12 @@
     githubId = 1740337;
     name = "Chris Ostrouchov";
   };
+  confus = {
+    email = "con-f-use@gmx.net";
+    github = "con-f-use";
+    githubId = 11145016;
+    name = "J.C.";
+  };
   contrun = {
     email = "uuuuuu@protonmail.com";
     github = "contrun";
@@ -2894,6 +2900,12 @@
     github = "fdns";
     githubId = 541748;
     name = "Felipe Espinoza";
+  };
+  fehnomenal = {
+    email = "fehnomenal@fehn.systems";
+    github = "fehnomenal";
+    githubId = 9959940;
+    name = "Andreas Fehn";
   };
   felschr = {
     email = "dev@felschr.com";
@@ -4136,6 +4148,12 @@
     github = "jobojeha";
     githubId = 60272884;
     name = "Jonathan Jeppener-Haltenhoff";
+  };
+  joelancaster = {
+    email = "joe.a.lancas@gmail.com";
+    github = "joelancaster";
+    githubId = 16760945;
+    name = "Joe Lancaster";
   };
   joelburget = {
     email = "joelburget@gmail.com";
@@ -5503,7 +5521,7 @@
     name = "Marius Bakke";
   };
   mbaillie = {
-    email = "martin@baillie.email";
+    email = "martin@baillie.id";
     github = "martinbaillie";
     githubId = 613740;
     name = "Martin Baillie";
@@ -6959,6 +6977,18 @@
     githubId = 138074;
     name = "Pedro Pombeiro";
   };
+  poscat = {
+    email = "poscat@mail.poscat.moe";
+    github = "poscat0x04";
+    githubId = 53291983;
+    name = "Poscat Tarski";
+    keys = [
+      {
+        longkeyid = "rsa4096/2D2595A00D08ACE0";
+        fingerprint = "48AD DE10 F27B AFB4 7BB0  CCAF 2D25 95A0 0D08 ACE0";
+      }
+    ];
+  };
   pradeepchhetri = {
     email = "pradeep.chhetri89@gmail.com";
     github = "pradeepchhetri";
@@ -6974,6 +7004,12 @@
       longkeyid = "rsa4096/4F74D5361C4CA31E";
       fingerprint = "240B 57DE 4271 2480 7CE3  EAC8 4F74 D536 1C4C A31E";
     }];
+  };
+  preisschild = {
+    email = "florian@florianstroeger.com";
+    github = "Preisschild";
+    githubId = 11898437;
+    name = "Florian Ströger";
   };
   priegger = {
     email = "philipp@riegger.name";

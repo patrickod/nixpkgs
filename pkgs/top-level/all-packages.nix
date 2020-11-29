@@ -210,7 +210,7 @@ in
 
   hobbes = callPackage ../development/tools/hobbes { };
 
-  html5validator = python36Packages.callPackage ../applications/misc/html5validator { };
+  html5validator = python3Packages.callPackage ../applications/misc/html5validator { };
 
   proto-contrib = callPackage ../development/tools/proto-contrib {};
 
@@ -239,6 +239,8 @@ in
   archiver = callPackage ../applications/misc/archiver { };
 
   digitalbitbox = libsForQt514.callPackage ../applications/misc/digitalbitbox { };
+
+  gretl = callPackage ../applications/science/math/gretl { };
 
   grsync = callPackage ../applications/misc/grsync { };
 
@@ -460,6 +462,8 @@ in
   libredirect = callPackage ../build-support/libredirect { };
 
   madonctl = callPackage ../applications/misc/madonctl { };
+
+  copyDesktopItems = makeSetupHook { } ../build-support/setup-hooks/copy-desktop-items.sh;
 
   makeDesktopItem = callPackage ../build-support/make-desktopitem { };
 
@@ -938,13 +942,13 @@ in
 
   aws-rotate-key = callPackage ../tools/admin/aws-rotate-key { };
 
-  aws-sam-cli = callPackage ../development/tools/aws-sam-cli { python = python3; };
+  aws-sam-cli = callPackage ../development/tools/aws-sam-cli { };
 
   aws-vault = callPackage ../tools/admin/aws-vault { };
 
   iamy = callPackage ../tools/admin/iamy { };
 
-  azure-cli = callPackage ../tools/admin/azure-cli { python = python37; };
+  azure-cli = callPackage ../tools/admin/azure-cli { };
 
   azure-storage-azcopy = callPackage ../development/tools/azcopy { };
 
@@ -2508,7 +2512,7 @@ in
 
   psstop = callPackage ../tools/system/psstop { };
 
-  precice = callPackage ../development/libraries/precice { python3 = python37; };
+  precice = callPackage ../development/libraries/precice { };
 
   pueue = callPackage ../applications/misc/pueue { };
 
@@ -3430,7 +3434,7 @@ in
 
   dropbear = callPackage ../tools/networking/dropbear { };
 
-  dsview = libsForQt514.callPackage ../applications/science/electronics/dsview { };
+  dsview = libsForQt5.callPackage ../applications/science/electronics/dsview { };
 
   dtach = callPackage ../tools/misc/dtach { };
 
@@ -3740,6 +3744,8 @@ in
   executor = with python3Packages; toPythonApplication executor;
 
   exif = callPackage ../tools/graphics/exif { };
+
+  exifprobe = callPackage ../tools/graphics/exifprobe { };
 
   exiftags = callPackage ../tools/graphics/exiftags { };
 
@@ -4064,7 +4070,7 @@ in
 
   galen = callPackage ../development/tools/galen {};
 
-  gallery-dl = callPackage ../applications/misc/gallery-dl { };
+  gallery-dl = python3Packages.callPackage ../applications/misc/gallery-dl { };
 
   gandi-cli = callPackage ../tools/networking/gandi-cli { };
 
@@ -4318,6 +4324,8 @@ in
   gdown = with python3Packages; toPythonApplication gdown;
 
   gopro = callPackage ../tools/video/gopro { };
+
+  goreleaser = callPackage ../tools/misc/goreleaser { };
 
   goreplay = callPackage ../tools/networking/goreplay { };
 
@@ -4612,7 +4620,7 @@ in
 
   hecate = callPackage ../applications/editors/hecate { };
 
-  heaptrack = libsForQt514.callPackage ../development/tools/profiling/heaptrack {};
+  heaptrack = libsForQt5.callPackage ../development/tools/profiling/heaptrack {};
 
   heimdall = libsForQt5.callPackage ../tools/misc/heimdall { };
 
@@ -4740,6 +4748,8 @@ in
           })
       irods
       irods-icommands;
+
+  igmpproxy = callPackage ../tools/networking/igmpproxy { };
 
   ihaskell = callPackage ../development/tools/haskell/ihaskell/wrapper.nix {
     inherit (haskellPackages) ghcWithPackages;
@@ -5047,7 +5057,7 @@ in
 
   krakenx = callPackage ../tools/system/krakenx { };
 
-  partition-manager = libsForQt514.callPackage ../tools/misc/partition-manager { };
+  partition-manager = libsForQt5.callPackage ../tools/misc/partition-manager { };
 
   kpcli = callPackage ../tools/security/kpcli { };
 
@@ -5249,6 +5259,8 @@ in
   };
 
   nbench = callPackage ../tools/misc/nbench { };
+
+  ncrack = callPackage ../tools/security/ncrack { };
 
   netdata = callPackage ../tools/system/netdata {
     inherit (darwin.apple_sdk.frameworks) CoreFoundation IOKit;
@@ -6527,7 +6539,7 @@ in
 
   tab = callPackage ../tools/text/tab { };
 
-  tautulli = callPackage ../servers/tautulli { python = python2; };
+  tautulli = python3Packages.callPackage ../servers/tautulli { };
 
   ploticus = callPackage ../tools/graphics/ploticus {
     libpng = libpng12;
@@ -7900,6 +7912,8 @@ in
   usbmuxd = callPackage ../tools/misc/usbmuxd {};
 
   usync = callPackage ../applications/misc/usync { };
+
+  uwc = callPackage ../tools/text/uwc { };
 
   uwsgi = callPackage ../servers/uwsgi { };
 
@@ -9792,8 +9806,11 @@ in
 
   mozart2-binary = callPackage ../development/compilers/mozart/binary.nix { };
 
+  muon = callPackage ../development/compilers/muon { };
+
   nim = callPackage ../development/compilers/nim { };
   nim-unwrapped = nim.unwrapped;
+  nimble-unwrapped = nim.nimble-unwrapped;
 
   nrpl = callPackage ../development/tools/nrpl { };
 
@@ -13498,6 +13515,8 @@ in
 
   jsonnet = callPackage ../development/compilers/jsonnet { };
 
+  jsonnet-bundler = callPackage ../development/tools/jsonnet-bundler { };
+
   go-jsonnet = callPackage ../development/compilers/go-jsonnet { };
 
   jsonrpc-glib = callPackage ../development/libraries/jsonrpc-glib { };
@@ -15578,6 +15597,8 @@ in
 
   quicksynergy = callPackage ../applications/misc/quicksynergy { };
 
+  qv2ray = libsForQt5.callPackage ../applications/networking/qv2ray {};
+
   qwt = callPackage ../development/libraries/qwt {};
 
   qwt6_qt4 = callPackage ../development/libraries/qwt/6_qt4.nix {
@@ -15830,6 +15851,8 @@ in
   };
 
   snappy = callPackage ../development/libraries/snappy { };
+
+  snow = callPackage ../tools/security/snow { };
 
   soapyairspy = callPackage ../applications/radio/soapyairspy { };
 
@@ -18266,6 +18289,10 @@ in
 
     acpi_call = callPackage ../os-specific/linux/acpi-call {};
 
+    akvcam = callPackage ../os-specific/linux/akvcam {
+      inherit (qt5) qmake;
+    };
+
     amdgpu-pro = callPackage ../os-specific/linux/amdgpu-pro { };
 
     anbox = callPackage ../os-specific/linux/anbox/kmod.nix { };
@@ -18885,8 +18912,6 @@ in
   # Building with `xen` instead of `xen-slim` is possible, but makes no sense.
   qemu_xen = lowPrio (qemu.override { hostCpuOnly = true; xenSupport = true; xen = xen-slim; });
   qemu_xen-light = lowPrio (qemu.override { hostCpuOnly = true; xenSupport = true; xen = xen-light; });
-  qemu_xen_4_8 = lowPrio (qemu.override { hostCpuOnly = true; xenSupport = true; xen = xen_4_8-slim; });
-  qemu_xen_4_8-light = lowPrio (qemu.override { hostCpuOnly = true; xenSupport = true; xen = xen_4_8-light; });
   qemu_xen_4_10 = lowPrio (qemu.override { hostCpuOnly = true; xenSupport = true; xen = xen_4_10-slim; });
   qemu_xen_4_10-light = lowPrio (qemu.override { hostCpuOnly = true; xenSupport = true; xen = xen_4_10-light; });
 
@@ -19113,6 +19138,8 @@ in
   udisks = udisks2;
 
   udisks_glue = callPackage ../os-specific/linux/udisks-glue { };
+
+  ugtrain = callPackage ../tools/misc/ugtrain { };
 
   untie = callPackage ../os-specific/linux/untie { };
 
@@ -20354,6 +20381,8 @@ in
 
   blugon = callPackage ../applications/misc/blugon { };
 
+  bombadillo = callPackage ../applications/networking/browsers/bombadillo { };
+
   bombono = callPackage ../applications/video/bombono {};
 
   bomi = libsForQt5.callPackage ../applications/video/bomi {
@@ -20733,9 +20762,11 @@ in
     buildServerGui = false;
   };
 
-  droopy = python37Packages.callPackage ../applications/networking/droopy { };
+  droopy = python3Packages.callPackage ../applications/networking/droopy { };
 
   drumgizmo = callPackage ../applications/audio/drumgizmo { };
+
+  dsf2flac = callPackage ../applications/audio/dsf2flac { };
 
   dunst = callPackage ../applications/misc/dunst { };
 
@@ -21405,8 +21436,8 @@ in
 
   m32edit = callPackage ../applications/audio/midas/m32edit.nix {};
 
-  manim = python37Packages.callPackage ../applications/video/manim {
-    opencv = python37Packages.opencv3;
+  manim = python3Packages.callPackage ../applications/video/manim {
+    opencv = python3Packages.opencv3;
   };
 
   manuskript = libsForQt5.callPackage ../applications/editors/manuskript { };
@@ -21800,6 +21831,7 @@ in
   ike = callPackage ../applications/networking/ike { };
 
   ikiwiki = callPackage ../applications/misc/ikiwiki {
+    python = python3;
     inherit (perlPackages.override { pkgs = pkgs // { imagemagick = imagemagickBig;}; }) PerlMagick;
   };
 
@@ -22273,7 +22305,7 @@ in
 
   loxodo = callPackage ../applications/misc/loxodo { };
 
-  lsd2dsl = libsForQt514.callPackage ../applications/misc/lsd2dsl { };
+  lsd2dsl = libsForQt5.callPackage ../applications/misc/lsd2dsl { };
 
   lrzsz = callPackage ../tools/misc/lrzsz { };
 
@@ -22379,6 +22411,8 @@ in
   matrix-recorder = callPackage ../applications/networking/instant-messengers/matrix-recorder {};
 
   mblaze = callPackage ../applications/networking/mailreaders/mblaze { };
+
+  mcomix3 = callPackage ../applications/graphics/mcomix3 {};
 
   mcpp = callPackage ../development/compilers/mcpp { };
 
@@ -22772,9 +22806,7 @@ in
 
   scudcloud = callPackage ../applications/networking/instant-messengers/scudcloud { };
 
-  shotcut = libsForQt514.callPackage ../applications/video/shotcut {
-    libmlt = mlt;
-  };
+  shotcut = libsForQt5.callPackage ../applications/video/shotcut { };
 
   shogun = callPackage ../applications/science/machine-learning/shogun {
     stdenv = gcc8Stdenv;
@@ -23352,7 +23384,7 @@ in
 
   garmindev = callPackage ../applications/misc/qlandkartegt/garmindev.nix {};
 
-  qmapshack = libsForQt514.callPackage ../applications/misc/qmapshack { };
+  qmapshack = libsForQt5.callPackage ../applications/gis/qmapshack { };
 
   qmediathekview = libsForQt5.callPackage ../applications/video/qmediathekview {
     boost = boost17x;
@@ -23916,8 +23948,7 @@ in
 
   symlinks = callPackage ../tools/system/symlinks { };
 
-  # this can be changed to python3 once pyside2 is updated to support the latest python version
-  syncplay = python37.pkgs.callPackage ../applications/networking/syncplay { };
+  syncplay = python3.pkgs.callPackage ../applications/networking/syncplay { };
 
   inherit (callPackages ../applications/networking/syncthing { })
     syncthing
@@ -24066,6 +24097,8 @@ in
   thunderbird-bin-68 = callPackage ../applications/networking/mailreaders/thunderbird-bin/68.nix { };
 
   ticpp = callPackage ../development/libraries/ticpp { };
+
+  tickrs = callPackage ../applications/misc/tickrs { };
 
   tig = gitAndTools.tig;
 
@@ -24796,9 +24829,6 @@ in
   xen-slim = xenPackages.xen-slim;
   xen-light = xenPackages.xen-light;
 
-  xen_4_8 = xenPackages.xen_4_8-vanilla;
-  xen_4_8-slim = xenPackages.xen_4_8-slim;
-  xen_4_8-light = xenPackages.xen_4_8-light;
   xen_4_10 = xenPackages.xen_4_10-vanilla;
   xen_4_10-slim = xenPackages.xen_4_10-slim;
   xen_4_10-light = xenPackages.xen_4_10-light;
@@ -25012,7 +25042,7 @@ in
     inherit (darwin.apple_sdk.frameworks) CoreServices;
   };
 
-  zombietrackergps = libsForQt514.callPackage ../applications/gis/zombietrackergps { };
+  zombietrackergps = libsForQt5.callPackage ../applications/gis/zombietrackergps { };
 
   zoom-us = libsForQt5.callPackage ../applications/networking/instant-messengers/zoom-us { };
 
@@ -27705,6 +27735,8 @@ in
 
   nixdoc = callPackage ../tools/nix/nixdoc {};
 
+  dnadd = callPackage ../tools/nix/dnadd { };
+
   nix-doc = callPackage ../tools/package-management/nix-doc { };
 
   nix-bundle = callPackage ../tools/package-management/nix-bundle { };
@@ -27791,7 +27823,9 @@ in
 
   disnix = callPackage ../tools/package-management/disnix { };
 
-  dysnomia = callPackage ../tools/package-management/disnix/dysnomia (config.disnix or {});
+  dysnomia = callPackage ../tools/package-management/disnix/dysnomia (config.disnix or {
+    inherit (pythonPackages) supervisor;
+  });
 
   dydisnix = callPackage ../tools/package-management/disnix/dydisnix { };
 
@@ -28664,4 +28698,5 @@ in
 
   psftools = callPackage ../os-specific/linux/psftools {};
 
+  lc3tools = callPackage ../development/tools/lc3tools {};
 }
