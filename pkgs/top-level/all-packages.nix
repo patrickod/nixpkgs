@@ -701,6 +701,8 @@ in
     inherit (darwin.apple_sdk.frameworks) Carbon Cocoa Kernel;
   };
 
+  archi = callPackage ../tools/misc/archi { };
+
   cool-retro-term = libsForQt5.callPackage ../applications/terminal-emulators/cool-retro-term { };
 
   eterm = callPackage ../applications/terminal-emulators/eterm { };
@@ -852,6 +854,8 @@ in
   ArchiSteamFarm = callPackage ../applications/misc/ArchiSteamFarm { };
 
   archivemount = callPackage ../tools/filesystems/archivemount { };
+
+  archivy = python3Packages.callPackage ../applications/misc/archivy { };
 
   arandr = callPackage ../tools/X11/arandr { };
 
@@ -4383,6 +4387,8 @@ in
     inherit (darwin.apple_sdk.frameworks) Security;
   };
 
+  ucg = callPackage ../tools/text/ucg { };
+
   grive2 = callPackage ../tools/filesystems/grive2 { };
 
   groff = callPackage ../tools/text/groff {
@@ -7667,6 +7673,8 @@ in
 
   tinyfecvpn = callPackage ../tools/networking/tinyfecvpn {};
 
+  tinyobjloader = callPackage ../development/libraries/tinyobjloader { };
+
   tinyprog = callPackage ../development/tools/misc/tinyprog { };
 
   tinyproxy = callPackage ../tools/networking/tinyproxy {};
@@ -7828,6 +7836,8 @@ in
   };
 
   twitterBootstrap = callPackage ../development/web/twitter-bootstrap {};
+
+  twtxt = callPackage ../applications/networking/twtxt { };
 
   txr = callPackage ../tools/misc/txr { stdenv = clangStdenv; };
 
@@ -8662,6 +8672,42 @@ in
     jre = jre8; # TODO: remove override https://github.com/NixOS/nixpkgs/pull/89731
     jdk = jdk8; # TODO: remove override https://github.com/NixOS/nixpkgs/pull/89731
   };
+
+  adoptopenjdk-bin-15-packages-linux = import ../development/compilers/adoptopenjdk-bin/jdk15-linux.nix;
+  adoptopenjdk-bin-15-packages-darwin = import ../development/compilers/adoptopenjdk-bin/jdk15-darwin.nix;
+
+  adoptopenjdk-hotspot-bin-15 = if stdenv.isLinux
+    then callPackage adoptopenjdk-bin-15-packages-linux.jdk-hotspot {}
+    else callPackage adoptopenjdk-bin-15-packages-darwin.jdk-hotspot {};
+  adoptopenjdk-jre-hotspot-bin-15 = if stdenv.isLinux
+    then callPackage adoptopenjdk-bin-15-packages-linux.jre-hotspot {}
+    else callPackage adoptopenjdk-bin-15-packages-darwin.jre-hotspot {};
+
+  adoptopenjdk-openj9-bin-15 = if stdenv.isLinux
+    then callPackage adoptopenjdk-bin-15-packages-linux.jdk-openj9 {}
+    else callPackage adoptopenjdk-bin-15-packages-darwin.jdk-openj9 {};
+
+  adoptopenjdk-jre-openj9-bin-15 = if stdenv.isLinux
+    then callPackage adoptopenjdk-bin-15-packages-linux.jre-openj9 {}
+    else callPackage adoptopenjdk-bin-15-packages-darwin.jre-openj9 {};
+
+  adoptopenjdk-bin-14-packages-linux = import ../development/compilers/adoptopenjdk-bin/jdk14-linux.nix;
+  adoptopenjdk-bin-14-packages-darwin = import ../development/compilers/adoptopenjdk-bin/jdk14-darwin.nix;
+
+  adoptopenjdk-hotspot-bin-14 = if stdenv.isLinux
+    then callPackage adoptopenjdk-bin-14-packages-linux.jdk-hotspot {}
+    else callPackage adoptopenjdk-bin-14-packages-darwin.jdk-hotspot {};
+  adoptopenjdk-jre-hotspot-bin-14 = if stdenv.isLinux
+    then callPackage adoptopenjdk-bin-14-packages-linux.jre-hotspot {}
+    else callPackage adoptopenjdk-bin-14-packages-darwin.jre-hotspot {};
+
+  adoptopenjdk-openj9-bin-14 = if stdenv.isLinux
+    then callPackage adoptopenjdk-bin-14-packages-linux.jdk-openj9 {}
+    else callPackage adoptopenjdk-bin-14-packages-darwin.jdk-openj9 {};
+
+  adoptopenjdk-jre-openj9-bin-14 = if stdenv.isLinux
+    then callPackage adoptopenjdk-bin-14-packages-linux.jre-openj9 {}
+    else callPackage adoptopenjdk-bin-14-packages-darwin.jre-openj9 {};
 
   adoptopenjdk-bin-13-packages-linux = import ../development/compilers/adoptopenjdk-bin/jdk13-linux.nix;
   adoptopenjdk-bin-13-packages-darwin = import ../development/compilers/adoptopenjdk-bin/jdk13-darwin.nix;
@@ -9543,15 +9589,7 @@ in
     graalvm8-ee
     graalvm11-ee;
 
-  # Cannot use a newer Qt (5.15) version because it requires qtwebkit
-  # and our qtwebkit fails to build with 5.15. 01bcfd3579219d60e5d07df309a000f96b2b658b
-  openshot-qt = (pkgs.extend (final: prev: rec {
-    qt5 = if stdenv.isDarwin then prev.qt5 else prev.qt514;
-    libsForQt5 = if stdenv.isDarwin then prev.libsForQt5 else prev.libsForQt514;
-    pythonInterpreters = prev.pythonInterpreters.override {
-      pkgs = final;
-    };
-  })).libsForQt5.callPackage ../applications/video/openshot-qt { };
+  openshot-qt = libsForQt5.callPackage ../applications/video/openshot-qt { };
 
   openspin = callPackage ../development/compilers/openspin { };
 
@@ -9933,15 +9971,15 @@ in
     inherit (darwin.apple_sdk.frameworks) CoreFoundation Security;
     llvmPackages = if stdenv.cc.isClang then llvmPackages_5 else llvmPackages_10;
   };
-  rust_1_47 = callPackage ../development/compilers/rust/1_47.nix {
+  rust_1_48 = callPackage ../development/compilers/rust/1_48.nix {
     inherit (darwin.apple_sdk.frameworks) CoreFoundation Security;
     llvmPackages = if stdenv.cc.isClang then llvmPackages_5 else llvmPackages_11;
   };
-  rust = rust_1_47;
+  rust = rust_1_48;
 
   rustPackages_1_45 = rust_1_45.packages.stable;
-  rustPackages_1_47 = rust_1_47.packages.stable;
-  rustPackages = rustPackages_1_47;
+  rustPackages_1_48 = rust_1_48.packages.stable;
+  rustPackages = rustPackages_1_48;
 
   inherit (rustPackages) cargo clippy rustc rustPlatform;
 
@@ -10276,13 +10314,15 @@ in
 
   dhall = haskell.lib.justStaticExecutables haskellPackages.dhall;
 
-  dhall-nix = haskell.lib.justStaticExecutables haskellPackages.dhall-nix;
-
   dhall-bash = haskell.lib.justStaticExecutables haskellPackages.dhall-bash;
+
+  dhall-docs = haskell.lib.justStaticExecutables haskellPackages.dhall-docs;
+
+  dhall-lsp-server = haskell.lib.justStaticExecutables haskellPackages.dhall-lsp-server;
 
   dhall-json = haskell.lib.justStaticExecutables haskellPackages.dhall-json;
 
-  dhall-lsp-server = haskell.lib.justStaticExecutables haskellPackages.dhall-lsp-server;
+  dhall-nix = haskell.lib.justStaticExecutables haskellPackages.dhall-nix;
 
   dhall-text = haskell.lib.justStaticExecutables haskellPackages.dhall-text;
 
@@ -10458,6 +10498,12 @@ in
   phpExtensions = php74Extensions;
   phpPackages = php74Packages;
 
+  php80 = callPackage ../development/interpreters/php/8.0.nix {
+    stdenv = if stdenv.cc.isClang then llvmPackages_6.stdenv else stdenv;
+  };
+  php80Extensions = recurseIntoAttrs php80.extensions;
+  php80Packages = recurseIntoAttrs php80.packages;
+
   # Import PHP74 interpreter, extensions and packages
   php74 = callPackage ../development/interpreters/php/7.4.nix {
     stdenv = if stdenv.cc.isClang then llvmPackages_6.stdenv else stdenv;
@@ -10541,20 +10587,15 @@ in
   python2Packages = python2.pkgs;
   python3Packages = python3.pkgs;
 
-  pythonInterpreters = callPackage ./../development/interpreters/python {
-    # Overrides that apply to all Python interpreters and their packages
-    # Generally, this should be avoided.
-    pkgs = pkgs.extend (final: _: {
-    });
-  };
+  pythonInterpreters = callPackage ./../development/interpreters/python { };
   inherit (pythonInterpreters) python27 python36 python37 python38 python39 python310 python3Minimal pypy27 pypy36;
 
   # Python package sets.
-  python27Packages = lib.hiPrioSet (recurseIntoAttrs python27.pkgs);
+  python27Packages = python27.pkgs;
   python36Packages = python36.pkgs;
   python37Packages = recurseIntoAttrs python37.pkgs;
   python38Packages = recurseIntoAttrs python38.pkgs;
-  python39Packages = python39.pkgs;
+  python39Packages = recurseIntoAttrs python39.pkgs;
   python310Packages = python310.pkgs;
   pypyPackages = pypy.pkgs;
   pypy2Packages = pypy2.pkgs;
@@ -14012,6 +14053,8 @@ in
 
   libfixposix = callPackage ../development/libraries/libfixposix {};
 
+  libff = callPackage ../development/libraries/libff { };
+
   libffcall = callPackage ../development/libraries/libffcall { };
 
   libffi = callPackage ../development/libraries/libffi { };
@@ -16053,9 +16096,7 @@ in
 
   taglib-sharp = callPackage ../development/libraries/taglib-sharp { };
 
-  talloc = callPackage ../development/libraries/talloc {
-    python = buildPackages.python3;
-  };
+  talloc = callPackage ../development/libraries/talloc { };
 
   tclap = callPackage ../development/libraries/tclap {};
 
@@ -18615,9 +18656,7 @@ in
 
   keyutils = callPackage ../os-specific/linux/keyutils { };
 
-  libselinux = callPackage ../os-specific/linux/libselinux {
-    python = python37;
-  };
+  libselinux = callPackage ../os-specific/linux/libselinux { };
 
   libsemanage = callPackage ../os-specific/linux/libsemanage {
     python = python3;
@@ -20225,17 +20264,7 @@ in
 
   bambootracker = libsForQt5.callPackage ../applications/audio/bambootracker { };
 
-  cadence = let
-    # Use Qt 5.14 consistently
-    pkgs_ = pkgs.extend(_: prev: {
-      pythonInterpreters = prev.pythonInterpreters.override(oldAttrs: {
-        pkgs = oldAttrs.pkgs.extend(_: _: {
-          qt5 = pkgs.qt514;
-          libsForQt5 = pkgs.libsForQt514;
-        });
-      });
-    });
-  in pkgs_.libsForQt514.callPackage ../applications/audio/cadence { };
+  cadence = libsForQt5.callPackage ../applications/audio/cadence { };
 
   cheesecutter = callPackage ../applications/audio/cheesecutter { };
 
@@ -20614,8 +20643,6 @@ in
   cq-editor = libsForQt5.callPackage ../applications/graphics/cq-editor {
     python3Packages = python37Packages;
   };
-
-  cpp_ethereum = callPackage ../applications/misc/cpp-ethereum { };
 
   crun = callPackage ../applications/virtualization/crun {};
 
@@ -21649,6 +21676,8 @@ in
 
   howl = callPackage ../applications/editors/howl { };
 
+  hdl-dump = callPackage ../tools/misc/hdl-dump { };
+
   hpcg = callPackage ../tools/misc/hpcg/default.nix { };
 
   hpl = callPackage ../tools/misc/hpl { mpi = openmpi; };
@@ -22361,7 +22390,7 @@ in
 
   mac = callPackage ../development/libraries/mac { };
 
-  macdylibbundler = callPackage ../development/tools/misc/macdylibbundler { };
+  macdylibbundler = callPackage ../development/tools/misc/macdylibbundler { inherit (darwin) cctools; };
 
   magic-wormhole = with python3Packages; toPythonApplication magic-wormhole;
 
@@ -23148,6 +23177,8 @@ in
     inherit (gst_all_1) gstreamer gst-plugins-base gst-plugins-good gst-libav;
   };
 
+  peach = callPackage ../servers/peach { };
+
   peaclock = callPackage ../applications/misc/peaclock {
     stdenv = gccStdenv;
   };
@@ -23357,19 +23388,8 @@ in
 
   qemu-utils = callPackage ../applications/virtualization/qemu/utils.nix {};
 
-  # Our 3.10 LTS cannot use a newer Qt (5.15) version because it requires qtwebkit
-  # and our qtwebkit fails to build with 5.15. 01bcfd3579219d60e5d07df309a000f96b2b658b
-  qgis-unwrapped = let
-    pkgs_ = pkgs.extend(_: prev: {
-      pythonInterpreters = prev.pythonInterpreters.override(oldAttrs: {
-        pkgs = oldAttrs.pkgs.extend(_: _: {
-          qt5 = pkgs.qt514;
-          libsForQt5 = pkgs.libsForQt514;
-        });
-      });
-    });
-  in pkgs_.libsForQt514.callPackage ../applications/gis/qgis/unwrapped.nix {
-      withGrass = false;
+  qgis-unwrapped = libsForQt5.callPackage ../applications/gis/qgis/unwrapped.nix {
+    withGrass = false;
   };
 
   qgis = callPackage ../applications/gis/qgis { };
@@ -23389,6 +23409,8 @@ in
   qmediathekview = libsForQt5.callPackage ../applications/video/qmediathekview {
     boost = boost17x;
   };
+
+  qmplay2 = libsForQt5.callPackage ../applications/video/qmplay2 { };
 
   qmetro = callPackage ../applications/misc/qmetro { };
 
@@ -25975,6 +25997,8 @@ in
   trackballs = callPackage ../games/trackballs { };
 
   tremulous = callPackage ../games/tremulous { };
+
+  tts = callPackage ../tools/audio/tts { };
 
   tuxpaint = callPackage ../games/tuxpaint { };
 
