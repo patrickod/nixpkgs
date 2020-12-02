@@ -3371,6 +3371,8 @@ in {
 
   leveldb = callPackage ../development/python-modules/leveldb { };
 
+  lexid = callPackage ../development/python-modules/lexid { };
+
   libagent = callPackage ../development/python-modules/libagent { };
 
   pa-ringbuffer = callPackage ../development/python-modules/pa-ringbuffer { };
@@ -5352,6 +5354,8 @@ in {
   pyopengl = callPackage ../development/python-modules/pyopengl { };
 
   pyopenssl = callPackage ../development/python-modules/pyopenssl { };
+
+  pyosf = callPackage ../development/python-modules/pyosf { };
 
   pyosmium = callPackage ../development/python-modules/pyosmium { };
 

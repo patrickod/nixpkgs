@@ -1174,6 +1174,8 @@ in
 
   fitnesstrax = callPackage ../applications/misc/fitnesstrax/default.nix { };
 
+  flood = nodePackages.flood;
+
   fxlinuxprintutil = callPackage ../tools/misc/fxlinuxprintutil { };
 
   genpass = callPackage ../tools/security/genpass {
@@ -2784,6 +2786,8 @@ in
     inherit (pythonPackages) gyp;
   };
 
+  bumpver = callPackage ../applications/version-management/bumpver { };
+
   bup = callPackage ../tools/backup/bup { };
 
   burp = callPackage ../tools/backup/burp { };
@@ -3036,6 +3040,8 @@ in
       inherit (python2Packages) gyp;
       protobuf = pkgs.protobuf3_8.overrideDerivation (oldAttrs: { stdenv = clangStdenv; });
     };
+
+    rime = callPackage ../tools/inputmethods/ibus-engines/ibus-rime { };
 
     table = callPackage ../tools/inputmethods/ibus-engines/ibus-table { };
 
@@ -5362,6 +5368,8 @@ in
 
   libck = callPackage ../development/libraries/libck { };
 
+  libcork = callPackage ../development/libraries/libcork { };
+
   libconfig = callPackage ../development/libraries/libconfig { };
 
   libcmis = callPackage ../development/libraries/libcmis { };
@@ -7000,6 +7008,8 @@ in
   rubber = callPackage ../tools/typesetting/rubber { };
 
   rubocop = callPackage ../development/tools/rubocop { };
+
+  ruffle = callPackage ../misc/emulators/ruffle { };
 
   runelite = callPackage ../games/runelite { };
 
@@ -21851,6 +21861,8 @@ in
 
   id3v2 = callPackage ../applications/audio/id3v2 { };
 
+  ideamaker = callPackage ../applications/misc/ideamaker { };
+
   ifenslave = callPackage ../os-specific/linux/ifenslave { };
 
   ii = callPackage ../applications/networking/irc/ii {
@@ -22192,6 +22204,8 @@ in
   };
 
   kvirc = libsForQt514.callPackage ../applications/networking/irc/kvirc { };
+
+  lambda-delta = callPackage ../misc/emulators/lambda-delta { };
 
   lame = callPackage ../development/libraries/lame { };
 
@@ -26348,7 +26362,9 @@ in
 
   alliance = callPackage ../applications/science/electronics/alliance { };
 
-  ants = callPackage ../applications/science/biology/ants { };
+  ants = callPackage ../applications/science/biology/ants {
+    inherit (darwin.apple_sdk.frameworks) Cocoa;
+  };
 
   aragorn = callPackage ../applications/science/biology/aragorn { };
 
