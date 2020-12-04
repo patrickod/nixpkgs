@@ -365,6 +365,8 @@ in
 
   fetchhg = callPackage ../build-support/fetchhg { };
 
+  fetchFirefoxAddon = callPackage ../build-support/fetchfirefoxaddon {};
+
   # `fetchurl' downloads a file from the network.
   fetchurl = if stdenv.buildPlatform != stdenv.hostPlatform
    then buildPackages.fetchurl # No need to do special overrides twice,
@@ -2037,6 +2039,8 @@ in
 
   dyncall = callPackage ../development/libraries/dyncall { };
 
+  dyndnsc = callPackage ../applications/networking/dyndns/dyndnsc { };
+
   earlyoom = callPackage ../os-specific/linux/earlyoom { };
 
   EBTKS = callPackage ../development/libraries/science/biology/EBTKS { };
@@ -2493,6 +2497,8 @@ in
   patdiff = callPackage ../tools/misc/patdiff { };
 
   patool = with python3Packages; toPythonApplication patool;
+
+  pbgopy = callPackage ../tools/text/pbgopy { };
 
   pbpst = callPackage ../applications/misc/pbpst { };
 
@@ -3036,8 +3042,7 @@ in
     m17n = callPackage ../tools/inputmethods/ibus-engines/ibus-m17n { };
 
     mozc = callPackage ../tools/inputmethods/ibus-engines/ibus-mozc {
-      python = python2;
-      inherit (python2Packages) gyp;
+      stdenv = clangStdenv;
       protobuf = pkgs.protobuf3_8.overrideDerivation (oldAttrs: { stdenv = clangStdenv; });
     };
 
@@ -3538,6 +3543,8 @@ in
     inherit (darwin.apple_sdk.frameworks) Security;
   };
 
+  pax = callPackage ../tools/archivers/pax { };
+
   rage = callPackage ../tools/security/rage { };
 
   rar2fs = callPackage ../tools/filesystems/rar2fs { };
@@ -3609,6 +3616,8 @@ in
   wrangler = callPackage ../development/tools/wrangler { };
 
   wshowkeys = callPackage ../tools/wayland/wshowkeys { };
+
+  wsl-open = callPackage ../tools/misc/wsl-open { };
 
   xkcdpass = with pythonPackages; toPythonApplication xkcdpass;
 
@@ -4750,7 +4759,9 @@ in
 
   ifuse = callPackage ../tools/filesystems/ifuse { };
   ideviceinstaller = callPackage ../tools/misc/ideviceinstaller { };
-  idevicerestore = callPackage ../tools/misc/idevicerestore { };
+  idevicerestore = callPackage ../tools/misc/idevicerestore {
+    inherit (darwin) IOKit;
+  };
 
   inherit (callPackages ../tools/filesystems/irods rec {
             stdenv = llvmPackages.libcxxStdenv;
@@ -10699,6 +10710,8 @@ in
 
   solargraph = callPackage ../development/ruby-modules/solargraph { };
 
+  rbenv = callPackage ../development/ruby-modules/rbenv { };
+
   inherit (callPackage ../development/interpreters/ruby {
     inherit (darwin) libiconv libobjc libunwind;
     inherit (darwin.apple_sdk.frameworks) Foundation;
@@ -12222,6 +12235,8 @@ in
   yq = python3.pkgs.toPythonApplication python3.pkgs.yq;
 
   yq-go = callPackage ../development/tools/yq-go { };
+
+  ytt = callPackage ../development/tools/ytt {};
 
   winpdb = callPackage ../development/tools/winpdb { };
 
@@ -14346,7 +14361,9 @@ in
 
   libmemcached = callPackage ../development/libraries/libmemcached { };
 
-  libmicrohttpd = callPackage ../development/libraries/libmicrohttpd { };
+  libmicrohttpd_0_9_70 = callPackage ../development/libraries/libmicrohttpd/0.9.70.nix { };
+  libmicrohttpd_0_9_71 = callPackage ../development/libraries/libmicrohttpd/0.9.71.nix { };
+  libmicrohttpd = libmicrohttpd_0_9_71;
 
   libmikmod = callPackage ../development/libraries/libmikmod {
     inherit (darwin.apple_sdk.frameworks) CoreAudio;
@@ -22652,6 +22669,9 @@ in
 
   ympd = callPackage ../applications/audio/ympd { };
 
+  # a somewhat more maintained fork of ympd
+  mympd = callPackage ../applications/audio/mympd { };
+
   nload = callPackage ../applications/networking/nload { };
 
   normalize = callPackage ../applications/audio/normalize { };
@@ -28124,6 +28144,8 @@ in
 
   prow = callPackage ../applications/networking/cluster/prow { };
 
+  tagref = callPackage ../tools/misc/tagref { };
+
   tellico = libsForQt5.callPackage ../applications/misc/tellico { };
 
   termpdfpy = python3Packages.callPackage ../applications/misc/termpdf.py {};
@@ -28133,6 +28155,7 @@ in
     terraform_0_11-full
     terraform_0_12
     terraform_0_13
+    terraform_0_14
     terraform_plugins_test
     ;
 
