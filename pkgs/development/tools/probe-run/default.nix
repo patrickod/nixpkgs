@@ -1,13 +1,13 @@
 { lib, rustPlatform, fetchFromGitHub, libusb1, pkgconfig, glib, dbus, rustfmt }:
 rustPlatform.buildRustPackage rec {
   pname = "probe-run";
-  version = "main";
+  version = "0.1.7";
 
   src = fetchFromGitHub {
     owner = "knurling-rs";
     repo = "probe-run";
-    rev = "${version}";
-    sha256 = "026c53cgcrfhr31n2zzdgik9cr1j7fk4x9r5q82ph66qbqvyvkkj";
+    rev = "v${version}";
+    sha256 = "17qm5vjyvjk3zbimlvgqnwjj9qqnzkqj124z12m5kgnmlqykygfc";
   };
 
   nativeBuildInputs = [pkgconfig rustfmt];
@@ -17,7 +17,7 @@ rustPlatform.buildRustPackage rec {
       libusb1
     ];
 
-  cargoSha256 = "0whazdc22vw076p1fsl2qfs81kq3zpvr2jyxz27799zifzzk812m";
+  cargoSha256 = "0cxgp3ifn0lhqq4rpikma1v6c074zlz53wqa55z7q5lys2d5ajq4";
   cargoBuildFlags = ["--features=defmt"];
 
   meta = with lib; {
@@ -27,4 +27,3 @@ rustPlatform.buildRustPackage rec {
     maintainers = with maintainers; [ patrickod ];
   };
 }
-
