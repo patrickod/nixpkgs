@@ -28764,4 +28764,6 @@ in
   lc3tools = callPackage ../development/tools/lc3tools {};
 
   noson = libsForQt5.callPackage ../applications/audio/noson { };
+
+  flip-link = callPackage  ../development/tools/flip-link {};
 }
