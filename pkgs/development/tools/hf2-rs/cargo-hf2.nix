@@ -8,22 +8,20 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "cargo-hf2";
-  version = "0.3.0";
+  version = "0.3.1";
 
   src = fetchFromGitHub {
     owner = "jacobrosenthal";
     repo = "hf2-rs";
     rev = "v${version}";
-    sha256 = "0z4vf6w29zy4ip8s8fnx33vly0a79wfg8ifqlznbnh4y69gxm9qy";
+    sha256 = "0hjlhic0yffh5dd4zagjl4ywhqf48py2yjf736r507x9wi8072hn";
   };
 
   source = "source/cargo-hf2";
-
   cargoPatches = [
     ./cargo-lock.patch
   ];
-  cargoSha256 = "15vg9n31kw4vyz7qfn9myfdjgagrafcpyjf1nv2xaz6a146id3xz";
-
+  cargoSha256 = "0raq6dimwl82ayrh8743j3hpn6m575bgxm7z4m7bxzgrs483b07h";
   nativeBuildInputs = [pkgconfig];
   buildInputs = [libusb];
 
