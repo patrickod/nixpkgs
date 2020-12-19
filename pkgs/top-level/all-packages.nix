@@ -28962,4 +28962,6 @@ in
   flip-link = callPackage  ../development/tools/flip-link {};
 
   zktree = callPackage ../applications/misc/zktree {};
+
+  uf2conv = callPackage ../development/tools/uf2conv {} ;
 }
