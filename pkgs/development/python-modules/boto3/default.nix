@@ -13,11 +13,11 @@
 
 buildPythonPackage rec {
   pname =  "boto3";
-  version = "1.16.38"; # N.B: if you change this, change botocore too
+  version = "1.16.40"; # N.B: if you change this, change botocore too
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "1xxvpf0q8xiz1cr5q1m4pdpzbhjriw3j6afi5dwvrrq9sh3x7pqx";
+    sha256 = "sha256-dTJogqpo4ANFLc2PD87gM5/2NiQRWSf7caa10VU1rOU=";
   };
 
   propagatedBuildInputs = [ botocore jmespath s3transfer ] ++ lib.optionals (!isPy3k) [ futures ];
