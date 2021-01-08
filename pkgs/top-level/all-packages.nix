@@ -730,6 +730,8 @@ in
 
   foot = callPackage ../applications/terminal-emulators/foot { };
 
+  germinal = callPackage ../applications/terminal-emulators/germinal { };
+
   guake = callPackage ../applications/terminal-emulators/guake { };
 
   havoc = callPackage ../applications/terminal-emulators/havoc { };
@@ -811,7 +813,9 @@ in
 
   wayst = callPackage ../applications/terminal-emulators/wayst { };
 
-  wezterm = callPackage ../applications/terminal-emulators/wezterm { };
+  wezterm = callPackage ../applications/terminal-emulators/wezterm {
+    inherit (darwin.apple_sdk.frameworks) Cocoa CoreGraphics Foundation;
+  };
 
   x3270 = callPackage ../applications/terminal-emulators/x3270 { };
 
@@ -1174,6 +1178,8 @@ in
   };
 
   doona = callPackage ../tools/security/doona { };
+
+  droidcam = callPackage ../applications/video/droidcam { };
 
   ecdsautils = callPackage ../tools/security/ecdsautils { };
 
@@ -2484,6 +2490,8 @@ in
 
   monetdb = callPackage ../servers/sql/monetdb { };
 
+  monado = callPackage ../applications/graphics/monado {};
+
   mons = callPackage ../tools/misc/mons {};
 
   mousetweaks = callPackage ../applications/accessibility/mousetweaks {
@@ -2503,6 +2511,8 @@ in
   mpdris2 = callPackage ../tools/audio/mpdris2 { };
 
   mpd-mpris = callPackage ../tools/audio/mpd-mpris { };
+
+  mpris-scrobbler = callPackage ../tools/audio/mpris-scrobbler { };
 
   mq-cli = callPackage ../tools/system/mq-cli { };
 
@@ -2624,6 +2634,8 @@ in
 
   simdjson = callPackage ../development/libraries/simdjson { };
 
+  shipyard = callPackage ../tools/virtualization/shipyard { };
+
   simg2img = callPackage ../tools/filesystems/simg2img { };
 
   simplenes = callPackage ../misc/emulators/simplenes { };
@@ -2665,6 +2677,8 @@ in
   syslogng = callPackage ../tools/system/syslog-ng { };
 
   syslogng_incubator = callPackage ../tools/system/syslog-ng-incubator { };
+
+  svt-av1 = callPackage ../tools/video/svt-av1 { };
 
   inherit (callPackages ../servers/rainloop { })
     rainloop-community
@@ -4566,6 +4580,8 @@ in
 
   gssdp = callPackage ../development/libraries/gssdp { };
 
+  grype = callPackage ../tools/security/grype { };
+
   gt5 = callPackage ../tools/system/gt5 { };
 
   gtest = callPackage ../development/libraries/gtest { };
@@ -6134,17 +6150,17 @@ in
   nomad_0_11 = callPackage ../applications/networking/cluster/nomad/0.11.nix {
     buildGoPackage = buildGo114Package;
     inherit (linuxPackages) nvidia_x11;
-    nvidiaGpuSupport = config.cudaSupport or (!stdenv.isLinux);
+    nvidiaGpuSupport = config.cudaSupport or false;
   };
   nomad_0_12 = callPackage ../applications/networking/cluster/nomad/0.12.nix {
     buildGoPackage = buildGo114Package;
     inherit (linuxPackages) nvidia_x11;
-    nvidiaGpuSupport = config.cudaSupport or (!stdenv.isLinux);
+    nvidiaGpuSupport = config.cudaSupport or false;
   };
   nomad_1_0 = callPackage ../applications/networking/cluster/nomad/1.0.nix {
     buildGoPackage = buildGo115Package;
     inherit (linuxPackages) nvidia_x11;
-    nvidiaGpuSupport = config.cudaSupport or (!stdenv.isLinux);
+    nvidiaGpuSupport = config.cudaSupport or false;
   };
 
   notable = callPackage ../applications/misc/notable { };
@@ -6585,6 +6601,8 @@ in
 
   pbzip2 = callPackage ../tools/compression/pbzip2 { };
 
+  pcimem = callPackage ../os-specific/linux/pcimem { };
+
   pciutils = callPackage ../tools/system/pciutils { };
 
   pcsclite = callPackage ../tools/security/pcsclite {
@@ -7012,6 +7030,7 @@ in
 
   rdma-core = callPackage ../os-specific/linux/rdma-core { };
 
+  rdrview = callPackage ../tools/networking/rdrview {};
 
   real_time_config_quick_scan = callPackage ../applications/audio/real_time_config_quick_scan { };
 
@@ -7696,6 +7715,8 @@ in
 
   su = shadow.su;
 
+  subjs = callPackage ../tools/security/subjs { };
+
   subsonic = callPackage ../servers/misc/subsonic { };
 
   subfinder = callPackage ../tools/networking/subfinder { };
@@ -7746,6 +7767,10 @@ in
   t = callPackage ../tools/misc/t { };
 
   tabnine = callPackage ../development/tools/tabnine { };
+
+  tab-rs = callPackage ../tools/misc/tab-rs {
+    inherit (darwin.apple_sdk.frameworks) IOKit;
+  };
 
   t1utils = callPackage ../tools/misc/t1utils { };
 
@@ -7865,7 +7890,7 @@ in
 
   tikzit = libsForQt5.callPackage ../tools/typesetting/tikzit { };
 
-  tinc_pre = callPackage ../tools/networking/tinc/pre.nix {};
+  tinc_pre = callPackage ../tools/networking/tinc/pre.nix { };
 
   tinycbor = callPackage ../development/libraries/tinycbor { };
 
@@ -7873,13 +7898,13 @@ in
 
   tinyemu = callPackage ../applications/virtualization/tinyemu { };
 
-  tinyfecvpn = callPackage ../tools/networking/tinyfecvpn {};
+  tinyfecvpn = callPackage ../tools/networking/tinyfecvpn { };
 
   tinyobjloader = callPackage ../development/libraries/tinyobjloader { };
 
   tinyprog = callPackage ../development/tools/misc/tinyprog { };
 
-  tinyproxy = callPackage ../tools/networking/tinyproxy {};
+  tinyproxy = callPackage ../tools/networking/tinyproxy { };
 
   tio = callPackage ../tools/misc/tio { };
 
@@ -8488,6 +8513,8 @@ in
 
   urjtag = callPackage ../tools/misc/urjtag { };
 
+  urlhunter = callPackage ../tools/security/urlhunter { };
+
   urlwatch = callPackage ../tools/networking/urlwatch { };
 
   valum = callPackage ../development/web/valum { };
@@ -9019,6 +9046,8 @@ in
   bluespec = callPackage ../development/compilers/bluespec {
     gmp-static = gmp.override { withStatic = true; };
   };
+
+  cakelisp = callPackage ../development/compilers/cakelisp { };
 
   ciao = callPackage ../development/compilers/ciao { };
 
@@ -9700,7 +9729,7 @@ in
 
   openjfx11 = callPackage ../development/compilers/openjdk/openjfx/11.nix { };
 
-  openjfx14 = callPackage ../development/compilers/openjdk/openjfx/14.nix { };
+  openjfx15 = callPackage ../development/compilers/openjdk/openjfx/15.nix { };
 
   openjdk8-bootstrap =
     if adoptopenjdk-hotspot-bin-8.meta.available then
@@ -9750,21 +9779,27 @@ in
     else
       openjdk11.override { headless = true; };
 
-  openjdk14-bootstrap =
-    if adoptopenjdk-hotspot-bin-13.meta.available then
-      adoptopenjdk-hotspot-bin-13
+  openjdk15-bootstrap =
+    if adoptopenjdk-hotspot-bin-14.meta.available then
+      adoptopenjdk-hotspot-bin-14
     else
-      /* adoptopenjdk not available for i686, so fall back to our old builds of 12 & 13 for bootstrapping */
-      callPackage ../development/compilers/openjdk/13.nix {
+      /* adoptopenjdk not available for i686, so fall back to our old builds of 12, 13, & 14 for bootstrapping */
+      callPackage ../development/compilers/openjdk/14.nix {
         openjfx = openjfx11; /* need this despite next line :-( */
         enableJavaFX = false;
         headless = true;
         inherit (gnome2) GConf gnome_vfs;
-        openjdk13-bootstrap = callPackage ../development/compilers/openjdk/12.nix {
+        openjdk14-bootstrap = callPackage ../development/compilers/openjdk/13.nix {
           openjfx = openjfx11; /* need this despite next line :-( */
           enableJavaFX = false;
           headless = true;
           inherit (gnome2) GConf gnome_vfs;
+          openjdk13-bootstrap = callPackage ../development/compilers/openjdk/12.nix {
+            openjfx = openjfx11; /* need this despite next line :-( */
+            enableJavaFX = false;
+            headless = true;
+            inherit (gnome2) GConf gnome_vfs;
+          };
         };
       };
 
@@ -9772,27 +9807,27 @@ in
   jdk11_headless = openjdk11_headless;
 
   /* Latest JDK */
-  openjdk14 =
+  openjdk15 =
     if stdenv.isDarwin then
       callPackage ../development/compilers/openjdk/darwin { }
     else
       callPackage ../development/compilers/openjdk {
-        openjfx = openjfx14;
+        openjfx = openjfx15;
         inherit (gnome2) GConf gnome_vfs;
       };
 
-  openjdk14_headless =
+  openjdk15_headless =
     if stdenv.isDarwin then
-      openjdk14
+      openjdk15
     else
-      openjdk14.override { headless = true; };
+      openjdk15.override { headless = true; };
 
-  jdk14 = openjdk14;
-  jdk14_headless = openjdk14_headless;
+  jdk15 = openjdk15;
+  jdk15_headless = openjdk15_headless;
 
   /* default JDK */
 
-  jdk = jdk14;
+  jdk = jdk15;
 
   # Since the introduction of the Java Platform Module System in Java 9, Java
   # no longer ships a separate JRE package.
@@ -9801,13 +9836,13 @@ in
   # 'jre_minimal' to build a bespoke JRE containing only the modules you need.
   #
   # For a general-purpose system, 'jre' defaults to the full JDK:
-  jre = jdk14;
-  jre_headless = jdk14_headless;
+  jre = jdk15;
+  jre_headless = jdk15_headless;
 
   jre_minimal = callPackage ../development/compilers/openjdk/jre.nix { };
 
-  openjdk = openjdk14;
-  openjdk_headless = openjdk14_headless;
+  openjdk = openjdk15;
+  openjdk_headless = openjdk15_headless;
 
   inherit (callPackages ../development/compilers/graalvm {
     gcc = if stdenv.targetPlatform.isDarwin then gcc8 else gcc;
@@ -12355,6 +12390,8 @@ in
 
   ttyd = callPackage ../servers/ttyd { };
 
+  turbogit = callPackage ../development/tools/turbogit { };
+
   tweak = callPackage ../applications/editors/tweak { };
 
   tychus = callPackage ../development/tools/tychus {
@@ -12576,9 +12613,15 @@ in
     inherit (darwin.apple_sdk.frameworks) AudioUnit CoreServices;
   };
 
+  aws-c-cal = callPackage ../development/libraries/aws-c-cal {
+    inherit (darwin.apple_sdk.frameworks) Security;
+  };
+
   aws-c-common = callPackage ../development/libraries/aws-c-common { };
 
   aws-c-event-stream = callPackage ../development/libraries/aws-c-event-stream { };
+
+  aws-c-io = callPackage ../development/libraries/aws-c-io { };
 
   aws-checksums = callPackage ../development/libraries/aws-checksums { };
 
@@ -13020,6 +13063,7 @@ in
   ffmpeg = ffmpeg_4;
 
   ffmpeg-full = callPackage ../development/libraries/ffmpeg-full {
+    svt-av1 = if stdenv.isAarch64 then null else svt-av1;
     # The following need to be fixed on Darwin
     libjack2 = if stdenv.isDarwin then null else libjack2;
     libmodplug = if stdenv.isDarwin then null else libmodplug;
@@ -14785,6 +14829,8 @@ in
 
   libs3 = callPackage ../development/libraries/libs3 { };
 
+  libschrift = callPackage ../development/libraries/libschrift { };
+
   libsearpc = callPackage ../development/libraries/libsearpc { };
 
   libsigcxx = callPackage ../development/libraries/libsigcxx { };
@@ -14935,6 +14981,8 @@ in
   libuv = callPackage ../development/libraries/libuv {
     inherit (darwin.apple_sdk.frameworks) ApplicationServices CoreServices;
   };
+
+  libuvc = callPackage ../development/libraries/libuvc { };
 
   libv4l = lowPrio (v4l-utils.override {
     withUtils = false;
@@ -16147,6 +16195,8 @@ in
   shhopt = callPackage ../development/libraries/shhopt { };
 
   graphite2 = callPackage ../development/libraries/silgraphite/graphite2.nix {};
+
+  s2n = callPackage ../development/libraries/s2n { };
 
   simavr = callPackage ../development/tools/simavr {
     avrgcc = pkgsCross.avr.buildPackages.gcc;
@@ -18964,7 +19014,7 @@ in
         kernelPatches.tag_hardened
         kernelPatches.hardened.${kernel.meta.branch}
       ];
-      modDirVersionArg = kernel.modDirVersion + "-hardened";
+      modDirVersionArg = kernel.modDirVersion + (kernelPatches.hardened.${kernel.meta.branch}).extra + "-hardened";
       isHardened = true;
   });
 
@@ -19053,6 +19103,8 @@ in
   libsepol = callPackage ../os-specific/linux/libsepol { };
 
   libsmbios = callPackage ../os-specific/linux/libsmbios { };
+
+  libsurvive = callPackage ../development/libraries/libsurvive { };
 
   lm_sensors = callPackage ../os-specific/linux/lm-sensors { };
 
@@ -21513,7 +21565,7 @@ in
 
   geoipupdate = callPackage ../applications/misc/geoipupdate/default.nix { };
 
-  ghostwriter = libsForQt514.callPackage ../applications/editors/ghostwriter { };
+  ghostwriter = libsForQt5.callPackage ../applications/editors/ghostwriter { };
 
   gitweb = callPackage ../applications/version-management/git-and-tools/gitweb { };
 
@@ -23484,6 +23536,12 @@ in
 
   muchsync = callPackage ../applications/networking/mailreaders/notmuch/muchsync.nix { };
 
+  nufraw = callPackage ../applications/graphics/nufraw/default.nix { };
+
+  nufraw-thumbnailer = callPackage ../applications/graphics/nufraw/default.nix {
+    addThumbnailer = true;
+  };
+
   notmuch-addrlookup = callPackage ../applications/networking/mailreaders/notmuch-addrlookup { };
 
   nova-filters =  callPackage ../applications/audio/nova-filters { };
@@ -24556,6 +24614,8 @@ in
 
   taskwarrior = callPackage ../applications/misc/taskwarrior { };
 
+  taskwarrior-tui = callPackage ../applications/misc/taskwarrior-tui { };
+
   dstask = callPackage ../applications/misc/dstask { };
 
   tasksh = callPackage ../applications/misc/tasksh { };
@@ -25614,7 +25674,19 @@ in
 
   zscroll = callPackage ../applications/misc/zscroll {};
 
-  zynaddsubfx = callPackage ../applications/audio/zynaddsubfx { };
+  zynaddsubfx = zyn-fusion;
+
+  zynaddsubfx-fltk = callPackage ../applications/audio/zynaddsubfx {
+    guiModule = "fltk";
+  };
+
+  zynaddsubfx-ntk = callPackage ../applications/audio/zynaddsubfx {
+    guiModule = "ntk";
+  };
+
+  zyn-fusion = callPackage ../applications/audio/zynaddsubfx {
+    guiModule = "zest";
+  };
 
   ### BLOCKCHAINS / CRYPTOCURRENCIES / WALLETS
 
@@ -26963,6 +27035,8 @@ in
 
   exonerate = callPackage ../applications/science/biology/exonerate { };
 
+  fastp = callPackage ../applications/science/biology/fastp { };
+
   hisat2 = callPackage ../applications/science/biology/hisat2 { };
 
   htslib = callPackage ../development/libraries/science/biology/htslib { };
@@ -27549,6 +27623,8 @@ in
 
   csxcad = callPackage ../applications/science/electronics/csxcad { };
 
+  diylc = callPackage ../applications/science/electronics/diylc { };
+
   flatcam = callPackage ../applications/science/electronics/flatcam { };
 
   fparser = callPackage ../applications/science/electronics/fparser { };
@@ -28009,6 +28085,8 @@ in
   fahclient = callPackage ../applications/science/misc/foldingathome/client.nix {};
   fahcontrol = callPackage ../applications/science/misc/foldingathome/control.nix {};
   fahviewer = callPackage ../applications/science/misc/foldingathome/viewer.nix {};
+
+  foma = callPackage ../tools/misc/foma { };
 
   foo2zjs = callPackage ../misc/drivers/foo2zjs {};
 
@@ -28648,6 +28726,8 @@ in
   snapraid = callPackage ../tools/filesystems/snapraid { };
 
   snscrape = with python3Packages; toPythonApplication snscrape;
+
+  soundmodem = callPackage ../applications/radio/soundmodem {};
 
   soundOfSorting = callPackage ../misc/sound-of-sorting { };
 

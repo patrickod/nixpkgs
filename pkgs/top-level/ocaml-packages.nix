@@ -117,7 +117,6 @@ let
     bin_prot_p4 = callPackage ../development/ocaml-modules/bin_prot { };
 
     bisect_ppx = callPackage ../development/ocaml-modules/bisect_ppx { };
-    bisect_ppx-ocamlbuild = callPackage ../development/ocaml-modules/bisect_ppx-ocamlbuild { };
 
     ocaml_cairo = callPackage ../development/ocaml-modules/ocaml-cairo { };
 
@@ -851,6 +850,8 @@ let
     posix-socket = callPackage ../development/ocaml-modules/posix/socket.nix { };
 
     posix-types = callPackage ../development/ocaml-modules/posix/types.nix { };
+
+    ppx_bitstring = callPackage ../development/ocaml-modules/bitstring/ppx.nix { };
 
     ppxfind = callPackage ../development/ocaml-modules/ppxfind { };
 
