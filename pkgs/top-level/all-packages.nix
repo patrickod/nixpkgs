@@ -831,6 +831,8 @@ in
 
   alpine-make-vm-image = callPackage ../tools/virtualization/alpine-make-vm-image { };
 
+  amazon-ec2-utils = callPackage ../tools/admin/amazon-ec2-utils { };
+
   amazon-ecs-cli = callPackage ../tools/virtualization/amazon-ecs-cli { };
 
   amber = callPackage ../tools/text/amber {
@@ -4967,7 +4969,9 @@ in
 
   ipfs = callPackage ../applications/networking/ipfs { };
   ipfs-migrator = callPackage ../applications/networking/ipfs-migrator { };
-  ipfs-cluster = callPackage ../applications/networking/ipfs-cluster { };
+  ipfs-cluster = callPackage ../applications/networking/ipfs-cluster {
+    buildGoModule = buildGo114Module;
+  };
 
   ipget = callPackage ../applications/networking/ipget { };
 
@@ -10121,6 +10125,8 @@ in
   nimble-unwrapped = nim.nimble-unwrapped;
 
   nrpl = callPackage ../development/tools/nrpl { };
+
+  nimlsp = callPackage ../development/tools/misc/nimlsp { };
 
   neko = callPackage ../development/compilers/neko { };
 
@@ -20644,6 +20650,8 @@ in
 
   appeditor = callPackage ../applications/misc/appeditor { };
 
+  appgate-sdp = callPackage ../applications/networking/appgate-sdp { };
+
   apostrophe = callPackage ../applications/editors/apostrophe {
     pythonPackages = python3Packages;
   };
@@ -22299,6 +22307,8 @@ in
   swaylock-effects = callPackage ../applications/window-managers/sway/lock-effects.nix { };
 
   tiramisu = callPackage ../applications/misc/tiramisu { };
+
+  rootbar = callPackage ../applications/misc/rootbar {};
 
   waybar = callPackage ../applications/misc/waybar {};
 
@@ -25760,6 +25770,8 @@ in
 
   lnd = callPackage ../applications/blockchains/lnd.nix { };
 
+  lndconnect = callPackage ../applications/blockchains/lndconnect { };
+
   monero = callPackage ../applications/blockchains/monero {
     inherit (darwin.apple_sdk.frameworks) CoreData IOKit PCSC;
     boost = boost17x;
@@ -28808,6 +28820,8 @@ in
   vnote = libsForQt5.callPackage ../applications/office/vnote { };
 
   ssh-audit = callPackage ../tools/security/ssh-audit { };
+
+  autocpu-freq = callPackage ../tools/system/autocpu-freq {  };
 
   thermald = callPackage ../tools/system/thermald { };
 

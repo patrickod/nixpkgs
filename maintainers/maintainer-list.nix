@@ -4654,6 +4654,12 @@
     githubId = 2029444;
     name = "James Kent";
   };
+  ketzacoatl = {
+    email = "ketzacoatl@protonmail.com";
+    github = "ketzacoatl";
+    githubId = 10122937;
+    name = "ketzacoatl";
+  };
   kevincox = {
     email = "kevincox@kevincox.ca";
     github = "kevincox";
@@ -8849,6 +8855,12 @@
     githubId = 2389333;
     name = "Andy Tockman";
   };
+  Technical27 = {
+    email = "38222826+Technical27@users.noreply.github.com";
+    github = "Technical27";
+    githubId = 38222826;
+    name = "Aamaruvi Yogamani";
+  };
   teh = {
     email = "tehunger@gmail.com";
     github = "teh";
@@ -10185,6 +10197,16 @@
     email = "nixpkgs@ymarkus.dev";
     github = "ymarkus";
     githubId = 62380378;
+  };
+  ymatsiuk = {
+    name = "Yurii Matsiuk";
+    email = "ymatsiuk@users.noreply.github.com";
+    github = "ymatsiuk";
+    githubId = 24990891;
+    keys = [{
+      longkeyid = "rsa4096/0x61302290298601AA";
+      fingerprint = "7BB8 84B5 74DA FDB1 E194  ED21 6130 2290 2986 01AA";
+    }];
   };
   ymeister = {
     name = "Yuri Meister";
