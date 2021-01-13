@@ -11,6 +11,10 @@ python38Packages.buildPythonApplication rec {
     sha256 = "0ca50yvj3fcxj41bz3ajqmj8vhcmqy6akf6pn4vhmzkgvd4a2g2x";
   };
 
+  postPatch = ''
+    substituteInPlace setup.py --replace "psutil~=5.7.0" "psutil"
+  '';
+
   propagatedBuildInputs = with python38Packages; [ click psutil parsimonious ];
   doCheck = false;
 
