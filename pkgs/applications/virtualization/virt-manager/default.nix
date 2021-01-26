@@ -1,4 +1,4 @@
-{ lib, stdenv, fetchurl, python3Packages, intltool, file
+{ lib, fetchurl, python3Packages, intltool, file
 , wrapGAppsHook, gtk-vnc, vte, avahi, dconf
 , gobject-introspection, libvirt-glib, system-libvirt
 , gsettings-desktop-schemas, glib, libosinfo, gnome3
@@ -7,7 +7,7 @@
 , cpio, e2fsprogs, findutils, gzip
 }:
 
-with stdenv.lib;
+with lib;
 
 python3Packages.buildPythonApplication rec {
   pname = "virt-manager";

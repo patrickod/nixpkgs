@@ -1,4 +1,4 @@
-{ lib, stdenv, fetchurl, makeDesktopItem, ffmpeg_3
+{ lib, fetchurl, makeDesktopItem, ffmpeg_3
 , qmake, qttools, mkDerivation
 , qtbase, qtdeclarative, qtlocation, qtquickcontrols2, qtwebchannel, qtwebengine
 }:
@@ -16,7 +16,7 @@ mkDerivation rec {
   buildInputs = [ ffmpeg_3 qtbase qtdeclarative qtlocation qtquickcontrols2 qtwebchannel qtwebengine ];
   nativeBuildInputs = [ qmake qttools ];
 
-  postPatch = stdenv.lib.optionalString (ffmpeg_3 != null) ''
+  postPatch = lib.optionalString (ffmpeg_3 != null) ''
   substituteInPlace converter_ffmpeg.cpp \
     --replace '"ffmpeg"' '"${ffmpeg_3.bin}/bin/ffmpeg"' \
     --replace '"ffmpeg ' '"${ffmpeg_3.bin}/bin/ffmpeg '

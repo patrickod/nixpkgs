@@ -1,10 +1,10 @@
-{ stdenv, fetchurl, cmake, pkgconfig, alsaLib
+{ lib, stdenv, fetchurl, cmake, pkg-config, alsaLib
 , libjack2, libsndfile, fftw, curl, gcc
 , libXt, qtbase, qttools, qtwebengine
 , readline, qtwebsockets, useSCEL ? false, emacs
 }:
 
-let optional = stdenv.lib.optional;
+let optional = lib.optional;
 in
 
 stdenv.mkDerivation rec {
@@ -24,14 +24,14 @@ stdenv.mkDerivation rec {
     "-DSC_EL=${if useSCEL then "ON" else "OFF"}"
   ];
 
-  nativeBuildInputs = [ cmake pkgconfig qttools ];
+  nativeBuildInputs = [ cmake pkg-config qttools ];
 
   buildInputs = [
     gcc libjack2 libsndfile fftw curl libXt qtbase qtwebengine qtwebsockets readline ]
       ++ optional (!stdenv.isDarwin) alsaLib
       ++ optional useSCEL emacs;
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     description = "Programming language for real time audio synthesis";
     homepage = "https://supercollider.github.io";
     maintainers = with maintainers; [ mrmebelman ];

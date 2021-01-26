@@ -1,4 +1,4 @@
-{ lib, stdenv, fetchurl, pythonPackages, makeDesktopItem }:
+{ lib, fetchurl, pythonPackages, makeDesktopItem }:
 
 pythonPackages.buildPythonApplication rec {
   name = "winpdb-1.4.8";
@@ -35,6 +35,9 @@ pythonPackages.buildPythonApplication rec {
     mkdir -p "$out"/share/icons
     cp artwork/winpdb-icon.svg "$out"/share/icons/winpdb.svg
   '';
+
+  # no tests
+  doCheck = false;
 
   meta = with lib; {
     description = "Platform independent Python debugger";

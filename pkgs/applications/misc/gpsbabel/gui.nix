@@ -1,4 +1,4 @@
-{ lib, stdenv, mkDerivation, qmake, qttools, qtwebkit, qttranslations, gpsbabel }:
+{ lib, mkDerivation, qmake, qttools, qtwebkit, qttranslations, gpsbabel }:
 
 mkDerivation {
   pname = "gpsbabel-gui";
@@ -29,7 +29,7 @@ mkDerivation {
   '';
 
   qtWrapperArgs = [
-    "--prefix PATH : ${stdenv.lib.makeBinPath [ gpsbabel ]}"
+    "--prefix PATH : ${lib.makeBinPath [ gpsbabel ]}"
   ];
 
   postInstall = ''

@@ -2,7 +2,7 @@ import ./make-test-python.nix ({ pkgs, ...} :
 
 {
   name = "searx";
-  meta = with pkgs.stdenv.lib.maintainers; {
+  meta = with pkgs.lib.maintainers; {
     maintainers = [ rnhmjoj ];
   };
 
@@ -22,13 +22,15 @@ import ./make-test-python.nix ({ pkgs, ...} :
           bind_address = "0.0.0.0";
           secret_key = "@SEARX_SECRET_KEY@";
         };
-      settings.engines = {
-        wolframalpha =
-          { api_key = "@WOLFRAM_API_KEY@";
-            engine = "wolframalpha_api";
-          };
-        startpage.shortcut = "start";
-      };
+      settings.engines = [
+        { name = "wolframalpha";
+          api_key = "@WOLFRAM_API_KEY@";
+          engine = "wolframalpha_api";
+        }
+        { name = "startpage";
+          shortcut = "start";
+        }
+      ];
     };
 
   };
@@ -39,6 +41,9 @@ import ./make-test-python.nix ({ pkgs, ...} :
 
     services.searx = {
       enable = true;
+      # searx refuses to run if unchanged
+      settings.server.secret_key = "somesecret";
+
       runInUwsgi = true;
       uwsgiConfig = {
         # serve using the uwsgi protocol
@@ -76,8 +81,9 @@ import ./make-test-python.nix ({ pkgs, ...} :
           base.wait_for_unit("searx-init")
           base.wait_for_file("/run/searx/settings.yml")
           output = base.succeed(
-              "${pkgs.yq-go}/bin/yq r /run/searx/settings.yml"
-              " 'engines.(name==startpage).shortcut'"
+              "${pkgs.yq-go}/bin/yq eval"
+              " '.engines[] | select(.name==\"startpage\") | .shortcut'"
+              " /run/searx/settings.yml"
           ).strip()
           assert output == "start", "Settings not merged"
 
@@ -106,4 +112,3 @@ import ./make-test-python.nix ({ pkgs, ...} :
           )
     '';
 })
-

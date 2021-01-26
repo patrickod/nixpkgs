@@ -1,4 +1,4 @@
-{ lib, stdenv, fetchurl, appimageTools, gsettings-desktop-schemas, gtk3 }:
+{ lib, fetchurl, appimageTools, gsettings-desktop-schemas, gtk3 }:
 
 let
   version = "2.3.2";
@@ -13,7 +13,7 @@ in appimageTools.wrapType2 rec {
     libX11 libXcursor libXdamage libXfixes libXrender libXi
     libXcomposite libXext libXrandr libXtst libSM libICE libxcb
 
-    libselinux pciutils libpulseaudio libxml2
+    libselinux pciutils libpulseaudio libxml2 icu clang
   ]);
 
   profile = ''

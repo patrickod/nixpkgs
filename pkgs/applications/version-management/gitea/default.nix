@@ -1,10 +1,11 @@
-{ stdenv, buildGoPackage, fetchurl, makeWrapper
+{ lib, buildGoPackage, fetchurl, makeWrapper
 , git, bash, gzip, openssh, pam
 , sqliteSupport ? true
 , pamSupport ? true
+, nixosTests
 }:
 
-with stdenv.lib;
+with lib;
 
 buildGoPackage rec {
   pname = "gitea";
@@ -59,6 +60,8 @@ buildGoPackage rec {
   '';
 
   goPackagePath = "code.gitea.io/gitea";
+
+  passthru.tests.gitea = nixosTests.gitea;
 
   meta = {
     description = "Git with a cup of tea";

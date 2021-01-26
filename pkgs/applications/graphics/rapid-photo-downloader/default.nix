@@ -1,4 +1,4 @@
-{ lib, stdenv, mkDerivationWith, fetchurl, python3Packages
+{ lib, mkDerivationWith, fetchurl, python3Packages
 , file, intltool, gobject-introspection, libgudev
 , udisks, gexiv2, gst_all_1, libnotify
 , exiftool, gdk-pixbuf, libmediainfo, vmtouch
@@ -71,8 +71,8 @@ mkDerivationWith python3Packages.buildPythonApplication rec {
     makeWrapperArgs+=(
       --set GI_TYPELIB_PATH "$GI_TYPELIB_PATH"
       --set PYTHONPATH "$PYTHONPATH"
-      --prefix PATH : "${stdenv.lib.makeBinPath [ exiftool vmtouch ]}"
-      --prefix LD_LIBRARY_PATH : "${stdenv.lib.makeLibraryPath [ libmediainfo ]}"
+      --prefix PATH : "${lib.makeBinPath [ exiftool vmtouch ]}"
+      --prefix LD_LIBRARY_PATH : "${lib.makeLibraryPath [ libmediainfo ]}"
       --prefix GST_PLUGIN_SYSTEM_PATH_1_0 : "$GST_PLUGIN_SYSTEM_PATH_1_0"
       "''${qtWrapperArgs[@]}"
     )

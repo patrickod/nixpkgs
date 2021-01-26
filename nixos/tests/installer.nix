@@ -284,7 +284,9 @@ let
             extraInstallerConfig
           ];
 
+          # builds stuff in the VM, needs more juice
           virtualisation.diskSize = 8 * 1024;
+          virtualisation.cores = 8;
           virtualisation.memorySize = 1536;
 
           # Use a small /dev/vdb as the root disk for the
@@ -324,8 +326,8 @@ let
           ]
           ++ optional (bootLoader == "grub" && grubVersion == 1) pkgs.grub
           ++ optionals (bootLoader == "grub" && grubVersion == 2) [
-            pkgs.grub2
-            pkgs.grub2_efi
+            (pkgs.grub2.override { zfsSupport = true; })
+            (pkgs.grub2_efi.override { zfsSupport = true; })
           ];
 
           nix.binaryCaches = mkForce [ ];

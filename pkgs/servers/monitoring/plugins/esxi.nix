@@ -1,10 +1,10 @@
-{ lib, stdenv, fetchFromGitHub, python3Packages }:
+{ lib, fetchFromGitHub, python3Packages }:
 
 let
   bName = "check_esxi_hardware";
 
 in python3Packages.buildPythonApplication rec {
-  pname = stdenv.lib.replaceStrings [ "_" ] [ "-" ] bName;
+  pname = lib.replaceStrings [ "_" ] [ "-" ] bName;
   version = "20200710";
 
   src = fetchFromGitHub {

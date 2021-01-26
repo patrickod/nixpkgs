@@ -1,7 +1,7 @@
-{ lib, stdenv
+{ lib
 , fetchPypi
 , buildPythonPackage
-, pkgconfig
+, pkg-config
 , gtk3
 , gobject-introspection
 , pygtk
@@ -9,8 +9,6 @@
 , goocanvas2
 , isPy3k
  }:
-
-with stdenv.lib;
 
 buildPythonPackage rec {
   pname = "GooCalendar";
@@ -24,7 +22,7 @@ buildPythonPackage rec {
   };
 
   nativeBuildInputs = [
-    pkgconfig
+    pkg-config
     gobject-introspection
   ];
 

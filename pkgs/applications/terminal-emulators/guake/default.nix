@@ -1,4 +1,4 @@
-{ lib, stdenv
+{ lib
 , fetchFromGitHub
 , python3
 , glibcLocales
@@ -59,11 +59,11 @@ python3.pkgs.buildPythonApplication rec {
   PBR_VERSION = version; # pbr needs either .git directory, sdist, or env var
 
   makeFlags = [
-    "prefix=${placeholder ''out''}"
+    "prefix=${placeholder "out"}"
   ];
 
   preFixup = ''
-    gappsWrapperArgs+=(--prefix LD_LIBRARY_PATH : "${stdenv.lib.makeLibraryPath [ libutempter ]}")
+    gappsWrapperArgs+=(--prefix LD_LIBRARY_PATH : "${lib.makeLibraryPath [ libutempter ]}")
   '';
 
   meta = with lib; {

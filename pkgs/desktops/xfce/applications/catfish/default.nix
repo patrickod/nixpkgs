@@ -1,4 +1,4 @@
-{ lib, stdenv, fetchurl, file, which, intltool, gobject-introspection,
+{ lib, fetchurl, file, which, intltool, gobject-introspection,
   findutils, xdg_utils, dconf, gtk3, python3Packages,
   wrapGAppsHook
 }:
@@ -8,7 +8,7 @@ python3Packages.buildPythonApplication rec {
   version = "1.4.13";
 
   src = fetchurl {
-    url = "https://archive.xfce.org/src/apps/${pname}/${stdenv.lib.versions.majorMinor version}/${pname}-${version}.tar.bz2";
+    url = "https://archive.xfce.org/src/apps/${pname}/${lib.versions.majorMinor version}/${pname}-${version}.tar.bz2";
     sha256 = "0fg89946z6n8njxn4mv29jksw8yavg8vypsljn9031pjwl3fmh2q";
   };
 

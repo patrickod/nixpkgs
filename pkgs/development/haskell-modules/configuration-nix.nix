@@ -500,7 +500,7 @@ self: super: builtins.intersectAttrs super {
   # requires autotools to build
   secp256k1 = addBuildTools super.secp256k1 [ pkgs.buildPackages.autoconf pkgs.buildPackages.automake pkgs.buildPackages.libtool ];
 
-  # requires libsecp256k1 in pkgconfig-depends
+  # requires libsecp256k1 in pkg-config-depends
   secp256k1-haskell = addPkgconfigDepend super.secp256k1-haskell pkgs.secp256k1;
 
   # tests require git and zsh
@@ -546,6 +546,12 @@ self: super: builtins.intersectAttrs super {
 
   # Break infinite recursion cycle between devtools and mprelude.
   devtools = super.devtools.override { mprelude = dontCheck super.mprelude; };
+
+  # Break dependency cycle between tasty-hedgehog and tasty-expected-failure
+  tasty-hedgehog = dontCheck super.tasty-hedgehog;
+
+  # Break dependency cycle between hedgehog, tasty-hedgehog and lifted-async
+  lifted-async = dontCheck super.lifted-async;
 
   # loc and loc-test depend on each other for testing. Break that infinite cycle:
   loc-test = super.loc-test.override { loc = dontCheck self.loc; };
@@ -604,12 +610,12 @@ self: super: builtins.intersectAttrs super {
 
   git-annex = with pkgs;
     if (!stdenv.isLinux) then
-      let path = stdenv.lib.makeBinPath [ coreutils ];
+      let path = lib.makeBinPath [ coreutils ];
       in overrideCabal (addBuildTool super.git-annex makeWrapper) (_drv: {
         # This is an instance of https://github.com/NixOS/nix/pull/1085
         # Fails with:
         #   gpg: can't connect to the agent: File name too long
-        postPatch = stdenv.lib.optionalString stdenv.isDarwin ''
+        postPatch = lib.optionalString stdenv.isDarwin ''
           substituteInPlace Test.hs \
             --replace ', testCase "crypto" test_crypto' ""
         '';
@@ -798,7 +804,4 @@ self: super: builtins.intersectAttrs super {
 
   # tests depend on a specific version of solc
   hevm = dontCheck (doJailbreak super.hevm);
-
-  # waiting for https://github.com/haskell/ThreadScope/pull/115
-  threadscope = doJailbreak super.threadscope;
 }

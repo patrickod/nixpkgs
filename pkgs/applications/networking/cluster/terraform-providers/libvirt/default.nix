@@ -1,4 +1,4 @@
-{ lib, stdenv, buildGoPackage, fetchFromGitHub, libvirt, pkgconfig, makeWrapper, cdrtools }:
+{ lib, buildGoPackage, fetchFromGitHub, fetchpatch, libvirt, pkg-config, makeWrapper, cdrtools }:
 
 # USAGE:
 # install the following package globally or in nix-shell:
@@ -23,6 +23,14 @@ buildGoPackage rec {
 
   goPackagePath = "github.com/dmacvicar/terraform-provider-libvirt";
 
+  patches = [
+    (fetchpatch {
+      name = "base_volume_copy.patch";
+      url = "https://github.com/cyril-s/terraform-provider-libvirt/commit/52df264e8a28c40ce26e2b614ee3daea882931c3.patch";
+      sha256 = "1fg7ii2fi4c93hl41nhcncy9bpw3avbh6yiq99p1vkf87hhrw72n";
+    })
+  ];
+
   src = fetchFromGitHub {
     owner = "dmacvicar";
     repo = "terraform-provider-libvirt";
@@ -30,7 +38,7 @@ buildGoPackage rec {
     sha256 = "0ak2lpnv6h0i7lzfcggd90jpfhvsasdr6nflkflk2drlcpalggj9";
   };
 
-  nativeBuildInputs = [ pkgconfig makeWrapper ];
+  nativeBuildInputs = [ pkg-config makeWrapper ];
 
   buildInputs = [ libvirt ];
 

@@ -1,4 +1,4 @@
-{ lib, stdenv, pkgs, fetchurl, wrapGAppsHook, gvfs, gtk3, atomEnv }:
+{ lib, stdenv, pkgs, fetchurl, wrapGAppsHook, glib, gtk3, atomEnv }:
 
 let
   versions = {
@@ -15,7 +15,7 @@ let
   };
 
   common = pname: {version, sha256, beta ? null}:
-      let fullVersion = version + stdenv.lib.optionalString (beta != null) "-beta${toString beta}";
+      let fullVersion = version + lib.optionalString (beta != null) "-beta${toString beta}";
       name = "${pname}-${fullVersion}";
   in stdenv.mkDerivation {
     inherit name;
@@ -54,7 +54,8 @@ let
 
     preFixup = ''
       gappsWrapperArgs+=(
-        --prefix "PATH" : "${gvfs}/bin"
+        # needed for gio executable to be able to delete files
+        --prefix "PATH" : "${glib.bin}/bin"
       )
     '';
 
@@ -89,4 +90,4 @@ let
       platforms = platforms.x86_64;
     };
   };
-in stdenv.lib.mapAttrs common versions
+in lib.mapAttrs common versions

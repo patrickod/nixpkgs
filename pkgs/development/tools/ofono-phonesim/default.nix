@@ -1,8 +1,8 @@
-{ lib, stdenv
+{ lib
 , mkDerivation
 , fetchgit
 , autoreconfHook
-, pkgconfig
+, pkg-config
 , qtbase
 }:
 
@@ -18,7 +18,7 @@ mkDerivation {
 
   nativeBuildInputs = [
     autoreconfHook
-    pkgconfig
+    pkg-config
   ];
 
   buildInputs = [

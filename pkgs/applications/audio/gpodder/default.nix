@@ -1,4 +1,4 @@
-{ lib, stdenv, fetchFromGitHub, python3, python3Packages, intltool
+{ lib, fetchFromGitHub, python3, python3Packages, intltool
 , glibcLocales, gnome3, gtk3, wrapGAppsHook
 , gobject-introspection
 }:
@@ -19,7 +19,7 @@ python3Packages.buildPythonApplication rec {
     ./disable-autoupdate.patch
   ];
 
-  postPatch = with stdenv.lib; ''
+  postPatch = with lib; ''
     sed -i -re 's,^( *gpodder_dir *= *).*,\1"'"$out"'",' bin/gpodder
   '';
 

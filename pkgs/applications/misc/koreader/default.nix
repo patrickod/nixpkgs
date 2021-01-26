@@ -11,12 +11,12 @@
 let font-droid = nerdfonts.override { fonts = [ "DroidSansMono" ]; };
 in stdenv.mkDerivation rec {
   pname = "koreader";
-  version = "2020.12";
+  version = "2021.01";
 
   src = fetchurl {
     url =
       "https://github.com/koreader/koreader/releases/download/v${version}/koreader-${version}-amd64.deb";
-    sha256 = "0x97mm7h8kr1jps0hzdgl9irakma85ikrhzr18wc1plmffgv6kwm";
+    sha256 = "0cc7pk27wlvziihggzlrb3wsjmndafa13cy1snqr5x71bb81fv6r";
   };
 
   sourceRoot = ".";
@@ -37,7 +37,7 @@ in stdenv.mkDerivation rec {
     done
     ln -s "${font-droid}/share/fonts/opentype/NerdFonts/Droid Sans Mono Nerd Font Complete Mono.otf" $out/lib/koreader/fonts/droid/DroidSansMono.ttf
     wrapProgram $out/bin/koreader --prefix LD_LIBRARY_PATH : ${
-      stdenv.lib.makeLibraryPath [ gtk3-x11 SDL2 glib ]
+      lib.makeLibraryPath [ gtk3-x11 SDL2 glib ]
     }
   '';
 

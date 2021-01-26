@@ -1,4 +1,4 @@
-{ lib, stdenv, fetchFromGitHub, buildPerlPackage, shortenPerlShebang
+{ lib, fetchFromGitHub, buildPerlPackage, shortenPerlShebang
 , DBDmysql, DBI, IOSocketSSL, TermReadKey
 }:
 
@@ -24,7 +24,7 @@ buildPerlPackage rec {
   '';
 
   meta = with lib; {
-    description = ''Collection of advanced command-line tools to perform a variety of MySQL and system tasks.'';
+    description = "Collection of advanced command-line tools to perform a variety of MySQL and system tasks.";
     homepage = "https://www.percona.com/software/database-tools/percona-toolkit";
     license = with licenses; [ gpl2 ];
     maintainers = with maintainers; [ izorkin ];

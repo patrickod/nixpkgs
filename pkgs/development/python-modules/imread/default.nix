@@ -1,8 +1,8 @@
-{ lib, stdenv
+{ lib
 , buildPythonPackage
 , fetchPypi
 , nose
-, pkgconfig
+, pkg-config
 , libjpeg
 , libpng
 , libtiff
@@ -21,7 +21,7 @@ buildPythonPackage rec {
   };
 
 
-  nativeBuildInputs = [ pkgconfig ];
+  nativeBuildInputs = [ pkg-config ];
   buildInputs = [ nose libjpeg libpng libtiff libwebp ];
   propagatedBuildInputs = [ numpy ];
 

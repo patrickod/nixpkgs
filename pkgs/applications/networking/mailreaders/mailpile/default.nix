@@ -1,4 +1,4 @@
-{ lib, stdenv, fetchFromGitHub, python2Packages, gnupg1orig, openssl, git }:
+{ lib, fetchFromGitHub, python2Packages, gnupg1orig, openssl, git }:
 
 python2Packages.buildPythonApplication rec {
   pname = "mailpile";
@@ -32,7 +32,7 @@ python2Packages.buildPythonApplication rec {
 
   postInstall = ''
     wrapProgram $out/bin/mailpile \
-      --prefix PATH ":" "${stdenv.lib.makeBinPath [ gnupg1orig openssl ]}" \
+      --prefix PATH ":" "${lib.makeBinPath [ gnupg1orig openssl ]}" \
       --set-default MAILPILE_SHARED "$out/share/mailpile"
   '';
 

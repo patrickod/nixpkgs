@@ -1,4 +1,4 @@
-{ lib, stdenv, runtimeShell, fetchFromGitHub, python3, writeText, writeScript
+{ lib, runtimeShell, fetchFromGitHub, python3, writeText, writeScript
 , coreutils, sqlite }:
 
 with python3.pkgs;
@@ -17,7 +17,7 @@ let
     );
   '';
 
-  dbScript = writeScript "create_pykms_db.sh" (with stdenv.lib; ''
+  dbScript = writeScript "create_pykms_db.sh" (with lib; ''
     #!${runtimeShell}
 
     set -eEuo pipefail

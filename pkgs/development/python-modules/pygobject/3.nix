@@ -1,4 +1,4 @@
-{ lib, stdenv, fetchurl, buildPythonPackage, pkgconfig, glib, gobject-introspection,
+{ lib, stdenv, fetchurl, buildPythonPackage, pkg-config, glib, gobject-introspection,
 pycairo, cairo, which, ncurses, meson, ninja, isPy3k, gnome3 }:
 
 buildPythonPackage rec {
@@ -10,15 +10,15 @@ buildPythonPackage rec {
   format = "other";
 
   src = fetchurl {
-    url = "mirror://gnome/sources/${pname}/${stdenv.lib.versions.majorMinor version}/${pname}-${version}.tar.xz";
+    url = "mirror://gnome/sources/${pname}/${lib.versions.majorMinor version}/${pname}-${version}.tar.xz";
     sha256 = "A3LRu5Ei/Bn1AKJJsfOMK7Z0hQAPWIdJe0sgWz5whNU=";
   };
 
   outputs = [ "out" "dev" ];
 
-  nativeBuildInputs = [ pkgconfig meson ninja gobject-introspection ];
+  nativeBuildInputs = [ pkg-config meson ninja gobject-introspection ];
   buildInputs = [ glib gobject-introspection ]
-                 ++ stdenv.lib.optionals stdenv.isDarwin [ which ncurses ];
+                 ++ lib.optionals stdenv.isDarwin [ which ncurses ];
   propagatedBuildInputs = [ pycairo cairo ];
 
   passthru = {

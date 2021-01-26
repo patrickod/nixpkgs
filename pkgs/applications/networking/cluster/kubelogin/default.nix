@@ -1,4 +1,4 @@
-{ lib, stdenv, fetchFromGitHub, buildGoModule, go }:
+{ lib, fetchFromGitHub, buildGoModule, go }:
 
 buildGoModule rec {
   pname = "kubelogin";
@@ -16,7 +16,7 @@ buildGoModule rec {
   buildFlagsArray = ''
     -ldflags=
         -X main.version=${version}
-        -X main.goVersion=${stdenv.lib.getVersion go}
+        -X main.goVersion=${lib.getVersion go}
   '';
 
   meta = with lib; {
