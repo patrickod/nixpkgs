@@ -2001,6 +2001,8 @@ in {
 
   easywatch = callPackage ../development/python-modules/easywatch { };
 
+  ec2instanceconnectcli = callPackage ../tools/virtualization/ec2instanceconnectcli { };
+
   eccodes = toPythonModule (pkgs.eccodes.override {
     enablePython = true;
     pythonPackages = self;
@@ -4865,6 +4867,8 @@ in {
 
   pkuseg = callPackage ../development/python-modules/pkuseg { };
 
+  pynndescent = callPackage ../development/python-modules/pynndescent { };
+
   pysbd = callPackage ../development/python-modules/pysbd { };
 
   python-codon-tables = callPackage ../development/python-modules/python-codon-tables { };
@@ -6502,6 +6506,8 @@ in {
       };
     });
   in if isPy3k then pyxattr' else pyxattr_2;
+
+  pyworld = callPackage ../development/python-modules/pyworld { };
 
   pyx = callPackage ../development/python-modules/pyx { };
 

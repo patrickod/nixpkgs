@@ -2640,6 +2640,8 @@ in
 
   pbzx = callPackage ../tools/compression/pbzx { };
 
+  pcb2gcode = callPackage ../tools/misc/pcb2gcode { };
+
   persepolis = python3Packages.callPackage ../tools/networking/persepolis {
     wrapQtAppsHook = qt5.wrapQtAppsHook;
   };
@@ -3803,7 +3805,7 @@ in
 
   wsl-open = callPackage ../tools/misc/wsl-open { };
 
-  xkcdpass = with pythonPackages; toPythonApplication xkcdpass;
+  xkcdpass = with python3Packages; toPythonApplication xkcdpass;
 
   xob = callPackage ../tools/X11/xob { };
 
@@ -5083,6 +5085,8 @@ in
   http-prompt = callPackage ../tools/networking/http-prompt { };
 
   http-getter = callPackage ../applications/networking/flent/http-getter.nix { };
+
+  httpdump = callPackage ../tools/security/httpdump { };
 
   httpie = callPackage ../tools/networking/httpie { };
 
@@ -7051,6 +7055,8 @@ in
 
   tautulli = python3Packages.callPackage ../servers/tautulli { };
 
+  pleroma-otp = callPackage ../servers/pleroma-otp { };
+
   ploticus = callPackage ../tools/graphics/ploticus {
     libpng = libpng12;
   };
@@ -7868,6 +7874,8 @@ in
 
   soapui = callPackage ../applications/networking/soapui { };
 
+  spglib = callPackage ../development/libraries/spglib { };
+
   ssh-askpass-fullscreen = callPackage ../tools/networking/ssh-askpass-fullscreen { };
 
   sshguard = callPackage ../tools/security/sshguard {};
@@ -8595,6 +8603,10 @@ in
   viu = callPackage ../tools/graphics/viu { };
 
   vix = callPackage ../tools/misc/vix { };
+
+  vkBasalt = callPackage ../tools/graphics/vkBasalt {
+    vkBasalt32 = pkgsi686Linux.vkBasalt;
+  };
 
   vnc2flv = callPackage ../tools/video/vnc2flv {};
 
@@ -10170,6 +10182,7 @@ in
           headless = true;
           inherit (gnome2) GConf gnome_vfs;
           openjdk13-bootstrap = callPackage ../development/compilers/openjdk/12.nix {
+            stdenv = gcc8Stdenv; /* build segfaults with gcc9 or newer, so use gcc8 like Debian does */
             openjfx = openjfx11; /* need this despite next line :-( */
             enableJavaFX = false;
             headless = true;
@@ -10566,6 +10579,8 @@ in
     inherit (ocaml-ng.ocamlPackages_4_05) ocaml;
   };
 
+  opam-installer = callPackage ../development/tools/ocaml/opam/installer.nix { };
+
   open-watcom-bin = callPackage ../development/compilers/open-watcom-bin { };
 
   pforth = callPackage ../development/compilers/pforth {};
@@ -10729,6 +10744,7 @@ in
   cargo-udeps = callPackage ../development/tools/rust/cargo-udeps {
     inherit (darwin.apple_sdk.frameworks) CoreServices Security;
   };
+  cargo-valgrind = callPackage ../development/tools/rust/cargo-valgrind { };
   cargo-watch = callPackage ../development/tools/rust/cargo-watch {
     inherit (darwin.apple_sdk.frameworks) CoreServices;
   };
@@ -13145,6 +13161,8 @@ in
   ormolu = haskellPackages.ormolu.bin;
 
   capnproto = callPackage ../development/libraries/capnproto { };
+
+  capnproto-java = callPackage ../development/tools/capnproto-java { };
 
   captive-browser = callPackage ../applications/networking/browsers/captive-browser { };
 
@@ -18926,7 +18944,6 @@ in
         # when adding a new linux version
         kernelPatches.cpu-cgroup-v2."4.11"
         kernelPatches.modinst_arg_list_too_long
-        kernelPatches.export_kernel_fpu_functions."4.14"
       ];
   };
 
@@ -18935,7 +18952,6 @@ in
       [ kernelPatches.bridge_stp_helper
         kernelPatches.request_key_helper
         kernelPatches.modinst_arg_list_too_long
-        kernelPatches.export_kernel_fpu_functions."4.14"
       ];
   };
 
@@ -18944,7 +18960,6 @@ in
       kernelPatches.bridge_stp_helper
       kernelPatches.request_key_helper
       kernelPatches.rtl8761b_support
-      kernelPatches.export_kernel_fpu_functions."5.3"
     ];
   };
 
@@ -18952,7 +18967,6 @@ in
     kernelPatches = [
       kernelPatches.bridge_stp_helper
       kernelPatches.request_key_helper
-      kernelPatches.export_kernel_fpu_functions."5.3"
     ];
   };
 
@@ -18960,7 +18974,6 @@ in
     kernelPatches = [
       kernelPatches.bridge_stp_helper
       kernelPatches.request_key_helper
-      kernelPatches.export_kernel_fpu_functions."5.3"
     ];
   };
 
@@ -18968,7 +18981,6 @@ in
     kernelPatches = [
       kernelPatches.bridge_stp_helper
       kernelPatches.request_key_helper
-      kernelPatches.export_kernel_fpu_functions."5.3"
     ];
   };
 
@@ -18976,7 +18988,6 @@ in
     kernelPatches = [
       kernelPatches.bridge_stp_helper
       kernelPatches.request_key_helper
-      kernelPatches.export_kernel_fpu_functions."5.3"
       kernelPatches.export-rt-sched-migrate
     ];
   };
@@ -19007,7 +19018,6 @@ in
     kernelPatches = [
       kernelPatches.bridge_stp_helper
       kernelPatches.request_key_helper
-      kernelPatches.export_kernel_fpu_functions."5.3"
     ];
   };
 
@@ -19015,7 +19025,6 @@ in
     kernelPatches = [
       kernelPatches.bridge_stp_helper
       kernelPatches.request_key_helper
-      kernelPatches.export_kernel_fpu_functions."5.3"
     ];
   };
 
@@ -19662,6 +19671,7 @@ in
   prototool = callPackage ../development/tools/prototool { };
 
   qemu_kvm = lowPrio (qemu.override { hostCpuOnly = true; });
+  qemu_full = lowPrio (qemu.override { smbdSupport = true; cephSupport = true; });
 
   # See `xenPackages` source for explanations.
   # Building with `xen` instead of `xen-slim` is possible, but makes no sense.
@@ -23577,7 +23587,6 @@ in
       jackSupport = config.mumble.jackSupport or false;
       speechdSupport = config.mumble.speechdSupport or false;
       pulseSupport = config.pulseaudio or stdenv.isLinux;
-      qt5 = qt514;
     }).mumble;
 
   mumble_overlay = callPackage ../applications/networking/mumble/overlay.nix {
@@ -25261,7 +25270,7 @@ in
   }).overrideAttrs (oldAttrs: rec {
     pname = "vim-darwin";
     meta = {
-      platforms = stdenv.lib.platforms.darwin;
+      platforms = lib.platforms.darwin;
     };
   });
 
@@ -25427,7 +25436,10 @@ in
 
   vscodium = callPackage ../applications/editors/vscode/vscodium.nix { };
 
-  code-server = callPackage ../servers/code-server { };
+  code-server = callPackage ../servers/code-server {
+    inherit (darwin.apple_sdk.frameworks) AppKit Cocoa Security;
+    inherit (darwin) cctools;
+  };
 
   vue = callPackage ../applications/misc/vue { };
 
@@ -28873,18 +28885,6 @@ in
   nut = callPackage ../applications/misc/nut { };
 
   solfege = python3Packages.callPackage ../misc/solfege { };
-
-  disnix = callPackage ../tools/package-management/disnix { };
-
-  dysnomia = callPackage ../tools/package-management/disnix/dysnomia (config.disnix or {
-    inherit (pythonPackages) supervisor;
-  });
-
-  dydisnix = callPackage ../tools/package-management/disnix/dydisnix { };
-
-  disnixos = callPackage ../tools/package-management/disnix/disnixos { };
-
-  DisnixWebService = callPackage ../tools/package-management/disnix/DisnixWebService { };
 
   lkproof = callPackage ../tools/typesetting/tex/lkproof { };
 
