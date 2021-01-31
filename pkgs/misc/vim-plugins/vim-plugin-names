@@ -543,6 +543,7 @@ svermeulen/vim-subversive
 t9md/vim-choosewin
 t9md/vim-smalls
 takac/vim-hardtime
+tami5/lispdocs.nvim
 tami5/sql.nvim
 tbodt/deoplete-tabnine
 ternjs/tern_for_vim
@@ -677,6 +678,7 @@ wbthomason/packer.nvim
 weirongxu/coc-explorer
 wellle/targets.vim
 wellle/tmux-complete.vim
+wfxr/minimap.vim
 whonore/Coqtail
 will133/vim-dirdiff
 wincent/command-t

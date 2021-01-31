@@ -204,6 +204,8 @@ in {
 
   aioamqp = callPackage ../development/python-modules/aioamqp { };
 
+  aiocoap = callPackage ../development/python-modules/aiocoap { };
+
   aioconsole = callPackage ../development/python-modules/aioconsole { };
 
   aiocontextvars = callPackage ../development/python-modules/aiocontextvars { };
@@ -3100,6 +3102,8 @@ in {
 
   imaplib2 = callPackage ../development/python-modules/imaplib2 { };
 
+  imap-tools = callPackage ../development/python-modules/imap-tools { };
+
   imbalanced-learn = if isPy27 then
     callPackage ../development/python-modules/imbalanced-learn/0.4.nix { }
   else
@@ -4431,6 +4435,8 @@ in {
 
   nplusone = callPackage ../development/python-modules/nplusone { };
 
+  npyscreen = callPackage ../development/python-modules/npyscreen { };
+
   ntc-templates = callPackage ../development/python-modules/ntc-templates { };
 
   ntlm-auth = callPackage ../development/python-modules/ntlm-auth { };
@@ -4747,6 +4753,8 @@ in {
 
   pdoc3 = callPackage ../development/python-modules/pdoc3 { };
 
+  pebble = callPackage ../development/python-modules/pebble { };
+
   pecan = callPackage ../development/python-modules/pecan { };
 
   peewee = callPackage ../development/python-modules/peewee { };
@@ -4910,6 +4918,8 @@ in {
   pluggy = callPackage ../development/python-modules/pluggy { };
 
   pluginbase = callPackage ../development/python-modules/pluginbase { };
+
+  plugwise = callPackage ../development/python-modules/plugwise { };
 
   plumbum = callPackage ../development/python-modules/plumbum { };
 
@@ -5756,6 +5766,8 @@ in {
   pypykatz = callPackage ../development/python-modules/pypykatz { };
 
   pyqrcode = callPackage ../development/python-modules/pyqrcode { };
+
+  pyqt-builder = callPackage ../development/python-modules/pyqt-builder { };
 
   pyqt4 = callPackage ../development/python-modules/pyqt/4.x.nix { inherit (pkgs) pkg-config; };
 
@@ -6652,6 +6664,8 @@ in {
 
   reflink = callPackage ../development/python-modules/reflink { };
 
+  regenmaschine = callPackage ../development/python-modules/regenmaschine { };
+
   regex = callPackage ../development/python-modules/regex { };
 
   regional = callPackage ../development/python-modules/regional { };
@@ -7331,6 +7345,8 @@ in {
 
   sphinx-argparse = callPackage ../development/python-modules/sphinx-argparse { };
 
+  sphinx-autobuild = callPackage ../development/python-modules/sphinx-argparse { };
+
   sphinx-jinja = callPackage ../development/python-modules/sphinx-jinja { };
 
   sphinx-navtree = callPackage ../development/python-modules/sphinx-navtree { };
@@ -7770,7 +7786,7 @@ in {
   # Used by circus and grab-site, 2020-08-29
   tornado_4 = callPackage ../development/python-modules/tornado/4.nix { };
 
-  # Used by luigi, 2020-08-29
+  # Used by streamlit, graphite_beacon, 2021-01-29
   tornado_5 = callPackage ../development/python-modules/tornado/5.nix { };
 
   towncrier = callPackage ../development/python-modules/towncrier { inherit (pkgs) git; };
