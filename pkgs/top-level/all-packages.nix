@@ -1033,6 +1033,8 @@ in
 
   boxes = callPackage ../tools/text/boxes { };
 
+  boundary = callPackage ../tools/networking/boundary { };
+
   chamber = callPackage ../tools/admin/chamber {  };
 
   charm = callPackage ../applications/misc/charm { };
@@ -2908,6 +2910,16 @@ in
 
   beanstalkd = callPackage ../servers/beanstalkd { };
 
+  bee = callPackage ../applications/networking/bee/bee.nix {
+    version = "release";
+  };
+
+  bee-unstable = bee.override {
+    version = "unstable";
+  };
+
+  bee-clef = callPackage ../applications/networking/bee/bee-clef.nix { };
+
   beets = callPackage ../tools/audio/beets {
     pythonPackages = python3Packages;
   };
@@ -3069,6 +3081,8 @@ in
   };
 
   cjdns = callPackage ../tools/networking/cjdns { };
+
+  cjson = callPackage ../development/libraries/cjson { };
 
   cksfv = callPackage ../tools/networking/cksfv { };
 
@@ -3792,7 +3806,7 @@ in
 
   volctl = callPackage ../tools/audio/volctl { };
 
-  vorta = python3Packages.callPackage ../applications/backup/vorta { };
+  vorta = libsForQt5.callPackage ../applications/backup/vorta { };
 
   utahfs = callPackage ../applications/networking/utahfs { };
 
@@ -5194,6 +5208,8 @@ in
 
     packages = config.ihaskell.packages or (self: []);
   };
+
+  ijq = callPackage ../development/tools/ijq { };
 
   iruby = callPackage ../applications/editors/jupyter-kernels/iruby { };
 
@@ -6821,6 +6837,8 @@ in
 
   ovh-ttyrec = callPackage ../tools/misc/ovh-ttyrec { };
 
+  ovito = libsForQt5.callPackage ../applications/graphics/ovito { };
+
   owncloud-client = libsForQt514.callPackage ../applications/networking/owncloud-client { };
 
   oxidized = callPackage ../tools/admin/oxidized { };
@@ -7900,6 +7918,8 @@ in
 
   ssh-chat = callPackage ../applications/networking/instant-messengers/ssh-chat { };
 
+  ssh-to-pgp = callPackage ../tools/security/ssh-to-pgp { };
+
   suricata = callPackage ../applications/networking/ids/suricata {
     python = python3;
   };
@@ -8770,6 +8790,8 @@ in
     inherit (darwin.apple_sdk.frameworks) SystemConfiguration Foundation;
   };
 
+  htmltest = callPackage ../development/tools/htmltest { };
+
   rcm = callPackage ../tools/misc/rcm {};
 
   td = callPackage ../tools/misc/td { };
@@ -9570,7 +9592,7 @@ in
 
   icr = callPackage ../development/tools/icr { };
 
-  scry = callPackage ../development/tools/scry {};
+  scry = callPackage ../development/tools/scry { };
 
   dasm = callPackage ../development/compilers/dasm/default.nix { };
 
@@ -14026,6 +14048,11 @@ in
     inherit (darwin.apple_sdk.frameworks) AppKit Cocoa;
   };
 
+  gtk4 = callPackage ../development/libraries/gtk/4.x.nix {
+    inherit (darwin.apple_sdk.frameworks) AppKit Cocoa;
+  };
+
+
   # On darwin gtk uses cocoa by default instead of x11.
   gtk3-x11 = gtk3.override {
     cairo = cairo.override { x11Support = true; };
@@ -14729,6 +14756,8 @@ in
   libgadu = callPackage ../development/libraries/libgadu { };
 
   libgda = callPackage ../development/libraries/libgda { };
+
+  libgda6 = callPackage ../development/libraries/libgda/6.x.nix { };
 
   libgdamm = callPackage ../development/libraries/libgdamm { };
 
@@ -22396,7 +22425,7 @@ in
 
   gocr = callPackage ../applications/graphics/gocr { };
 
-  gobby5 = callPackage ../applications/editors/gobby { };
+  gobby = callPackage ../applications/editors/gobby { };
 
   gphoto2 = callPackage ../applications/misc/gphoto2 { };
 
@@ -25851,7 +25880,7 @@ in
 
   xdg-user-dirs = callPackage ../tools/X11/xdg-user-dirs { };
 
-  xdg_utils = callPackage ../tools/X11/xdg-utils {
+  xdg-utils = callPackage ../tools/X11/xdg-utils {
     w3m = w3m-batch;
   };
 
@@ -26545,6 +26574,9 @@ in
   gcompris = libsForQt5.callPackage ../games/gcompris { };
 
   gemrb = callPackage ../games/gemrb { };
+
+  gimx = callPackage ../games/gimx {};
+  gimx-afterglow = lowPrio (gimx.override { gimxAuth = "afterglow"; });
 
   gl117 = callPackage ../games/gl-117 {};
 
@@ -29475,8 +29507,13 @@ in
 
   yaxg = callPackage ../tools/graphics/yaxg {};
 
-  yuzu = libsForQt5.callPackage ../misc/emulators/yuzu {
-    stdenv = gcc10Stdenv;
+  yuzu-mainline = import ../misc/emulators/yuzu {
+    branch = "mainline";
+    inherit (pkgs) libsForQt5 fetchFromGitHub;
+  };
+  yuzu-ea = import ../misc/emulators/yuzu {
+    branch = "early-access";
+    inherit (pkgs) libsForQt5 fetchFromGitHub;
   };
 
   zap = callPackage ../tools/networking/zap { };

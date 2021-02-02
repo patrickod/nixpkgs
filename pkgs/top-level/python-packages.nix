@@ -931,14 +931,10 @@ in {
 
   binho-host-adapter = callPackage ../development/python-modules/binho-host-adapter { };
 
-  binwalk = callPackage ../development/python-modules/binwalk {
-    pyqtgraph = null;
-    matplotlib = null;
-  };
+  binwalk = callPackage ../development/python-modules/binwalk { };
 
   binwalk-full = appendToName "full" (self.binwalk.override {
-    pyqtgraph = self.pyqtgraph;
-    matplotlib = self.matplotlib;
+    visualizationSupport = true;
   });
 
   biopython = callPackage ../development/python-modules/biopython { };
@@ -1119,16 +1115,7 @@ in {
 
   cachelib = callPackage ../development/python-modules/cachelib { };
 
-  cachetools = let
-    cachetools' = callPackage ../development/python-modules/cachetools { };
-    cachetools_2 = cachetools'.overridePythonAttrs (oldAttrs: rec {
-      version = "3.1.1";
-      src = oldAttrs.src.override {
-        inherit version;
-        sha256 = "16m69l6n6y1r1y7cklm92rr7v69ldig2n3lbl3j323w5jz7d78lf";
-      };
-    });
-  in if isPy3k then cachetools' else cachetools_2;
+  cachetools = callPackage ../development/python-modules/cachetools { };
 
   cachy = callPackage ../development/python-modules/cachy { };
 
@@ -1496,6 +1483,8 @@ in {
   crcmod = callPackage ../development/python-modules/crcmod { };
 
   credstash = callPackage ../development/python-modules/credstash { };
+
+  criticality-score = callPackage ../development/python-modules/criticality-score { };
 
   croniter = callPackage ../development/python-modules/croniter { };
 
@@ -2526,6 +2515,8 @@ in {
 
   geojson-client = callPackage ../development/python-modules/geojson-client { };
 
+  geomet = callPackage ../development/python-modules/geomet { };
+
   geopandas = callPackage ../development/python-modules/geopandas { };
 
   geopy = if isPy3k then
@@ -2753,7 +2744,9 @@ in {
 
   gpyopt = callPackage ../development/python-modules/gpyopt { };
 
-  gradient_sdk = callPackage ../development/python-modules/gradient_sdk { };
+  gradient = callPackage ../development/python-modules/gradient { };
+
+  gradient-utils = callPackage ../development/python-modules/gradient-utils { };
 
   gradient_statsd = callPackage ../development/python-modules/gradient_statsd { };
 
@@ -2792,6 +2785,8 @@ in {
   greenlet = callPackage ../development/python-modules/greenlet { };
 
   grequests = callPackage ../development/python-modules/grequests { };
+
+  gremlinpython = callPackage ../development/python-modules/gremlinpython { };
 
   grib-api = disabledIf (!isPy27) (toPythonModule (pkgs.grib-api.override {
     enablePython = true;
@@ -2874,6 +2869,8 @@ in {
   habanero = callPackage ../development/python-modules/habanero { };
 
   ha-ffmpeg = callPackage ../development/python-modules/ha-ffmpeg { };
+
+  halo = callPackage ../development/python-modules/halo { };
 
   handout = callPackage ../development/python-modules/handout { };
 
@@ -3778,6 +3775,8 @@ in {
 
   lockfile = callPackage ../development/python-modules/lockfile { };
 
+  log-symbols = callPackage ../development/python-modules/log-symbols { };
+
   Logbook = callPackage ../development/python-modules/Logbook { };
 
   logfury = callPackage ../development/python-modules/logfury { };
@@ -4642,9 +4641,9 @@ in {
 
   panel = callPackage ../development/python-modules/panel { };
 
-  papermill = callPackage ../development/python-modules/papermill { };
+  panflute = callPackage ../development/python-modules/panflute { };
 
-  paperspace = callPackage ../development/python-modules/paperspace { };
+  papermill = callPackage ../development/python-modules/papermill { };
 
   openpaperwork-core = callPackage ../applications/office/paperwork/openpaperwork-core.nix { };
   openpaperwork-gtk = callPackage ../applications/office/paperwork/openpaperwork-gtk.nix { };
@@ -5557,6 +5556,8 @@ in {
   pyliblo = callPackage ../development/python-modules/pyliblo { };
 
   pylibmc = callPackage ../development/python-modules/pylibmc { };
+
+  pylink-square = callPackage ../development/python-modules/pylink-square { };
 
   pylint-celery = callPackage ../development/python-modules/pylint-celery { };
 
@@ -7295,6 +7296,8 @@ in {
   spglib = callPackage ../development/python-modules/spglib { };
 
   sphfile = callPackage ../development/python-modules/sphfile { };
+
+  spinners = callPackage ../development/python-modules/spinners { };
 
   sphinxcontrib-applehelp = callPackage ../development/python-modules/sphinxcontrib-applehelp { };
 
