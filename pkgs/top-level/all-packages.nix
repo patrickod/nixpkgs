@@ -112,17 +112,21 @@ in
     { name = "auto-blas-hook"; deps = [ blas lapack ]; }
     ../build-support/setup-hooks/audit-blas.sh;
 
-  autoreconfHook = makeSetupHook
-    { deps = [ autoconf automake gettext libtool ]; }
-    ../build-support/setup-hooks/autoreconf.sh;
+  autoreconfHook = callPackage (
+    { makeSetupHook, autoconf, automake, gettext, libtool }:
+    makeSetupHook
+      { deps = [ autoconf automake gettext libtool ]; }
+      ../build-support/setup-hooks/autoreconf.sh
+  ) { };
 
-  autoreconfHook264 = makeSetupHook
-    { deps = [ autoconf264 automake111x gettext libtool ]; }
-    ../build-support/setup-hooks/autoreconf.sh;
+  autoreconfHook264 = autoreconfHook.override {
+    autoconf = autoconf264;
+    automake = automake111x;
+  };
 
-  autoreconfHook269 = makeSetupHook
-    { deps = [ autoconf269 automake gettext libtool ]; }
-    ../build-support/setup-hooks/autoreconf.sh;
+  autoreconfHook269 = autoreconfHook.override {
+    autoconf = autoconf269;
+  };
 
   autoPatchelfHook = makeSetupHook { name = "auto-patchelf-hook"; }
     ../build-support/setup-hooks/auto-patchelf.sh;
@@ -151,6 +155,8 @@ in
   ankisyncd = callPackage ../servers/ankisyncd { };
 
   fiche = callPackage ../servers/fiche { };
+
+  fishnet = callPackage ../servers/fishnet { };
 
   avro-tools = callPackage ../development/tools/avro-tools { };
 
@@ -212,6 +218,8 @@ in
 
   containerpilot = callPackage ../applications/networking/cluster/containerpilot { };
 
+  coordgenlibs  = callPackage ../development/libraries/coordgenlibs { };
+
   cp437 = callPackage ../tools/misc/cp437 { };
 
   cpu-x = callPackage ../applications/misc/cpu-x { };
@@ -223,6 +231,8 @@ in
   };
 
   deadcode = callPackage ../development/tools/deadcode { };
+
+  each = callPackage ../tools/text/each { };
 
   eclipse-mat = callPackage ../development/tools/eclipse-mat { };
 
@@ -1265,6 +1275,8 @@ in
 
   gaia = callPackage ../development/libraries/gaia { };
 
+  galene = callPackage ../servers/web-apps/galene {};
+
   gamecube-tools = callPackage ../development/tools/gamecube-tools { };
 
   gammy = qt5.callPackage ../tools/misc/gammy { };
@@ -2119,6 +2131,8 @@ in
   doppler = callPackage ../tools/security/doppler {};
 
   dosage = callPackage ../applications/graphics/dosage { };
+
+  dotenv-linter = callPackage ../development/tools/analysis/dotenv-linter { };
 
   dot-merlin-reader = callPackage ../development/tools/ocaml/merlin/dot-merlin-reader.nix { };
 
@@ -5317,7 +5331,9 @@ in
 
   ispike = callPackage ../development/libraries/science/robotics/ispike { };
 
-  isync = callPackage ../tools/networking/isync { };
+  isync = callPackage ../tools/networking/isync {
+    inherit (darwin.apple_sdk.frameworks) Security;
+  };
 
   itm-tools = callPackage ../development/tools/misc/itm-tools { };
 
@@ -6048,6 +6064,8 @@ in
   macchanger = callPackage ../os-specific/linux/macchanger { };
 
   madlang = haskell.lib.justStaticExecutables haskellPackages.madlang;
+
+  maeparser = callPackage ../development/libraries/maeparser { };
 
   mailcheck = callPackage ../applications/networking/mailreaders/mailcheck { };
 
@@ -7285,9 +7303,15 @@ in
 
   rocket = libsForQt5.callPackage ../tools/graphics/rocket { };
 
-  rtaudio = callPackage ../development/libraries/audio/rtaudio { };
+  rtaudio = callPackage ../development/libraries/audio/rtaudio {
+    jack = libjack2;
+    inherit (darwin.apple_sdk.frameworks) CoreAudio;
+  };
 
-  rtmidi = callPackage ../development/libraries/audio/rtmidi { };
+  rtmidi = callPackage ../development/libraries/audio/rtmidi {
+    jack = libjack2;
+    inherit (darwin.apple_sdk.frameworks) CoreMIDI CoreAudio CoreServices;
+  };
 
   openmpi = callPackage ../development/libraries/openmpi { };
 
@@ -8029,7 +8053,7 @@ in
 
   subsurface = libsForQt514.callPackage ../applications/misc/subsurface { };
 
-  sudo = callPackage ../tools/security/sudo { };
+  sudo = if stdenv.isDarwin then darwin.sudo else callPackage ../tools/security/sudo { };
 
   suidChroot = callPackage ../tools/system/suid-chroot { };
 
@@ -8245,7 +8269,7 @@ in
 
   textadept11 = callPackage ../applications/editors/textadept/11 { };
 
-  texworks = libsForQt514.callPackage ../applications/editors/texworks { };
+  texworks = libsForQt5.callPackage ../applications/editors/texworks { };
 
   thc-hydra = callPackage ../tools/security/thc-hydra { };
 
@@ -8330,6 +8354,8 @@ in
   tmuxp = callPackage ../tools/misc/tmuxp { };
 
   tmuxinator = callPackage ../tools/misc/tmuxinator { };
+
+  tmux-mem-cpu-load = callPackage ../tools/misc/tmux-mem-cpu-load { };
 
   tmux-xpanes = callPackage ../tools/misc/tmux-xpanes { };
 
@@ -10275,9 +10301,9 @@ in
     inherit (darwin) libiconv libobjc libresolv;
   }) mx jvmci8 graalvm8;
 
-  inherit (callPackages ../development/compilers/graalvm/community-edition.nix { })
-    graalvm8-ce
-    graalvm11-ce;
+  inherit (callPackages ../development/compilers/graalvm/community-edition.nix {
+    inherit (darwin.apple_sdk.frameworks) Foundation;
+  }) graalvm8-ce graalvm11-ce;
 
   inherit (callPackages ../development/compilers/graalvm/enterprise-edition.nix { })
     graalvm8-ee
@@ -11703,10 +11729,10 @@ in
   bazel_3 = callPackage ../development/tools/build-managers/bazel/bazel_3 {
     inherit (darwin) cctools;
     inherit (darwin.apple_sdk.frameworks) CoreFoundation CoreServices Foundation;
-    buildJdk = jdk8_headless;
-    buildJdkName = "jdk8";
+    buildJdk = jdk11_headless;
+    buildJdkName = "java11";
     runJdk = jdk11_headless;
-    stdenv = if stdenv.cc.isClang then llvmPackages_6.stdenv else stdenv;
+    stdenv = if stdenv.cc.isClang then llvmPackages.stdenv else stdenv;
     bazel_self = bazel_3;
   };
 
@@ -15122,6 +15148,8 @@ in
 
   libkate = callPackage ../development/libraries/libkate { };
 
+  libkeyfinder = callPackage ../development/libraries/libkeyfinder { };
+
   libkml = callPackage ../development/libraries/libkml { };
 
   libksba = callPackage ../development/libraries/libksba { };
@@ -16821,6 +16849,8 @@ in
     inherit (darwin.apple_sdk.frameworks) Carbon;
   };
 
+  tageditor = libsForQt5.callPackage ../applications/audio/tageditor { };
+
   taglib = callPackage ../development/libraries/taglib { };
 
   taglib_extras = callPackage ../development/libraries/taglib-extras { };
@@ -16828,6 +16858,8 @@ in
   taglib-sharp = callPackage ../development/libraries/taglib-sharp { };
 
   talloc = callPackage ../development/libraries/talloc { };
+
+  tagparser = callPackage ../development/libraries/tagparser { };
 
   tclap = callPackage ../development/libraries/tclap {};
 
@@ -19083,10 +19115,10 @@ in
      for a specific kernel.  This function can then be called for
      whatever kernel you're using. */
 
-  linuxPackagesFor = kernel: lib.makeExtensible (self: with self; {
+  linuxPackagesFor = kernel_: lib.makeExtensible (self: with self; {
     callPackage = newScope self;
 
-    inherit kernel;
+    kernel = kernel_;
     inherit (kernel) stdenv; # in particular, use the same compiler by default
 
     # to help determine module compatibility
@@ -19609,6 +19641,8 @@ in
   gotop = callPackage ../tools/system/gotop { };
 
   go-migrate = callPackage ../development/tools/go-migrate { };
+
+  gomacro = callPackage ../development/tools/gomacro { };
 
   gomodifytags = callPackage ../development/tools/gomodifytags { };
 
@@ -20306,6 +20340,12 @@ in
 
   greybird = callPackage ../data/themes/greybird { };
 
+  gruvbox-dark-gtk = callPackage ../data/themes/gruvbox-dark-gtk { };
+
+  gruvbox-dark-icons-gtk = callPackage ../data/icons/gruvbox-dark-icons-gtk {
+    inherit (plasma5Packages) breeze-icons;
+  };
+
   gubbi-font = callPackage ../data/fonts/gubbi { };
 
   gyre-fonts = callPackage ../data/fonts/gyre {};
@@ -20737,6 +20777,8 @@ in
 
   inter-ui = callPackage ../data/fonts/inter-ui { };
   inter = callPackage ../data/fonts/inter { };
+
+  scientifica = callPackage ../data/fonts/scientifica { };
 
   siji = callPackage ../data/fonts/siji
     { inherit (buildPackages.xorg) mkfontscale fonttosfnt; };
@@ -22771,6 +22813,8 @@ in
 
   i3-wk-switch = callPackage ../applications/window-managers/i3/wk-switch.nix { };
 
+  waybox = callPackage ../applications/window-managers/waybox { };
+
   windowchef = callPackage ../applications/window-managers/windowchef/default.nix { };
 
   wmfocus = callPackage ../applications/window-managers/i3/wmfocus.nix { };
@@ -23035,7 +23079,7 @@ in
 
   keyfinder = libsForQt5.callPackage ../applications/audio/keyfinder { };
 
-  keyfinder-cli = libsForQt5.callPackage ../applications/audio/keyfinder-cli { };
+  keyfinder-cli = callPackage ../applications/audio/keyfinder-cli { };
 
   kgraphviewer = libsForQt5.callPackage ../applications/graphics/kgraphviewer { };
 
@@ -23753,8 +23797,6 @@ in
 
   plank = callPackage ../applications/misc/plank { };
 
-  planner = callPackage ../applications/office/planner { };
-
   playonlinux = callPackage ../applications/misc/playonlinux {
      stdenv = stdenv_32bit;
   };
@@ -24054,10 +24096,7 @@ in
 
   osmium-tool = callPackage ../applications/misc/osmium-tool { };
 
-  osu-lazer = callPackage ../games/osu-lazer {
-    dotnet-sdk = dotnetCorePackages.sdk_3_1;
-    dotnet-netcore = dotnetCorePackages.netcore_3_1;
-  };
+  osu-lazer = callPackage ../games/osu-lazer { };
 
   owamp = callPackage ../applications/networking/owamp { };
 
@@ -24086,8 +24125,8 @@ in
   osmo = callPackage ../applications/office/osmo { };
 
   palemoon = callPackage ../applications/networking/browsers/palemoon {
-    # https://www.palemoon.org/sourcecode.shtml
-    stdenv = gcc7Stdenv;
+    # https://developer.palemoon.org/build/linux/
+    stdenv = gcc8Stdenv;
   };
 
   webbrowser = callPackage ../applications/networking/browsers/webbrowser {};
@@ -24544,7 +24583,7 @@ in
 
   rclone = callPackage ../applications/networking/sync/rclone { };
 
-  rclone-browser = libsForQt514.callPackage ../applications/networking/sync/rclone/browser.nix { };
+  rclone-browser = libsForQt5.callPackage ../applications/networking/sync/rclone/browser.nix { };
 
   rcs = callPackage ../applications/version-management/rcs { };
 
@@ -26316,6 +26355,8 @@ in
 
   armagetronad = callPackage ../games/armagetronad { };
 
+  armagetronad-dedicated = callPackage ../games/armagetronad { dedicatedServer = true; };
+
   arena = callPackage ../games/arena {};
 
   arx-libertatis = libsForQt5.callPackage ../games/arx-libertatis { };
@@ -27387,6 +27428,8 @@ in
     openbabel = openbabel2;
     eigen = eigen2;
   };
+
+  chemtool = callPackage ../applications/science/chemistry/chemtool { };
 
   d-seams = callPackage ../applications/science/chemistry/d-seams {};
 
@@ -28727,7 +28770,7 @@ in
 
   nixops_1_6_1 = callPackage ../tools/package-management/nixops/nixops-v1_6_1.nix {};
 
-  nixopsUnstable = lowPrio (callPackage ../tools/package-management/nixops/unstable.nix { });
+  nixopsUnstable = lowPrio (callPackage ../applications/networking/cluster/nixops { });
 
   nixops-dns = callPackage ../tools/package-management/nixops/nixops-dns.nix { };
 

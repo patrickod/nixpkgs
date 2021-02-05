@@ -484,6 +484,8 @@ in {
 
   asyncio-dgram = callPackage ../development/python-modules/asyncio-dgram { };
 
+  asyncio-mqtt = callPackage ../development/python-modules/asyncio_mqtt { };
+
   asyncio-throttle = callPackage ../development/python-modules/asyncio-throttle { };
 
   asyncpg = callPackage ../development/python-modules/asyncpg { };
@@ -1349,6 +1351,8 @@ in {
 
   cmdtest = callPackage ../development/python-modules/cmdtest { };
 
+  cmsis-svd = callPackage ../development/python-modules/cmsis-svd { };
+
   cntk = callPackage ../development/python-modules/cntk { };
 
   cnvkit = callPackage ../development/python-modules/cnvkit { };
@@ -2104,6 +2108,8 @@ in {
   evernote = callPackage ../development/python-modules/evernote { };
 
   ewmh = callPackage ../development/python-modules/ewmh { };
+
+  exdown = callPackage ../development/python-modules/exdown { };
 
   exchangelib = callPackage ../development/python-modules/exchangelib { };
 
@@ -2922,6 +2928,8 @@ in {
 
   hieroglyph = callPackage ../development/python-modules/hieroglyph { };
 
+  hijri-converter = callPackage ../development/python-modules/hijri-converter { };
+
   hiredis = callPackage ../development/python-modules/hiredis { };
 
   hiro = callPackage ../development/python-modules/hiro { };
@@ -3474,6 +3482,8 @@ in {
     callPackage ../development/python-modules/keyring/2.nix { };
 
   keyrings-alt = callPackage ../development/python-modules/keyrings-alt { };
+
+  keystone-engine = callPackage ../development/python-modules/keystone-engine { };
 
   keyutils = callPackage ../development/python-modules/keyutils { inherit (pkgs) keyutils; };
 
@@ -4890,6 +4900,8 @@ in {
 
   python-openems = callPackage ../development/python-modules/python-openems { };
 
+  python-openzwave-mqtt = callPackage ../development/python-modules/python-openzwave-mqtt { };
+
   python-tado = callPackage ../development/python-modules/python-tado { };
 
   pkutils = callPackage ../development/python-modules/pkutils { };
@@ -5588,6 +5600,8 @@ in {
 
   pylutron = callPackage ../development/python-modules/pylutron { };
 
+  pylxd = callPackage ../development/python-modules/pylxd { };
+
   pymacaroons = callPackage ../development/python-modules/pymacaroons { };
 
   pymaging = callPackage ../development/python-modules/pymaging { };
@@ -5983,6 +5997,8 @@ in {
 
   pysychonaut = callPackage ../development/python-modules/pysychonaut { };
 
+  pysyncobj = callPackage ../development/python-modules/pysyncobj { };
+
   pytabix = callPackage ../development/python-modules/pytabix { };
 
   pytado = callPackage ../development/python-modules/pytado { };
@@ -6084,6 +6100,8 @@ in {
   pytest-html = callPackage ../development/python-modules/pytest-html { };
 
   pytest-httpbin = callPackage ../development/python-modules/pytest-httpbin { };
+
+  pytest-httpserver = callPackage ../development/python-modules/pytest-httpserver { };
 
   pytest-instafail = callPackage ../development/python-modules/pytest-instafail { };
 
@@ -6638,6 +6656,8 @@ in {
   rdflib = callPackage ../development/python-modules/rdflib { };
 
   rdflib-jsonld = callPackage ../development/python-modules/rdflib-jsonld { };
+
+  rdkit = callPackage ../development/python-modules/rdkit { };
 
   re-assert = callPackage ../development/python-modules/re-assert { };
 
@@ -7251,6 +7271,8 @@ in {
   soco = callPackage ../development/python-modules/soco { };
 
   softlayer = callPackage ../development/python-modules/softlayer { };
+
+  solax = callPackage ../development/python-modules/solax { };
 
   solo-python = disabledIf (!pythonAtLeast "3.6") (callPackage ../development/python-modules/solo-python { });
 
@@ -8313,6 +8335,8 @@ in {
   xarray = callPackage ../development/python-modules/xarray { };
 
   xattr = callPackage ../development/python-modules/xattr { };
+
+  xboxapi = callPackage ../development/python-modules/xboxapi { };
 
   xcaplib = callPackage ../development/python-modules/xcaplib { };
 

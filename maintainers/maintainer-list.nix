@@ -3159,6 +3159,12 @@
     githubId = 92793;
     name = "Friedrich von Never";
   };
+  fortuneteller2k = {
+    email = "lythe1107@gmail.com";
+    github = "fortuneteller2k";
+    githubId = 20619776;
+    name = "fortuneteller2k";
+  };
   fpletz = {
     email = "fpletz@fnordicwalking.de";
     github = "fpletz";
@@ -3722,6 +3728,12 @@
       longkeyid = "rsa4096/0x49FA39F8A7F735F9";
       fingerprint = "78C2 E81C 828A 420B 269A  EBC1 49FA 39F8 A7F7 35F9";
     }];
+  };
+  humancalico = {
+    email = "humancalico@disroot.org";
+    github = "humancalico";
+    githubId = 51334444;
+    name = "Akshat Agarwal";
   };
   hodapp = {
     email = "hodapp87@gmail.com";
@@ -6711,6 +6723,12 @@
     githubId = 148037;
     name = "Joachim Breitner";
   };
+  nomisiv = {
+    email = "simon@nomisiv.com";
+    github = "NomisIV";
+    githubId = 47303199;
+    name = "Simon Gutgesell";
+  };
   noneucat = {
     email = "andy@lolc.at";
     github = "noneucat";
@@ -8428,6 +8446,12 @@
     github = "shnarazk";
     githubId = 997855;
     name = "Narazaki Shuji";
+  };
+  shofius = {
+    name = "Sam Hofius";
+    email = "sam@samhofi.us";
+    github = "kf5grd";
+    githubId = 18297490;
   };
   shou = {
     email = "x+g@shou.io";
