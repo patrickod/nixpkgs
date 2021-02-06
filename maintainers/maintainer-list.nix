@@ -5274,6 +5274,12 @@
     githubId = 307589;
     name = "Nathaniel Baxter";
   };
+  liamdiprose = {
+    email = "liam@liamdiprose.com";
+    github = "liamdiprose";
+    githubId = 1769386;
+    name = "Liam Diprose";
+  };
   liff = {
     email = "liff@iki.fi";
     github = "liff";
@@ -5555,6 +5561,12 @@
     github = "lolwat97";
     githubId = 2057309;
     name = "Sergey Sofeychuk";
+  };
+  lxea = {
+    email = "nix@amk.ie";
+    github = "lxea";
+    githubId = 7910815;
+    name = "Alex McGrath";
   };
   lynty = {
     email = "ltdong93+nix@gmail.com";

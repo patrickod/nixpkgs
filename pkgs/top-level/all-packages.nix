@@ -1261,6 +1261,8 @@ in
 
   fitnesstrax = callPackage ../applications/misc/fitnesstrax/default.nix { };
 
+  flavours = callPackage ../applications/misc/flavours { };
+
   flood = nodePackages.flood;
 
   fxlinuxprintutil = callPackage ../tools/misc/fxlinuxprintutil { };
@@ -8053,7 +8055,7 @@ in
 
   subsurface = libsForQt514.callPackage ../applications/misc/subsurface { };
 
-  sudo = if stdenv.isDarwin then darwin.sudo else callPackage ../tools/security/sudo { };
+  sudo = callPackage ../tools/security/sudo { };
 
   suidChroot = callPackage ../tools/system/suid-chroot { };
 
@@ -12972,6 +12974,8 @@ in
   xxdiff-tip = xxdiff;
 
   yaml2json = callPackage ../development/tools/yaml2json { };
+
+  yams = callPackage ../applications/audio/yams { };
 
   ycmd = callPackage ../development/tools/misc/ycmd {
     inherit (darwin.apple_sdk.frameworks) Cocoa;
@@ -18434,6 +18438,8 @@ in
 
   storm = callPackage ../servers/computing/storm { };
 
+  switcheroo-control = callPackage ../os-specific/linux/switcheroo-control { };
+
   slurm = callPackage ../servers/computing/slurm { gtk2 = null; };
 
   slurm-spank-x11 = callPackage ../servers/computing/slurm-spank-x11 { };
@@ -19522,6 +19528,8 @@ in
     enableDmeventd = true;
     enableCmdlib = true;
   };
+
+  maddy = callPackage ../servers/maddy/default.nix { };
 
   mbelib = callPackage ../development/libraries/audio/mbelib { };
 
@@ -21814,6 +21822,8 @@ in
 
   eteroj.lv2 = libsForQt5.callPackage ../applications/audio/eteroj.lv2 { };
 
+  etebase-server = with python3Packages; toPythonApplication etebase-server;
+
   etesync-dav = callPackage ../applications/misc/etesync-dav {};
 
   etherape = callPackage ../applications/networking/sniffers/etherape { };
@@ -23170,6 +23180,8 @@ in
 
   lame = callPackage ../development/libraries/lame { };
 
+  labwc = callPackage ../applications/window-managers/labwc { };
+
   larswm = callPackage ../applications/window-managers/larswm { };
 
   lash = callPackage ../applications/audio/lash { };
@@ -23230,11 +23242,10 @@ in
   };
 
   libreoffice-qt = lowPrio (callPackage ../applications/office/libreoffice/wrapper.nix {
-    libreoffice = libsForQt514.callPackage ../applications/office/libreoffice
+    libreoffice = libsForQt5.callPackage ../applications/office/libreoffice
       (libreoffice-args // {
         kdeIntegration = true;
         variant = "fresh";
-        jdk = jdk11;
       });
   });
 
@@ -23242,7 +23253,6 @@ in
     libreoffice = callPackage ../applications/office/libreoffice
       (libreoffice-args // {
         variant = "fresh";
-        jdk = jdk11;
       });
   });
   libreoffice-fresh-unwrapped = libreoffice-fresh.libreoffice;
@@ -23250,10 +23260,7 @@ in
   libreoffice-still = lowPrio (callPackage ../applications/office/libreoffice/wrapper.nix {
     libreoffice = callPackage ../applications/office/libreoffice
       (libreoffice-args // {
-        stdenv = gcc9Stdenv; # Fails in multiple ways with gcc10
-        icu = icu64;
         variant = "still";
-        jdk = jdk8;
       });
   });
   libreoffice-still-unwrapped = libreoffice-still.libreoffice;
