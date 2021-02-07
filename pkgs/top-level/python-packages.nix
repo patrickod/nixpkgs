@@ -4890,6 +4890,8 @@ in {
     inherit (pkgs.libsForQt5) soqt;
   };
 
+  pixelmatch = callPackage ../development/python-modules/pixelmatch { };
+
   pkgconfig = callPackage ../development/python-modules/pkgconfig { inherit (pkgs) pkg-config; };
 
   pkginfo = callPackage ../development/python-modules/pkginfo { };
@@ -5718,6 +5720,8 @@ in {
   pyopengl-accelerate = callPackage ../development/python-modules/pyopengl-accelerate { };
 
   pyopenssl = callPackage ../development/python-modules/pyopenssl { };
+
+  pyopenuv = callPackage ../development/python-modules/pyopenuv { };
 
   pyopnsense = callPackage ../development/python-modules/pyopnsense { };
 

@@ -7101,6 +7101,12 @@
     githubId = 15645854;
     name = "Brad Christensen";
   };
+  payas = {
+    email = "relekarpayas@gmail.com";
+    github = "payasrelekar";
+    githubId = 24254289;
+    name = "Payas Relekar";
+  };
   pawelpacana = {
     email = "pawel.pacana@gmail.com";
     github = "pawelpacana";
@@ -7150,7 +7156,7 @@
     name = "Paulus Esterhazy";
   };
   petabyteboy = {
-    email = "me@pbb.lc";
+    email = "milan@petabyte.dev";
     github = "petabyteboy";
     githubId = 3250809;
     name = "Milan Pässler";

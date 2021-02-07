@@ -2,7 +2,7 @@
 # Do not edit!
 
 {
-  version = "2021.2.0";
+  version = "2021.2.1";
   components = {
     "abode" = ps: with ps; [ abodepy ];
     "accuweather" = ps: with ps; [ accuweather ];
@@ -592,7 +592,7 @@
     "opensensemap" = ps: with ps; [ opensensemap-api ];
     "opensky" = ps: with ps; [ ];
     "opentherm_gw" = ps: with ps; [ ]; # missing inputs: pyotgw
-    "openuv" = ps: with ps; [ ]; # missing inputs: pyopenuv
+    "openuv" = ps: with ps; [ pyopenuv ];
     "openweathermap" = ps: with ps; [ pyowm ];
     "opnsense" = ps: with ps; [ pyopnsense ];
     "opple" = ps: with ps; [ ]; # missing inputs: pyoppleio

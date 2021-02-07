@@ -46,6 +46,7 @@
   ./hardware/cpu/intel-microcode.nix
   ./hardware/digitalbitbox.nix
   ./hardware/device-tree.nix
+  ./hardware/i2c.nix
   ./hardware/sensor/hddtemp.nix
   ./hardware/sensor/iio.nix
   ./hardware/keyboard/zsa.nix
@@ -177,7 +178,6 @@
   ./programs/tsm-client.nix
   ./programs/udevil.nix
   ./programs/usbtop.nix
-  ./programs/venus.nix
   ./programs/vim.nix
   ./programs/wavemon.nix
   ./programs/waybar.nix

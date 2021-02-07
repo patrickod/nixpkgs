@@ -2664,8 +2664,6 @@ in
 
   pbgopy = callPackage ../tools/text/pbgopy { };
 
-  pbpst = callPackage ../applications/misc/pbpst { };
-
   pbzx = callPackage ../tools/compression/pbzx { };
 
   pcb2gcode = callPackage ../tools/misc/pcb2gcode { };
@@ -6052,7 +6050,7 @@ in
 
   lzip = callPackage ../tools/compression/lzip { };
 
-  luxcorerender = callPackage ../tools/graphics/luxcorerender { qt5 = qt514; };
+  luxcorerender = callPackage ../tools/graphics/luxcorerender { };
 
   xz = callPackage ../tools/compression/xz { };
   lzma = xz; # TODO: move to aliases.nix
@@ -8972,10 +8970,6 @@ in
 
   hitch = callPackage ../servers/hitch { };
 
-  venus = callPackage ../tools/misc/venus {
-    python = python27;
-  };
-
   veracrypt = callPackage ../applications/misc/veracrypt {
     wxGTK = wxGTK30;
   };
@@ -11691,6 +11685,8 @@ in
 
   avrdude = callPackage ../development/tools/misc/avrdude { };
 
+  b4 = callPackage ../development/tools/b4 { };
+
   babeltrace = callPackage ../development/tools/misc/babeltrace { };
 
   bam = callPackage ../development/tools/build-managers/bam {};
@@ -13779,6 +13775,10 @@ in
       rev = "v${version}";
       sha256 = "09jz2fzv0zl5058s0g1cpnw87a2rgg8wnjwlygi18i2n9nn6m0ad";
     };
+    meta.knownVulnerabilities = [
+      "CVE-2020-12278"
+      "CVE-2020-12279"
+    ];
   });
 
   libgit2-glib = callPackage ../development/libraries/libgit2-glib { };
@@ -22662,6 +22662,10 @@ in
 
   ht = callPackage ../applications/editors/ht { };
 
+  ht-rust = callPackage ../tools/networking/ht-rust {
+    inherit (darwin.apple_sdk.frameworks) Security;
+  };
+
   hubstaff = callPackage ../applications/misc/hubstaff { };
 
   hue-cli = callPackage ../tools/networking/hue-cli { };
@@ -25534,7 +25538,9 @@ in
 
   volnoti = callPackage ../applications/misc/volnoti { };
 
-  vorbis-tools = callPackage ../applications/audio/vorbis-tools { };
+  vorbis-tools = callPackage ../applications/audio/vorbis-tools {
+    autoreconfHook = buildPackages.autoreconfHook269;
+  };
 
   vscode = callPackage ../applications/editors/vscode/vscode.nix { };
 
