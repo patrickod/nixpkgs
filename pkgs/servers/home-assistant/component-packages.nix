@@ -195,7 +195,7 @@
     "dwd_weather_warnings" = ps: with ps; [ ]; # missing inputs: dwdwfsapi
     "dweet" = ps: with ps; [ ]; # missing inputs: dweepy
     "dynalite" = ps: with ps; [ ]; # missing inputs: dynalite_devices
-    "dyson" = ps: with ps; [ aiohttp-cors zeroconf ]; # missing inputs: libpurecool
+    "dyson" = ps: with ps; [ aiohttp-cors libpurecool zeroconf ];
     "eafm" = ps: with ps; [ aioeafm ];
     "ebox" = ps: with ps; [ ]; # missing inputs: pyebox
     "ebusd" = ps: with ps; [ ]; # missing inputs: ebusdpy
@@ -561,7 +561,7 @@
     "nsw_rural_fire_service_feed" = ps: with ps; [ ]; # missing inputs: aio_geojson_nsw_rfs_incidents
     "nuheat" = ps: with ps; [ ]; # missing inputs: nuheat
     "nuimo_controller" = ps: with ps; [ ]; # missing inputs: --only-binary=all nuimo
-    "nuki" = ps: with ps; [ ]; # missing inputs: pynuki
+    "nuki" = ps: with ps; [ pynuki ];
     "numato" = ps: with ps; [ ]; # missing inputs: numato-gpio
     "number" = ps: with ps; [ ];
     "nut" = ps: with ps; [ ]; # missing inputs: pynut2
