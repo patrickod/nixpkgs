@@ -2460,6 +2460,8 @@ in
 
   interlock = callPackage ../servers/interlock {};
 
+  iotools = callPackage ../tools/misc/iotools { };
+
   jellyfin = callPackage ../servers/jellyfin { };
 
   jellyfin_10_5 = callPackage ../servers/jellyfin/10.5.x.nix { };
@@ -4352,6 +4354,8 @@ in
     gtk = gtk3;
   };
 
+  free42 = callPackage ../applications/misc/free42 { };
+
   galen = callPackage ../development/tools/galen {};
 
   gallery-dl = python3Packages.callPackage ../applications/misc/gallery-dl { };
@@ -5016,8 +5020,6 @@ in
   hasmail = callPackage ../applications/networking/mailreaders/hasmail { };
 
   haste-client = callPackage ../tools/misc/haste-client { };
-
-  hal-flash = callPackage ../os-specific/linux/hal-flash { };
 
   hal-hardware-analyzer = libsForQt5.callPackage ../applications/science/electronics/hal-hardware-analyzer { };
 
@@ -6509,16 +6511,13 @@ in
 
   noip = callPackage ../tools/networking/noip { };
 
-  nomad = nomad_0_12;
+  nomad = nomad_1_0;
 
   # Nomad never updates major go versions within a release series and is unsupported
   # on Go versions that it did not ship with. Due to historic bugs when compiled
   # with different versions we pin Go for all versions.
-  nomad_0_11 = callPackage ../applications/networking/cluster/nomad/0.11.nix {
-    buildGoPackage = buildGo114Package;
-    inherit (linuxPackages) nvidia_x11;
-    nvidiaGpuSupport = config.cudaSupport or false;
-  };
+  # Upstream partially documents used Go versions here
+  # https://github.com/hashicorp/nomad/blob/master/contributing/golang.md
   nomad_0_12 = callPackage ../applications/networking/cluster/nomad/0.12.nix {
     buildGoPackage = buildGo114Package;
     inherit (linuxPackages) nvidia_x11;
@@ -11748,6 +11747,16 @@ in
     bazel_self = bazel_3;
   };
 
+  bazel_4 = callPackage ../development/tools/build-managers/bazel/bazel_4 {
+    inherit (darwin) cctools;
+    inherit (darwin.apple_sdk.frameworks) CoreFoundation CoreServices Foundation;
+    buildJdk = jdk11_headless;
+    buildJdkName = "java11";
+    runJdk = jdk11_headless;
+    stdenv = if stdenv.cc.isClang then llvmPackages.stdenv else stdenv;
+    bazel_self = bazel_4;
+  };
+
   bazel-buildtools = callPackage ../development/tools/build-managers/bazel/buildtools { };
   buildifier = bazel-buildtools;
   buildozer = bazel-buildtools;
@@ -12121,6 +12130,8 @@ in
   editorconfig-checker = callPackage ../development/tools/misc/editorconfig-checker { };
 
   editorconfig-core-c = callPackage ../development/tools/misc/editorconfig-core-c { };
+
+  edb = libsForQt5.callPackage ../development/tools/misc/edb { };
 
   eggdbus = callPackage ../development/tools/misc/eggdbus { };
 
@@ -14533,6 +14544,8 @@ in
   libatomic_ops = callPackage ../development/libraries/libatomic_ops {};
 
   libaudclient = callPackage ../development/libraries/libaudclient { };
+
+  libaudec = callPackage ../development/libraries/libaudec { };
 
   libav = libav_11; # branch 11 is API-compatible with branch 10
   libav_all = callPackages ../development/libraries/libav { };
@@ -18652,6 +18665,8 @@ in
     libapparmor apparmor-utils apparmor-bin-utils apparmor-parser apparmor-pam
     apparmor-profiles apparmor-kernel-patches;
 
+  aseq2json = callPackage ../os-specific/linux/aseq2json {};
+
   atop = callPackage ../os-specific/linux/atop { };
 
   audit = callPackage ../os-specific/linux/audit { };
@@ -21434,7 +21449,7 @@ in
   cmatrix = callPackage ../applications/misc/cmatrix { };
 
   cmus = callPackage ../applications/audio/cmus {
-    inherit (darwin.apple_sdk.frameworks) CoreAudio;
+    inherit (darwin.apple_sdk.frameworks) AudioUnit CoreAudio;
     libjack = libjack2;
     ffmpeg = ffmpeg_2;
   };
@@ -21672,14 +21687,7 @@ in
     inherit (gnome2) libgnomeui;
   };
 
-  dwm = callPackage ../applications/window-managers/dwm {
-    patches = config.dwm.patches or [];
-  };
-
-  dwm-git = callPackage ../applications/window-managers/dwm/git.nix {
-    patches = config.dwm.patches or [];
-    conf = config.dwm.conf or null;
-  };
+  dwm = callPackage ../applications/window-managers/dwm { };
 
   dwm-status = callPackage ../applications/window-managers/dwm/dwm-status.nix { };
 
@@ -22248,14 +22256,6 @@ in
   redoflacs = callPackage ../applications/audio/redoflacs { };
 
   flameshot = libsForQt5.callPackage ../tools/misc/flameshot { };
-
-  flashplayer = callPackage ../applications/networking/browsers/mozilla-plugins/flashplayer (config.flashplayer or {});
-
-  flashplayer-standalone = callPackage ../applications/networking/browsers/mozilla-plugins/flashplayer/standalone.nix (config.flashplayer or {});
-
-  flashplayer-standalone-debugger = flashplayer-standalone.override {
-    debug = true;
-  };
 
   fluxbox = callPackage ../applications/window-managers/fluxbox { };
 
@@ -23914,6 +23914,8 @@ in
   librep = callPackage ../development/libraries/librep { };
 
   rep-gtk = callPackage ../development/libraries/rep-gtk { };
+
+  reproc = callPackage ../development/libraries/reproc { };
 
   sawfish = callPackage ../applications/window-managers/sawfish { };
 
@@ -28731,6 +28733,8 @@ in
   libjack2 = jack2.override { prefix = "lib"; };
   jack2Full = jack2; # TODO: move to aliases.nix
 
+  jstest-gtk = callPackage ../tools/misc/jstest-gtk { };
+
   keynav = callPackage ../tools/X11/keynav { };
 
   kmon = callPackage ../tools/system/kmon { };
@@ -29685,7 +29689,9 @@ in
 
   imatix_gsl = callPackage ../development/tools/imatix_gsl {};
 
-  sccache = callPackage ../development/tools/misc/sccache { };
+  sccache = callPackage ../development/tools/misc/sccache {
+    inherit (darwin.apple_sdk.frameworks) Security;
+  };
 
   sequeler = callPackage ../applications/misc/sequeler { };
 
