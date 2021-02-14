@@ -1743,6 +1743,8 @@ in
 
   bsod = callPackage ../misc/emulators/bsod { };
 
+  py65 = python3Packages.callPackage ../misc/emulators/py65 { };
+
   simh = callPackage ../misc/emulators/simh { };
 
   btrfs-progs = callPackage ../tools/filesystems/btrfs-progs { };
@@ -3408,7 +3410,9 @@ in
     cudatoolkit_10_1
     cudatoolkit_10_2
     cudatoolkit_11
-    cudatoolkit_11_0;
+    cudatoolkit_11_0
+    cudatoolkit_11_1
+    cudatoolkit_11_2;
 
   cudatoolkit = cudatoolkit_10;
 
@@ -3427,7 +3431,9 @@ in
     cudnn_cudatoolkit_10_1
     cudnn_cudatoolkit_10_2
     cudnn_cudatoolkit_11
-    cudnn_cudatoolkit_11_0;
+    cudnn_cudatoolkit_11_0
+    cudnn_cudatoolkit_11_1
+    cudnn_cudatoolkit_11_2;
 
   cudnn = cudnn_cudatoolkit_10;
 
@@ -10882,6 +10888,7 @@ in
 
   sbclBootstrap = callPackage ../development/compilers/sbcl/bootstrap.nix {};
   sbcl_2_0_9 = callPackage ../development/compilers/sbcl/2.0.9.nix {};
+  sbcl_2_1_1 = callPackage ../development/compilers/sbcl/2.1.1.nix {};
   sbcl = callPackage ../development/compilers/sbcl {};
 
   scala_2_10 = callPackage ../development/compilers/scala/2.x.nix { majorVersion = "2.10"; jre = jdk8; };
@@ -12770,6 +12777,8 @@ in
 
   scss-lint = callPackage ../development/tools/scss-lint { };
 
+  segger-ozone = callPackage ../development/tools/misc/segger-ozone { };
+
   shadowenv = callPackage ../tools/misc/shadowenv {
     inherit (darwin.apple_sdk.frameworks) Security;
   };
@@ -13097,6 +13106,8 @@ in
   amrnb = callPackage ../development/libraries/amrnb { };
 
   amrwb = callPackage ../development/libraries/amrwb { };
+
+  ansi2html = with python3.pkgs; toPythonApplication ansi2html;
 
   anttweakbar = callPackage ../development/libraries/AntTweakBar { };
 
@@ -25366,6 +25377,8 @@ in
 
   testssl = callPackage ../applications/networking/testssl { };
 
+  lavalauncher = callPackage ../applications/misc/lavalauncher { };
+
   ulauncher = callPackage ../applications/misc/ulauncher { };
 
   twinkle = qt5.callPackage ../applications/networking/instant-messengers/twinkle { };
@@ -27429,7 +27442,7 @@ in
 
   gnomeExtensions = recurseIntoAttrs {
     appindicator = callPackage ../desktops/gnome-3/extensions/appindicator { };
-    arc-menu = callPackage ../desktops/gnome-3/extensions/arc-menu { };
+    arcmenu = callPackage ../desktops/gnome-3/extensions/arcmenu { };
     caffeine = callPackage ../desktops/gnome-3/extensions/caffeine { };
     clipboard-indicator = callPackage ../desktops/gnome-3/extensions/clipboard-indicator { };
     clock-override = callPackage ../desktops/gnome-3/extensions/clock-override { };
@@ -27468,6 +27481,7 @@ in
     mediaplayer = throw "gnomeExtensions.mediaplayer deprecated since 2019-09-23: retired upstream https://github.com/JasonLG1979/gnome-shell-extensions-mediaplayer/blob/master/README.md";
   } // lib.optionalAttrs (config.allowAliases or false) {
     unite-shell = gnomeExtensions.unite; # added 2021-01-19
+    arc-menu = gnomeExtensions.arcmenu; # added 2021-02-14
   };
 
   gnome-connections = callPackage ../desktops/gnome-3/apps/gnome-connections { };
