@@ -6144,6 +6144,10 @@ let
       license = with lib.licenses; [ artistic1 gpl1Plus ];
     };
     buildInputs = [ TestDifferences ];
+    nativeBuildInputs = lib.optional stdenv.isDarwin shortenPerlShebang;
+    postInstall = lib.optionalString stdenv.isDarwin ''
+      shortenPerlShebang $out/bin/*
+    '';
   };
 
   DevelOverloadInfo = buildPerlPackage {
@@ -8449,6 +8453,20 @@ let
     doCheck = false;
   };
 
+  FunctionParameters = buildPerlPackage {
+    pname = "Function-Parameters";
+    version = "2.001003";
+    src = fetchurl {
+      url = "mirror://cpan/authors/id/M/MA/MAUKE/Function-Parameters-2.001003.tar.gz";
+      sha256 = "eaa22c6b43c02499ec7db0758c2dd218a3b2ab47a714b2bdf8010b5ee113c242";
+    };
+    buildInputs = [ DirSelf TestFatal ];
+    meta = {
+      description = "Define functions and methods with parameter lists (\"subroutine signatures\")";
+      license = with lib.licenses; [ artistic1 gpl1Plus ];
+    };
+  };
+
   Furl = buildPerlModule {
     pname = "Furl";
     version = "3.13";
@@ -8892,6 +8910,20 @@ let
       [ ../development/perl-modules/Google-ProtocolBuffers-multiline-comments.patch ];
     meta = {
       description = "Simple interface to Google Protocol Buffers";
+      license = with lib.licenses; [ artistic1 gpl1Plus ];
+    };
+  };
+
+  gotofile = buildPerlPackage {
+    pname = "goto-file";
+    version = "0.005";
+    src = fetchurl {
+      url = "mirror://cpan/authors/id/E/EX/EXODIST/goto-file-0.005.tar.gz";
+      sha256 = "c6cdd5ee4a6cdcbdbf314d92a4f9985dbcdf9e4258048cae76125c052aa31f77";
+    };
+    buildInputs = [ Test2Suite ];
+    meta = {
+      description = "Stop parsing the current file and move on to a different one";
       license = with lib.licenses; [ artistic1 gpl1Plus ];
     };
   };
@@ -9720,12 +9752,11 @@ let
 
   HTTPDaemon = buildPerlPackage {
     pname = "HTTP-Daemon";
-    version = "6.12";
+    version = "6.01";
     src = fetchurl {
-      url = "mirror://cpan/authors/id/O/OA/OALDERS/HTTP-Daemon-6.12.tar.gz";
-      sha256 = "19hz9r6f1p406fk1pqyd99h96ipxsmknh4fh1xw0qrrq1k8vwiyz";
+      url = "mirror://cpan/authors/id/G/GA/GAAS/HTTP-Daemon-6.01.tar.gz";
+      sha256 = "1hmd2isrkilf0q0nkxms1q64kikjmcw9imbvrjgky6kh89vqdza3";
     };
-    buildInputs = [ CPANMetaCheck ModuleBuildTiny TestNeeds ];
     propagatedBuildInputs = [ HTTPMessage ];
     meta = {
       description = "A simple http server class";
@@ -11777,6 +11808,20 @@ let
     propagatedBuildInputs = [ IOLockedFile ];
     meta = {
       description = "Helps us create simple logs for our application";
+      license = with lib.licenses; [ artistic1 gpl1Plus ];
+    };
+  };
+
+  LongJump = buildPerlPackage {
+    pname = "Long-Jump";
+    version = "0.000001";
+    src = fetchurl {
+      url = "mirror://cpan/authors/id/E/EX/EXODIST/Long-Jump-0.000001.tar.gz";
+      sha256 = "d5d6456d86992b559d8f66fc90960f919292cd3803c13403faac575762c77af4";
+    };
+    buildInputs = [ Test2Suite ];
+    meta = {
+      description = "Mechanism for returning to a specific point from a deeply nested stack";
       license = with lib.licenses; [ artistic1 gpl1Plus ];
     };
   };
@@ -13984,6 +14029,25 @@ let
     meta = {
       description = "A Mouse role for setting attributes from a simple configfile";
       license = with lib.licenses; [ artistic1 gpl1Plus ];
+    };
+  };
+
+  TestPostgreSQL = buildPerlModule {
+    pname = "Test-PostgreSQL";
+    version = "1.27";
+    src = fetchurl {
+      url = "mirror://cpan/authors/id/T/TJ/TJC/Test-PostgreSQL-1.27.tar.gz";
+      sha256 = "b1bd231693100cc40905fb0ba3173173201621de9c8301f21c5b593b0a46f907";
+    };
+    buildInputs = [ ModuleBuildTiny TestSharedFork pkgs.postgresql ];
+    propagatedBuildInputs = [ DBDPg DBI FileWhich FunctionParameters Moo TieHashMethod TryTiny TypeTiny ];
+
+    makeMakerFlags = "POSTGRES_HOME=${pkgs.postgresql}";
+
+    meta = {
+      homepage = https://github.com/TJC/Test-postgresql;
+      description = "PostgreSQL runner for tests";
+      license = with lib.licenses; [ artistic2 ];
     };
   };
 
@@ -16630,6 +16694,10 @@ let
       description = "Indent and reformat perl scripts";
       license = lib.licenses.gpl2Plus;
     };
+    nativeBuildInputs = lib.optional stdenv.isDarwin shortenPerlShebang;
+    postInstall = lib.optionalString stdenv.isDarwin ''
+      shortenPerlShebang $out/bin/perltidy
+    '';
   };
 
   PHPSerialization = buildPerlPackage {
@@ -19754,6 +19822,55 @@ let
     };
   };
 
+  Test2Harness = buildPerlPackage {
+    pname = "Test2-Harness";
+    version = "1.000042";
+    src = fetchurl {
+      url = "mirror://cpan/authors/id/E/EX/EXODIST/Test2-Harness-1.000042.tar.gz";
+      sha256 = "aaf231a68af1a6ffd6a11188875fcf572e373e43c8285945227b9d687b43db2d";
+    };
+
+    checkPhase = ''
+      patchShebangs ./t ./scripts/yath
+      ./scripts/yath test -j $NIX_BUILD_CORES
+    '';
+
+    propagatedBuildInputs = [ DataUUID Importer LongJump ScopeGuard TermTable Test2PluginMemUsage Test2PluginUUID Test2Suite gotofile ];
+    meta = {
+      description = "A new and improved test harness with better Test2 integration";
+      license = with lib.licenses; [ artistic1 gpl1Plus ];
+    };
+  };
+
+  Test2PluginMemUsage = buildPerlPackage {
+    pname = "Test2-Plugin-MemUsage";
+    version = "0.002003";
+    src = fetchurl {
+      url = "mirror://cpan/authors/id/E/EX/EXODIST/Test2-Plugin-MemUsage-0.002003.tar.gz";
+      sha256 = "5e0662d5a823ae081641f5ce82843111eec1831cd31f883a6c6de54afdf87c25";
+    };
+    buildInputs = [ Test2Suite ];
+    meta = {
+      description = "Collect and display memory usage information";
+      license = with lib.licenses; [ artistic1 gpl1Plus ];
+    };
+  };
+
+   Test2PluginUUID = buildPerlPackage {
+    pname = "Test2-Plugin-UUID";
+    version = "0.002001";
+    src = fetchurl {
+      url = "mirror://cpan/authors/id/E/EX/EXODIST/Test2-Plugin-UUID-0.002001.tar.gz";
+      sha256 = "4c6c8d484d7153d8779dc155a992b203095b5c5aa1cfb1ee8bcedcd0601878c9";
+    };
+    buildInputs = [ Test2Suite ];
+    propagatedBuildInputs = [ DataUUID ];
+    meta = {
+      description = "Use REAL UUIDs in Test2";
+      license = with lib.licenses; [ artistic1 gpl1Plus ];
+    };
+  };
+
   Test2PluginNoWarnings = buildPerlPackage {
      pname = "Test2-Plugin-NoWarnings";
      version = "0.09";
@@ -21922,15 +22039,14 @@ let
       url = "mirror://cpan/authors/id/K/KU/KUBOTA/Text-WrapI18N-0.06.tar.gz";
       sha256 = "4bd29a17f0c2c792d12c1005b3c276f2ab0fae39c00859ae1741d7941846a488";
     };
-    propagatedBuildInputs = [ pkgs.glibc TextCharWidth ];
+    buildInputs = [ pkgs.glibcLocales ];
+    propagatedBuildInputs = [ TextCharWidth ];
     preConfigure = ''
       substituteInPlace WrapI18N.pm --replace '/usr/bin/locale' '${pkgs.glibc.bin}/bin/locale'
     '';
     meta = {
       description = "Line wrapping module with support for multibyte, fullwidth, and combining characters and languages without whitespaces between words";
       license = with lib.licenses; [ artistic1 gpl2 ];
-      # bogus use of glibc, pretty sure, think this is what we have glibcLocales for?
-      broken = stdenv.hostPlatform.libc != "glibc";
     };
   };
 
@@ -22069,6 +22185,19 @@ let
       license = with lib.licenses; [ artistic1 gpl1Plus ];
     };
     doCheck = false; /* test fails on some machines */
+  };
+
+  TieHashMethod = buildPerlPackage {
+    pname = "Tie-Hash-Method";
+    version = "0.02";
+    src = fetchurl {
+      url = "mirror://cpan/authors/id/Y/YV/YVES/Tie-Hash-Method-0.02.tar.gz";
+      sha256 = "d513fbb51413f7ca1e64a1bdce6194df7ec6076dea55066d67b950191eec32a9";
+    };
+    meta = {
+      description = "Tied hash with specific methods overriden by callbacks";
+      license = with lib.licenses; [ artistic1 ];
+    };
   };
 
   TieRefHash = buildPerlPackage {

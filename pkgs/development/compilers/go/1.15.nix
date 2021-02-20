@@ -4,15 +4,20 @@
 , buildPackages
 , pkgsBuildTarget
 , fetchpatch
+, callPackage
 }:
 
 let
 
   inherit (lib) optionals optionalString;
 
+  version = "1.15.8";
+
+  go_bootstrap = buildPackages.callPackage ./bootstrap.nix { };
+
   goBootstrap = runCommand "go-bootstrap" {} ''
     mkdir $out
-    cp -rf ${buildPackages.go_bootstrap}/* $out/
+    cp -rf ${go_bootstrap}/* $out/
     chmod -R u+w $out
     find $out -name "*.c" -delete
     cp -rf $out/bin/* $out/share/go/bin/
@@ -36,7 +41,7 @@ in
 
 stdenv.mkDerivation rec {
   pname = "go";
-  version = "1.15.8";
+  inherit version;
 
   src = fetchurl {
     url = "https://dl.google.com/go/go${version}.src.tar.gz";

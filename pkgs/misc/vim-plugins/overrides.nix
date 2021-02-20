@@ -7,9 +7,7 @@
 , ruby
 , which
 , fetchFromGitHub
-, fetchgit
 , fetchurl
-, fetchzip
 , fetchpatch
 , llvmPackages
 , rustPlatform
@@ -731,7 +729,7 @@ self: super: {
             libiconv
           ];
 
-          cargoSha256 = "mq5q+cIWXDMeoZfumX1benulrP/AWKZnd8aI0OzY55c=";
+          cargoSha256 = "042dbg80mx0khm8xahm4l490s7bfbav362r0mz5bfhq4fy2s9nsi";
         };
       in
       ''
