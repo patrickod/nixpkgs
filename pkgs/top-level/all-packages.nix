@@ -192,6 +192,8 @@ in
 
   castxml = callPackage ../development/tools/castxml { };
 
+  cen64 = callPackage ../misc/emulators/cen64 { };
+
   cereal = callPackage ../development/libraries/cereal { };
 
   checkov = callPackage ../development/tools/analysis/checkov {};
@@ -2539,6 +2541,8 @@ in
   klipper = callPackage ../servers/klipper { };
 
   klog = qt5.callPackage ../applications/radio/klog { };
+
+  krapslog = callPackage ../tools/misc/krapslog { };
 
   lcdproc = callPackage ../servers/monitoring/lcdproc { };
 
@@ -13794,7 +13798,10 @@ in
 
   ganv = callPackage ../development/libraries/ganv { };
 
-  garble = callPackage ../build-support/go/garble.nix { };
+  garble = callPackage ../build-support/go/garble.nix {
+    # https://github.com/burrowers/garble/issues/124
+    buildGoModule = buildGo115Module;
+  };
 
   gcab = callPackage ../development/libraries/gcab { };
 
