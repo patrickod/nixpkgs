@@ -2263,6 +2263,8 @@ in
 
   enca = callPackage ../tools/text/enca { };
 
+  enigma = callPackage ../games/enigma {};
+
   ent = callPackage ../tools/misc/ent { };
 
   envconsul = callPackage ../tools/system/envconsul { };
@@ -12507,6 +12509,8 @@ in
 
   kustomize = callPackage ../development/tools/kustomize { };
 
+  kustomize-sops = callPackage ../development/tools/kustomize/kustomize-sops.nix { };
+
   ktlint = callPackage ../development/tools/ktlint { };
 
   kythe = callPackage ../development/tools/kythe { };
@@ -21556,8 +21560,9 @@ in
   claws-mail = callPackage ../applications/networking/mailreaders/claws-mail {
     inherit (xorg) libSM;
   };
-  claws-mail-gtk3 = callPackage ../applications/networking/mailreaders/claws-mail/gtk3.nix {
+  claws-mail-gtk3 = callPackage ../applications/networking/mailreaders/claws-mail {
     inherit (xorg) libSM;
+    useGtk3 = true;
   };
 
   clfswm = callPackage ../applications/window-managers/clfswm { };
@@ -23801,6 +23806,8 @@ in
   ncmpc = callPackage ../applications/audio/ncmpc { };
 
   ncmpcpp = callPackage ../applications/audio/ncmpcpp { };
+
+  pragha = libsForQt5.callPackage ../applications/audio/pragha { };
 
   rofi-mpd = callPackage ../applications/audio/rofi-mpd { };
 
@@ -27425,6 +27432,8 @@ in
   voxelands = callPackage ../games/voxelands {
     libpng = libpng12;
   };
+
+  wargus = callPackage ../games/wargus { };
 
   warmux = callPackage ../games/warmux { };
 
