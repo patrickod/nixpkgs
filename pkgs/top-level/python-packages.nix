@@ -210,6 +210,8 @@ in {
 
   aioasuswrt = callPackage ../development/python-modules/aioasuswrt { };
 
+  aiocache = callPackage ../development/python-modules/aiocache { };
+
   aiocoap = callPackage ../development/python-modules/aiocoap { };
 
   aioconsole = callPackage ../development/python-modules/aioconsole { };
@@ -3291,8 +3293,6 @@ in {
 
   j2cli = callPackage ../development/python-modules/j2cli { };
 
-  jabberbot = callPackage ../development/python-modules/jabberbot { };
-
   janus = callPackage ../development/python-modules/janus { };
 
   jaraco_classes = callPackage ../development/python-modules/jaraco_classes { };
@@ -3398,6 +3398,8 @@ in {
   jsonpointer = callPackage ../development/python-modules/jsonpointer { };
 
   jsonref = callPackage ../development/python-modules/jsonref { };
+
+  json-rpc = callPackage ../development/python-modules/json-rpc { };
 
   jsonrpc-async = callPackage ../development/python-modules/jsonrpc-async { };
 
@@ -5467,6 +5469,8 @@ in {
   pyflakes = callPackage ../development/python-modules/pyflakes { };
 
   pyflume = callPackage ../development/python-modules/pyflume { };
+
+  pyflunearyou = callPackage ../development/python-modules/pyflunearyou { };
 
   pyfma = callPackage ../development/python-modules/pyfma { };
 
@@ -8509,8 +8513,6 @@ in {
   xmltodict = callPackage ../development/python-modules/xmltodict { };
 
   xmodem = callPackage ../development/python-modules/xmodem { };
-
-  xmpppy = callPackage ../development/python-modules/xmpppy { };
 
   xnd = callPackage ../development/python-modules/xnd { };
 
