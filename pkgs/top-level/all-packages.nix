@@ -30141,4 +30141,6 @@ in
   zktree = callPackage ../applications/misc/zktree {};
 
   uf2conv = callPackage ../development/tools/uf2conv {} ;
+
+  ember-cli = callPackage ../development/tools/ember-cli {};
 }
