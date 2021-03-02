@@ -284,6 +284,8 @@ in {
 
   aiopulse = callPackage ../development/python-modules/aiopulse { };
 
+  aiopylgtv = callPackage ../development/python-modules/aiopylgtv { };
+
   aiorecollect = callPackage ../development/python-modules/aiorecollect { };
 
   aioredis = callPackage ../development/python-modules/aioredis { };
@@ -878,7 +880,7 @@ in {
 
   bandit = callPackage ../development/python-modules/bandit { };
 
-  bap = callPackage ../development/python-modules/bap { bap = pkgs.ocaml-ng.ocamlPackages_4_07.bap; };
+  bap = callPackage ../development/python-modules/bap { inherit (pkgs.ocaml-ng.ocamlPackages) bap; };
 
   baron = callPackage ../development/python-modules/baron { };
 
@@ -1280,6 +1282,8 @@ in {
     callPackage ../development/python-modules/cherrypy/17.nix { };
 
   chevron = callPackage ../development/python-modules/chevron { };
+
+  chirpstack-api = callPackage ../development/python-modules/chirpstack-api { };
 
   ci-info = callPackage ../development/python-modules/ci-info { };
 
@@ -2043,6 +2047,8 @@ in {
 
   ed25519 = callPackage ../development/python-modules/ed25519 { };
 
+  editdistance = callPackage ../development/python-modules/editdistance { };
+
   editorconfig = callPackage ../development/python-modules/editorconfig { };
 
   edward = callPackage ../development/python-modules/edward { };
@@ -2060,6 +2066,8 @@ in {
   elementpath = callPackage ../development/python-modules/elementpath { };
 
   eliot = callPackage ../development/python-modules/eliot { };
+
+  elmax = callPackage ../development/python-modules/elmax { };
 
   emailthreads = callPackage ../development/python-modules/emailthreads { };
 
@@ -2483,6 +2491,8 @@ in {
 
   futures = callPackage ../development/python-modules/futures { };
 
+  fuzzyfinder = callPackage ../development/python-modules/fuzzyfinder { };
+
   fuzzywuzzy = callPackage ../development/python-modules/fuzzywuzzy { };
 
   fx2 = callPackage ../development/python-modules/fx2 { };
@@ -2805,6 +2815,8 @@ in {
   graphql-server-core = callPackage ../development/python-modules/graphql-server-core { };
 
   graph-tool = callPackage ../development/python-modules/graph-tool/2.x.x.nix { inherit (pkgs) pkg-config; };
+
+  graphtage = callPackage ../development/python-modules/graphtage { };
 
   graphviz = callPackage ../development/python-modules/graphviz { inherit (pkgs) graphviz; };
 
@@ -3371,6 +3383,8 @@ in {
 
   jsmin = callPackage ../development/python-modules/jsmin { };
 
+  json5 = callPackage ../development/python-modules/json5 { };
+
   jsondate = callPackage ../development/python-modules/jsondate { };
 
   jsondiff = callPackage ../development/python-modules/jsondiff { };
@@ -3392,6 +3406,8 @@ in {
   jsonpath = callPackage ../development/python-modules/jsonpath { };
 
   jsonpath_rw = callPackage ../development/python-modules/jsonpath_rw { };
+
+  jsonpath-ng = callPackage ../development/python-modules/jsonpath-ng { };
 
   jsonpickle = callPackage ../development/python-modules/jsonpickle { };
 
@@ -5317,6 +5333,8 @@ in {
 
   pycdio = callPackage ../development/python-modules/pycdio { };
 
+  pycec = callPackage ../development/python-modules/pycec { };
+
   pycfdns = callPackage ../development/python-modules/pycfdns { };
 
   pychannels = callPackage ../development/python-modules/pychannels { };
@@ -5694,6 +5712,8 @@ in {
 
   pymediainfo = callPackage ../development/python-modules/pymediainfo { };
 
+  pymediaroom = callPackage ../development/python-modules/pymediaroom { };
+
   pymeeus = callPackage ../development/python-modules/pymeeus { };
 
   pymemoize = callPackage ../development/python-modules/pymemoize { };
@@ -6011,6 +6031,8 @@ in {
 
   pysma = callPackage ../development/python-modules/pysma { };
 
+  pysmappee = callPackage ../development/python-modules/pysmappee { };
+
   pysmb = callPackage ../development/python-modules/pysmb { };
 
   pysmbc = callPackage ../development/python-modules/pysmbc { inherit (pkgs) pkg-config; };
@@ -6085,6 +6107,8 @@ in {
     inherit (pkgs) bash subversion apr aprutil expat neon openssl;
   };
 
+  pyswitchbot = callPackage ../development/python-modules/pyswitchbot { };
+
   pysychonaut = callPackage ../development/python-modules/pysychonaut { };
 
   pysyncobj = callPackage ../development/python-modules/pysyncobj { };
@@ -6094,6 +6118,8 @@ in {
   pytado = callPackage ../development/python-modules/pytado { };
 
   pytaglib = callPackage ../development/python-modules/pytaglib { };
+
+  pytankerkoenig = callPackage ../development/python-modules/pytankerkoenig { };
 
   pyte = callPackage ../development/python-modules/pyte { };
 
@@ -6303,6 +6329,8 @@ in {
 
   python3-openid = callPackage ../development/python-modules/python3-openid { };
 
+  python-awair = callPackage ../development/python-modules/python-awair { };
+
   python-axolotl = callPackage ../development/python-modules/python-axolotl { };
 
   python-axolotl-curve25519 = callPackage ../development/python-modules/python-axolotl-curve25519 { };
@@ -6354,6 +6382,8 @@ in {
   python-forecastio = callPackage ../development/python-modules/python-forecastio { };
 
   python-frontmatter = callPackage ../development/python-modules/python-frontmatter { };
+
+  python-gammu = callPackage ../development/python-modules/python-gammu { };
 
   python-gitlab = callPackage ../development/python-modules/python-gitlab { };
 
@@ -6604,7 +6634,11 @@ in {
 
   pyvex = callPackage ../development/python-modules/pyvex { };
 
+  pyvicare = callPackage ../development/python-modules/pyvicare { };
+
   pyviz-comms = callPackage ../development/python-modules/pyviz-comms { };
+
+  pyvizio = callPackage ../development/python-modules/pyvizio { };
 
   pyvips = callPackage ../development/python-modules/pyvips {
     inherit (pkgs) pkg-config vips glib;
@@ -7233,6 +7267,8 @@ in {
 
   sharedmem = callPackage ../development/python-modules/sharedmem { };
 
+  sharkiqpy = callPackage ../development/python-modules/sharkiqpy { };
+
   sh = callPackage ../development/python-modules/sh { };
 
   shellingham = callPackage ../development/python-modules/shellingham { };
@@ -7274,6 +7310,8 @@ in {
 
   simplegeneric = callPackage ../development/python-modules/simplegeneric { };
 
+  simplehound = callPackage ../development/python-modules/simplehound { };
+
   simplejson = callPackage ../development/python-modules/simplejson { };
 
   simplekml = callPackage ../development/python-modules/simplekml { };
@@ -7305,6 +7343,8 @@ in {
   sklearn-deap = callPackage ../development/python-modules/sklearn-deap { };
 
   skorch = callPackage ../development/python-modules/skorch { };
+
+  skybellpy = callPackage ../development/python-modules/skybellpy { };
 
   slack-sdk = callPackage ../development/python-modules/slack-sdk { };
 
@@ -7784,6 +7824,8 @@ in {
 
   terminaltables = callPackage ../development/python-modules/terminaltables { };
 
+  termplotlib = callPackage ../development/python-modules/termplotlib { };
+
   termstyle = callPackage ../development/python-modules/termstyle { };
 
   teslajsonpy = callPackage ../development/python-modules/teslajsonpy { };
@@ -7880,8 +7922,6 @@ in {
 
   tinyobjloader-py = callPackage ../development/python-modules/tinyobjloader-py { };
 
-  tiros = callPackage ../development/python-modules/tiros { };
-
   tissue = callPackage ../development/python-modules/tissue { };
 
   titlecase = callPackage ../development/python-modules/titlecase { };
@@ -7943,6 +7983,8 @@ in {
   towncrier = callPackage ../development/python-modules/towncrier { inherit (pkgs) git; };
 
   tox = callPackage ../development/python-modules/tox { };
+
+  tpm2-pytss = callPackage ../development/python-modules/tpm2-pytss { };
 
   tqdm = callPackage ../development/python-modules/tqdm { };
 
@@ -8015,6 +8057,8 @@ in {
 
   tweepy = callPackage ../development/python-modules/tweepy { };
 
+  twentemilieu = callPackage ../development/python-modules/twentemilieu { };
+
   twiggy = callPackage ../development/python-modules/twiggy { };
 
   twilio = callPackage ../development/python-modules/twilio { };
@@ -8022,6 +8066,8 @@ in {
   twill = callPackage ../development/python-modules/twill { };
 
   twine = callPackage ../development/python-modules/twine { };
+
+  twinkly-client = callPackage ../development/python-modules/twinkly-client { };
 
   twisted = callPackage ../development/python-modules/twisted { };
 
@@ -8040,6 +8086,8 @@ in {
   twitter-common-log = callPackage ../development/python-modules/twitter-common-log { };
 
   twitter-common-options = callPackage ../development/python-modules/twitter-common-options { };
+
+  twitterapi = callPackage ../development/python-modules/twitterapi { };
 
   twofish = callPackage ../development/python-modules/twofish { };
 
@@ -8219,6 +8267,8 @@ in {
   vega = callPackage ../development/python-modules/vega { };
 
   vega_datasets = callPackage ../development/python-modules/vega_datasets { };
+
+  venstarcolortouch = callPackage ../development/python-modules/venstarcolortouch { };
 
   venusian = callPackage ../development/python-modules/venusian { };
 
