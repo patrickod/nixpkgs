@@ -951,6 +951,8 @@ in {
 
   bellows = callPackage ../development/python-modules/bellows { };
 
+  beniget = callPackage ../development/python-modules/beniget { };
+
   bespon = callPackage ../development/python-modules/bespon { };
 
   betacode = callPackage ../development/python-modules/betacode { };
@@ -5949,6 +5951,8 @@ in {
 
   pynest2d = callPackage ../development/python-modules/pynest2d { };
 
+  pynetdicom = callPackage ../development/python-modules/pynetdicom { };
+
   pynisher = callPackage ../development/python-modules/pynisher { };
 
   pynmea2 = callPackage ../development/python-modules/pynmea2 { };
@@ -6777,6 +6781,8 @@ in {
   python-wink = callPackage ../development/python-modules/python-wink { };
 
   python-xmp-toolkit = callPackage ../development/python-modules/python-xmp-toolkit { };
+
+  pythran = callPackage ../development/python-modules/pythran { };
 
   pyeverlights = callPackage ../development/python-modules/pyeverlights { };
 

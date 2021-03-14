@@ -755,6 +755,8 @@ in
 
   metapixel = callPackage ../tools/graphics/metapixel { };
 
+  tfk8s = callPackage ../tools/misc/tfk8s { };
+
   xtrt = callPackage ../tools/archivers/xtrt { };
 
   yabridge = callPackage ../tools/audio/yabridge {
@@ -2778,7 +2780,9 @@ in
 
   precice = callPackage ../development/libraries/precice { };
 
-  pueue = callPackage ../applications/misc/pueue { };
+  pueue = callPackage ../applications/misc/pueue {
+    inherit (darwin.apple_sdk.frameworks) SystemConfiguration;
+  };
 
   pixiecore = callPackage ../tools/networking/pixiecore {};
 
@@ -3953,6 +3957,8 @@ in
 
   volctl = callPackage ../tools/audio/volctl { };
 
+  volk = callPackage ../development/libraries/volk { };
+
   vorta = libsForQt5.callPackage ../applications/backup/vorta { };
 
   utahfs = callPackage ../applications/networking/utahfs { };
@@ -4133,6 +4139,8 @@ in
   extundelete = callPackage ../tools/filesystems/extundelete { };
 
   expect = callPackage ../tools/misc/expect { };
+
+  expliot = python3Packages.callPackage ../tools/security/expliot { };
 
   f2fs-tools = callPackage ../tools/filesystems/f2fs-tools { };
 
@@ -5575,11 +5583,13 @@ in
   kalibrate-hackrf = callPackage ../applications/radio/kalibrate-hackrf { };
 
   wrapKakoune = kakoune: attrs: callPackage ../applications/editors/kakoune/wrapper.nix (attrs // { inherit kakoune; });
-  kakounePlugins = callPackage ../applications/editors/kakoune/plugins { };
+  kakounePlugins = recurseIntoAttrs (callPackage ../applications/editors/kakoune/plugins { });
+
   kakoune-unwrapped = callPackage ../applications/editors/kakoune { };
   kakoune = wrapKakoune kakoune-unwrapped {
     plugins = [ ];  # override with the list of desired plugins
   };
+  kakouneUtils = callPackage ../applications/editors/kakoune/plugins/kakoune-utils.nix { };
 
   kak-lsp = callPackage ../tools/misc/kak-lsp {
     inherit (darwin.apple_sdk.frameworks) Security;
@@ -10810,7 +10820,7 @@ in
     ocamlformat # latest version
     ocamlformat_0_11_0 ocamlformat_0_12 ocamlformat_0_13_0 ocamlformat_0_14_0
     ocamlformat_0_14_1 ocamlformat_0_14_2 ocamlformat_0_14_3 ocamlformat_0_15_0
-    ocamlformat_0_15_1 ocamlformat_0_16_0;
+    ocamlformat_0_15_1 ocamlformat_0_16_0 ocamlformat_0_17_0;
 
   orc = callPackage ../development/compilers/orc { };
 
@@ -10827,7 +10837,7 @@ in
   ocsigen-i18n = callPackage ../development/tools/ocaml/ocsigen-i18n { };
 
   opa = callPackage ../development/compilers/opa {
-    ocamlPackages = ocaml-ng.ocamlPackages_4_03;
+    ocamlPackages = ocaml-ng.ocamlPackages_4_04;
   };
 
   opaline = callPackage ../development/tools/ocaml/opaline { };
@@ -13141,7 +13151,10 @@ in
 
   uefi-firmware-parser = callPackage ../development/tools/analysis/uefi-firmware-parser { };
 
-  uhd = callPackage ../applications/radio/uhd { };
+  uhd3_5 = callPackage ../applications/radio/uhd/3.5.nix { };
+  uhd = callPackage ../applications/radio/uhd {
+    boost = boost17x;
+  };
 
   uisp = callPackage ../development/tools/misc/uisp { };
 
@@ -13479,6 +13492,8 @@ in
   cachix = haskell.lib.justStaticExecutables haskellPackages.cachix;
 
   hercules-ci-agent = callPackage ../development/tools/continuous-integration/hercules-ci-agent { };
+
+  hci = callPackage ../development/tools/continuous-integration/hci { };
 
   niv = lib.getBin (haskell.lib.justStaticExecutables haskellPackages.niv);
 
@@ -14638,6 +14653,8 @@ in
   jama = callPackage ../development/libraries/jama { };
 
   jansson = callPackage ../development/libraries/jansson { };
+
+  jasper = callPackage ../development/libraries/jasper { };
 
   jbig2dec = callPackage ../development/libraries/jbig2dec { };
 
@@ -16773,13 +16790,7 @@ in
 
   qm-dsp = callPackage ../development/libraries/audio/qm-dsp { };
 
-  qradiolink = callPackage ../applications/radio/qradiolink {
-    # 3.8 support is not ready yet:
-    # https://github.com/qradiolink/qradiolink/issues/67#issuecomment-703222573
-    # The non minimal build is used because the 'qtgui' component is needed.
-    # gr-osmosdr is using the same gnuradio as of now.
-    gnuradio = gnuradio3_7-unwrapped;
-  };
+  qradiolink = callPackage ../applications/radio/qradiolink { };
 
   qrupdate = callPackage ../development/libraries/qrupdate { };
 
@@ -18481,6 +18492,7 @@ in
     inherit (darwin.apple_sdk.frameworks) CoreServices;
     boost = boost173; # Configure checks for specific version.
     protobuf = protobuf3_7;
+    icu =  icu67;
   };
 
   mysql_jdbc = callPackage ../servers/sql/mysql/jdbc { };
@@ -18594,6 +18606,7 @@ in
   prometheus-fritzbox-exporter = callPackage ../servers/monitoring/prometheus/fritzbox-exporter.nix { };
   prometheus-gitlab-ci-pipelines-exporter = callPackage ../servers/monitoring/prometheus/gitlab-ci-pipelines-exporter.nix { };
   prometheus-haproxy-exporter = callPackage ../servers/monitoring/prometheus/haproxy-exporter.nix { };
+  prometheus-jitsi-exporter = callPackage ../servers/monitoring/prometheus/jitsi-exporter.nix { };
   prometheus-json-exporter = callPackage ../servers/monitoring/prometheus/json-exporter.nix { };
   prometheus-keylight-exporter = callPackage ../servers/monitoring/prometheus/keylight-exporter.nix { };
   prometheus-knot-exporter = callPackage ../servers/monitoring/prometheus/knot-exporter.nix { };
@@ -22331,80 +22344,96 @@ in
 
   gksu = callPackage ../applications/misc/gksu { };
 
-  gnss-sdr = callPackage ../applications/radio/gnss-sdr {
-    boost = boost166;
-    gnuradio = gnuradio3_7-unwrapped;
-  };
+  gnss-sdr = callPackage ../applications/radio/gnss-sdr { };
 
-  gnuradio-unwrapped = callPackage ../applications/radio/gnuradio {
-    inherit (darwin.apple_sdk.frameworks) CoreAudio;
-    python = python3;
-  };
-  # A build without gui components and other utilites not needed for end user
-  # libraries
-  gnuradioMinimal = gnuradio-unwrapped.override {
-    features = {
-      gnuradio-companion = false;
-      python-support = false;
-      gr-ctrlport = false;
-      examples = false;
-      gr-qtgui = false;
-      gr-utils = false;
-      gr-modtool = false;
-      sphinx = false;
-      doxygen = false;
+  gnuradio = callPackage ../applications/radio/gnuradio/wrapper.nix {
+    unwrapped = callPackage ../applications/radio/gnuradio {
+      inherit (darwin.apple_sdk.frameworks) CoreAudio;
+      python = python3;
+      boost = boost17x;
     };
   };
-  gnuradio = callPackage ../applications/radio/gnuradio/wrapper.nix {
-    unwrapped = gnuradio-unwrapped;
+  gnuradioPackages = lib.recurseIntoAttrs gnuradio.pkgs;
+  # A build without gui components and other utilites not needed for end user
+  # libraries
+  gnuradioMinimal = gnuradio.override {
+    wrap = false;
+    unwrapped = gnuradio.unwrapped.override {
+      volk = volk.override {
+        # So it will not reference python
+        enableModTool = false;
+      };
+      features = {
+        gnuradio-companion = false;
+        python-support = false;
+        examples = false;
+        gr-qtgui = false;
+        gr-utils = false;
+        gr-modtool = false;
+        gr-blocktool = false;
+        sphinx = false;
+        doxygen = false;
+      };
+    };
   };
-  gnuradio3_7-unwrapped = callPackage ../applications/radio/gnuradio/3.7.nix {
-    inherit (darwin.apple_sdk.frameworks) CoreAudio;
-    python = python2;
+  gnuradio3_8 = callPackage ../applications/radio/gnuradio/wrapper.nix {
+    unwrapped = callPackage ../applications/radio/gnuradio/3.8.nix {
+      inherit (darwin.apple_sdk.frameworks) CoreAudio;
+      python = python3;
+      boost = boost17x;
+    };
   };
+  gnuradio3_8Packages = lib.recurseIntoAttrs gnuradio3_8.pkgs;
   # A build without gui components and other utilites not needed if gnuradio is
   # used as a c++ library.
-  gnuradio3_7Minimal = gnuradio3_7-unwrapped.override {
-    features = {
-      gnuradio-companion = false;
-      python-support = false;
-      gr-ctrlport = false;
-      gr-qtgui = false;
-      gr-utils = false;
-      sphinx = false;
-      doxygen = false;
-      gr-wxgui = false;
+  gnuradio3_8Minimal = gnuradio3_8.override {
+    wrap = false;
+    unwrapped = gnuradio3_8.unwrapped.override {
+      volk = volk.override {
+        enableModTool = false;
+      };
+      features = {
+        gnuradio-companion = false;
+        python-support = false;
+        examples = false;
+        gr-qtgui = false;
+        gr-utils = false;
+        gr-modtool = false;
+        sphinx = false;
+        doxygen = false;
+      };
     };
   };
   gnuradio3_7 = callPackage ../applications/radio/gnuradio/wrapper.nix {
-    unwrapped = gnuradio3_7-unwrapped;
+    unwrapped = callPackage ../applications/radio/gnuradio/3.7.nix {
+      inherit (darwin.apple_sdk.frameworks) CoreAudio;
+      python = python2;
+      # Incompatible with uhd4+
+      uhd = uhd3_5;
+    };
+  };
+  gnuradio3_7Packages = lib.recurseIntoAttrs gnuradio3_7.pkgs;
+  # A build without gui components and other utilites not needed if gnuradio is
+  # used as a c++ library.
+  gnuradio3_7Minimal = gnuradio3_7.override {
+    wrap = false;
+    unwrapped = gnuradio3_7.unwrapped.override {
+      volk = volk.override {
+        enableModTool = false;
+      };
+      features = {
+        gnuradio-companion = false;
+        python-support = false;
+        gr-qtgui = false;
+        gr-utils = false;
+        sphinx = false;
+        doxygen = false;
+        gr-wxgui = false;
+      };
+    };
   };
 
   grandorgue = callPackage ../applications/audio/grandorgue { };
-
-  gr-nacl = callPackage ../applications/radio/gnuradio/nacl.nix {
-    gnuradio = gnuradio3_7-unwrapped;
-  };
-
-  gr-gsm = callPackage ../applications/radio/gnuradio/gsm.nix {
-    gnuradio = gnuradio3_7-unwrapped;
-  };
-
-  gr-ais = callPackage ../applications/radio/gnuradio/ais.nix {
-    gnuradio = gnuradio3_7-unwrapped;
-  };
-
-  gr-limesdr = callPackage ../applications/radio/gnuradio/limesdr.nix {
-    gnuradio = gnuradio3_7-unwrapped;
-  };
-
-  gr-rds = callPackage ../applications/radio/gnuradio/rds.nix {
-    gnuradio = gnuradio3_7-unwrapped;
-  };
-
-  gr-osmosdr = callPackage ../applications/radio/gnuradio/osmosdr.nix {
-    gnuradio = gnuradio3_7-unwrapped;
-  };
 
   goldendict = libsForQt5.callPackage ../applications/misc/goldendict {
     inherit (darwin) libiconv;
@@ -22432,14 +22461,7 @@ in
 
   gpx = callPackage ../applications/misc/gpx { };
 
-  gqrx = libsForQt514.callPackage ../applications/radio/gqrx {
-    gnuradio = gnuradio3_7Minimal;
-    # Use the same gnuradio for gr-osmosdr as well
-    gr-osmosdr = gr-osmosdr.override {
-      gnuradio = gnuradio3_7Minimal;
-      pythonSupport = false;
-    };
-  };
+  gqrx = callPackage ../applications/radio/gqrx { };
 
   gpx-viewer = callPackage ../applications/misc/gpx-viewer { };
 
@@ -22866,6 +22888,10 @@ in
 
   google-chrome-dev = google-chrome.override { chromium = chromiumDev; channel = "dev"; };
 
+  google-play-music-desktop-player = callPackage ../applications/audio/google-play-music-desktop-player {
+    inherit (gnome2) GConf;
+  };
+
   gosmore = callPackage ../applications/misc/gosmore { };
 
   gpsbabel = libsForQt5.callPackage ../applications/misc/gpsbabel {
@@ -23283,9 +23309,7 @@ in
 
   inkscape-extensions = recurseIntoAttrs (callPackages ../applications/graphics/inkscape/extensions.nix {});
 
-  inspectrum = libsForQt514.callPackage ../applications/radio/inspectrum {
-    gnuradio = gnuradioMinimal;
-  };
+  inspectrum = callPackage ../applications/radio/inspectrum { };
 
   ion3 = callPackage ../applications/window-managers/ion-3 {
     lua = lua5_1;
@@ -24639,6 +24663,8 @@ in
   pidgin-sipe = callPackage ../applications/networking/instant-messengers/pidgin-plugins/sipe { };
 
   pidgin-window-merge = callPackage ../applications/networking/instant-messengers/pidgin-plugins/window-merge { };
+
+  pika-backup = callPackage ../applications/backup/pika-backup { };
 
   purple-discord = callPackage ../applications/networking/instant-messengers/pidgin-plugins/purple-discord { };
 
@@ -26172,33 +26198,6 @@ in
     cores = retroArchCores;
   };
 
-  wrapKodi = { kodi }: callPackage ../applications/video/kodi/wrapper.nix {
-    inherit kodi;
-    plugins = let inherit (lib) optional optionals; in with kodiPlugins;
-      ([]
-      ++ optional (config.kodi.enableAdvancedLauncher or false) advanced-launcher
-      ++ optional (config.kodi.enableAdvancedEmulatorLauncher or false)
-        advanced-emulator-launcher
-      ++ optionals (config.kodi.enableControllers or false)
-        (with controllers;
-          [ default dreamcast gba genesis mouse n64 nes ps snes ])
-      ++ optional (config.kodi.enableExodus or false) exodus
-      ++ optionals (config.kodi.enableHyperLauncher or false)
-           (with hyper-launcher; [ plugin service pdfreader ])
-      ++ optional (config.kodi.enableJoystick or false) joystick
-      ++ optional (config.kodi.enableOSMCskin or false) osmc-skin
-      ++ optional (config.kodi.enableSVTPlay or false) svtplay
-      ++ optional (config.kodi.enableSteamController or false) steam-controller
-      ++ optional (config.kodi.enableSteamLauncher or false) steam-launcher
-      ++ optional (config.kodi.enablePVRHTS or false) pvr-hts
-      ++ optional (config.kodi.enablePVRHDHomeRun or false) pvr-hdhomerun
-      ++ optional (config.kodi.enablePVRIPTVSimple or false) pvr-iptvsimple
-      ++ optional (config.kodi.enableInputStreamAdaptive or false) inputstream-adaptive
-      ++ optional (config.kodi.enableVFSSFTP or false) vfs-sftp
-      ++ optional (config.kodi.enableVFSLibarchive or false) vfs-libarchive
-      );
-  };
-
   wsjtx = qt5.callPackage ../applications/radio/wsjtx { };
 
   wxhexeditor = callPackage ../applications/editors/wxhexeditor {
@@ -26256,28 +26255,16 @@ in
     gtk = gtk2;
   };
 
-  kodiPlain = callPackage ../applications/video/kodi { };
+  kodiPackages = recurseIntoAttrs (kodi.packages);
 
-  kodiPlainWayland = callPackage ../applications/video/kodi {
-    useWayland = true;
+  kodi = callPackage ../applications/video/kodi { };
+
+  kodi-wayland = callPackage ../applications/video/kodi {
+    waylandSupport = true;
   };
 
-  kodiGBM = callPackage ../applications/video/kodi {
-    useGbm = true;
-  };
-
-  kodiPlugins = recurseIntoAttrs (callPackage ../applications/video/kodi/plugins.nix {});
-
-  kodi = wrapKodi {
-    kodi = kodiPlain;
-  };
-
-  kodi-wayland = wrapKodi {
-    kodi = kodiPlainWayland;
-  };
-
-  kodi-gbm = wrapKodi {
-    kodi = kodiGBM;
+  kodi-gbm = callPackage ../applications/video/kodi {
+    gbmSupport = true;
   };
 
   kodi-cli = callPackage ../tools/misc/kodi-cli { };
@@ -26705,7 +26692,7 @@ in
 
   wownero = callPackage ../applications/blockchains/wownero.nix {};
 
-  zcash = callPackage ../applications/blockchains/zcash { };
+  zcash = callPackage ../applications/blockchains/zcash { stdenv = llvmPackages_11.stdenv; };
 
   openethereum = callPackage ../applications/blockchains/openethereum { };
 
@@ -28512,7 +28499,7 @@ in
   tlaps = callPackage ../applications/science/logic/tlaplus/tlaps.nix {
     inherit (ocaml-ng.ocamlPackages_4_05) ocaml;
   };
-  tlaplusToolbox = callPackage ../applications/science/logic/tlaplus/toolbox.nix {gtk = gtk2;};
+  tlaplusToolbox = callPackage ../applications/science/logic/tlaplus/toolbox.nix {};
 
   aiger = callPackage ../applications/science/logic/aiger {};
 
@@ -29121,6 +29108,8 @@ in
 
   keynav = callPackage ../tools/X11/keynav { };
 
+  kgx = callPackage ../applications/terminal-emulators/kgx { };
+
   kmon = callPackage ../tools/system/kmon { };
 
   kompose = callPackage ../applications/networking/cluster/kompose { };
@@ -29142,8 +29131,6 @@ in
   lguf-brightness = callPackage ../misc/lguf-brightness { };
 
   lilypond = callPackage ../misc/lilypond { guile = guile_1_8; };
-
-  lilypond-unstable = callPackage ../misc/lilypond/unstable.nix { };
 
   lilypond-with-fonts = callPackage ../misc/lilypond/with-fonts.nix { };
 
@@ -30019,6 +30006,8 @@ in
   xcpc = callPackage ../misc/emulators/xcpc { };
 
   zxcvbn-c = callPackage ../development/libraries/zxcvbn-c { };
+
+  zxing-cpp = callPackage ../development/libraries/zxing-cpp { };
 
   snes9x-gtk = callPackage ../misc/emulators/snes9x-gtk { };
 
