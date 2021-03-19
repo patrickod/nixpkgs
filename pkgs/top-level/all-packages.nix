@@ -1243,6 +1243,8 @@ in
 
   detect-secrets = python3Packages.callPackage ../development/tools/detect-secrets { };
 
+  dfmt = callPackage ../tools/text/dfmt { };
+
   diskonaut = callPackage ../tools/misc/diskonaut { };
 
   diskus = callPackage ../tools/misc/diskus {
@@ -2633,6 +2635,8 @@ in
 
   massren = callPackage ../tools/misc/massren { };
 
+  mat2 = with python3.pkgs; toPythonApplication mat2;
+
   maxcso = callPackage ../tools/archivers/maxcso {};
 
   medusa = callPackage ../tools/security/medusa { };
@@ -3323,6 +3327,8 @@ in
 
   usbsdmux = callPackage ../development/tools/misc/usbsdmux { };
 
+  usbview = callPackage ../tools/misc/usbview { };
+
   anthy = callPackage ../tools/inputmethods/anthy { };
 
   evdevremapkeys = callPackage ../tools/inputmethods/evdevremapkeys { };
@@ -3543,6 +3549,18 @@ in
 
   cudnn = cudnn_cudatoolkit_10;
 
+  cutensorPackages = callPackages ../development/libraries/science/math/cutensor { };
+  inherit (cutensorPackages)
+    cutensor_cudatoolkit_10
+    cutensor_cudatoolkit_10_1
+    cutensor_cudatoolkit_10_2
+    cutensor_cudatoolkit_11
+    cutensor_cudatoolkit_11_0
+    cutensor_cudatoolkit_11_1
+    cutensor_cudatoolkit_11_2;
+
+  cutensor = cutensor_cudatoolkit_10;
+
   curlFull = curl.override {
     idnSupport = true;
     ldapSupport = true;
@@ -3618,7 +3636,8 @@ in
   };
 
   deno = callPackage ../development/web/deno {
-    inherit (darwin.apple_sdk.frameworks) Security CoreServices;
+    inherit (darwin) libobjc;
+    inherit (darwin.apple_sdk.frameworks) Security CoreServices Metal Foundation;
   };
 
   detox = callPackage ../tools/misc/detox { };
@@ -3967,6 +3986,8 @@ in
   volk = callPackage ../development/libraries/volk { };
 
   vorta = libsForQt5.callPackage ../applications/backup/vorta { };
+
+  vowpal-wabbit = callPackage ../applications/science/machine-learning/vowpal-wabbit { };
 
   utahfs = callPackage ../applications/networking/utahfs { };
 
@@ -7736,6 +7757,8 @@ in
     gperf = gperf_3_0;
   };
 
+  rpm2targz = callPackage ../tools/archivers/rpm2targz { };
+
   rpmextract = callPackage ../tools/archivers/rpmextract { };
 
   rrdtool = callPackage ../tools/misc/rrdtool { };
@@ -8401,6 +8424,8 @@ in
   };
 
   tdns-cli = callPackage ../tools/networking/tdns-cli { };
+
+  tea = callPackage ../tools/misc/tea { };
 
   ted = callPackage ../tools/typesetting/ted { };
 
@@ -11063,7 +11088,9 @@ in
   rustracerd = callPackage ../development/tools/rust/racerd {
     inherit (darwin.apple_sdk.frameworks) Security;
   };
-  inherit (callPackage ../development/tools/rust/rust-analyzer { })
+  inherit (callPackage ../development/tools/rust/rust-analyzer {
+    inherit (darwin.apple_sdk.frameworks) CoreServices;
+  })
     rust-analyzer-unwrapped rust-analyzer;
   rust-bindgen = callPackage ../development/tools/rust/bindgen { };
   rust-cbindgen = callPackage ../development/tools/rust/cbindgen {
@@ -12418,7 +12445,7 @@ in
   ffuf = callPackage ../tools/security/ffuf { };
 
   flow = callPackage ../development/tools/analysis/flow {
-    ocamlPackages = ocaml-ng.ocamlPackages_4_07;
+    ocamlPackages = ocaml-ng.ocamlPackages_4_09;
     inherit (darwin.apple_sdk.frameworks) CoreServices;
   };
 
@@ -15688,6 +15715,8 @@ in
   libschrift = callPackage ../development/libraries/libschrift { };
 
   libsearpc = callPackage ../development/libraries/libsearpc { };
+
+  libseat = callPackage ../development/libraries/libseat { };
 
   libsigcxx = callPackage ../development/libraries/libsigcxx { };
 
@@ -23887,6 +23916,8 @@ in
   merkaartor = libsForQt5.callPackage ../applications/misc/merkaartor { };
 
   meshlab = libsForQt5.callPackage ../applications/graphics/meshlab { };
+
+  metadata-cleaner = callPackage ../applications/misc/metadata-cleaner { };
 
   metersLv2 = callPackage ../applications/audio/meters_lv2 { };
 

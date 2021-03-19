@@ -328,6 +328,8 @@ in {
 
   ajpy = callPackage ../development/python-modules/ajpy { };
 
+  ajsonrpc = callPackage ../development/python-modules/ajsonrpc { };
+
   alabaster = callPackage ../development/python-modules/alabaster { };
 
   alarmdecoder = callPackage ../development/python-modules/alarmdecoder { };
@@ -1589,6 +1591,7 @@ in {
     cudatoolkit = pkgs.cudatoolkit_10_0;
     cudnn = pkgs.cudnn_cudatoolkit_10_0;
     nccl = pkgs.nccl_cudatoolkit_10;
+    cutensor = pkgs.cutensor_cudatoolkit_10;
   };
 
   curio = callPackage ../development/python-modules/curio { };
@@ -4111,6 +4114,8 @@ in {
   marshmallow-sqlalchemy = callPackage ../development/python-modules/marshmallow-sqlalchemy { };
 
   mask-rcnn = callPackage ../development/python-modules/mask-rcnn { };
+
+  mat2 = callPackage ../development/python-modules/mat2 { };
 
   matchpy = callPackage ../development/python-modules/matchpy { };
 
@@ -8952,6 +8957,8 @@ in {
   };
 
   yt = callPackage ../development/python-modules/yt { };
+
+  ytmusicapi = callPackage ../development/python-modules/ytmusicapi { };
 
   yubico-client = callPackage ../development/python-modules/yubico-client { };
 
