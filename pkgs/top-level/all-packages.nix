@@ -30442,4 +30442,6 @@ in
   uf2conv = callPackage ../development/tools/uf2conv {} ;
 
   ember-cli = callPackage ../development/tools/ember-cli {};
+
+  dotenv = callPackage ../development/tools/dotenv {};
 }
