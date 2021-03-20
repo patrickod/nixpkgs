@@ -3193,6 +3193,12 @@
     githubId = 19961516;
     name = "Felix Weilbach";
   };
+  fliegendewurst = {
+    email = "arne.keller@posteo.de";
+    github = "FliegendeWurst";
+    githubId = 12560461;
+    name = "Arne Keller";
+  };
   flokli = {
     email = "flokli@flokli.de";
     github = "flokli";
@@ -6325,6 +6331,12 @@
     githubId = 1776903;
     name = "Andrew Abbott";
   };
+  mitchmindtree = {
+    email = "mail@mitchellnordine.com";
+    github = "mitchmindtree";
+    githubId = 4587373;
+    name = "Mitchell Nordine";
+  };
   mjanczyk = {
     email = "m@dragonvr.pl";
     github = "mjanczyk";
@@ -6778,6 +6790,12 @@
     github = "netixx";
     githubId = 1488603;
     name = "François Espinet";
+  };
+  neverbehave = {
+    email = "i@never.pet";
+    github = "NeverBehave";
+    githubId = 17120571;
+    name = "Xinhao Luo";
   };
   nikitavoloboev = {
     email = "nikita.voloboev@gmail.com";
