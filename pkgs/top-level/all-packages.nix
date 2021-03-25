@@ -1138,6 +1138,8 @@ in
 
   bcachefs-tools = callPackage ../tools/filesystems/bcachefs-tools { };
 
+  bit = callPackage ../applications/version-management/git-and-tools/bit { };
+
   bitwarden = callPackage ../tools/security/bitwarden { };
 
   inherit (nodePackages) bitwarden-cli;
@@ -1160,6 +1162,8 @@ in
   bonnie = callPackage ../tools/filesystems/bonnie { };
 
   bonfire = callPackage ../tools/misc/bonfire { };
+
+  botamusique = callPackage ../tools/audio/botamusique { };
 
   boulder = callPackage ../tools/admin/boulder { };
 
@@ -2188,6 +2192,8 @@ in
   diesel-cli = callPackage ../development/tools/diesel-cli {
     inherit (darwin.apple_sdk.frameworks) Security;
   };
+
+  digitemp = callPackage ../tools/misc/digitemp { };
 
   dijo = callPackage ../tools/misc/dijo {
     inherit (darwin.apple_sdk.frameworks) CoreServices;
@@ -3855,6 +3861,8 @@ in
 
   drone-runner-exec = callPackage ../development/tools/continuous-integration/drone-runner-exec { };
 
+  drone-runner-docker = callPackage ../development/tools/continuous-integration/drone-runner-docker { };
+
   dropbear = callPackage ../tools/networking/dropbear { };
 
   dsview = libsForQt5.callPackage ../applications/science/electronics/dsview { };
@@ -4786,6 +4794,8 @@ in
   gitflow = callPackage ../applications/version-management/git-and-tools/gitflow { };
 
   gitfs = callPackage ../tools/filesystems/gitfs { };
+
+  github-backup = callPackage ../tools/misc/github-backup { };
 
   gitin = callPackage ../applications/version-management/git-and-tools/gitin { };
 
@@ -8082,6 +8092,8 @@ in
 
   sipsak = callPackage ../tools/networking/sipsak { };
 
+  sipvicious = python3Packages.callPackage ../tools/security/sipvicious { };
+
   siril = callPackage ../applications/science/astronomy/siril { };
 
   sisco.lv2 = callPackage ../applications/audio/sisco.lv2 { };
@@ -8768,6 +8780,8 @@ in
   txtw = callPackage ../tools/misc/txtw { };
 
   tydra = callPackage ../tools/misc/tydra { };
+
+  tz = callPackage ../tools/misc/tz { };
 
   u9fs = callPackage ../servers/u9fs { };
 
@@ -11798,11 +11812,6 @@ in
   sparkleshare = callPackage ../applications/version-management/sparkleshare { };
 
   spidermonkey_1_8_5 = callPackage ../development/interpreters/spidermonkey/1.8.5.nix { };
-  spidermonkey_38 = callPackage ../development/interpreters/spidermonkey/38.nix ({
-    inherit (darwin) libobjc;
-  } // (lib.optionalAttrs (stdenv.hostPlatform.isi686 && stdenv.cc.isGNU) {
-      stdenv = gcc6Stdenv; # with gcc-7: undefined reference to `__divmoddi4'
-  }));
   spidermonkey_68 = callPackage ../development/interpreters/spidermonkey/68.nix { };
   spidermonkey_78 = callPackage ../development/interpreters/spidermonkey/78.nix { };
 
@@ -18251,6 +18260,10 @@ in
     theme-spring = callPackage ../servers/icingaweb2/theme-spring { };
   };
 
+  inspircd = callPackage ../servers/irc/inspircd { };
+
+  inspircdMinimal = inspircd.override { extraModules = []; };
+
   imgproxy = callPackage ../servers/imgproxy { };
 
   ircdog = callPackage ../applications/networking/irc/ircdog { };
@@ -19273,7 +19286,7 @@ in
   fusePackages = dontRecurseIntoAttrs (callPackage ../os-specific/linux/fuse {
     util-linux = util-linuxMinimal;
   });
-  fuse = lowPrio fusePackages.fuse_2;
+  fuse = lowPrio (if stdenv.isDarwin then macfuse-stubs else fusePackages.fuse_2);
   fuse3 = fusePackages.fuse_3;
   fuse-common = hiPrio fusePackages.fuse_3.common;
 
@@ -19412,6 +19425,7 @@ in
 
   macfuse-stubs = callPackage ../os-specific/darwin/macfuse {
     inherit (darwin) libtapi;
+    inherit (darwin.apple_sdk.frameworks) DiskArbitration;
   };
 
   osxsnarf = callPackage ../os-specific/darwin/osxsnarf { };
@@ -19871,7 +19885,7 @@ in
   # Hardened Linux
   hardenedLinuxPackagesFor = kernel': overrides:
     let # Note: We use this hack since the hardened patches can lag behind and we don't want to delay updates:
-      linux_latest_for_hardened = pkgs.linux_5_10;
+      linux_latest_for_hardened = pkgs.linux_5_11;
       kernel = (if kernel' == pkgs.linux_latest then linux_latest_for_hardened else kernel').override overrides;
     in linuxPackagesFor (kernel.override {
       structuredExtraConfig = import ../os-specific/linux/kernel/hardened/config.nix {
@@ -25287,6 +25301,8 @@ in
 
   slop = callPackage ../tools/misc/slop {};
 
+  slowhttptest = callPackage ../tools/security/slowhttptest { };
+
   slrn = callPackage ../applications/networking/newsreaders/slrn { };
 
   sniproxy = callPackage ../applications/networking/sniproxy { };
@@ -29644,8 +29660,6 @@ in
   protocol = python3Packages.callPackage ../applications/networking/protocol { };
 
   pykms = callPackage ../tools/networking/pykms { };
-
-  pyload = callPackage ../applications/networking/pyload {};
 
   pyupgrade = with python3Packages; toPythonApplication pyupgrade;
 

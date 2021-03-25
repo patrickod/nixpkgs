@@ -192,7 +192,7 @@
     "dublin_bus_transport" = ps: with ps; [ ];
     "duckdns" = ps: with ps; [ ];
     "dunehd" = ps: with ps; [ ]; # missing inputs: pdunehd
-    "dwd_weather_warnings" = ps: with ps; [ ]; # missing inputs: dwdwfsapi
+    "dwd_weather_warnings" = ps: with ps; [ dwdwfsapi ];
     "dweet" = ps: with ps; [ ]; # missing inputs: dweepy
     "dynalite" = ps: with ps; [ ]; # missing inputs: dynalite_devices
     "dyson" = ps: with ps; [ aiohttp-cors libpurecool zeroconf ];
@@ -766,7 +766,7 @@
     "snmp" = ps: with ps; [ pysnmp ];
     "sochain" = ps: with ps; [ ]; # missing inputs: python-sochain-api
     "socialblade" = ps: with ps; [ ]; # missing inputs: socialbladeclient
-    "solaredge" = ps: with ps; [ stringcase ]; # missing inputs: solaredge
+    "solaredge" = ps: with ps; [ solaredge stringcase ];
     "solaredge_local" = ps: with ps; [ ]; # missing inputs: solaredge-local
     "solarlog" = ps: with ps; [ ]; # missing inputs: sunwatcher
     "solax" = ps: with ps; [ solax ];
