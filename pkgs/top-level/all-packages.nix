@@ -1609,7 +1609,7 @@ in
 
   b3sum = callPackage ../tools/security/b3sum {};
 
-  backblaze-b2 = python.pkgs.callPackage ../development/tools/backblaze-b2 { };
+  backblaze-b2 = callPackage ../development/tools/backblaze-b2 { };
 
   bandwhich = callPackage ../tools/networking/bandwhich {
     inherit (darwin.apple_sdk.frameworks) Security;
@@ -2836,6 +2836,7 @@ in
 
   procs = callPackage ../tools/admin/procs {
     inherit (darwin.apple_sdk.frameworks) Security;
+    inherit (darwin) libiconv;
   };
 
   psrecord = python3Packages.callPackage ../tools/misc/psrecord {};
@@ -3137,9 +3138,7 @@ in
     librsync = librsync_0_9;
   };
 
-  bud = callPackage ../tools/networking/bud {
-    inherit (pythonPackages) gyp;
-  };
+  bud = callPackage ../tools/networking/bud { };
 
   bump2version = python37Packages.callPackage ../applications/version-management/git-and-tools/bump2version { };
 
@@ -3265,6 +3264,7 @@ in
   clementine = libsForQt514.callPackage ../applications/audio/clementine {
     gst_plugins =
       with gst_all_1; [ gst-plugins-base gst-plugins-good gst-plugins-ugly gst-libav ];
+    protobuf = protobuf3_14;
   };
 
   clementineUnfree = clementine.unfree;
@@ -3389,9 +3389,7 @@ in
   skktools = callPackage ../tools/inputmethods/skk/skktools { };
   skk-dicts = callPackage ../tools/inputmethods/skk/skk-dicts { };
 
-  libkkc-data = callPackage ../data/misc/libkkc-data {
-    inherit (pythonPackages) marisa;
-  };
+  libkkc-data = callPackage ../data/misc/libkkc-data { };
 
   libkkc = callPackage ../tools/inputmethods/libkkc { };
 
@@ -4035,6 +4033,7 @@ in
 
   wrangler = callPackage ../development/tools/wrangler {
    inherit (darwin.apple_sdk.frameworks) CoreFoundation CoreServices Security;
+   inherit (darwin) libiconv;
   };
 
   wsl-open = callPackage ../tools/misc/wsl-open { };
@@ -4156,9 +4155,7 @@ in
 
   epsxe = callPackage ../misc/emulators/epsxe { };
 
-  escrotum = callPackage ../tools/graphics/escrotum {
-    inherit (pythonPackages) buildPythonApplication pygtk numpy;
-  };
+  escrotum = callPackage ../tools/graphics/escrotum { };
 
   etcher = callPackage ../tools/misc/etcher { };
 
@@ -10402,10 +10399,13 @@ in
       graphviz = graphviz-nox;
     });
 
-  inherit (callPackage ../development/compilers/haxe {
-    ocamlPackages = ocaml-ng.ocamlPackages_4_05;
-  }) haxe_3_2 haxe_3_4;
-  haxe = haxe_3_4;
+  inherit (callPackage ../development/compilers/haxe { })
+    haxe_4_2
+    haxe_3_4
+    haxe_3_2
+    ;
+
+  haxe = haxe_4_2;
   haxePackages = recurseIntoAttrs (callPackage ./haxe-packages.nix { });
   inherit (haxePackages) hxcpp;
 
@@ -11216,7 +11216,9 @@ in
     jdk = oraclejdk;
   };
 
-  sqlx-cli = callPackage ../development/tools/rust/sqlx-cli { };
+  sqlx-cli = callPackage ../development/tools/rust/sqlx-cli {
+    inherit (darwin.apple_sdk.frameworks) SystemConfiguration CoreFoundation Security;
+  };
 
   squeak = callPackage ../development/compilers/squeak { };
 
@@ -12550,7 +12552,7 @@ in
     jdk = jdk8; # TODO: remove override https://github.com/NixOS/nixpkgs/pull/89731
   };
 
-  fedpkg = pythonPackages.callPackage ../development/tools/fedpkg { };
+  fedpkg = callPackage ../development/tools/fedpkg { };
 
   flex_2_5_35 = callPackage ../development/tools/parsing/flex/2.5.35.nix { };
   flex = callPackage ../development/tools/parsing/flex { };
@@ -18003,7 +18005,7 @@ in
 
     mod_dnssd = callPackage ../servers/http/apache-modules/mod_dnssd { };
 
-    mod_evasive = callPackage ../servers/http/apache-modules/mod_evasive { };
+    mod_evasive = throw "mod_evasive is not supported on Apache httpd 2.4";
 
     mod_perl = callPackage ../servers/http/apache-modules/mod_perl { };
 
@@ -18022,7 +18024,7 @@ in
     subversion = pkgs.subversion.override { httpServer = true; inherit apacheHttpd; };
   };
 
-  apacheHttpdPackages_2_4 = dontRecurseIntoAttrs (apacheHttpdPackagesFor pkgs.apacheHttpd_2_4 pkgs.apacheHttpdPackages_2_4);
+  apacheHttpdPackages_2_4 = recurseIntoAttrs (apacheHttpdPackagesFor pkgs.apacheHttpd_2_4 pkgs.apacheHttpdPackages_2_4);
   apacheHttpdPackages = apacheHttpdPackages_2_4;
 
   appdaemon = callPackage ../servers/home-assistant/appdaemon.nix { };
@@ -21145,6 +21147,8 @@ in
   };
 
   papis = with python3Packages; toPythonApplication papis;
+
+  paperlike-go = callPackage ../tools/misc/paperlike-go { };
 
   paps = callPackage ../tools/misc/paps { };
 
@@ -28444,9 +28448,13 @@ in
 
   dcmtk = callPackage ../applications/science/medicine/dcmtk { };
 
+  xmedcon = callPackage ../applications/science/medicine/xmedcon { };
+
   ### SCIENCE/PHYSICS
 
   elmerfem = callPackage ../applications/science/physics/elmerfem {};
+
+  professor = callPackage ../applications/science/physics/professor { };
 
   sacrifice = callPackage ../applications/science/physics/sacrifice {};
 
@@ -30486,7 +30494,6 @@ in
 
   zettlr = callPackage ../applications/misc/zettlr {
     texlive = texlive.combined.scheme-medium;
-    inherit (haskellPackages) pandoc-citeproc;
   };
 
   unifi-poller = callPackage ../servers/monitoring/unifi-poller {};
