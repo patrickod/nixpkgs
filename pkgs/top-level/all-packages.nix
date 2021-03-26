@@ -168,6 +168,8 @@ in
 
   breakpad = callPackage ../development/misc/breakpad { };
 
+  buf = callPackage ../development/tools/buf { };
+
   # Zip file format only allows times after year 1980, which makes e.g. Python wheel building fail with:
   # ValueError: ZIP does not support timestamps before 1980
   ensureNewerSourcesForZipFilesHook = ensureNewerSourcesHook { year = "1980"; };
@@ -1045,6 +1047,8 @@ in
   awsebcli = callPackage ../tools/virtualization/awsebcli {};
 
   awslogs = callPackage ../tools/admin/awslogs { };
+
+  aws-lambda-rie = callPackage ../tools/admin/aws-lambda-runtime-interface-emulator { };
 
   aws-env = callPackage ../tools/admin/aws-env { };
 
@@ -1936,8 +1940,6 @@ in
 
   cbor-diag = callPackage ../development/tools/cbor-diag { };
 
-  ccnet = callPackage ../tools/networking/ccnet { };
-
   cassowary = callPackage ../tools/networking/cassowary { };
 
   croc = callPackage ../tools/networking/croc { };
@@ -2382,6 +2384,8 @@ in
   fileshare = callPackage ../servers/fileshare {};
 
   fileshelter = callPackage ../servers/web-apps/fileshelter { };
+
+  fioctl = callPackage ../tools/admin/fioctl { };
 
   firecracker = callPackage ../applications/virtualization/firecracker { };
 
@@ -3359,6 +3363,8 @@ in
   usbsdmux = callPackage ../development/tools/misc/usbsdmux { };
 
   usbview = callPackage ../tools/misc/usbview { };
+
+  uwuify = callPackage ../tools/misc/uwuify { };
 
   anthy = callPackage ../tools/inputmethods/anthy { };
 
@@ -4407,6 +4413,8 @@ in
   flac123 = callPackage ../applications/audio/flac123 { };
 
   flamegraph = callPackage ../development/tools/flamegraph { };
+
+  flawfinder = callPackage ../development/tools/flawfinder { };
 
   flips = callPackage ../tools/compression/flips { };
 
@@ -6860,6 +6868,8 @@ in
   nzbget = callPackage ../tools/networking/nzbget { };
 
   nzbhydra2 = callPackage ../servers/nzbhydra2 { };
+
+  oapi-codegen = callPackage ../tools/networking/oapi-codegen { };
 
   oathToolkit = callPackage ../tools/security/oath-toolkit { };
 
@@ -9678,6 +9688,24 @@ in
     jdk = jdk8; # TODO: remove override https://github.com/NixOS/nixpkgs/pull/89731
   };
 
+  adoptopenjdk-bin-16-packages-linux = import ../development/compilers/adoptopenjdk-bin/jdk16-linux.nix;
+  adoptopenjdk-bin-16-packages-darwin = import ../development/compilers/adoptopenjdk-bin/jdk16-darwin.nix;
+
+  adoptopenjdk-hotspot-bin-16 = if stdenv.isLinux
+    then callPackage adoptopenjdk-bin-16-packages-linux.jdk-hotspot {}
+    else callPackage adoptopenjdk-bin-16-packages-darwin.jdk-hotspot {};
+  adoptopenjdk-jre-hotspot-bin-16 = if stdenv.isLinux
+    then callPackage adoptopenjdk-bin-16-packages-linux.jre-hotspot {}
+    else callPackage adoptopenjdk-bin-16-packages-darwin.jre-hotspot {};
+
+  adoptopenjdk-openj9-bin-16 = if stdenv.isLinux
+    then callPackage adoptopenjdk-bin-16-packages-linux.jdk-openj9 {}
+    else callPackage adoptopenjdk-bin-16-packages-darwin.jdk-openj9 {};
+
+  adoptopenjdk-jre-openj9-bin-16 = if stdenv.isLinux
+    then callPackage adoptopenjdk-bin-16-packages-linux.jre-openj9 {}
+    else callPackage adoptopenjdk-bin-16-packages-darwin.jre-openj9 {};
+
   adoptopenjdk-bin-15-packages-linux = import ../development/compilers/adoptopenjdk-bin/jdk15-linux.nix;
   adoptopenjdk-bin-15-packages-darwin = import ../development/compilers/adoptopenjdk-bin/jdk15-darwin.nix;
 
@@ -10885,9 +10913,8 @@ in
 
   muon = callPackage ../development/compilers/muon { };
 
-  nim = callPackage ../development/compilers/nim { };
-  nim-unwrapped = nim.unwrapped;
-  nimble-unwrapped = nim.nimble-unwrapped;
+  inherit (callPackages ../development/compilers/nim { })
+    nim-unwrapped nimble-unwrapped nim;
 
   nrpl = callPackage ../development/tools/nrpl { };
 
@@ -19434,6 +19461,8 @@ in
 
   power-calibrate = callPackage ../os-specific/linux/power-calibrate { };
 
+  powercap = callPackage ../os-specific/linux/powercap { };
+
   powerstat = callPackage ../os-specific/linux/powerstat { };
 
   smemstat = callPackage ../os-specific/linux/smemstat { };
@@ -21440,6 +21469,8 @@ in
 
   vistafonts-chs = callPackage ../data/fonts/vista-fonts-chs { };
 
+  vollkorn = callPackage ../data/fonts/vollkorn { };
+
   weather-icons = callPackage ../data/fonts/weather-icons { };
 
   wireless-regdb = callPackage ../data/misc/wireless-regdb { };
@@ -21700,6 +21731,8 @@ in
   balsa = callPackage ../applications/networking/mailreaders/balsa { };
 
   bandwidth = callPackage ../tools/misc/bandwidth { };
+
+  banking = callPackage ../applications/office/banking { };
 
   baresip = callPackage ../applications/networking/instant-messengers/baresip { };
 
@@ -22566,6 +22599,14 @@ in
   };
 
   grandorgue = callPackage ../applications/audio/grandorgue { };
+
+  greetd = recurseIntoAttrs {
+    greetd = callPackage ../os-specific/linux/greetd { };
+    gtkgreet = callPackage ../os-specific/linux/gtkgreet { };
+    dlm = callPackage ../os-specific/linux/dlm { };
+    wlgreet = callPackage ../os-specific/linux/wlgreet { };
+    tuigreet = callPackage ../os-specific/linux/tuigreet { };
+  };
 
   goldendict = libsForQt5.callPackage ../applications/misc/goldendict {
     inherit (darwin) libiconv;
@@ -23645,6 +23686,8 @@ in
 
   kubecfg = callPackage ../applications/networking/cluster/kubecfg { };
 
+  kube-score = callPackage ../applications/networking/cluster/kube-score { };
+
   kubeval = callPackage ../applications/networking/cluster/kubeval { };
 
   kubeval-schema = callPackage ../applications/networking/cluster/kubeval/schema.nix { };
@@ -23654,6 +23697,8 @@ in
   kubeseal = callPackage ../applications/networking/cluster/kubeseal { };
 
   kubernix = callPackage ../applications/networking/cluster/kubernix { };
+
+  kubeconform = callPackage ../applications/networking/cluster/kubeconform { };
 
   kubectl = callPackage ../applications/networking/cluster/kubectl { };
 
@@ -29670,6 +29715,8 @@ in
   pykms = callPackage ../tools/networking/pykms { };
 
   pyupgrade = with python3Packages; toPythonApplication pyupgrade;
+
+  pwncat = python3Packages.callPackage ../tools/security/pwncat { };
 
   pwntools = with python3Packages; toPythonApplication pwntools;
 

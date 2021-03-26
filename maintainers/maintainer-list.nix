@@ -6905,6 +6905,12 @@
     githubId = 16385648;
     name = "Niko Pavlinek";
   };
+  nixinator = {
+    email = "33lockdown33@protonmail.com";
+    github = "nixinator";
+    githubId = 66913205;
+    name = "Rick Sanchez";
+  };
   nixy = {
     email = "nixy@nixy.moe";
     github = "nixy";
@@ -8266,6 +8272,12 @@
       longkeyid = "rsa2048/0x8526B7574A536236";
       fingerprint = "1401 1B63 393D 16C1 AA9C  C521 8526 B757 4A53 6236";
     }];
+  };
+  rowanG077 = {
+    email = "goemansrowan@gmail.com";
+    github = "rowanG077";
+    githubId = 7439756;
+    name = "Rowan Goemans";
   };
   royneary = {
     email = "christian@ulrich.earth";
@@ -10805,6 +10817,12 @@
     github = "masaeedu";
     githubId = 3674056;
     name = "Asad Saeeduddin";
+  };
+  matthewcroughan = {
+    email = "matt@croughan.sh";
+    github = "matthewcroughan";
+    githubId = 26458780;
+    name = "Matthew Croughan";
   };
   ngerstle = {
     name = "Nicholas Gerstle";
