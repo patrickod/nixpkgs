@@ -1036,6 +1036,16 @@
     githubId = 75235;
     name = "Michael Walker";
   };
+  bartuka = {
+    email = "wand@hey.com";
+    github = "wandersoncferreira";
+    githubId = 17708295;
+    name = "Wanderson Ferreira";
+    keys = [{
+      longkeyid = "rsa4096/0x56840A614DBE37AE";
+      fingerprint = "A3E1 C409 B705 50B3 BF41  492B 5684 0A61 4DBE 37AE";
+    }];
+  };
   basvandijk = {
     email = "v.dijk.bas@gmail.com";
     github = "basvandijk";
@@ -2338,6 +2348,12 @@
     github = "DianaOlympos";
     githubId = 15774340;
     name = "Thomas Depierre";
+  };
+  diegolelis = {
+    email = "diego.o.lelis@gmail.com";
+    github = "diegolelis";
+    githubId = 8404455;
+    name = "Diego Lelis";
   };
   dipinhora = {
     email = "dipinhora+github@gmail.com";
@@ -6176,6 +6192,12 @@
     github = "meutraa";
     githubId = 68550871;
   };
+  mephistophiles = {
+    email = "mussitantesmortem@gmail.com";
+    name = "Maxim Zhukov";
+    github = "Mephistophiles";
+    githubId = 4850908;
+  };
   mfossen = {
     email = "msfossen@gmail.com";
     github = "mfossen";
@@ -7615,6 +7637,12 @@
       fingerprint = "2CD2 B030 BD22 32EF DF5A  008A 3618 20A4 5DB4 1E9A";
     }];
   };
+  polendri = {
+    email = "paul@ijj.li";
+    github = "polendri";
+    githubId = 1829032;
+    name = "Paul Hendry";
+  };
   polyrod = {
     email = "dc1mdp@gmail.com";
     github = "polyrod";
@@ -7722,12 +7750,6 @@
     github = "psanford";
     githubId = 33375;
     name = "Peter Sanford";
-  };
-  pshendry = {
-    email = "paul@pshendry.com";
-    github = "pshendry";
-    githubId = 1829032;
-    name = "Paul Hendry";
   };
   psibi = {
     email = "sibi@psibi.in";
@@ -8326,6 +8348,12 @@
     github = "rushmorem";
     githubId = 4958190;
     name = "Rushmore Mushambi";
+  };
+  russell = {
+    email = "russell.sim@gmail.com";
+    github = "russell";
+    githubId = 2660;
+    name = "Russell Sim";
   };
   ruuda = {
     email = "dev+nix@veniogames.com";
@@ -10429,6 +10457,12 @@
     github = "xeji";
     githubId = 36407913;
     name = "Uli Baum";
+  };
+  xfnw = {
+    email = "xfnw+nixos@riseup.net";
+    github = "xfnw";
+    githubId = 66233223;
+    name = "Owen";
   };
   xfix = {
     email = "konrad@borowski.pw";
