@@ -117,6 +117,7 @@ in with py.pkgs; buildPythonApplication rec {
     substituteInPlace setup.py \
       --replace "aiohttp==3.7.4" "aiohttp>=3.7.3" \
       --replace "attrs==19.3.0" "attrs>=19.3.0" \
+      --replace "awesomeversion==21.2.3" "awesomeversion>=21.2.3" \
       --replace "bcrypt==3.1.7" "bcrypt>=3.1.7" \
       --replace "cryptography==3.3.2" "cryptography" \
       --replace "httpx==0.16.1" "httpx>=0.16.1" \
@@ -176,10 +177,13 @@ in with py.pkgs; buildPythonApplication rec {
   # services. Before adding new components to this list make sure we have all
   # its dependencies packaged and listed in ./component-packages.nix.
   componentTests = [
+    "accuweather"
+    "airly"
     "alert"
     "api"
     "auth"
     "automation"
+    "axis"
     "bayesian"
     "binary_sensor"
     "caldav"
@@ -200,6 +204,7 @@ in with py.pkgs; buildPythonApplication rec {
     "device_automation"
     "device_sun_light_trigger"
     "device_tracker"
+    "devolo_home_control"
     "dhcp"
     "discovery"
     "emulated_hue"
@@ -213,6 +218,7 @@ in with py.pkgs; buildPythonApplication rec {
     "flux"
     "folder"
     "folder_watcher"
+    "freebox"
     "fritzbox"
     "fritzbox_callmonitor"
     "frontend"
@@ -224,8 +230,10 @@ in with py.pkgs; buildPythonApplication rec {
     "hddtemp"
     "history"
     "history_stats"
+    "homekit"
     "homekit_controller"
     "homeassistant"
+    "homematic"
     "html5"
     "http"
     "hue"
@@ -257,6 +265,7 @@ in with py.pkgs; buildPythonApplication rec {
     "media_player"
     "media_source"
     "met"
+    "minecraft_server"
     "mobile_app"
     "modbus"
     "moon"
@@ -298,8 +307,10 @@ in with py.pkgs; buildPythonApplication rec {
     "sensor"
     "smarttub"
     "smtp"
+    "smappee"
     "solaredge"
     "sonos"
+    "spotify"
     "sql"
     "ssdp"
     "stream"
@@ -322,6 +333,7 @@ in with py.pkgs; buildPythonApplication rec {
     "upnp"
     "uptime"
     "vacuum"
+    "verisure"
     "weather"
     "webhook"
     "websocket_api"
@@ -384,6 +396,7 @@ in with py.pkgs; buildPythonApplication rec {
     homepage = "https://home-assistant.io/";
     description = "Open source home automation that puts local control and privacy first";
     license = licenses.asl20;
-    maintainers = with maintainers; [ dotlambda globin mic92 hexa ];
+    maintainers = with maintainers; [ globin mic92 hexa ];
+    platforms = platforms.linux;
   };
 }
