@@ -22,7 +22,10 @@ let
 
   namePrefix = python.libPrefix + "-";
 
-  bootstrapped-pip = callPackage ../development/python-modules/bootstrapped-pip { };
+  bootstrapped-pip = if isPy3k then
+    callPackage ../development/python-modules/bootstrapped-pip { }
+  else
+    callPackage ../development/python-modules/bootstrapped-pip/2.nix { };
 
   # Derivations built with `buildPythonPackage` can already be overriden with `override`, `overrideAttrs`, and `overrideDerivation`.
   # This function introduces `overridePythonAttrs` and it overrides the call to `buildPythonPackage`.
@@ -236,6 +239,8 @@ in {
 
   aiocontextvars = callPackage ../development/python-modules/aiocontextvars { };
 
+  aiodiscover = callPackage ../development/python-modules/aiodiscover { };
+
   aiodns = callPackage ../development/python-modules/aiodns { };
 
   aioeafm = callPackage ../development/python-modules/aioeafm { };
@@ -273,6 +278,8 @@ in {
   aiohttp-socks = callPackage ../development/python-modules/aiohttp-socks { };
 
   aiohttp-swagger = callPackage ../development/python-modules/aiohttp-swagger { };
+
+  aiohttp-wsgi = callPackage ../development/python-modules/aiohttp-wsgi { };
 
   aioitertools = callPackage ../development/python-modules/aioitertools { };
 
@@ -538,9 +545,13 @@ in {
 
   async_generator = callPackage ../development/python-modules/async_generator { };
 
+  async-dns = callPackage ../development/python-modules/async-dns { };
+
   asyncio-dgram = callPackage ../development/python-modules/asyncio-dgram { };
 
   asyncio-mqtt = callPackage ../development/python-modules/asyncio_mqtt { };
+
+  asyncio-nats-client = callPackage ../development/python-modules/asyncio-nats-client { };
 
   asyncio-throttle = callPackage ../development/python-modules/asyncio-throttle { };
 
@@ -647,6 +658,8 @@ in {
   aws-xray-sdk = callPackage ../development/python-modules/aws-xray-sdk { };
 
   awsiotpythonsdk = callPackage ../development/python-modules/awsiotpythonsdk { };
+
+  awslambdaric = callPackage ../development/python-modules/awslambdaric { };
 
   axis = callPackage ../development/python-modules/axis { };
 
@@ -927,6 +940,8 @@ in {
   base36 = callPackage ../development/python-modules/base36 { };
 
   base58 = callPackage ../development/python-modules/base58 { };
+
+  baseline = callPackage ../development/python-modules/baseline { };
 
   baselines = callPackage ../development/python-modules/baselines { };
 
@@ -2240,6 +2255,8 @@ in {
 
   executor = callPackage ../development/python-modules/executor { };
 
+  exif = callPackage ../development/python-modules/exif { };
+
   exifread = callPackage ../development/python-modules/exifread { };
 
   expiringdict = callPackage ../development/python-modules/expiringdict { };
@@ -3111,6 +3128,10 @@ in {
   holoviews = callPackage ../development/python-modules/holoviews { };
 
   homeassistant-pyozw = callPackage ../development/python-modules/homeassistant-pyozw { };
+
+  homematicip = callPackage ../development/python-modules/homematicip { };
+
+  homepluscontrol = callPackage ../development/python-modules/homepluscontrol { };
 
   hoomd-blue = toPythonModule (callPackage ../development/python-modules/hoomd-blue {
     inherit python;
@@ -4003,6 +4024,8 @@ in {
 
   lmtpd = callPackage ../development/python-modules/lmtpd { };
 
+  localimport = callPackage ../development/python-modules/localimport { };
+
   localzone = callPackage ../development/python-modules/localzone { };
 
   locket = callPackage ../development/python-modules/locket { };
@@ -4106,6 +4129,8 @@ in {
   rtmixer = callPackage ../development/python-modules/rtmixer { };
 
   mail-parser = callPackage ../development/python-modules/mail-parser { };
+
+  makefun = callPackage ../development/python-modules/makefun { };
 
   Mako = callPackage ../development/python-modules/Mako { };
 
@@ -4515,6 +4540,8 @@ in {
 
   nassl = callPackage ../development/python-modules/nassl { };
 
+  nats-python = callPackage ../development/python-modules/nats-python { };
+
   natsort = callPackage ../development/python-modules/natsort { };
 
   naturalsort = callPackage ../development/python-modules/naturalsort { };
@@ -4637,6 +4664,8 @@ in {
   nocaselist = callPackage ../development/python-modules/nocaselist { };
 
   nodeenv = callPackage ../development/python-modules/nodeenv { };
+
+  nodepy-runtime = callPackage ../development/python-modules/nodepy-runtime { };
 
   node-semver = callPackage ../development/python-modules/node-semver { };
 
@@ -4775,6 +4804,8 @@ in {
   olefile = callPackage ../development/python-modules/olefile { };
 
   omegaconf = callPackage ../development/python-modules/omegaconf { };
+
+  omnilogic = callPackage ../development/python-modules/omnilogic { };
 
   onkyo-eiscp = callPackage ../development/python-modules/onkyo-eiscp { };
 
@@ -4990,6 +5021,8 @@ in {
 
   pathtools = callPackage ../development/python-modules/pathtools { };
 
+  pathvalidate = callPackage ../development/python-modules/pathvalidate { };
+
   patiencediff = callPackage ../development/python-modules/patiencediff { };
 
   patool = callPackage ../development/python-modules/patool { };
@@ -5138,7 +5171,10 @@ in {
 
   pint = callPackage ../development/python-modules/pint { };
 
-  pip = callPackage ../development/python-modules/pip { };
+  pip = if isPy3k then
+    callPackage ../development/python-modules/pip { }
+  else
+    callPackage ../development/python-modules/pip/20.nix { };
 
   pipdate = callPackage ../development/python-modules/pipdate { };
 
@@ -5211,6 +5247,8 @@ in {
   pluginbase = callPackage ../development/python-modules/pluginbase { };
 
   plugwise = callPackage ../development/python-modules/plugwise { };
+
+  plum-py = callPackage ../development/python-modules/plum-py { };
 
   plumbum = callPackage ../development/python-modules/plumbum { };
 
@@ -6253,6 +6291,8 @@ in {
     inherit (pkgs) xmlsec;
   };
 
+  pysatochip = callPackage ../development/python-modules/pysatochip { };
+
   pysc2 = callPackage ../development/python-modules/pysc2 { };
 
   pyscard = callPackage ../development/python-modules/pyscard {
@@ -6426,16 +6466,22 @@ in {
 
   pytest_5 = callPackage
     ../development/python-modules/pytest/5.nix {
-      # hypothesis tests require pytest that causes dependency cycle
+      # hypothesis & pygments tests require pytest that causes dependency cycle
       hypothesis = self.hypothesis.override {
+        doCheck = false;
+      };
+      pygments = self.pygments.override {
         doCheck = false;
       };
     };
 
   pytest_6 =
     callPackage ../development/python-modules/pytest {
-      # hypothesis tests require pytest that causes dependency cycle
+      # hypothesis & pygments tests require pytest that causes dependency cycle
       hypothesis = self.hypothesis.override {
+        doCheck = false;
+      };
+      pygments = self.pygments.override {
         doCheck = false;
       };
     };
@@ -6566,6 +6612,8 @@ in {
 
   pytest-quickcheck = self.pytestquickcheck;
   pytestquickcheck = callPackage ../development/python-modules/pytest-quickcheck { };
+
+  pytest-raises = callPackage ../development/python-modules/pytest-raises { };
 
   pytest-raisesregexp = callPackage ../development/python-modules/pytest-raisesregexp { };
 
@@ -7169,6 +7217,10 @@ in {
 
   recaptcha_client = callPackage ../development/python-modules/recaptcha_client { };
 
+  recoll = disabledIf (!isPy3k) (toPythonModule (pkgs.recoll.override {
+    python3Packages = self;
+  }));
+
   recommonmark = callPackage ../development/python-modules/recommonmark { };
 
   redbaron = callPackage ../development/python-modules/redbaron { };
@@ -7338,6 +7390,8 @@ in {
   roman = callPackage ../development/python-modules/roman { };
 
   roombapy = callPackage ../development/python-modules/roombapy { };
+
+  ronin = callPackage ../development/python-modules/ronin { };
 
   rope = callPackage ../development/python-modules/rope { };
 
@@ -7533,6 +7587,8 @@ in {
   scrapy-splash = callPackage ../development/python-modules/scrapy-splash { };
 
   screeninfo = callPackage ../development/python-modules/screeninfo { };
+
+  screenlogicpy = callPackage ../development/python-modules/screenlogicpy { };
 
   scripttest = callPackage ../development/python-modules/scripttest { };
 
@@ -8121,9 +8177,13 @@ in {
   tableaudocumentapi = callPackage ../development/python-modules/tableaudocumentapi { };
 
   tables = if isPy3k then
-    callPackage ../development/python-modules/tables { }
+    callPackage ../development/python-modules/tables {
+      hdf5 = pkgs.hdf5_1_10;
+    }
   else
-    callPackage ../development/python-modules/tables/3.5.nix { };
+    callPackage ../development/python-modules/tables/3.5.nix {
+      hdf5 = pkgs.hdf5_1_10;
+    };
 
   tablib = callPackage ../development/python-modules/tablib { };
 
@@ -8814,6 +8874,8 @@ in {
 
   webencodings = callPackage ../development/python-modules/webencodings { };
 
+  webexteamssdk = callPackage ../development/python-modules/webexteamssdk { };
+
   webhelpers = callPackage ../development/python-modules/webhelpers { };
 
   webob = callPackage ../development/python-modules/webob { };
@@ -9024,6 +9086,8 @@ in {
   yahooweather = callPackage ../development/python-modules/yahooweather { };
 
   yalesmartalarmclient = callPackage ../development/python-modules/yalesmartalarmclient { };
+
+  yalexs = callPackage ../development/python-modules/yalexs { };
 
   yamale = callPackage ../development/python-modules/yamale { };
 
