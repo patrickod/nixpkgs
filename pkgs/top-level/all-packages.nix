@@ -31030,8 +31030,6 @@ in
 
   unifi-poller = callPackage ../servers/monitoring/unifi-poller {};
 
-  probe-run = callPackage ../development/tools/probe-run {};
-
   fac-build = callPackage ../development/tools/build-managers/fac {};
 
   bottom = callPackage ../tools/system/bottom {};
