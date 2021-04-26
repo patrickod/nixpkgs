@@ -241,6 +241,10 @@ let
       '';
     };
 
+    teck-programmer = super.teck-programmer.override {
+      buildInputs = [ pkgs.libusb ];
+    };
+
     vega-cli = super.vega-cli.override {
       nativeBuildInputs = [ pkgs.pkg-config ];
       buildInputs = with pkgs; [
@@ -281,6 +285,9 @@ let
         libsecret
         self.node-gyp-build
         self.node-pre-gyp
+      ] ++ lib.optionals stdenv.isDarwin [
+        darwin.apple_sdk.frameworks.AppKit
+        darwin.apple_sdk.frameworks.Security
       ];
     };
 
