@@ -130,6 +130,7 @@
   ./programs/droidcam.nix
   ./programs/environment.nix
   ./programs/evince.nix
+  ./programs/feedbackd.nix
   ./programs/file-roller.nix
   ./programs/firejail.nix
   ./programs/fish.nix
@@ -163,6 +164,7 @@
   ./programs/partition-manager.nix
   ./programs/plotinus.nix
   ./programs/proxychains.nix
+  ./programs/phosh.nix
   ./programs/qt5ct.nix
   ./programs/screen.nix
   ./programs/sedutil.nix
@@ -469,6 +471,7 @@
   ./services/misc/couchpotato.nix
   ./services/misc/devmon.nix
   ./services/misc/dictd.nix
+  ./services/misc/duckling.nix
   ./services/misc/dwm-status.nix
   ./services/misc/dysnomia.nix
   ./services/misc/disnix.nix
@@ -631,6 +634,7 @@
   ./services/network-filesystems/xtreemfs.nix
   ./services/network-filesystems/ceph.nix
   ./services/networking/3proxy.nix
+  ./services/networking/adguardhome.nix
   ./services/networking/amuled.nix
   ./services/networking/aria2.nix
   ./services/networking/asterisk.nix
