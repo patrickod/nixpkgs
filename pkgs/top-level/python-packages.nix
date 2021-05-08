@@ -605,6 +605,8 @@ in {
 
   auth0-python = callPackage ../development/python-modules/auth0-python { };
 
+  authcaptureproxy = callPackage ../development/python-modules/authcaptureproxy { };
+
   authheaders = callPackage ../development/python-modules/authheaders { };
 
   authlib = callPackage ../development/python-modules/authlib { };
@@ -614,6 +616,8 @@ in {
   autobahn = callPackage ../development/python-modules/autobahn { };
 
   autograd = callPackage ../development/python-modules/autograd { };
+
+  autoit-ripper = callPackage ../development/python-modules/autoit-ripper { };
 
   autologging = callPackage ../development/python-modules/autologging { };
 
@@ -840,6 +844,8 @@ in {
   azure-mgmt-servicebus = callPackage ../development/python-modules/azure-mgmt-servicebus { };
 
   azure-mgmt-servicefabric = callPackage ../development/python-modules/azure-mgmt-servicefabric { };
+
+  azure-mgmt-servicefabricmanagedclusters = callPackage ../development/python-modules/azure-mgmt-servicefabricmanagedclusters { };
 
   azure-mgmt-signalr = callPackage ../development/python-modules/azure-mgmt-signalr { };
 
@@ -1729,6 +1735,8 @@ in {
 
   decorator = callPackage ../development/python-modules/decorator { };
 
+  decopatch = callPackage ../development/python-modules/decopatch { };
+
   deep_merge = callPackage ../development/python-modules/deep_merge { };
 
   deepdiff = callPackage ../development/python-modules/deepdiff { };
@@ -1746,6 +1754,8 @@ in {
   defusedxml = callPackage ../development/python-modules/defusedxml { };
 
   delegator-py = callPackage ../development/python-modules/delegator-py { };
+
+  deltachat = callPackage ../development/python-modules/deltachat { };
 
   deluge-client = callPackage ../development/python-modules/deluge-client { };
 
@@ -3563,6 +3573,8 @@ in {
 
   karton-asciimagic = callPackage ../development/python-modules/karton-asciimagic { };
 
+  karton-autoit-ripper = callPackage ../development/python-modules/karton-autoit-ripper { };
+
   karton-classifier = callPackage ../development/python-modules/karton-classifier { };
 
   karton-config-extractor = callPackage ../development/python-modules/karton-config-extractor { };
@@ -5073,7 +5085,7 @@ in {
   poolsense = callPackage ../development/python-modules/poolsense { };
 
   poppler-qt5 = callPackage ../development/python-modules/poppler-qt5 {
-    inherit (pkgs.qt5) qtbase;
+    inherit (pkgs.qt5) qtbase qmake;
     inherit (pkgs.libsForQt5) poppler;
   };
 
@@ -6258,6 +6270,8 @@ in {
 
   pytest-cache = self.pytestcache; # added 2021-01-04
   pytestcache = callPackage ../development/python-modules/pytestcache { };
+
+  pytest-cases = callPackage ../development/python-modules/pytest-cases{ };
 
   pytest-catchlog = callPackage ../development/python-modules/pytest-catchlog { };
 
