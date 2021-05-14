@@ -15,7 +15,7 @@
 , makeWrapper
 , libxslt
 , vala
-, gnome3
+, gnome
 , python3
 , shared-mime-info
 }:
@@ -82,14 +82,14 @@ stdenv.mkDerivation rec {
   '';
 
   passthru = {
-    updateScript = gnome3.updateScript {
+    updateScript = gnome.updateScript {
       packageName = pname;
       versionPolicy = "odd-unstable";
     };
   };
 
   meta = with lib; {
-    platforms = platforms.linux;
+    platforms = platforms.unix;
     maintainers = teams.gnome.members;
     description = "GNOME crypto services (daemon and tools)";
     homepage = "https://gitlab.gnome.org/GNOME/gcr";
