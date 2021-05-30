@@ -4,24 +4,25 @@
 , rustPlatform
 , installShellFiles
 , perl
+, libiconv
 , Security
 }:
 
 rustPlatform.buildRustPackage rec {
   pname = "findomain";
-  version = "4.1.1";
+  version = "4.3.0";
 
   src = fetchFromGitHub {
     owner = "Edu4rdSHL";
     repo = pname;
     rev = version;
-    sha256 = "sha256-ySpkWAhLS4jPFviKnzcnW7vuUFyojTBhooq7CFz/y3w=";
+    sha256 = "sha256-UC70XmhAVf2a2QO9bkIRE5vEsWyIA0DudZfKraNffGY=";
   };
 
-  cargoSha256 = "sha256-KWh++MHaCJpJq7mS2lRCUh0nN+e8McKWcTknUC8VFuo=";
+  cargoSha256 = "sha256-Cdfh3smX6UjiG29L9hG22bOQQIjaNrv+okl153mIiso=";
 
   nativeBuildInputs = [ installShellFiles perl ];
-  buildInputs = lib.optional stdenv.isDarwin Security;
+  buildInputs = lib.optionals stdenv.isDarwin [ libiconv Security ];
 
   postInstall = ''
     installManPage ${pname}.1

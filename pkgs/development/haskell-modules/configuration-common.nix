@@ -170,18 +170,46 @@ self: super: {
   # base bound
   digit = doJailbreak super.digit;
 
-  # 2020-06-05: HACK: does not pass own build suite - `dontCheck`
   hnix = generateOptparseApplicativeCompletion "hnix"
     (overrideCabal super.hnix (drv: {
+      # 2020-06-05: HACK: does not pass own build suite - `dontCheck`
       doCheck = false;
-      prePatch = ''
-        # fix encoding problems when patching
-        ${pkgs.dos2unix}/bin/dos2unix hnix.cabal
-      '' + (drv.prePatch or "");
+      # 2021-05-12: Revert a few dependency cleanups which depend on release
+      # that are not in stackage yet:
+      # * Depend on semialign-indexed for Data.Semialign.Indexed
+      #   (remove when semialign >= 1.2 in stackage)
+      # * Readd dependencies to text and unordered-containers.
+      #   (remove when relude >= 1.0.0.0 is in stackage, see
+      #   https://github.com/haskell-nix/hnix/issues/933)
+      libraryHaskellDepends = [
+        self.semialign-indexed
+      ] ++ drv.libraryHaskellDepends;
       patches = [
-        # support ref-tf in hnix 0.12.0.1, can be removed after
-        # https://github.com/haskell-nix/hnix/pull/918
-        ./patches/hnix-ref-tf-0.5-support.patch
+        # depend on semialign-indexed again
+        (pkgs.fetchpatch {
+          url = "https://github.com/haskell-nix/hnix/commit/16fc342a4f2974f855968472252cd9274609f177.patch";
+          sha256 = "0gm4gy3jpn4dqnrhnqlsavfpw9c1j1xa8002v54knnlw6vpk9niy";
+          revert = true;
+        })
+        # depend on text again
+        (pkgs.fetchpatch {
+          url = "https://github.com/haskell-nix/hnix/commit/73057618576e86bb87dfd42f62b855d24bbdf469.patch";
+          sha256 = "03cyk96d5ad362i1pnz9bs8ifr84kpv8phnr628gys4j6a0bqwzc";
+          revert = true;
+        })
+        # depend on unordered-containers again
+        (pkgs.fetchpatch {
+          url = "https://github.com/haskell-nix/hnix/commit/70643481883ed448b51221a030a76026fb5eb731.patch";
+          sha256 = "0pqmijfkysjixg3gb4kmrqdif7s2saz8qi6k337jf15i0npzln8d";
+          revert = true;
+        })
+        # fix broken location annotations (necessary for update-nix-fetchgit).
+        # Can be removed on the next hnix release after
+        # https://github.com/haskell-nix/hnix/pull/936 is merged.
+        (pkgs.fetchpatch {
+          url = "https://github.com/expipiplus1/hnix/commit/7cd998426ab7d930d288a1d6e266dc4e85cece3d.patch";
+          sha256 = "19ay6vxa90ykgdd0fis2djvki2kpgfsq7z55iyqg965m583vsfr6";
+        })
       ] ++ (drv.patches or []);
     }));
 
@@ -922,7 +950,16 @@ self: super: {
   # https://github.com/commercialhaskell/stackage/issues/5795
   # This issue can be mitigated with 'dontCheck' which skips the tests and their compilation.
   dhall-json = generateOptparseApplicativeCompletions ["dhall-to-json" "dhall-to-yaml"] (dontCheck super.dhall-json);
-  dhall-nix = generateOptparseApplicativeCompletion "dhall-to-nix" super.dhall-nix;
+  # dhall-nix, dhall-nixpkgs: pull updated cabal files with updated bounds.
+  # Remove at next hackage update.
+  dhall-nix = generateOptparseApplicativeCompletion "dhall-to-nix" (overrideCabal super.dhall-nix {
+    revision = "2";
+    editedCabalFile = "1w90jrkzmbv5nasafkkv0kyfmnqkngldx2lr891113h2mqbbr3wx";
+  });
+  dhall-nixpkgs = overrideCabal super.dhall-nixpkgs {
+    revision = "1";
+    editedCabalFile = "1y08jxg51sbxx0i7ra45ii2v81plzf4hssmwlrw35l8n5gib1vcg";
+  };
   dhall-yaml = generateOptparseApplicativeCompletions ["dhall-to-yaml-ng" "yaml-to-dhall"] super.dhall-yaml;
 
   # https://github.com/haskell-hvr/netrc/pull/2#issuecomment-469526558
@@ -1271,6 +1308,20 @@ self: super: {
   # Created upstream PR @ https://github.com/ghcjs/jsaddle/pull/119
   jsaddle-webkit2gtk = appendPatch super.jsaddle-webkit2gtk ./patches/jsaddle-webkit2gtk.patch;
 
+  # 2021-05-12: gi-gdkpixbuf_2_0_26 fix
+  # https://github.com/taffybar/gtk-sni-tray/pull/25
+  gtk-sni-tray = appendPatch super.gtk-sni-tray (pkgs.fetchpatch {
+    url = "https://github.com/taffybar/gtk-sni-tray/pull/25/commits/4afd84654cb3f2bd2bb7d39451706c5914fd3cdf.patch";
+    sha256 = "1xjxlh58vnykqsjq4qw8mliq3gk17mwxi4h9z8dvjyav8zqg05rn";
+  });
+
+  # 2021-05-12: gi-gdkpixbuf_2_0_26 fix
+  # https://github.com/taffybar/taffybar/pull/507
+  taffybar = appendPatch super.taffybar (pkgs.fetchpatch {
+    url = "https://github.com/taffybar/taffybar/pull/507/commits/14a650d0954000cbd2cb1018a2f3bcd40ecb564f.patch";
+    sha256 = "01rm8zida5858j5r0mw7bpmv24b03mb3rw34lbkaw3i7g62bx3a0";
+  });
+
   # Missing -Iinclude parameter to doc-tests (pull has been accepted, so should be resolved when 0.5.3 released)
   # https://github.com/lehins/massiv/pull/104
   massiv = dontCheck super.massiv;
@@ -1361,9 +1412,21 @@ self: super: {
         }"
       '';
 
-      # 2021-04-09: test failure
-      # PR pending https://github.com/expipiplus1/update-nix-fetchgit/pull/60
-      doCheck = false;
+      # These can both be removed upon the release of update-nix-fetchgit-0.2.7
+      patches = [
+        # 2021-05-17 compile with hnix >= 0.13
+        # https://github.com/expipiplus1/update-nix-fetchgit/pull/64
+        (pkgs.fetchpatch {
+          url = "https://github.com/expipiplus1/update-nix-fetchgit/commit/bc28c8b26c38093aa950574802012c0cd8447ce8.patch";
+          sha256 = "1dwd1jdsrx3ss6ql1bk2ch7ln74mkq6jy9ms8vi8kmf3gbg8l9fg";
+        })
+        # Fix test failure
+        # https://github.com/expipiplus1/update-nix-fetchgit/pull/60
+        (pkgs.fetchpatch {
+          url = "https://github.com/expipiplus1/update-nix-fetchgit/commit/4a43e1ea4e7e1c18de81e3f9fe0b86faa70865f5.patch";
+          sha256 = "1z74c1blgwr4q37m1rhlj7534qbnp3nnxf63m8j2b7iz0ljgm0m9";
+        })
+      ] ++ (drv.patches or []);
     }));
 
   # Our quickcheck-instances is too old for the newer binary-instances, but
@@ -1882,5 +1945,9 @@ EOT
   bson = appendConfigureFlag (super.bson.override {
     network = self.network-bsd;
   }) "-f-_old_network";
+
+  # 2021-05-14: Testsuite is failing.
+  # https://github.com/kcsongor/generic-lens/issues/133
+  generic-optics = dontCheck super.generic-optics;
 
 } // import ./configuration-tensorflow.nix {inherit pkgs haskellLib;} self super

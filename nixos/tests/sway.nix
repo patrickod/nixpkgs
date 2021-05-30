@@ -38,9 +38,12 @@ import ./make-test-python.nix ({ pkgs, lib, ...} :
 
     programs.sway.enable = true;
 
+    # To test pinentry via gpg-agent:
+    programs.gnupg.agent.enable = true;
+
     virtualisation.memorySize = 1024;
-    # Need to switch to a different VGA card / GPU driver than the default one (std) so that Sway can launch:
-    virtualisation.qemu.options = [ "-vga virtio" ];
+    # Need to switch to a different GPU driver than the default one (-vga std) so that Sway can launch:
+    virtualisation.qemu.options = [ "-vga none -device virtio-gpu-pci" ];
   };
 
   enableOCR = true;
@@ -79,6 +82,17 @@ import ./make-test-python.nix ({ pkgs, lib, ...} :
     machine.screenshot("alacritty_wayland_info")
     machine.send_key("alt-shift-q")
     machine.wait_until_fails("pgrep alacritty")
+
+    # Test gpg-agent starting pinentry-gnome3 via D-Bus (tests if
+    # $WAYLAND_DISPLAY is correctly imported into the D-Bus user env):
+    machine.succeed(
+        "su - alice -c 'swaymsg -- exec gpg --no-tty --yes --quick-generate-key test'"
+    )
+    machine.wait_until_succeeds("pgrep --exact gpg")
+    machine.wait_for_text("Passphrase")
+    machine.screenshot("gpg_pinentry")
+    machine.send_key("alt-shift-q")
+    machine.wait_until_fails("pgrep --exact gpg")
 
     # Test swaynag:
     machine.send_key("alt-shift-e")

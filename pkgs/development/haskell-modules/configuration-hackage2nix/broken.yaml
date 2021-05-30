@@ -1510,7 +1510,6 @@ broken-packages:
   - generic-lens-labels
   - generic-lucid-scaffold
   - generic-maybe
-  - generic-optics
   - generic-override-aeson
   - generic-pretty
   - genericserialize
@@ -1676,6 +1675,7 @@ broken-packages:
   - grasp
   - gray-code
   - greencard
+  - greenclip
   - greg-client
   - gremlin-haskell
   - Grempa
@@ -1699,7 +1699,6 @@ broken-packages:
   - gtk2hs-rpn
   - gtk3-mac-integration
   - gtkglext
-  - gtk-sni-tray
   - gtksourceview2
   - gtksourceview3
   - gtk-toy
@@ -3038,6 +3037,7 @@ broken-packages:
   - multext-east-msd
   - multiaddr
   - multiarg
+  - multi-except
   - multihash
   - multi-instance
   - multilinear
@@ -5156,6 +5156,7 @@ broken-packages:
   - yampa-glut
   - yampa-sdl2
   - YampaSynth
+  - yampa-test
   - yam-servant
   - yandex-translate
   - yaop
