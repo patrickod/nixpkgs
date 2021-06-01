@@ -8,12 +8,12 @@
 
 let
   executableName = "element-desktop";
-  version = "1.7.27";
+  version = "1.7.29";
   src = fetchFromGitHub {
     owner = "vector-im";
     repo = "element-desktop";
     rev = "v${version}";
-    sha256 = "0rgsc2cc1v6gjsklwvsjlqq9a8j9j80h9ac0jkvf9lhq33f3c57k";
+    sha256 = "sha256-nCtgVVOdjZ/OK8gMInBbNeuJadchDYUO2UQxEmcOm4s=";
   };
 in mkYarnPackage rec {
   name = "element-desktop-${version}";

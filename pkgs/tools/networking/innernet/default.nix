@@ -2,15 +2,15 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "innernet";
-  version = "1.2.0";
+  version = "1.3.0";
 
   src = fetchFromGitHub {
     owner = "tonarino";
     repo = pname;
     rev = "v${version}";
-    sha256 = "sha256-Z4F5RYPVgFiiDBg6lxILjAh/a/rL7IJBqHIJ/tQyLnE=";
+    sha256 = "sha256-WqUkl9NZMMQJknASadLJz3CslrplGuXLrlv6fiwWFoI=";
   };
-  cargoSha256 = "sha256-WSkN5aXMgfqZJAV1b3elF7kwf2f5OpcntKSf8620YcY=";
+  cargoSha256 = "sha256-mexiI9EHL2L4RNXCk133vriI5IGpdxLVy6xnBIqEH30=";
 
   nativeBuildInputs = with llvmPackages; [
     llvm
@@ -19,7 +19,7 @@ rustPlatform.buildRustPackage rec {
   ];
   buildInputs = [ sqlite ] ++ lib.optionals stdenv.isDarwin [ Security libiconv ];
 
-  LIBCLANG_PATH = "${llvmPackages.libclang}/lib";
+  LIBCLANG_PATH = "${llvmPackages.libclang.lib}/lib";
 
   postInstall = ''
     installManPage doc/innernet-server.8.gz
