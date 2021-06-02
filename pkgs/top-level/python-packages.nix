@@ -112,6 +112,8 @@ in {
   inherit buildSetupcfg;
 
   inherit (callPackage ../development/interpreters/python/hooks { })
+    condaInstallHook
+    condaUnpackHook
     eggUnpackHook
     eggBuildHook
     eggInstallHook
@@ -1395,6 +1397,8 @@ in {
 
   clf = callPackage ../development/python-modules/clf { };
 
+  cock = callPackage ../development/python-modules/cock { };
+
   click = callPackage ../development/python-modules/click { };
 
   clickclick = callPackage ../development/python-modules/clickclick { };
@@ -1579,6 +1583,8 @@ in {
   cornice = callPackage ../development/python-modules/cornice { };
 
   coronavirus = callPackage ../development/python-modules/coronavirus { };
+
+  corsair-scan = callPackage ../development/python-modules/corsair-scan { };
 
   cot = callPackage ../development/python-modules/cot { };
 
@@ -5235,6 +5241,8 @@ in {
 
   powerline = callPackage ../development/python-modules/powerline { };
 
+  powerlineMemSegment = callPackage ../development/python-modules/powerline-mem-segment { };
+
   pox = callPackage ../development/python-modules/pox { };
 
   poyo = callPackage ../development/python-modules/poyo { };
@@ -5755,6 +5763,8 @@ in {
 
   pygrok = callPackage ../development/python-modules/pygrok { };
 
+  pygtfs = callPackage ../development/python-modules/pygtfs { };
+
   pygtail = callPackage ../development/python-modules/pygtail { };
 
   pygtrie = callPackage ../development/python-modules/pygtrie { };
@@ -6197,6 +6207,8 @@ in {
   pyro-api = callPackage ../development/python-modules/pyro-api { };
 
   pyro-ppl = callPackage ../development/python-modules/pyro-ppl { };
+
+  pyroon = callPackage ../development/python-modules/pyroon { };
 
   pyroute2 = callPackage ../development/python-modules/pyroute2 { };
 
@@ -8469,6 +8481,8 @@ in {
   };
 
   typed-ast = callPackage ../development/python-modules/typed-ast { };
+
+  typed-settings = callPackage ../development/python-modules/typed-settings { };
 
   typeguard = callPackage ../development/python-modules/typeguard { };
 
