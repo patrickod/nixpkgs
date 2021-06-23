@@ -127,12 +127,12 @@ in rec {
 
   dracula = mkTmuxPlugin rec {
     pluginName = "dracula";
-    version = "unstable-2021-02-18";
+    version = "1.0";
     src = fetchFromGitHub {
       owner = "dracula";
       repo = "tmux";
-      rev = "8d1a7fa41b773d4f7b53dfff2d9fc5166d34f104";
-      sha256 = "DG+oKbTkYO4hwoOlOqW5IuCLdVEttlvLM2en4DUHyMY=";
+      rev = "v${version}";
+      sha256 = "YINyER/HT3L7RpTclD3UNiCRj1CL4GPCBBEUJRqUyEQ=";
     };
     meta = with lib; {
       homepage = "https://draculatheme.com/tmux";
