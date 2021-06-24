@@ -53,7 +53,7 @@ self: super: builtins.intersectAttrs super {
 
   # Use the default version of mysql to build this package (which is actually mariadb).
   # test phase requires networking
-  mysql = dontCheck (super.mysql.override { mysql = pkgs.libmysqlclient; });
+  mysql = dontCheck super.mysql;
 
   # CUDA needs help finding the SDK headers and libraries.
   cuda = overrideCabal super.cuda (drv: {
@@ -577,7 +577,12 @@ self: super: builtins.intersectAttrs super {
         sha256 = "1hjdprm990vyxz86fgq14ajn0lkams7i00h8k2i2g1a0hjdwppq6";
       };
 
-      spagoDocs = overrideCabal super.spago (drv: {
+      spagoWithOverrides = super.spago.override {
+        # spago has not yet been updated for the latest dhall.
+        dhall = self.dhall_1_38_1;
+      };
+
+      spagoDocs = overrideCabal spagoWithOverrides (drv: {
         postUnpack = (drv.postUnpack or "") + ''
           # Spago includes the following two files directly into the binary
           # with Template Haskell.  They are fetched at build-time from the
@@ -819,4 +824,43 @@ self: super: builtins.intersectAttrs super {
   # itself causing an infinite recursion at evaluation
   # time
   random = dontCheck super.random;
+
+  # Since this package is primarily used by nixpkgs maintainers and is probably
+  # not used to link against by anyone, we can make it’s closure smaller and
+  # add its runtime dependencies in `haskellPackages` (as opposed to cabal2nix).
+  cabal2nix-unstable = overrideCabal
+    (justStaticExecutables super.cabal2nix-unstable)
+    (drv: {
+      buildTools = (drv.buildTools or []) ++ [
+        pkgs.makeWrapper
+      ];
+      postInstall = ''
+        wrapProgram $out/bin/cabal2nix \
+          --prefix PATH ":" "${
+            pkgs.lib.makeBinPath [ pkgs.nix pkgs.nix-prefetch-scripts ]
+          }"
+      '';
+    });
+
+  # test suite needs local redis daemon
+  nri-redis = dontCheck super.nri-redis;
+
+  # Make tophat find itself for _compiling_ its test suite
+  tophat = overrideCabal super.tophat (drv: {
+    postPatch = ''
+      sed -i 's|"tophat"|"./dist/build/tophat/tophat"|' app-test-bin/*.hs
+    '' + (drv.postPatch or "");
+  });
+
+  # Runtime dependencies and CLI completion
+  nvfetcher = generateOptparseApplicativeCompletion "nvfetcher" (overrideCabal
+    super.nvfetcher (drv: {
+      buildTools = drv.buildTools or [ ] ++ [ pkgs.makeWrapper ];
+      postInstall = drv.postInstall or "" + ''
+        wrapProgram "$out/bin/nvfetcher" --prefix 'PATH' ':' "${
+          pkgs.lib.makeBinPath [ pkgs.nvchecker pkgs.nix-prefetch-git ]
+        }"
+      '';
+    }));
+
 }

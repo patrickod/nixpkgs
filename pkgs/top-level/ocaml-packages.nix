@@ -80,6 +80,8 @@ let
 
     bos = callPackage ../development/ocaml-modules/bos { };
 
+    bz2 = callPackage ../development/ocaml-modules/bz2 { };
+
     ca-certs = callPackage ../development/ocaml-modules/ca-certs { };
 
     ca-certs-nss = callPackage ../development/ocaml-modules/ca-certs-nss { };
@@ -191,6 +193,8 @@ let
 
     containers-data = callPackage ../development/ocaml-modules/containers/data.nix { };
 
+    cooltt = callPackage ../development/ocaml-modules/cooltt { };
+
     cow = callPackage ../development/ocaml-modules/cow { };
 
     cpdf = callPackage ../development/ocaml-modules/cpdf { };
@@ -211,10 +215,9 @@ let
 
     csexp = callPackage ../development/ocaml-modules/csexp { };
 
-    cstruct =
-      if lib.versionAtLeast ocaml.version "4.2"
-      then callPackage ../development/ocaml-modules/cstruct {}
-      else callPackage ../development/ocaml-modules/cstruct/1.9.0.nix { };
+    cstruct = callPackage ../development/ocaml-modules/cstruct {};
+
+    cstruct-async = callPackage ../development/ocaml-modules/cstruct/async.nix { };
 
     cstruct-lwt = callPackage ../development/ocaml-modules/cstruct/lwt.nix { };
 
@@ -228,6 +231,8 @@ let
       else callPackage ../development/ocaml-modules/csv/1.5.nix { };
 
     csv-lwt = callPackage ../development/ocaml-modules/csv/lwt.nix { };
+
+    cudf = callPackage ../development/ocaml-modules/cudf { };
 
     curly = callPackage ../development/ocaml-modules/curly {
       inherit (pkgs) curl;
@@ -639,9 +644,15 @@ let
 
     markup = callPackage ../development/ocaml-modules/markup { };
 
+    mccs = callPackage ../development/ocaml-modules/mccs { };
+
     mdx = callPackage ../development/ocaml-modules/mdx { };
 
     menhir = callPackage ../development/ocaml-modules/menhir { };
+
+    menhirLib = callPackage ../development/ocaml-modules/menhir/lib.nix { };
+
+    menhirSdk = callPackage ../development/ocaml-modules/menhir/sdk.nix { };
 
     merlin =
       if lib.versionAtLeast ocaml.version "4.11"
@@ -1023,6 +1034,8 @@ let
 
     tls = callPackage ../development/ocaml-modules/tls { };
 
+    tls-async = callPackage ../development/ocaml-modules/tls/async.nix { };
+
     tls-mirage = callPackage ../development/ocaml-modules/tls/mirage.nix { };
 
     torch = callPackage ../development/ocaml-modules/torch {
@@ -1135,6 +1148,8 @@ let
 
     reason = callPackage ../development/compilers/reason { };
 
+    reason-native = lib.recurseIntoAttrs (callPackage ../development/ocaml-modules/reason-native { });
+
     rope = callPackage ../development/ocaml-modules/rope { };
 
     rpclib = callPackage ../development/ocaml-modules/rpclib { };
@@ -1168,6 +1183,8 @@ let
     };
 
     ssl = callPackage ../development/ocaml-modules/ssl { };
+
+    stdcompat = callPackage ../development/ocaml-modules/stdcompat { };
 
     stdlib-shims = callPackage ../development/ocaml-modules/stdlib-shims { };
 
@@ -1498,6 +1515,8 @@ in let inherit (pkgs) callPackage; in rec
   ocamlPackages_4_11 = mkOcamlPackages (callPackage ../development/compilers/ocaml/4.11.nix { });
 
   ocamlPackages_4_12 = mkOcamlPackages (callPackage ../development/compilers/ocaml/4.12.nix { });
+
+  ocamlPackages_4_13 = mkOcamlPackages (callPackage ../development/compilers/ocaml/4.13.nix { });
 
   ocamlPackages_latest = ocamlPackages_4_12;
 

@@ -21,18 +21,18 @@ let
   sources = name: system: {
     x86_64-darwin = {
       url = "${baseUrl}/${name}-darwin-x86_64.tar.gz";
-      sha256 = "1f86pkjsp8lrmk8ap40wh9zbzb2ni49vc2cjsdjbj4pkkwivihpv";
+      sha256 = "1p8iv2axb5i8xnzm58dmmahxfwplj4r115mz63cl5q0iyy12npbh";
     };
 
     x86_64-linux = {
       url = "${baseUrl}/${name}-linux-x86_64.tar.gz";
-      sha256 = "1l47lq2wq8y0adrjij3w5ki1mm1f00503ks398flfmbzyav6bad3";
+      sha256 = "0zcf9zabdg2r7d9vafxn4wf0j09im5lhycylf91g734zzh6vc267";
     };
   }.${system};
 
 in stdenv.mkDerivation rec {
   pname = "google-cloud-sdk";
-  version = "343.0.0";
+  version = "345.0.0";
 
   src = fetchurl (sources "${pname}-${version}" stdenv.hostPlatform.system);
 

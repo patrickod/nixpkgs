@@ -44,6 +44,7 @@
   ./hardware/ckb-next.nix
   ./hardware/cpu/amd-microcode.nix
   ./hardware/cpu/intel-microcode.nix
+  ./hardware/corectrl.nix
   ./hardware/digitalbitbox.nix
   ./hardware/device-tree.nix
   ./hardware/i2c.nix
@@ -139,6 +140,7 @@
   ./programs/flexoptix-app.nix
   ./programs/freetds.nix
   ./programs/fuse.nix
+  ./programs/gamemode.nix
   ./programs/geary.nix
   ./programs/gnome-disks.nix
   ./programs/gnome-documents.nix
@@ -196,7 +198,6 @@
   ./programs/waybar.nix
   ./programs/wireshark.nix
   ./programs/wshowkeys.nix
-  ./programs/x2goserver.nix
   ./programs/xfs_quota.nix
   ./programs/xonsh.nix
   ./programs/xss-lock.nix
@@ -553,6 +554,7 @@
   ./services/misc/siproxd.nix
   ./services/misc/snapper.nix
   ./services/misc/sonarr.nix
+  ./services/misc/sourcehut
   ./services/misc/spice-vdagentd.nix
   ./services/misc/ssm-agent.nix
   ./services/misc/sssd.nix
@@ -592,6 +594,7 @@
   ./services/monitoring/loki.nix
   ./services/monitoring/longview.nix
   ./services/monitoring/mackerel-agent.nix
+  ./services/monitoring/metricbeat.nix
   ./services/monitoring/monit.nix
   ./services/monitoring/munin.nix
   ./services/monitoring/nagios.nix
@@ -689,7 +692,6 @@
   ./services/networking/flannel.nix
   ./services/networking/freenet.nix
   ./services/networking/freeradius.nix
-  ./services/networking/gale.nix
   ./services/networking/gateone.nix
   ./services/networking/gdomap.nix
   ./services/networking/ghostunnel.nix
@@ -837,6 +839,7 @@
   ./services/networking/tox-node.nix
   ./services/networking/toxvpn.nix
   ./services/networking/tvheadend.nix
+  ./services/networking/ucarp.nix
   ./services/networking/unbound.nix
   ./services/networking/unifi.nix
   ./services/networking/v2ray.nix
@@ -851,6 +854,7 @@
   ./services/networking/xandikos.nix
   ./services/networking/xinetd.nix
   ./services/networking/xl2tpd.nix
+  ./services/networking/x2goserver.nix
   ./services/networking/xrdp.nix
   ./services/networking/yggdrasil.nix
   ./services/networking/zerobin.nix

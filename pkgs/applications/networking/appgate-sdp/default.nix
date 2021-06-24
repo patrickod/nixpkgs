@@ -1,4 +1,4 @@
-{ alsaLib
+{ alsa-lib
 , at-spi2-atk
 , at-spi2-core
 , atk
@@ -55,7 +55,7 @@
 with lib;
 let
   deps = [
-    alsaLib
+    alsa-lib
     at-spi2-atk
     at-spi2-core
     atk
@@ -99,11 +99,11 @@ let
 in
 stdenv.mkDerivation rec {
   pname = "appgate-sdp";
-  version = "5.4.0";
+  version = "5.4.2";
 
   src = fetchurl {
     url = "https://bin.appgate-sdp.com/${lib.versions.majorMinor version}/client/appgate-sdp_${version}_amd64.deb";
-    sha256 = "sha256-2DzZ5JnFGBeaHtDf7CAXb/qv6kVI+sYMW5Nc25E3eNA=";
+    sha256 = "sha256-wAhcTRO/Cd4MG1lfPNDq92yGcu3NOfymucddy92VaXo=";
   };
 
   dontConfigure = true;

@@ -1,6 +1,6 @@
 { stdenv, lib, fetchurl
 , dpkg
-, alsaLib
+, alsa-lib
 , at-spi2-atk
 , at-spi2-core
 , atk
@@ -46,7 +46,7 @@
 let
 
 rpath = lib.makeLibraryPath [
-  alsaLib
+  alsa-lib
   at-spi2-atk
   at-spi2-core
   atk
@@ -90,11 +90,11 @@ in
 
 stdenv.mkDerivation rec {
   pname = "brave";
-  version = "1.25.68";
+  version = "1.25.73";
 
   src = fetchurl {
     url = "https://github.com/brave/brave-browser/releases/download/v${version}/brave-browser_${version}_amd64.deb";
-    sha256 = "OBf42L6pctflNLjtcbnw2wKo7TisRSMF3SriDPFlB6I=";
+    sha256 = "mSK3hT0Rp03Bq0k+NCYo6S5w+eA9SXXxO3Lo7QWrc9U=";
   };
 
   dontConfigure = true;
