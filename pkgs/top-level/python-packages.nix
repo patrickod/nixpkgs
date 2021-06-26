@@ -441,8 +441,6 @@ in {
 
   ansible-base = callPackage ../development/python-modules/ansible/base.nix { };
 
-  ansible-collections = callPackage ../development/python-modules/ansible/collections.nix { };
-
   ansible-core = callPackage ../development/python-modules/ansible/core.nix { };
 
   ansible-kernel = callPackage ../development/python-modules/ansible-kernel { };
@@ -5186,8 +5184,6 @@ in {
 
   pg8000 = callPackage ../development/python-modules/pg8000 { };
 
-  pg8000_1_12 = callPackage ../development/python-modules/pg8000/1_12.nix { };
-
   pgcli = callPackage ../development/tools/database/pgcli { };
 
   pglast = callPackage ../development/python-modules/pglast { };
@@ -5470,8 +5466,6 @@ in {
   priority = callPackage ../development/python-modules/priority { };
 
   prison = callPackage ../development/python-modules/prison { };
-
-  privacyidea = callPackage ../development/python-modules/privacyidea { };
 
   pyjwt1 = callPackage ../development/python-modules/pyjwt/1.nix { };
 
@@ -6881,9 +6875,9 @@ in {
 
   python-engineio = callPackage ../development/python-modules/python-engineio { };
 
-  python-engineio_3 = callPackage ../development/python-modules/python-engineio/3.nix { };
-
   python-etcd = callPackage ../development/python-modules/python-etcd { };
+
+  python-ethtool = callPackage ../development/python-modules/python-ethtool { };
 
   python_fedora = callPackage ../development/python-modules/python_fedora { };
 
@@ -6928,6 +6922,8 @@ in {
   python-ldap-test = callPackage ../development/python-modules/python-ldap-test { };
 
   python-Levenshtein = callPackage ../development/python-modules/python-levenshtein { };
+
+  python-linux-procfs = callPackage ../development/python-modules/python-linux-procfs { };
 
   python-logstash = callPackage ../development/python-modules/python-logstash { };
 
@@ -7028,8 +7024,6 @@ in {
   };
 
   python-socketio = callPackage ../development/python-modules/python-socketio { };
-
-  python-socketio_4 = callPackage ../development/python-modules/python-socketio/4.nix { };
 
   python-socks = callPackage ../development/python-modules/python-socks { };
 
@@ -8157,9 +8151,7 @@ in {
 
   spyder-kernels_0_5 = callPackage ../development/python-modules/spyder-kernels/0.x.nix { };
 
-  sqlalchemy_1_3 = callPackage ../development/python-modules/sqlalchemy/1.3.nix { };
-  sqlalchemy_1_4 = callPackage ../development/python-modules/sqlalchemy/1.4.nix { };
-  sqlalchemy = self.sqlalchemy_1_4;
+  sqlalchemy = callPackage ../development/python-modules/sqlalchemy { };
 
   sqlalchemy-citext = callPackage ../development/python-modules/sqlalchemy-citext { };
 
@@ -8974,16 +8966,7 @@ in {
 
   vsure = callPackage ../development/python-modules/vsure { };
 
-  vtk = self.vtk_7;
-  vtk_7 = toPythonModule (pkgs.vtk_7.override {
-    pythonInterpreter = python;
-    enablePython = true;
-  });
-  vtk_8 = toPythonModule (pkgs.vtk_8.override {
-    pythonInterpreter = python;
-    enablePython = true;
-  });
-  vtk_9 = toPythonModule (pkgs.vtk_9.override {
+  vtk = toPythonModule (pkgs.vtk.override {
     pythonInterpreter = python;
     enablePython = true;
   });
