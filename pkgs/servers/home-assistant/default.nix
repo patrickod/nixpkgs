@@ -180,7 +180,7 @@ let
   extraBuildInputs = extraPackages py.pkgs;
 
   # Don't forget to run parse-requirements.py after updating
-  hassVersion = "2021.6.5";
+  hassVersion = "2021.6.6";
 
 in with py.pkgs; buildPythonApplication rec {
   pname = "homeassistant";
@@ -197,7 +197,7 @@ in with py.pkgs; buildPythonApplication rec {
     owner = "home-assistant";
     repo = "core";
     rev = version;
-    sha256 = "1cp294hy35k9hjbp8iqmaf1m5qbbkh3jwf92ym49waw8di5a5wvh";
+    sha256 = "0r8l2qya9pdl65kq3xrnb1vhmbnxm3bj12hn1wyxmw56l8m9l5d5";
   };
 
   # leave this in, so users don't have to constantly update their downstream patch handling
@@ -442,9 +442,11 @@ in with py.pkgs; buildPythonApplication rec {
     "hddtemp"
     "heos"
     "here_travel_time"
+    "hisense_aehw4a1"
     "history"
     "history_stats"
     "hive"
+    "hlk_sw16"
     "home_connect"
     "home_plus_control"
     "homeassistant"
@@ -452,15 +454,20 @@ in with py.pkgs; buildPythonApplication rec {
     "homekit_controller"
     "homematic"
     "homematicip_cloud"
+    "honeywell"
     "html5"
     "http"
+    "huawei_lte"
     "hue"
+    "huisbaasje"
     "humidifier"
+    "hvv_departures"
     "hyperion"
     "ialarm"
     "iaqualink"
     "icloud"
     "ifttt"
+    "ign_sismologia"
     "image"
     "image_processing"
     "imap_email_content"
@@ -479,11 +486,14 @@ in with py.pkgs; buildPythonApplication rec {
     "ipp"
     "iqvia"
     "islamic_prayer_times"
+    "isy994"
+    "izone"
     "jewish_calendar"
     "kira"
     "kmtronic"
     "knx"
     "kodi"
+    "konnected"
     "kulersky"
     "lastfm"
     "lcn"
