@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, python38Packages }:
+{ lib, fetchFromGitHub, python38Packages }:
 
 python38Packages.buildPythonApplication rec {
   pname = "vfio-isolate";
@@ -18,7 +18,7 @@ python38Packages.buildPythonApplication rec {
   propagatedBuildInputs = with python38Packages; [ click psutil parsimonious ];
   doCheck = false;
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     homepage = "https://github.com/spheenik/vfio-isolate";
     description = "CLI utility for facilitating memory and CPU isolation for VMs";
     license = licenses.mit;
