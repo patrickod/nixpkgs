@@ -21,11 +21,11 @@ rustPlatform.buildRustPackage rec {
   cargoPatches = [
     ./cargo-lock.patch
   ];
-  cargoSha256 = "0raq6dimwl82ayrh8743j3hpn6m575bgxm7z4m7bxzgrs483b07h";
+  cargoSha256 = "048cih3pa24pyabnk018nhfmw9nl9n37k9rl9b16pwkj1x108a03";
   nativeBuildInputs = [pkgconfig];
   buildInputs = [libusb];
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     description = "Replaces the cargo build command to include flashing over USB to UF2 devices";
     homepage = "https://github.com/jacobbrosenthal/hf2-rs";
     licenses = licenses.mit;
