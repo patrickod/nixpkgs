@@ -1,29 +1,31 @@
 { lib, stdenv, fetchFromGitHub, meson, ninja, pkg-config, wayland-scanner
 , libGL, wayland, wayland-protocols, libinput, libxkbcommon, pixman
 , xcbutilwm, libX11, libcap, xcbutilimage, xcbutilerrors, mesa
-, libpng, ffmpeg, xcbutilrenderutil, xwayland, libseat
+, libpng, ffmpeg, xcbutilrenderutil, xwayland, seatd
 }:
 
 stdenv.mkDerivation rec {
   pname = "wlroots";
-  version = "0.14.0";
+  version = "0.14.1";
 
   src = fetchFromGitHub {
     owner = "swaywm";
     repo = "wlroots";
     rev = version;
-    sha256 = "103sf9bsyqw18kmaih11mlxwqi9ddymm95w1lfxz06pf69xwhd39";
+    sha256 = "1sshp3lvlkl1i670kxhwsb4xzxl8raz6769kqvgmxzcb63ns9ay1";
   };
 
   # $out for the library and $examples for the example programs (in examples):
   outputs = [ "out" "examples" ];
+
+  depsBuildBuild = [ pkg-config ];
 
   nativeBuildInputs = [ meson ninja pkg-config wayland-scanner ];
 
   buildInputs = [
     libGL wayland wayland-protocols libinput libxkbcommon pixman
     xcbutilwm libX11 libcap xcbutilimage xcbutilerrors mesa
-    libpng ffmpeg xcbutilrenderutil xwayland libseat
+    libpng ffmpeg xcbutilrenderutil xwayland seatd
   ];
 
   postFixup = ''

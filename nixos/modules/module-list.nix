@@ -138,6 +138,7 @@
   ./programs/file-roller.nix
   ./programs/firejail.nix
   ./programs/fish.nix
+  ./programs/flashrom.nix
   ./programs/flexoptix-app.nix
   ./programs/freetds.nix
   ./programs/fuse.nix
@@ -153,6 +154,7 @@
   ./programs/iftop.nix
   ./programs/iotop.nix
   ./programs/java.nix
+  ./programs/kdeconnect.nix
   ./programs/kbdlight.nix
   ./programs/less.nix
   ./programs/liboping.nix
@@ -258,6 +260,7 @@
   ./services/backup/bacula.nix
   ./services/backup/borgbackup.nix
   ./services/backup/borgmatic.nix
+  ./services/backup/btrbk.nix
   ./services/backup/duplicati.nix
   ./services/backup/duplicity.nix
   ./services/backup/mysql-backup.nix
@@ -385,6 +388,7 @@
   ./services/hardware/bluetooth.nix
   ./services/hardware/bolt.nix
   ./services/hardware/brltty.nix
+  ./services/hardware/ddccontrol.nix
   ./services/hardware/fancontrol.nix
   ./services/hardware/freefall.nix
   ./services/hardware/fwupd.nix
@@ -697,6 +701,7 @@
   ./services/networking/gdomap.nix
   ./services/networking/ghostunnel.nix
   ./services/networking/git-daemon.nix
+  ./services/networking/globalprotect-vpn.nix
   ./services/networking/gnunet.nix
   ./services/networking/go-neb.nix
   ./services/networking/go-shadowsocks2.nix
@@ -843,6 +848,7 @@
   ./services/networking/ucarp.nix
   ./services/networking/unbound.nix
   ./services/networking/unifi.nix
+  ./services/video/unifi-video.nix
   ./services/networking/v2ray.nix
   ./services/networking/vsftpd.nix
   ./services/networking/wakeonlan.nix
@@ -871,7 +877,6 @@
   ./services/search/hound.nix
   ./services/search/kibana.nix
   ./services/search/solr.nix
-  ./services/security/bitwarden_rs/default.nix
   ./services/security/certmgr.nix
   ./services/security/cfssl.nix
   ./services/security/clamav.nix
@@ -897,6 +902,7 @@
   ./services/security/torsocks.nix
   ./services/security/usbguard.nix
   ./services/security/vault.nix
+  ./services/security/vaultwarden/default.nix
   ./services/security/yubikey-agent.nix
   ./services/system/cloud-init.nix
   ./services/system/dbus.nix
@@ -964,6 +970,7 @@
   ./services/web-apps/trilium.nix
   ./services/web-apps/selfoss.nix
   ./services/web-apps/shiori.nix
+  ./services/web-apps/vikunja.nix
   ./services/web-apps/virtlyst.nix
   ./services/web-apps/wiki-js.nix
   ./services/web-apps/whitebophir.nix
@@ -1097,6 +1104,7 @@
   ./tasks/network-interfaces-systemd.nix
   ./tasks/network-interfaces-scripted.nix
   ./tasks/scsi-link-power-management.nix
+  ./tasks/snapraid.nix
   ./tasks/swraid.nix
   ./tasks/trackpoint.nix
   ./tasks/powertop.nix

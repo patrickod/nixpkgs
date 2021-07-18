@@ -74,6 +74,7 @@ broken-packages:
   - aeson-filthy
   - aeson-flowtyped
   - aeson-match-qq
+  - aeson-modern-tojson
   - aeson-options
   - aeson-prefix
   - aeson-schema
@@ -261,6 +262,7 @@ broken-packages:
   - aws-route53
   - aws-sdk-text-converter
   - aws-simple
+  - aws-xray-client-persistent
   - axel
   - azubi
   - azure-acs
@@ -617,6 +619,7 @@ broken-packages:
   - chunky
   - church
   - church-maybe
+  - churros
   - cielo
   - cil
   - cinvoke
@@ -1640,7 +1643,6 @@ broken-packages:
   - gitter
   - git-vogue
   - gi-vips
-  - gi-wnck
   - glade
   - glapp
   - Gleam
@@ -1904,6 +1906,7 @@ broken-packages:
   - haskell-src-match
   - haskell-src-meta-mwotton
   - haskell-stack-trace-plugin
+  - haskell-to-elm
   - HaskellTorrent
   - HaskellTutorials
   - haskell-type-exts
@@ -2289,6 +2292,7 @@ broken-packages:
   - hs-rs-notify
   - hs-scrape
   - hsseccomp
+  - hssh
   - hs-snowtify
   - hs-speedscope
   - hsSqlite3
@@ -2453,6 +2457,7 @@ broken-packages:
   - initialize
   - inject-function
   - inline-asm
+  - inline-r
   - inserts
   - instana-haskell-trace-sdk
   - instance-map
@@ -2753,6 +2758,7 @@ broken-packages:
   - linear-maps
   - linear-opengl
   - linearscan
+  - linear-smc
   - linear-vect
   - line-drawing
   - lines-of-action
@@ -2963,6 +2969,7 @@ broken-packages:
   - mi
   - miconix-test
   - microbase
+  - microformats2-parser
   - microgroove
   - microlens-each
   - micrologger
@@ -3180,6 +3187,7 @@ broken-packages:
   - nested-sequence
   - netclock
   - netease-fm
+  - net-mqtt-rpc
   - netrium
   - NetSNMP
   - netspec
@@ -3597,6 +3605,7 @@ broken-packages:
   - plat
   - platinum-parsing
   - PlayingCards
+  - plex
   - plist
   - plist-buddy
   - plot-gtk
@@ -3979,6 +3988,7 @@ broken-packages:
   - reversi
   - ReviewBoard
   - rewrite-inspector
+  - rfc
   - rfc-prelude
   - rhbzquery
   - ribbit
@@ -4506,6 +4516,7 @@ broken-packages:
   - streaming-png
   - streaming-utils
   - streaming-with
+  - streamly-examples
   - streamly-fsnotify
   - stream-monad
   - streamproc
@@ -4869,6 +4880,7 @@ broken-packages:
   - turing-music
   - turtle-options
   - tweak
+  - twee
   - twentefp-websockets
   - twfy-api-client
   - twhs

@@ -64,7 +64,7 @@ self: super: {
       name = "git-annex-${super.git-annex.version}-src";
       url = "git://git-annex.branchable.com/";
       rev = "refs/tags/" + super.git-annex.version;
-      sha256 = "1hf2i36ayscdg7fa81akx031chg8c3scbjphj4c1qawif41bynmm";
+      sha256 = "0nvaaba06dgkl2kfq6ldmj0v6mm2dh7wfky6lsxxy5kskbncyqjr";
       # delete android and Android directories which cause issues on
       # darwin (case insensitive directory). Since we don't need them
       # during the build process, we can delete it to prevent a hash
@@ -705,10 +705,6 @@ self: super: {
   # https://github.com/hvr/uuid/issues/28
   uuid-types = doJailbreak super.uuid-types;
   uuid = doJailbreak super.uuid;
-
-  # Bypass version check for random < 1.2 (1.2 works fine).
-  # https://github.com/yeyan/xmonad-wallpaper/issues/2
-  xmonad-wallpaper = doJailbreak super.xmonad-wallpaper;
 
   # The tests spuriously fail
   libmpd = dontCheck super.libmpd;
@@ -1935,5 +1931,13 @@ EOT
   # To strict bound on hspec
   # https://github.com/dagit/zenc/issues/5
   zenc = doJailbreak super.zenc;
+
+  # Indeterministic tests
+  # Fixed on upstream: https://github.com/softwarefactory-project/matrix-client-haskell/commit/4ca4963cfd06379d9bdce49742af854aed6a0d37
+  matrix-client = dontCheck super.matrix-client;
+
+  # Flakey tests
+  # upstream https://github.com/circuithub/rel8/issues/86
+  rel8 = dontCheck super.rel8;
 
 } // import ./configuration-tensorflow.nix {inherit pkgs haskellLib;} self super
