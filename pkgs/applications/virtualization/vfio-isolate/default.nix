@@ -13,6 +13,7 @@ python38Packages.buildPythonApplication rec {
 
   postPatch = ''
     substituteInPlace setup.py --replace "psutil~=5.7.0" "psutil"
+    substituteInPlace setup.py --replace "click~=7.1.2" "click"
   '';
 
   propagatedBuildInputs = with python38Packages; [ click psutil parsimonious ];
