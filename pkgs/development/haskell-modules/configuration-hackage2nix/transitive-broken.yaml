@@ -480,6 +480,7 @@ dont-distribute-packages:
  - avers-api
  - avers-api-docs
  - avers-server
+ - aviation-navigation
  - avro-piper
  - awesomium
  - awesomium-glut
@@ -808,7 +809,6 @@ dont-distribute-packages:
  - convertible-text
  - coordinate
  - copilot
- - copilot-c99
  - copilot-cbmc
  - copilot-language
  - copilot-libraries
@@ -1833,6 +1833,11 @@ dont-distribute-packages:
  - keera-hails-reactive-yampa
  - keera-hails-reactivelenses
  - keera-posture
+ - keid-core
+ - keid-geometry
+ - keid-render-basic
+ - keid-resource-gltf
+ - keid-ui-dearimgui
  - kevin
  - keysafe
  - keyvaluehash
@@ -2334,6 +2339,8 @@ dont-distribute-packages:
  - polysemy-fs
  - polysemy-fskvstore
  - polysemy-http
+ - polysemy-keyed-state
+ - polysemy-kvstore
  - polysemy-kvstore-jsonfile
  - polysemy-log
  - polysemy-log-co
@@ -2344,11 +2351,14 @@ dont-distribute-packages:
  - polysemy-optics
  - polysemy-path
  - polysemy-plugin
+ - polysemy-plugin_0_4_0_0
  - polysemy-readline
  - polysemy-req
  - polysemy-resume
+ - polysemy-socket
  - polysemy-test
  - polysemy-time
+ - polysemy-uncontrolled
  - polysemy-video
  - polysemy-vinyl
  - polysemy-webserver
