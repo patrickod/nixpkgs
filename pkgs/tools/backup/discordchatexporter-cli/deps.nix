@@ -1,8 +1,8 @@
 { fetchNuGet }: [
   (fetchNuGet {
     name = "CliFx";
-    version = "2.0.4";
-    sha256 = "1wwpjli4y2545yi6k17mvjqy994wl3wm6nngszk87rbdwhkbncaj";
+    version = "2.0.6";
+    sha256 = "09yyjgpp52b0r3mqlvx75ld4vjp8hry7ql7r20nnvj0lach6fyh6";
   })
   (fetchNuGet {
     name = "Gress";
@@ -31,13 +31,13 @@
   })
   (fetchNuGet {
     name = "MiniRazor.CodeGen";
-    version = "2.1.2";
-    sha256 = "0mg4zy4zq0ccrc9wchy796ln1znkmn3k1aax0kd2gha4fwa1d1fb";
+    version = "2.1.4";
+    sha256 = "1856hfw2wl3ilxmpg4jmwpigmq0rm50i9pmy3sq8f1xc8j44kzl2";
   })
   (fetchNuGet {
     name = "MiniRazor.Runtime";
-    version = "2.1.2";
-    sha256 = "1a6cm7j1f5n1bfzhg8w60xwa7cps2i82418k57dm2hgqla6p3rsp";
+    version = "2.1.4";
+    sha256 = "1pc3kjbnz810a8bb94k6355rflmayigfmpfmc4jzzx6l6iavnnc4";
   })
   (fetchNuGet {
     name = "Polly";
@@ -46,8 +46,13 @@
   })
   (fetchNuGet {
     name = "Spectre.Console";
-    version = "0.40.0";
-    sha256 = "17bb31nsvfk7m337zwqcz4v6cvayhfx51ri4yrv5i8nbp7f4rpb1";
+    version = "0.41.0";
+    sha256 = "104vyzwbbq5m75dm31xk7ilvmik8hw1cj3bc301a8w6gq8i0fpk3";
+  })
+  (fetchNuGet {
+    name = "Superpower";
+    version = "2.3.0";
+    sha256 = "0bdsc3c0d6jb0wr67siqfba0ldl0jxbwis6xr0whzqzf6m2cyahm";
   })
   (fetchNuGet {
     name = "System.Memory";
