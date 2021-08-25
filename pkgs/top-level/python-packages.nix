@@ -5550,8 +5550,6 @@ in {
 
   policy-sentry = callPackage ../development/python-modules/policy-sentry { };
 
-  policyuniverse = callPackage ../development/python-modules/policyuniverse { };
-
   polyline = callPackage ../development/python-modules/polyline { };
 
   pomegranate = callPackage ../development/python-modules/pomegranate { };
