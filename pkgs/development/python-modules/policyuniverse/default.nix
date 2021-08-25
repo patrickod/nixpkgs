@@ -1,18 +1,29 @@
-{ stdenv, buildPythonPackage, fetchPypi}:
+{ lib
+, buildPythonPackage
+, fetchPypi
+, pytestCheckHook
+, pythonOlder
+}:
 
 buildPythonPackage rec {
   pname = "policyuniverse";
-  version = "1.3.2.3";
+  version = "1.4.0.20210816";
+  disabled = pythonOlder "3.7";
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "f4ef0576f1d0a448464a9f86a9cc9e00b3c5bc32c2a4a1b89dfb3d9b6324ac25";
+    sha256 = "05fxn89f6rr5rrp117cnqsfzy1p3nbmq3izq2jqk6kackcr3cl8x";
   };
 
-  meta = with stdenv.lib; {
+  # Tests are not shipped and there are no GitHub tags
+  doCheck = false;
+
+  pythonImportsCheck = [ "policyuniverse" ];
+
+  meta = with lib; {
+    description = "Parse and Process AWS IAM Policies, Statements, ARNs and wildcards";
     homepage = "https://github.com/Netflix-Skunkworks/policyuniverse";
-    description = "Parse and Process AWS IAM Policies, Statements, ARNs, and wildcards";
-    license = licenses.asl20;
-    maintainers = with maintainers; [ patrickod ];
+    license = with licenses; [ asl20 ];
+    maintainers = with maintainers; [ fab ];
   };
 }
