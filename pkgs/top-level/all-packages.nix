@@ -258,6 +258,8 @@ with pkgs;
 
   comedilib = callPackage ../development/libraries/comedilib {  };
 
+  commitlint = nodePackages."@commitlint/cli";
+
   containerpilot = callPackage ../applications/networking/cluster/containerpilot { };
 
   coordgenlibs  = callPackage ../development/libraries/coordgenlibs { };
@@ -891,6 +893,8 @@ with pkgs;
 
   redfang = callPackage ../tools/networking/redfang { };
 
+  sx-go = callPackage ../tools/security/sx-go { };
+
   tfk8s = callPackage ../tools/misc/tfk8s { };
 
   tnat64 = callPackage ../tools/networking/tnat64 { };
@@ -1011,8 +1015,6 @@ with pkgs;
   };
 
   terminator = callPackage ../applications/terminal-emulators/terminator { };
-
-  terminus = callPackage ../applications/terminal-emulators/terminus { };
 
   termite = callPackage ../applications/terminal-emulators/termite/wrapper.nix {
     termite = termite-unwrapped;
@@ -1919,8 +1921,6 @@ with pkgs;
   bdf2psf = callPackage ../tools/misc/bdf2psf { };
 
   bdf2sfd = callPackage ../tools/misc/bdf2sfd { };
-
-  bcat = callPackage ../tools/text/bcat {};
 
   bcache-tools = callPackage ../tools/filesystems/bcache-tools { };
 
@@ -3956,6 +3956,8 @@ with pkgs;
     inherit (darwin.apple_sdk.frameworks) Foundation;
   };
 
+  changetower = callPackage ../tools/networking/changetower { };
+
   checkbashisms = callPackage ../development/tools/misc/checkbashisms { };
 
   civetweb = callPackage ../development/libraries/civetweb { };
@@ -5530,7 +5532,10 @@ with pkgs;
   google-cloud-sdk = callPackage ../tools/admin/google-cloud-sdk {
     python = python3;
   };
-  google-cloud-sdk-gce = google-cloud-sdk.override { with-gce = true; };
+  google-cloud-sdk-gce = google-cloud-sdk.override {
+    python = python38;
+    with-gce = true;
+  };
 
   google-fonts = callPackage ../data/fonts/google-fonts { };
 
@@ -5748,6 +5753,8 @@ with pkgs;
   };
 
   gvolicon = callPackage ../tools/audio/gvolicon {};
+
+  gvproxy = callPackage ../tools/networking/gvproxy { };
 
   gzip = callPackage ../tools/compression/gzip { };
 
@@ -6717,6 +6724,8 @@ with pkgs;
   });
 
   np2kai = callPackage ../misc/emulators/np2kai { };
+
+  openipmi = callPackage ../tools/system/openipmi { };
 
   ox = callPackage ../applications/editors/ox { };
 
@@ -8175,7 +8184,9 @@ with pkgs;
 
   pod2mdoc = callPackage ../tools/misc/pod2mdoc { };
 
-  poedit = callPackage ../tools/text/poedit { };
+  poedit = callPackage ../tools/text/poedit {
+    wxGTK31-gtk3 = wxGTK31-gtk3.override { withWebKit = true; };
+  };
 
   polipo = callPackage ../servers/polipo { };
 
@@ -8331,7 +8342,9 @@ with pkgs;
 
   remarshal = callPackage ../development/tools/remarshal { };
 
-  rehex = callPackage ../applications/editors/rehex { };
+  rehex = callPackage ../applications/editors/rehex {
+    inherit (darwin.apple_sdk.frameworks) Carbon Cocoa IOKit;
+  };
 
   rig = callPackage ../tools/misc/rig {
     stdenv = gccStdenv;
@@ -9085,8 +9098,6 @@ with pkgs;
   sl = callPackage ../tools/misc/sl { stdenv = gccStdenv; };
 
   socat = callPackage ../tools/networking/socat { };
-
-  socat2pre = lowPrio (callPackage ../tools/networking/socat/2.x.nix { });
 
   sockperf = callPackage ../tools/networking/sockperf { };
 
@@ -11439,7 +11450,7 @@ with pkgs;
 
   # Please update doc/languages-frameworks/haskell.section.md, “Our
   # current default compiler is”, if you bump this:
-  haskellPackages = dontRecurseIntoAttrs haskell.packages.ghc8104;
+  haskellPackages = dontRecurseIntoAttrs haskell.packages.ghc8106;
 
   inherit (haskellPackages) ghc;
 
@@ -12234,11 +12245,13 @@ with pkgs;
   cargo-deny = callPackage ../development/tools/rust/cargo-deny {
     inherit (darwin.apple_sdk.frameworks) Security;
   };
-  cargo-embed = callPackage ../development/tools/rust/cargo-embed { };
+  cargo-embed = callPackage ../development/tools/rust/cargo-embed {
+    inherit (darwin.apple_sdk.frameworks) AppKit;
+  };
   cargo-expand = callPackage ../development/tools/rust/cargo-expand { };
   cargo-feature = callPackage ../development/tools/rust/cargo-feature { };
   cargo-flash = callPackage ../development/tools/rust/cargo-flash {
-    inherit (darwin.apple_sdk.frameworks) Security;
+    inherit (darwin.apple_sdk.frameworks) Security AppKit;
   };
   cargo-fund = callPackage ../development/tools/rust/cargo-fund {
     inherit (darwin.apple_sdk.frameworks) Security;
@@ -12922,6 +12935,8 @@ with pkgs;
 
   red = callPackage ../development/interpreters/red { };
 
+  regexploit = callPackage ../tools/security/regexploit { };
+
   regextester = callPackage ../applications/misc/regextester { };
 
   regina = callPackage ../development/interpreters/regina { };
@@ -13423,9 +13438,7 @@ with pkgs;
 
   cc-tool = callPackage ../development/embedded/cc-tool { };
 
-  ccache = callPackage ../development/tools/misc/ccache {
-    asciidoc = asciidoc-full;
-  };
+  ccache = callPackage ../development/tools/misc/ccache { };
 
   # Wrapper that works as gcc or g++
   # It can be used by setting in nixpkgs config like this, for example:
@@ -15365,6 +15378,8 @@ with pkgs;
   fftwLongDouble = fftw.override { precision = "long-double"; };
 
   filter-audio = callPackage ../development/libraries/filter-audio {};
+
+  filtron = callPackage ../servers/filtron {};
 
   flann = callPackage ../development/libraries/flann { };
 
@@ -18918,13 +18933,9 @@ with pkgs;
 
   theft = callPackage ../development/libraries/theft { };
 
-  thrift = callPackage ../development/libraries/thrift {
-    inherit (pythonPackages) twisted;
-  };
+  thrift = callPackage ../development/libraries/thrift { };
 
-  thrift-0_10 = callPackage ../development/libraries/thrift/0.10.nix {
-    inherit (pythonPackages) twisted;
-  };
+  thrift-0_10 = callPackage ../development/libraries/thrift/0.10.nix { };
 
   tidyp = callPackage ../development/libraries/tidyp { };
 
@@ -20090,6 +20101,8 @@ with pkgs;
 
   postfix = callPackage ../servers/mail/postfix { };
 
+  postfixadmin = callPackage ../servers/postfixadmin { };
+
   postsrsd = callPackage ../servers/mail/postsrsd { };
 
   rspamd = callPackage ../servers/mail/rspamd { };
@@ -20628,6 +20641,8 @@ with pkgs;
   };
 
   urserver = callPackage ../servers/urserver { };
+
+  vouch-proxy = callPackage ../servers/vouch-proxy { };
 
   victoriametrics = callPackage ../servers/nosql/victoriametrics { };
 
@@ -25342,6 +25357,8 @@ with pkgs;
 
   inspectrum = callPackage ../applications/radio/inspectrum { };
 
+  inputplug = callPackage ../tools/X11/inputplug { };
+
   ion3 = callPackage ../applications/window-managers/ion-3 {
     lua = lua5_1;
   };
@@ -25831,8 +25848,6 @@ with pkgs;
   macdylibbundler = callPackage ../development/tools/misc/macdylibbundler { inherit (darwin) cctools; };
 
   magic-wormhole = with python3Packages; toPythonApplication magic-wormhole;
-
-  mail-notification = callPackage ../desktops/gnome-2/desktop/mail-notification {};
 
   magnetophonDSP = lib.recurseIntoAttrs {
     CharacterCompressor = callPackage ../applications/audio/magnetophonDSP/CharacterCompressor { };
@@ -26880,6 +26895,8 @@ with pkgs;
   pqiv = callPackage ../applications/graphics/pqiv { };
 
   qiv = callPackage ../applications/graphics/qiv { };
+
+  premid = callPackage ../applications/misc/premid { };
 
   processing = callPackage ../applications/graphics/processing {
     jdk = oraclejdk8;
@@ -29110,10 +29127,6 @@ with pkgs;
   bench = haskell.lib.justStaticExecutables haskellPackages.bench;
 
   beret = callPackage ../games/beret { };
-
-  bitsnbots = callPackage ../games/bitsnbots {
-    lua = lua5;
-  };
 
   black-hole-solver = callPackage ../games/black-hole-solver {
     inherit (perlPackages) PathTiny;

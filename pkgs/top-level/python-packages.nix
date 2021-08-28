@@ -1842,6 +1842,8 @@ in {
 
   datasette = callPackage ../development/python-modules/datasette { };
 
+  datasette-template-sql = callPackage ../development/python-modules/datasette-template-sql { };
+
   datashader = callPackage ../development/python-modules/datashader {
     dask = self.dask.override { withExtraComplete = true; };
   };
@@ -3441,6 +3443,8 @@ in {
 
   hwi = callPackage ../development/python-modules/hwi { };
 
+  hy = callPackage ../development/python-modules/hy { };
+
   hydra = callPackage ../development/python-modules/hydra { };
 
   hydra-check = callPackage ../development/python-modules/hydra-check { };
@@ -3548,6 +3552,8 @@ in {
   imgsize = callPackage ../development/python-modules/imgsize { };
 
   iminuit = callPackage ../development/python-modules/iminuit { };
+
+  immutabledict = callPackage ../development/python-modules/immutabledict { };
 
   immutables = callPackage ../development/python-modules/immutables { };
 
@@ -4469,6 +4475,8 @@ in {
 
   memcached = callPackage ../development/python-modules/memcached { };
 
+  memory-allocator = callPackage ../development/python-modules/memory-allocator { };
+
   memory_profiler = callPackage ../development/python-modules/memory_profiler { };
 
   mercantile = callPackage ../development/python-modules/mercantile { };
@@ -4699,6 +4707,8 @@ in {
   mutatormath = callPackage ../development/python-modules/mutatormath { };
 
   mutesync = callPackage ../development/python-modules/mutesync { };
+
+  mutf8 = callPackage ../development/python-modules/mutf8 { };
 
   mwclient = callPackage ../development/python-modules/mwclient { };
 
@@ -5080,9 +5090,9 @@ in {
 
   openwrt-ubus-rpc = callPackage ../development/python-modules/openwrt-ubus-rpc { };
 
-  opt-einsum = callPackage ../development/python-modules/opt-einsum { };
-
   opsdroid_get_image_size = callPackage ../development/python-modules/opsdroid_get_image_size { };
+
+  opt-einsum = callPackage ../development/python-modules/opt-einsum { };
 
   optuna = callPackage ../development/python-modules/optuna { };
 
@@ -5968,6 +5978,8 @@ in {
   pydicom = callPackage ../development/python-modules/pydicom { };
 
   pydispatcher = callPackage ../development/python-modules/pydispatcher { };
+
+  pydmd = callPackage ../development/python-modules/pydmd { };
 
   pydns = callPackage ../development/python-modules/py3dns { };
 
@@ -8918,6 +8930,8 @@ in {
 
   ttp = callPackage ../development/python-modules/ttp { };
 
+  tubes = callPackage ../development/python-modules/tubes { };
+
   tunigo = callPackage ../development/python-modules/tunigo { };
 
   tubeup = callPackage ../development/python-modules/tubeup { };
@@ -9659,6 +9673,8 @@ in {
   zipp = callPackage ../development/python-modules/zipp { };
 
   zipstream = callPackage ../development/python-modules/zipstream { };
+
+  zipstream-new = callPackage ../development/python-modules/zipstream-new { };
 
   zm-py = callPackage ../development/python-modules/zm-py { };
 
