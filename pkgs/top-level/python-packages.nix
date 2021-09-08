@@ -1373,6 +1373,8 @@ in {
 
   cert-chain-resolver = callPackage ../development/python-modules/cert-chain-resolver { };
 
+  certauth = callPackage ../development/python-modules/certauth { };
+
   certbot = callPackage ../development/python-modules/certbot { };
 
   certbot-dns-cloudflare = callPackage ../development/python-modules/certbot-dns-cloudflare { };
@@ -2564,7 +2566,9 @@ in {
 
   fints = callPackage ../development/python-modules/fints { };
 
-  fiona = callPackage ../development/python-modules/fiona { };
+  fiona = callPackage ../development/python-modules/fiona {
+    gdal = pkgs.gdal_2;
+  };
 
   fipy = callPackage ../development/python-modules/fipy { };
 
@@ -3314,6 +3318,8 @@ in {
   hetzner = callPackage ../development/python-modules/hetzner { };
 
   heudiconv = callPackage ../development/python-modules/heudiconv { };
+
+  hg-commitsigs = callPackage ../development/python-modules/hg-commitsigs { };
 
   hg-evolve = callPackage ../development/python-modules/hg-evolve { };
 
@@ -5560,6 +5566,10 @@ in {
 
   poetry-core = callPackage ../development/python-modules/poetry-core { };
 
+  poetry-semver = callPackage ../development/python-modules/poetry-semver { };
+
+  poetry2conda = callPackage ../development/python-modules/poetry2conda { };
+
   poezio = callPackage ../applications/networking/instant-messengers/poezio { };
 
   polib = callPackage ../development/python-modules/polib { };
@@ -5569,6 +5579,8 @@ in {
   polyline = callPackage ../development/python-modules/polyline { };
 
   pomegranate = callPackage ../development/python-modules/pomegranate { };
+
+  pontos = callPackage ../development/python-modules/pontos { };
 
   pony = callPackage ../development/python-modules/pony { };
 
@@ -5693,6 +5705,8 @@ in {
   };
 
   protobuf3-to-dict = callPackage ../development/python-modules/protobuf3-to-dict { };
+
+  protonup = callPackage ../development/python-modules/protonup { };
 
   prov = callPackage ../development/python-modules/prov { };
 
@@ -7829,6 +7843,8 @@ in {
 
   rst2ansi = callPackage ../development/python-modules/rst2ansi { };
 
+  rstcheck = callPackage ../development/python-modules/rstcheck { };
+
   rtmidi-python = callPackage ../development/python-modules/rtmidi-python { };
 
   rtoml = callPackage ../development/python-modules/rtoml { };
@@ -9212,6 +9228,8 @@ in {
 
   versioneer = callPackage ../development/python-modules/versioneer { };
 
+  versiontag = callPackage ../development/python-modules/versiontag { };
+
   versiontools = callPackage ../development/python-modules/versiontools { };
 
   vertica-python = callPackage ../development/python-modules/vertica-python { };
@@ -9592,6 +9610,8 @@ in {
 
   yoda = toPythonModule (pkgs.yoda.override { inherit python; });
 
+  youless-api = callPackage ../development/python-modules/youless-api { };
+
   youtube-dl = callPackage ../tools/misc/youtube-dl { };
 
   youtube-dl-light = callPackage ../tools/misc/youtube-dl {
@@ -9607,6 +9627,8 @@ in {
   };
 
   youtube-search = callPackage ../development/python-modules/youtube-search { };
+
+  youtube-search-python = callPackage ../development/python-modules/youtube-search-python { };
 
   youtube-transcript-api = callPackage ../development/python-modules/youtube-transcript-api { };
 
