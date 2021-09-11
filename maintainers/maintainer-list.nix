@@ -1520,12 +1520,6 @@
     githubId = 355401;
     name = "Brian Hicks";
   };
-  bricewge = {
-    email = "bricewge@gmail.com";
-    github = "bricewge";
-    githubId = 5525646;
-    name = "Brice Waegeneire";
-  };
   Br1ght0ne = {
     email = "brightone@protonmail.com";
     github = "Br1ght0ne";
@@ -7683,6 +7677,12 @@
     githubId = 2590830;
     name = "Sage Raflik";
   };
+  neosimsim = {
+    email = "me@abn.sh";
+    github = "neosimsim";
+    githubId = 1771772;
+    name = "Alexander Ben Nasrallah";
+  };
   nequissimus = {
     email = "tim@nequissimus.com";
     github = "nequissimus";
@@ -9593,6 +9593,12 @@
     github = "samrose";
     githubId = 115821;
     name = "Sam Rose";
+  };
+  samuela = {
+    email = "skainsworth@gmail.com";
+    github = "samuela";
+    githubId = 226872;
+    name = "Samuel Ainsworth";
   };
   samueldr = {
     email = "samuel@dionne-riel.com";
