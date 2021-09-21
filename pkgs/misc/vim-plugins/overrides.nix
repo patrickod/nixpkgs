@@ -37,6 +37,9 @@
 , xkb-switch
 , ycmd
 
+# test dependencies
+, neovim-unwrapped
+
   # command-t dependencies
 , rake
 , ruby
@@ -139,7 +142,7 @@ self: super: {
     dependencies = with self; [ completion-nvim ];
     buildInputs = [ tabnine ];
     postFixup = ''
-      mkdir $target/binaries
+      mkdir -p $target/binaries
       ln -s ${tabnine}/bin/TabNine $target/binaries/TabNine_$(uname -s)
     '';
   });
@@ -392,6 +395,12 @@ self: super: {
       substituteInPlace $out/bin/minimap_generator.sh \
         --replace "code-minimap" "${code-minimap}/bin/code-minimap"
     '';
+
+    doCheck = true;
+    checkPhase = ''
+      ${neovim-unwrapped}/bin/nvim -n -u NONE -i NONE -V1 --cmd "set rtp+=$out" --cmd "runtime! plugin/*.vim" -c "MinimapToggle"  +quit!
+    '';
+
   });
 
   ncm2 = super.ncm2.overrideAttrs (old: {
@@ -480,9 +489,11 @@ self: super: {
   });
 
   sqlite-lua = super.sqlite-lua.overrideAttrs (old: {
-    postPatch = ''
+    postPatch = let
+      libsqlite = "${sqlite.out}/lib/libsqlite3${stdenv.hostPlatform.extensions.sharedLibrary}";
+    in ''
       substituteInPlace lua/sqlite/defs.lua \
-        --replace "vim.g.sqlite_clib_path" "vim.g.sqlite_clib_path or '${sqlite.out}/lib/libsqlite3.so'"
+        --replace "path = vim.g.sqlite_clib_path" "path = vim.g.sqlite_clib_path or ${lib.escapeShellArg libsqlite}"
     '';
   });
 

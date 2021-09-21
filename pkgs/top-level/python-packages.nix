@@ -56,7 +56,7 @@ let
   # See build-setupcfg/default.nix for documentation.
   buildSetupcfg = import ../build-support/build-setupcfg self;
 
-  fetchPypi = callPackage ../development/interpreters/python/fetchpypi.nix {};
+  fetchPypi = callPackage ../development/interpreters/python/fetchpypi.nix { };
 
   # Check whether a derivation provides a Python module.
   hasPythonModule = drv: drv?pythonModule && drv.pythonModule == python;
@@ -280,6 +280,8 @@ in {
   aioftp = callPackage ../development/python-modules/aioftp { };
 
   aioguardian = callPackage ../development/python-modules/aioguardian { };
+
+  aiogithubapi = callPackage ../development/python-modules/aiogithubapi { };
 
   aioh2 = callPackage ../development/python-modules/aioh2 { };
 
@@ -567,6 +569,8 @@ in {
 
   asgiref = callPackage ../development/python-modules/asgiref { };
 
+  asn1 = callPackage ../development/python-modules/asn1 { };
+
   asn1ate = callPackage ../development/python-modules/asn1ate { };
 
   asn1crypto = callPackage ../development/python-modules/asn1crypto { };
@@ -625,9 +629,7 @@ in {
 
   async-timeout = callPackage ../development/python-modules/async_timeout { };
 
-  async-upnp-client = callPackage ../development/python-modules/async-upnp-client {
-    pytestCheckHook = self.pytestCheckHook_6_1;
-  };
+  async-upnp-client = callPackage ../development/python-modules/async-upnp-client { };
 
   asyncwhois = callPackage ../development/python-modules/asyncwhois { };
 
@@ -686,6 +688,8 @@ in {
   autologging = callPackage ../development/python-modules/autologging { };
 
   automat = callPackage ../development/python-modules/automat { };
+
+  autopage = callPackage ../development/python-modules/autopage { };
 
   autopep8 = callPackage ../development/python-modules/autopep8 { };
 
@@ -960,6 +964,8 @@ in {
   azure-synapse-accesscontrol = callPackage ../development/python-modules/azure-synapse-accesscontrol { };
 
   azure-synapse-artifacts = callPackage ../development/python-modules/azure-synapse-artifacts { };
+
+  azure-synapse-managedprivateendpoints = callPackage ../development/python-modules/azure-synapse-managedprivateendpoints { };
 
   azure-synapse-spark = callPackage ../development/python-modules/azure-synapse-spark { };
 
@@ -1425,6 +1431,8 @@ in {
 
   chardet = callPackage ../development/python-modules/chardet { };
 
+  charset-normalizer = callPackage ../development/python-modules/charset-normalizer { };
+
   chart-studio = callPackage ../development/python-modules/chart-studio { };
 
   check-manifest = callPackage ../development/python-modules/check-manifest { };
@@ -1471,7 +1479,7 @@ in {
 
   class-registry = callPackage ../development/python-modules/class-registry { };
 
-  claripy =  callPackage ../development/python-modules/claripy { };
+  claripy = callPackage ../development/python-modules/claripy { };
 
   cld2-cffi = callPackage ../development/python-modules/cld2-cffi { };
 
@@ -1513,11 +1521,11 @@ in {
 
   click-threading = callPackage ../development/python-modules/click-threading { };
 
-  clickhouse-cityhash = callPackage ../development/python-modules/clickhouse-cityhash {};
+  clickhouse-cityhash = callPackage ../development/python-modules/clickhouse-cityhash { };
 
   clickhouse-cli = callPackage ../development/python-modules/clickhouse-cli { };
 
-  clickhouse-driver = callPackage ../development/python-modules/clickhouse-driver {};
+  clickhouse-driver = callPackage ../development/python-modules/clickhouse-driver { };
 
   cliff = callPackage ../development/python-modules/cliff { };
 
@@ -1743,8 +1751,6 @@ in {
 
   cssutils = callPackage ../development/python-modules/cssutils { };
 
-  csvs-to-sqlite = callPackage ../development/python-modules/csvs-to-sqlite { };
-
   csvw = callPackage ../development/python-modules/csvw { };
 
   cucumber-tag-expressions = callPackage ../development/python-modules/cucumber-tag-expressions { };
@@ -1859,6 +1865,8 @@ in {
   datatable = callPackage ../development/python-modules/datatable { };
 
   dateparser = callPackage ../development/python-modules/dateparser { };
+
+  dateutils = callPackage ../development/python-modules/dateutils { };
 
   datrie = callPackage ../development/python-modules/datrie { };
 
@@ -2364,7 +2372,7 @@ in {
 
   env-canada = callPackage ../development/python-modules/env-canada { };
 
-  environmental-override = callPackage ../development/python-modules/environmental-override {};
+  environmental-override = callPackage ../development/python-modules/environmental-override { };
 
   envisage = callPackage ../development/python-modules/envisage { };
 
@@ -2511,6 +2519,11 @@ in {
   fastentrypoints = callPackage ../development/python-modules/fastentrypoints { };
 
   fastimport = callPackage ../development/python-modules/fastimport { };
+
+  fastjet = toPythonModule (pkgs.fastjet.override {
+    withPython = true;
+    inherit python;
+  });
 
   fastjsonschema = callPackage ../development/python-modules/fastjsonschema { };
 
@@ -3253,9 +3266,9 @@ in {
 
   guzzle_sphinx_theme = callPackage ../development/python-modules/guzzle_sphinx_theme { };
 
-  gvm-tools = callPackage ../development/python-modules/gvm-tools {};
+  gvm-tools = callPackage ../development/python-modules/gvm-tools { };
 
-  gviz-api = callPackage ../development/python-modules/gviz-api {};
+  gviz-api = callPackage ../development/python-modules/gviz-api { };
 
   gym = callPackage ../development/python-modules/gym { };
 
@@ -4282,8 +4295,9 @@ in {
   };
 
   llvmlite = callPackage ../development/python-modules/llvmlite {
-    llvm = pkgs.llvm_9;
-  }; # llvmlite always requires a specific version of llvm.
+    # llvmlite always requires a specific version of llvm.
+    llvm = pkgs.llvm_11;
+  };
 
   lmdb = callPackage ../development/python-modules/lmdb {
     inherit (pkgs) lmdb;
@@ -4394,6 +4408,8 @@ in {
   mail-parser = callPackage ../development/python-modules/mail-parser { };
 
   makefun = callPackage ../development/python-modules/makefun { };
+
+  mailsuite = callPackage ../development/python-modules/mailsuite { };
 
   Mako = callPackage ../development/python-modules/Mako { };
 
@@ -4551,6 +4567,8 @@ in {
   midiutil = callPackage ../development/python-modules/midiutil { };
 
   mido = callPackage ../development/python-modules/mido { };
+
+  migen = callPackage ../development/python-modules/migen { };
 
   milc = callPackage ../development/python-modules/milc { };
 
@@ -5250,6 +5268,8 @@ in {
   parse = callPackage ../development/python-modules/parse { };
 
   parsedatetime = callPackage ../development/python-modules/parsedatetime { };
+
+  parsedmarc = callPackage ../development/python-modules/parsedmarc { };
 
   parsel = callPackage ../development/python-modules/parsel { };
 
@@ -6928,6 +6948,11 @@ in {
       inherit version;
       sha256 = "c0a7e94a8cdbc5422a51ccdad8e6f1024795939cc89159a0ae7f0b316ad3823e";
     };
+
+    postPatch = ''
+      substituteInPlace setup.cfg \
+        --replace "pluggy>=0.12,<1.0" "pluggy>=0.12,<2.0"
+    '';
   });
 
   pytest-aiohttp = callPackage ../development/python-modules/pytest-aiohttp { };
@@ -7381,7 +7406,9 @@ in {
 
   python-xmp-toolkit = callPackage ../development/python-modules/python-xmp-toolkit { };
 
-  pythran = callPackage ../development/python-modules/pythran { };
+  pythran = callPackage ../development/python-modules/pythran {
+    inherit (pkgs.llvmPackages) openmp;
+  };
 
   pyeverlights = callPackage ../development/python-modules/pyeverlights { };
 
@@ -7623,7 +7650,7 @@ in {
 
   queuelib = callPackage ../development/python-modules/queuelib { };
 
-  qmk-dotty-dict = callPackage ../development/python-modules/qmk-dotty-dict {};
+  qmk-dotty-dict = callPackage ../development/python-modules/qmk-dotty-dict { };
 
   r2pipe = callPackage ../development/python-modules/r2pipe { };
 
@@ -8563,6 +8590,8 @@ in {
 
   stdiomask = callPackage ../development/python-modules/stdiomask { };
 
+  stdlib-list = callPackage ../development/python-modules/stdlib-list { };
+
   stem = callPackage ../development/python-modules/stem { };
 
   stestr = callPackage ../development/python-modules/stestr { };
@@ -8735,7 +8764,7 @@ in {
 
   tensorboard-plugin-profile = callPackage ../development/python-modules/tensorboard-plugin-profile { };
 
-  tensorboard-plugin-wit = callPackage ../development/python-modules/tensorboard-plugin-wit {};
+  tensorboard-plugin-wit = callPackage ../development/python-modules/tensorboard-plugin-wit { };
 
   tensorboardx = callPackage ../development/python-modules/tensorboardx { };
 
@@ -9012,9 +9041,7 @@ in {
 
   trimesh = callPackage ../development/python-modules/trimesh { };
 
-  trio = callPackage ../development/python-modules/trio {
-    pytestCheckHook = self.pytestCheckHook_6_1;
-  };
+  trio = callPackage ../development/python-modules/trio { };
 
   trueskill = callPackage ../development/python-modules/trueskill { };
 
@@ -9103,6 +9130,10 @@ in {
   typer = callPackage ../development/python-modules/typer { };
 
   types-decorator = callPackage ../development/python-modules/types-decorator { };
+
+  types-futures = callPackage ../development/python-modules/types-futures { };
+
+  types-protobuf = callPackage ../development/python-modules/types-protobuf { };
 
   types-pytz = callPackage ../development/python-modules/types-pytz { };
 
@@ -9234,9 +9265,7 @@ in {
 
   urlgrabber = callPackage ../development/python-modules/urlgrabber { };
 
-  urllib3 = callPackage ../development/python-modules/urllib3 {
-    pytestCheckHook = self.pytestCheckHook_6_1;
-  };
+  urllib3 = callPackage ../development/python-modules/urllib3 { };
 
   urlpy = callPackage ../development/python-modules/urlpy { };
 
@@ -9293,6 +9322,8 @@ in {
   venstarcolortouch = callPackage ../development/python-modules/venstarcolortouch { };
 
   venusian = callPackage ../development/python-modules/venusian { };
+
+  velbus-aio = callPackage ../development/python-modules/velbus-aio { };
 
   verboselogs = callPackage ../development/python-modules/verboselogs { };
 
@@ -9393,7 +9424,8 @@ in {
 
   wasm = callPackage ../development/python-modules/wasm { };
 
-  wasmer = callPackage ../development/python-modules/wasmer { };
+  wasmerPackages = pkgs.recurseIntoAttrs (callPackage ../development/python-modules/wasmer { });
+  inherit (self.wasmerPackages) wasmer wasmer-compiler-cranelift wasmer-compiler-llvm wasmer-compiler-singlepass;
 
   watchdog = callPackage ../development/python-modules/watchdog {
     inherit (pkgs.darwin.apple_sdk.frameworks) CoreServices;
@@ -9453,9 +9485,7 @@ in {
 
   webthing = callPackage ../development/python-modules/webthing { };
 
-  werkzeug = callPackage ../development/python-modules/werkzeug {
-    pytestCheckHook = self.pytestCheckHook_6_1;
-  };
+  werkzeug = callPackage ../development/python-modules/werkzeug { };
 
   west = callPackage ../development/python-modules/west { };
 
