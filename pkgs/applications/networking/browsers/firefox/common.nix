@@ -1,15 +1,14 @@
-{ pname, version, meta, updateScript ? null
-, binaryName ? "firefox", application ? "browser"
+{ pname, ffversion, meta, updateScript ? null, binaryName ? "firefox", application ? "browser"
 , src, unpackPhase ? null, patches ? []
 , extraNativeBuildInputs ? [], extraConfigureFlags ? [], extraMakeFlags ? [], tests ? [] }:
 
 { lib, stdenv, pkg-config, pango, perl, python3, zip
 , libjpeg, zlib, dbus, dbus-glib, bzip2, xorg
-, freetype, fontconfig, file, nspr, nss, nss_3_53
+, freetype, fontconfig, file, nspr, nss_3_53
 , yasm, libGLU, libGL, sqlite, unzip, makeWrapper
 , hunspell, libevent, libstartup_notification
 , libvpx_1_8
-, icu69, libpng, glib, pciutils
+, icu69, libpng, jemalloc, glib, pciutils
 , autoconf213, which, gnused, rustPackages, rustPackages_1_45
 , rust-cbindgen, nodejs, nasm, fetchpatch
 , gnum4
@@ -17,6 +16,12 @@
 , debugBuild ? false
 
 ### optionals
+
+## backported libraries
+
+, nspr_latest
+, nss_latest
+, rust-cbindgen_latest
 
 ## optional libraries
 
@@ -91,6 +96,9 @@ let
             then "/Applications/${binaryNameCapitalized}.app/Contents/MacOS"
             else "/bin";
 
+  nspr_pkg = if lib.versionAtLeast ffversion "91" then nspr_latest else nspr;
+  rust-cbindgen_pkg = if lib.versionAtLeast ffversion "89" then rust-cbindgen_latest else rust-cbindgen;
+
   # 78 ESR won't build with rustc 1.47
   inherit (if lib.versionAtLeast version "82" then rustPackages else rustPackages_1_45)
     rustc cargo;
@@ -119,7 +127,7 @@ let
 
   # Disable p11-kit support in nss until our cacert packages has caught up exposing CKA_NSS_MOZILLA_CA_POLICY
   # https://github.com/NixOS/nixpkgs/issues/126065
-  nss_pkg = if lib.versionOlder version "83" then nss_3_53 else nss.override { useP11kit = false; };
+  nss_pkg = if lib.versionOlder ffversion "83" then nss_3_53 else nss_latest.override { useP11kit = false; };
 
   # --enable-release adds -ffunction-sections & LTO that require a big amount of
   # RAM and the 32-bit memory space cannot handle that linking
@@ -137,12 +145,12 @@ buildStdenv.mkDerivation ({
 
   patches = [
   ] ++
-  lib.optional (lib.versionOlder version "86") ./env_var_for_system_dir-ff85.patch ++
-  lib.optional (lib.versionAtLeast version "86") ./env_var_for_system_dir-ff86.patch ++
-  lib.optional (lib.versionOlder version "83") ./no-buildconfig-ffx76.patch ++
-  lib.optional (lib.versionAtLeast version "90") ./no-buildconfig-ffx90.patch ++
-  lib.optional (ltoSupport && lib.versionOlder version "84") ./lto-dependentlibs-generation-ffx83.patch ++
-  lib.optional (ltoSupport && lib.versionAtLeast version "84" && lib.versionOlder version "86")
+  lib.optional (lib.versionOlder ffversion "86") ./env_var_for_system_dir-ff85.patch ++
+  lib.optional (lib.versionAtLeast ffversion "86") ./env_var_for_system_dir-ff86.patch ++
+  lib.optional (lib.versionOlder ffversion "83") ./no-buildconfig-ffx76.patch ++
+  lib.optional (lib.versionAtLeast ffversion "90") ./no-buildconfig-ffx90.patch ++
+  lib.optional (ltoSupport && lib.versionOlder ffversion "84") ./lto-dependentlibs-generation-ffx83.patch ++
+  lib.optional (ltoSupport && lib.versionAtLeast ffversion "84" && lib.versionOlder ffversion "86")
     (fetchpatch {
       url = "https://hg.mozilla.org/mozilla-central/raw-rev/fdff20c37be3";
       sha256 = "135n9brliqy42lj3nqgb9d9if7x6x9nvvn0z4anbyf89bikixw48";
@@ -162,7 +170,7 @@ buildStdenv.mkDerivation ({
   # 2. https://hg.mozilla.org/integration/autoland/rev/3b856ecc00e4
   # This will probably happen in the next point release, but let's be careful
   # and double check whether it's working on sway on the next v bump.
-  ++ lib.optionals (lib.versionAtLeast version "92") [
+  ++ lib.optionals (lib.versionAtLeast ffversion "92") [
       (fetchpatch {
         url = "https://hg.mozilla.org/integration/autoland/raw-rev/3b856ecc00e4";
         sha256 = "sha256-d8IRJD6ELC3ZgEs1ES/gy2kTNu/ivoUkUNGMEUoq8r8=";
@@ -190,13 +198,13 @@ buildStdenv.mkDerivation ({
     xorg.libXdamage
     xorg.libXext
     libevent libstartup_notification /* cairo */
-    libpng glib
+    libpng jemalloc glib
     nasm icu69 libvpx_1_8
     # >= 66 requires nasm for the AV1 lib dav1d
     # yasm can potentially be removed in future versions
     # https://bugzilla.mozilla.org/show_bug.cgi?id=1501796
     # https://groups.google.com/forum/#!msg/mozilla.dev.platform/o-8levmLU80/SM_zQvfzCQAJ
-    nspr nss_pkg
+    nspr_pkg nss_pkg
   ]
   ++ lib.optional  alsaSupport alsa-lib
   ++ lib.optional  pulseaudioSupport libpulseaudio # only headers are needed
@@ -208,7 +216,7 @@ buildStdenv.mkDerivation ({
   ++ lib.optionals buildStdenv.isDarwin [ CoreMedia ExceptionHandling Kerberos
                                           AVFoundation MediaToolbox CoreLocation
                                           Foundation libobjc AddressBook cups ]
-  ++ lib.optional  (lib.versionOlder version "90") gtk2;
+  ++ lib.optional  (lib.versionOlder ffversion "90") gtk2;
 
   NIX_LDFLAGS = lib.optionalString ltoSupport ''
     -rpath ${llvmPackages.libunwind.out}/lib
@@ -248,7 +256,7 @@ buildStdenv.mkDerivation ({
       perl
       pkg-config
       python3
-      rust-cbindgen
+      rust-cbindgen_pkg
       rustc
       which
       unzip
@@ -380,10 +388,10 @@ buildStdenv.mkDerivation ({
 
   passthru = {
     inherit updateScript;
-    inherit version;
+    version = ffversion;
     inherit alsaSupport;
     inherit pipewireSupport;
-    inherit nspr;
+    inherit nspr_pkg;
     inherit ffmpegSupport;
     inherit gssSupport;
     inherit execdir;

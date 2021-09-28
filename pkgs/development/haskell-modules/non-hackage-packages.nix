@@ -39,4 +39,24 @@ self: super: {
   # Unofficial fork until PRs are merged https://github.com/pcapriotti/optparse-applicative/pulls/roberth
   # cabal2nix --maintainer roberth https://github.com/hercules-ci/optparse-applicative.git > pkgs/development/misc/haskell/hercules-ci-optparse-applicative.nix
   hercules-ci-optparse-applicative = self.callPackage ../misc/haskell/hercules-ci-optparse-applicative.nix {};
+
+  #
+  # Backports
+  #
+
+  # This file overrides packages in `hackage-packages.nix`.
+
+  # Backport arion, to support Podman instead of Docker, for those who need NixOS-based containers.
+  # Generated with:
+  # nix-shell -I nixpkgs=$PWD -p cabal-install -p cabal2nix --run 'cabal update; cabal2nix cabal://arion-compose > pkgs/applications/virtualization/arion/arion-compose.nix'
+  arion-compose = self.callPackage ../../applications/virtualization/arion/arion-compose.nix {};
+  # cabal2nix cabal://ap-normalize-0.1.0.1
+  ap-normalize = self.callPackage ../misc/haskell/ap-normalize {};
+  # cabal2nix cabal://distribution-nixpkgs
+  distribution-nixpkgs_1_6_0 = self.callPackage ../misc/haskell/distribution-nixpkgs.nix {};
+  # cabal2nix cabal://cabal2nix-2.18.0
+  cabal2nix = self.callPackage ../misc/haskell/cabal2nix.nix {
+    distribution-nixpkgs = self.distribution-nixpkgs_1_6_0;
+  };
+
 }

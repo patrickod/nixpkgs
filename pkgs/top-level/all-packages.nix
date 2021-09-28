@@ -1079,10 +1079,6 @@ with pkgs;
 
   tilix = callPackage ../applications/terminal-emulators/tilix { };
 
-  timedoctor = callPackage ../applications/office/timedoctor { };
-
-  tvnamer = callPackage ../tools/misc/tvnamer { };
-
   twine = with python3Packages; toPythonApplication twine;
 
   wayst = callPackage ../applications/terminal-emulators/wayst { };
@@ -2700,16 +2696,8 @@ with pkgs;
 
   electronplayer = callPackage ../applications/video/electronplayer/electronplayer.nix { };
 
-  electron-mail = callPackage ../applications/networking/mailreaders/electron-mail { };
-
-  element = callPackage ../applications/science/chemistry/element { };
-
   element-desktop = callPackage ../applications/networking/instant-messengers/element/element-desktop.nix {
     inherit (darwin.apple_sdk.frameworks) Security AppKit CoreServices;
-    electron = electron_13;
-  };
-  element-desktop-wayland = element-desktop.override {
-    useWayland = true;
   };
 
   element-web = callPackage ../applications/networking/instant-messengers/element/element-web.nix {
@@ -3989,8 +3977,6 @@ with pkgs;
   };
 
   age = callPackage ../tools/security/age { };
-
-  agebox = callPackage ../tools/security/agebox { };
 
   bore = callPackage ../tools/networking/bore {
     inherit (darwin) Libsystem;
@@ -6237,7 +6223,11 @@ with pkgs;
   iperf3 = callPackage ../tools/networking/iperf/3.nix { };
   iperf = iperf3;
 
-  ipfs = callPackage ../applications/networking/ipfs { };
+  ipfs = ipfs_0_8;
+  ipfs_latest = ipfs_0_9;
+  ipfs_0_8 = callPackage ../applications/networking/ipfs/0.8.nix { };
+  ipfs_0_9 = callPackage ../applications/networking/ipfs/0.9.nix { };
+
   ipfs-migrator = callPackage ../applications/networking/ipfs-migrator { };
   ipfs-cluster = callPackage ../applications/networking/ipfs-cluster { };
 
@@ -7560,7 +7550,7 @@ with pkgs;
   grocy = callPackage ../servers/grocy { };
 
   inherit (callPackage ../servers/nextcloud {})
-    nextcloud19 nextcloud20 nextcloud21 nextcloud22;
+    nextcloud18 nextcloud19 nextcloud20 nextcloud21 nextcloud22;
 
   nextcloud-client = libsForQt5.callPackage ../applications/networking/nextcloud-client { };
 
@@ -10078,7 +10068,10 @@ with pkgs;
     openssl = null;
   };
 
-  globalprotect-openconnect = libsForQt5.callPackage ../tools/networking/globalprotect-openconnect { };
+  openconnect_head = callPackage ../tools/networking/openconnect {
+    head = true;
+    openssl = null;
+  };
 
   ding-libs = callPackage ../tools/misc/ding-libs { };
 
@@ -12140,7 +12133,7 @@ with pkgs;
     stdenv = gcc7Stdenv;
   }));
 
-  llvmPackages_latest = llvmPackages_12;
+  llvmPackages_latest = llvmPackages_11;
 
   llvmPackages_rocm = recurseIntoAttrs (callPackage ../development/compilers/llvm/rocm { });
 
@@ -12540,7 +12533,10 @@ with pkgs;
   rust-cbindgen = callPackage ../development/tools/rust/cbindgen {
     inherit (darwin.apple_sdk.frameworks) Security;
   };
-  rust-script = callPackage ../development/tools/rust/rust-script { };
+  rust-cbindgen_latest = callPackage ../development/tools/rust/cbindgen/latest.nix {
+    inherit (darwin.apple_sdk.frameworks) Security;
+  };
+
   rustup = callPackage ../development/tools/rust/rustup {
     inherit (darwin.apple_sdk.frameworks) CoreServices Security;
   };
@@ -12841,7 +12837,8 @@ with pkgs;
   inherit (beam.packages.erlang)
     erlang-ls erlfmt elvis-erlang
     rebar rebar3 rebar3WithPlugins
-    fetchHex beamPackages;
+    fetchHex beamPackages
+    relxExe;
 
   inherit (beam.packages.erlangR21) lfe lfe_1_3;
 
@@ -18206,11 +18203,18 @@ with pkgs;
     inherit (darwin.apple_sdk.frameworks) CoreServices;
   };
 
+  nspr_latest = callPackage ../development/libraries/nspr/latest.nix {
+    inherit (darwin.apple_sdk.frameworks) CoreServices;
+  };
+
   nss = lowPrio (callPackage ../development/libraries/nss { });
   nssTools = nss.tools;
 
   # required for stable thunderbird and firefox-esr-78
   nss_3_53 = lowPrio (callPackage ../development/libraries/nss/3.53.nix { });
+
+  # required for the latest firefox version
+  nss_latest = lowPrio (callPackage ../development/libraries/nss/latest.nix { });
 
   nss_wrapper = callPackage ../development/libraries/nss_wrapper { };
 
@@ -19451,7 +19455,7 @@ with pkgs;
   webkitgtk = callPackage ../development/libraries/webkitgtk {
     harfbuzz = harfbuzzFull;
     inherit (gst_all_1) gst-plugins-base gst-plugins-bad;
-    inherit (darwin) apple_sdk;
+    inherit (darwin.apple_sdk) sdk;
   };
 
   websocketpp = callPackage ../development/libraries/websocket++ { };
@@ -20261,8 +20265,6 @@ with pkgs;
 
   listadmin = callPackage ../applications/networking/listadmin {};
 
-  maker-panel = callPackage ../tools/misc/maker-panel { };
-
   mastodon = callPackage ../servers/mastodon { };
 
   materialize = callPackage ../servers/sql/materialize {
@@ -20837,7 +20839,9 @@ with pkgs;
 
   deadpixi-sam-unstable = callPackage ../applications/editors/deadpixi-sam { };
 
-  samba4 = callPackage ../servers/samba/4.x.nix { };
+  samba4 = callPackage ../servers/samba/4.x.nix {
+    rpcgen = netbsd.rpcgen;
+  };
 
   samba = samba4;
 
@@ -21087,15 +21091,16 @@ with pkgs;
 
   alertmanager-irc-relay = callPackage ../servers/monitoring/alertmanager-irc-relay { };
 
-  alsa-firmware = callPackage ../os-specific/linux/alsa-project/alsa-firmware { };
-  alsa-lib = callPackage ../os-specific/linux/alsa-project/alsa-lib { };
-  alsa-oss = callPackage ../os-specific/linux/alsa-project/alsa-oss { };
-  alsa-plugins = callPackage ../os-specific/linux/alsa-project/alsa-plugins { };
-  alsa-plugins-wrapper = callPackage ../os-specific/linux/alsa-project/alsa-plugins/wrapper.nix { };
-  alsa-tools = callPackage ../os-specific/linux/alsa-project/alsa-tools { };
-  alsa-topology-conf = callPackage ../os-specific/linux/alsa-project/alsa-topology-conf { };
-  alsa-ucm-conf = callPackage ../os-specific/linux/alsa-project/alsa-ucm-conf { };
-  alsa-utils = callPackage ../os-specific/linux/alsa-project/alsa-utils {
+  alsa-firmware = callPackage ../os-specific/linux/alsa-firmware { };
+
+  alsaLib = callPackage ../os-specific/linux/alsa-lib { };
+  alsa-lib = alsaLib; # New name on nixos-unstable
+
+  alsaPlugins = callPackage ../os-specific/linux/alsa-plugins { };
+
+  alsaPluginWrapper = callPackage ../os-specific/linux/alsa-plugins/wrapper.nix { };
+
+  alsaUtils = callPackage ../os-specific/linux/alsa-utils {
     fftw = fftwFloat;
   };
 
@@ -21339,6 +21344,378 @@ with pkgs;
     inherit (darwin) IOKit;
   };
 
+  nmon = callPackage ../os-specific/linux/nmon { };
+
+  hwdata = callPackage ../os-specific/linux/hwdata { };
+
+  i7z = qt5.callPackage ../os-specific/linux/i7z { };
+
+  pcm = callPackage ../os-specific/linux/pcm { };
+
+  ifmetric = callPackage ../os-specific/linux/ifmetric {};
+
+  ima-evm-utils = callPackage ../os-specific/linux/ima-evm-utils {
+    openssl = openssl_1_0_2;
+  };
+
+  intel2200BGFirmware = callPackage ../os-specific/linux/firmware/intel2200BGFirmware { };
+
+  intel-compute-runtime = callPackage ../os-specific/linux/intel-compute-runtime { };
+
+  intel-ocl = callPackage ../os-specific/linux/intel-ocl { };
+
+  iomelt = callPackage ../os-specific/linux/iomelt { };
+
+  iotop = callPackage ../os-specific/linux/iotop { };
+
+  iproute2 = callPackage ../os-specific/linux/iproute { };
+
+  iproute_mptcp = callPackage ../os-specific/linux/iproute/mptcp.nix { };
+
+  iputils = hiPrio (callPackage ../os-specific/linux/iputils { });
+  # hiPrio for collisions with inetutils (ping and tftpd.8.gz)
+
+  iptables = iptables-legacy;
+  iptables-legacy = callPackage ../os-specific/linux/iptables { };
+  iptables-nftables-compat = callPackage ../os-specific/linux/iptables { nftablesCompat = true; };
+
+  iptstate = callPackage ../os-specific/linux/iptstate { } ;
+
+  ipset = callPackage ../os-specific/linux/ipset { };
+
+  irqbalance = callPackage ../os-specific/linux/irqbalance { };
+
+  itpp = callPackage ../development/libraries/science/math/itpp { };
+
+  iw = callPackage ../os-specific/linux/iw { };
+
+  iwd = callPackage ../os-specific/linux/iwd { };
+
+  jfbview = callPackage ../os-specific/linux/jfbview { };
+  jfbpdf = jfbview.override {
+    imageSupport = false;
+  };
+
+  jool-cli = callPackage ../os-specific/linux/jool/cli.nix { };
+
+  jujuutils = callPackage ../os-specific/linux/jujuutils { };
+
+  kbd = callPackage ../os-specific/linux/kbd { };
+
+  kbdlight = callPackage ../os-specific/linux/kbdlight { };
+
+  kmscon = callPackage ../os-specific/linux/kmscon { };
+
+  kmscube = callPackage ../os-specific/linux/kmscube { };
+
+  kmsxx = callPackage ../development/libraries/kmsxx { };
+
+  latencytop = callPackage ../os-specific/linux/latencytop { };
+
+  ldm = callPackage ../os-specific/linux/ldm { };
+
+  libaio = callPackage ../os-specific/linux/libaio { };
+
+  libargon2 = callPackage ../development/libraries/libargon2 { };
+
+  libatasmart = callPackage ../os-specific/linux/libatasmart { };
+
+  libcgroup = callPackage ../os-specific/linux/libcgroup { };
+
+  libnl = callPackage ../os-specific/linux/libnl { };
+
+  lieer = callPackage ../applications/networking/lieer {};
+
+  linuxConsoleTools = callPackage ../os-specific/linux/consoletools { };
+
+  openelec-dvb-firmware = callPackage ../os-specific/linux/firmware/openelec-dvb-firmware { };
+
+  openiscsi = callPackage ../os-specific/linux/open-iscsi { };
+
+  open-isns = callPackage ../os-specific/linux/open-isns { };
+
+  osx-cpu-temp = callPackage ../os-specific/darwin/osx-cpu-temp {
+    inherit (pkgs.darwin.apple_sdk.frameworks) IOKit;
+  };
+
+  macfuse-stubs = callPackage ../os-specific/darwin/macfuse {
+    inherit (darwin) libtapi;
+    inherit (darwin.apple_sdk.frameworks) DiskArbitration;
+  };
+
+  osxsnarf = callPackage ../os-specific/darwin/osxsnarf { };
+
+  power-calibrate = callPackage ../os-specific/linux/power-calibrate { };
+
+  powercap = callPackage ../os-specific/linux/powercap { };
+
+  powerstat = callPackage ../os-specific/linux/powerstat { };
+
+  smemstat = callPackage ../os-specific/linux/smemstat { };
+
+  tgt = callPackage ../tools/networking/tgt { };
+
+  # -- Linux kernel expressions ------------------------------------------------
+
+  lkl = callPackage ../applications/virtualization/lkl { };
+
+  inherit (callPackages ../os-specific/linux/kernel-headers { })
+    linuxHeaders makeLinuxHeaders;
+
+  kernelPatches = callPackage ../os-specific/linux/kernel/patches.nix { };
+
+  klibc = callPackage ../os-specific/linux/klibc { };
+
+  klibcShrunk = lowPrio (callPackage ../os-specific/linux/klibc/shrunk.nix { });
+
+  linux_mptcp = linux_mptcp_95;
+
+  linux_mptcp_95 = callPackage ../os-specific/linux/kernel/linux-mptcp-95.nix {
+    kernelPatches = linux_4_19.kernelPatches;
+  };
+
+  linux_rpi1 = callPackage ../os-specific/linux/kernel/linux-rpi.nix {
+    kernelPatches = with kernelPatches; [
+      bridge_stp_helper
+      request_key_helper
+    ];
+    rpiVersion = 1;
+  };
+
+  linux_rpi2 = callPackage ../os-specific/linux/kernel/linux-rpi.nix {
+    kernelPatches = with kernelPatches; [
+      bridge_stp_helper
+      request_key_helper
+    ];
+    rpiVersion = 2;
+  };
+
+  linux_rpi3 = callPackage ../os-specific/linux/kernel/linux-rpi.nix {
+    kernelPatches = with kernelPatches; [
+      bridge_stp_helper
+      request_key_helper
+    ];
+    rpiVersion = 3;
+  };
+
+  linux_rpi4 = callPackage ../os-specific/linux/kernel/linux-rpi.nix {
+    kernelPatches = with kernelPatches; [
+      bridge_stp_helper
+      request_key_helper
+    ];
+    rpiVersion = 4;
+  };
+
+  linux_4_4 = callPackage ../os-specific/linux/kernel/linux-4.4.nix {
+    kernelPatches =
+      [ kernelPatches.bridge_stp_helper
+        kernelPatches.request_key_helper_updated
+        kernelPatches.cpu-cgroup-v2."4.4"
+        kernelPatches.modinst_arg_list_too_long
+      ];
+  };
+
+  linux_4_9 = callPackage ../os-specific/linux/kernel/linux-4.9.nix {
+    kernelPatches =
+      [ kernelPatches.bridge_stp_helper
+        kernelPatches.request_key_helper_updated
+        kernelPatches.cpu-cgroup-v2."4.9"
+        kernelPatches.modinst_arg_list_too_long
+      ];
+  };
+
+  linux_4_14 = callPackage ../os-specific/linux/kernel/linux-4.14.nix {
+    kernelPatches =
+      [ kernelPatches.bridge_stp_helper
+        kernelPatches.request_key_helper
+        # See pkgs/os-specific/linux/kernel/cpu-cgroup-v2-patches/README.md
+        # when adding a new linux version
+        kernelPatches.cpu-cgroup-v2."4.11"
+        kernelPatches.modinst_arg_list_too_long
+      ];
+  };
+
+  linux_4_19 = callPackage ../os-specific/linux/kernel/linux-4.19.nix {
+    kernelPatches =
+      [ kernelPatches.bridge_stp_helper
+        kernelPatches.request_key_helper
+        kernelPatches.modinst_arg_list_too_long
+      ];
+  };
+
+  linux_5_4 = callPackage ../os-specific/linux/kernel/linux-5.4.nix {
+    kernelPatches = [
+      kernelPatches.bridge_stp_helper
+      kernelPatches.request_key_helper
+      kernelPatches.rtl8761b_support
+    ];
+  };
+
+  linux-rt_5_4 = callPackage ../os-specific/linux/kernel/linux-rt-5.4.nix {
+    kernelPatches = [
+      kernelPatches.bridge_stp_helper
+      kernelPatches.request_key_helper
+    ];
+  };
+
+  linux_5_10 = callPackage ../os-specific/linux/kernel/linux-5.10.nix {
+    kernelPatches = [
+      kernelPatches.bridge_stp_helper
+      kernelPatches.request_key_helper
+    ];
+  };
+
+  linux_5_13 = callPackage ../os-specific/linux/kernel/linux-5.13.nix {
+    kernelPatches = [
+      kernelPatches.bridge_stp_helper
+      kernelPatches.request_key_helper
+    ];
+  };
+
+  linux_5_14 = callPackage ../os-specific/linux/kernel/linux-5.14.nix {
+    kernelPatches = [
+      kernelPatches.bridge_stp_helper
+      kernelPatches.request_key_helper
+    ];
+  };
+
+  linux-rt_5_10 = callPackage ../os-specific/linux/kernel/linux-rt-5.10.nix {
+    kernelPatches = [
+      kernelPatches.bridge_stp_helper
+      kernelPatches.request_key_helper
+      kernelPatches.export-rt-sched-migrate
+    ];
+  };
+
+  linux-rt_5_11 = callPackage ../os-specific/linux/kernel/linux-rt-5.11.nix {
+    kernelPatches = [
+      kernelPatches.bridge_stp_helper
+      kernelPatches.request_key_helper
+      kernelPatches.export-rt-sched-migrate
+    ];
+  };
+
+  linux_testing = callPackage ../os-specific/linux/kernel/linux-testing.nix {
+    kernelPatches = [
+      kernelPatches.bridge_stp_helper
+      kernelPatches.request_key_helper
+    ];
+  };
+
+  linux_testing_bcachefs = callPackage ../os-specific/linux/kernel/linux-testing-bcachefs.nix {
+    kernelPatches =
+      [ kernelPatches.bridge_stp_helper
+        kernelPatches.request_key_helper
+      ];
+  };
+
+  linux_hardkernel_4_14 = callPackage ../os-specific/linux/kernel/linux-hardkernel-4.14.nix {
+    kernelPatches = [
+      kernelPatches.bridge_stp_helper
+      kernelPatches.request_key_helper
+      kernelPatches.modinst_arg_list_too_long
+    ];
+  };
+
+  linux_zen = callPackage ../os-specific/linux/kernel/linux-zen.nix {
+    kernelPatches = [
+      kernelPatches.bridge_stp_helper
+      kernelPatches.request_key_helper
+    ];
+  };
+
+  linux_lqx = callPackage ../os-specific/linux/kernel/linux-lqx.nix {
+    kernelPatches = [
+      kernelPatches.bridge_stp_helper
+      kernelPatches.request_key_helper
+    ];
+  };
+
+  linux_xanmod = callPackage ../os-specific/linux/kernel/linux-xanmod.nix {
+    kernelPatches = [
+      kernelPatches.bridge_stp_helper
+      kernelPatches.request_key_helper
+    ];
+  };
+
+  /*  Linux kernel modules are inherently tied to a specific kernel.  So
+      rather than provide specific instances of those packages for a
+      specific kernel, we have a function that builds those packages
+      for a specific kernel.  This function can then be called for
+      whatever kernel you're using. */
+
+  linuxPackagesFor = kernel_: lib.makeExtensible (self: with self; {
+    callPackage = newScope self;
+
+    kernel = kernel_;
+    inherit (kernel) stdenv; # in particular, use the same compiler by default
+
+    # to help determine module compatibility
+    inherit (kernel) isZen isHardened isLibre;
+    inherit (kernel) kernelOlder kernelAtLeast;
+
+    # Obsolete aliases (these packages do not depend on the kernel).
+    inherit (pkgs) odp-dpdk pktgen; # added 2018-05
+
+    acpi_call = callPackage ../os-specific/linux/acpi-call {};
+
+    akvcam = callPackage ../os-specific/linux/akvcam {
+      inherit (qt5) qmake;
+    };
+
+    amdgpu-pro = callPackage ../os-specific/linux/amdgpu-pro { };
+
+    anbox = callPackage ../os-specific/linux/anbox/kmod.nix { };
+
+    batman_adv = callPackage ../os-specific/linux/batman-adv {};
+
+    bcc = callPackage ../os-specific/linux/bcc {
+      python = python3;
+    };
+
+    bpftrace = callPackage ../os-specific/linux/bpftrace { };
+
+    bbswitch = callPackage ../os-specific/linux/bbswitch {};
+
+    chipsec = callPackage ../tools/security/chipsec {
+      inherit kernel;
+      withDriver = true;
+    };
+
+    cryptodev = callPackage ../os-specific/linux/cryptodev { };
+
+    cpupower = callPackage ../os-specific/linux/cpupower { };
+
+    ddcci-driver = callPackage ../os-specific/linux/ddcci { };
+
+    digimend = callPackage ../os-specific/linux/digimend { };
+
+    dpdk-kmods = callPackage ../os-specific/linux/dpdk-kmods { };
+
+    exfat-nofuse = callPackage ../os-specific/linux/exfat { };
+
+    evdi = callPackage ../os-specific/linux/evdi { };
+
+    fwts-efi-runtime = callPackage ../os-specific/linux/fwts/module.nix { };
+
+    gcadapter-oc-kmod = callPackage ../os-specific/linux/gcadapter-oc-kmod { };
+
+    hid-nintendo = callPackage ../os-specific/linux/hid-nintendo { };
+
+    hyperv-daemons = callPackage ../os-specific/linux/hyperv-daemons { };
+
+    e1000e = if lib.versionOlder kernel.version "4.10" then  callPackage ../os-specific/linux/e1000e {} else null;
+
+  health-check = callPackage ../os-specific/linux/health-check { };
+
+  hibernate = callPackage ../os-specific/linux/hibernate { };
+
+  hostapd = callPackage ../os-specific/linux/hostapd { };
+
+  htop = callPackage ../tools/system/htop {
+    inherit (darwin) IOKit;
+  };
+
   btop = callPackage ../tools/system/btop {
     stdenv = gcc11Stdenv;
   };
@@ -21396,7 +21773,12 @@ with pkgs;
     imageSupport = false;
   };
 
-  jool-cli = callPackage ../os-specific/linux/jool/cli.nix { };
+    rtw89 = callPackage ../os-specific/linux/rtw89 { };
+
+    openafs_1_8 = callPackage ../servers/openafs/1.8/module.nix { };
+    openafs_1_9 = callPackage ../servers/openafs/1.9/module.nix { };
+    # Current stable release; don't backport release updates!
+    openafs = openafs_1_8;
 
   juju = callPackage ../applications/networking/juju { };
 
@@ -21470,15 +21852,47 @@ with pkgs;
 
   linuxKernel = recurseIntoAttrs (callPackage ./linux-kernels.nix { });
 
-  inherit (linuxKernel) buildLinux linuxConfig kernelPatches;
+    can-isotp = callPackage ../os-specific/linux/can-isotp { };
+  } // lib.optionalAttrs (config.allowAliases or false) {
+    # aliases or removed packages
+    ati_drivers_x11 = throw "ati drivers are no longer supported by any kernel >=4.1"; # added 2021-05-18
+  });
 
   linuxPackagesFor = linuxKernel.packagesFor;
 
-  hardenedLinuxPackagesFor = linuxKernel.hardenedPackagesFor;
+  # Update this when adding the newest kernel major version!
+  # And update linux_latest_for_hardened below if the patches are already available
+  linuxPackages_latest = linuxPackages_5_14;
+  linux_latest = linuxPackages_latest.kernel;
 
   linuxManualConfig = linuxKernel.manualConfig;
 
-  linuxPackages_custom = linuxKernel.customPackage;
+  linuxPackages_mptcp = linuxPackagesFor pkgs.linux_mptcp;
+  linuxPackages_rpi1 = linuxPackagesFor pkgs.linux_rpi1;
+  linuxPackages_rpi2 = linuxPackagesFor pkgs.linux_rpi2;
+  linuxPackages_rpi3 = linuxPackagesFor pkgs.linux_rpi3;
+  linuxPackages_rpi4 = linuxPackagesFor pkgs.linux_rpi4;
+  # Build kernel modules for some of the kernels.
+  linuxPackages_4_4 = recurseIntoAttrs (linuxPackagesFor pkgs.linux_4_4);
+  linuxPackages_4_9 = recurseIntoAttrs (linuxPackagesFor pkgs.linux_4_9);
+  linuxPackages_4_14 = recurseIntoAttrs (linuxPackagesFor pkgs.linux_4_14);
+  linuxPackages_4_19 = recurseIntoAttrs (linuxPackagesFor pkgs.linux_4_19);
+  linuxPackages_5_4 = recurseIntoAttrs (linuxPackagesFor pkgs.linux_5_4);
+  linuxPackages_5_10 = recurseIntoAttrs (linuxPackagesFor pkgs.linux_5_10);
+  linuxPackages_5_13 = recurseIntoAttrs (linuxPackagesFor pkgs.linux_5_13);
+  linuxPackages_5_14 = recurseIntoAttrs (linuxPackagesFor pkgs.linux_5_14);
+
+  # When adding to the list above:
+  # - Update linuxPackages_latest to the latest version
+  # - Update the rev in ../os-specific/linux/kernel/linux-libre.nix to the latest one.
+
+  # Intentionally lacks recurseIntoAttrs, as -rc kernels will quite likely break out-of-tree modules and cause failed Hydra builds.
+  linuxPackages_testing = linuxPackagesFor pkgs.linux_testing;
+
+  linuxPackages_custom = { version, src, configfile, allowImportFromDerivation ? true }:
+    recurseIntoAttrs (linuxPackagesFor (pkgs.linuxManualConfig {
+      inherit version src configfile lib stdenv allowImportFromDerivation;
+    }));
 
   # This serves as a test for linuxPackages_custom
   linuxPackages_custom_tinyconfig_kernel = let
@@ -21493,9 +21907,25 @@ with pkgs;
     };
     in tinyLinuxPackages.kernel;
 
-  # The current default kernel / kernel modules.
-  linuxPackages = linuxKernel.packageAliases.linux_default;
-  linux = linuxPackages.kernel;
+  # Build a kernel with bcachefs module
+  linuxPackages_testing_bcachefs = recurseIntoAttrs (linuxPackagesFor pkgs.linux_testing_bcachefs);
+
+  # Hardened Linux
+  hardenedLinuxPackagesFor = kernel': overrides:
+    let # Note: We use this hack since the hardened patches can lag behind and we don't want to delay updates:
+      linux_latest_for_hardened = pkgs.linux_5_10;
+      kernel = (if kernel' == pkgs.linux_latest then linux_latest_for_hardened else kernel').override overrides;
+    in linuxPackagesFor (kernel.override {
+      structuredExtraConfig = import ../os-specific/linux/kernel/hardened/config.nix {
+        inherit lib;
+        inherit (kernel) version;
+      };
+      kernelPatches = kernel.kernelPatches ++ [
+        kernelPatches.hardened.${kernel.meta.branch}
+      ];
+      modDirVersionArg = kernel.modDirVersion + (kernelPatches.hardened.${kernel.meta.branch}).extra;
+      isHardened = true;
+  });
 
   linuxPackages_latest = linuxKernel.packageAliases.linux_latest;
   linux_latest = linuxPackages_latest.kernel;
@@ -23666,8 +24096,6 @@ with pkgs;
 
   dnsname-cni = callPackage ../applications/networking/cluster/dnsname-cni {};
 
-  multus-cni = callPackage ../applications/networking/cluster/multus-cni {};
-
   cntr = callPackage ../applications/virtualization/cntr { };
 
   communi = libsForQt5.callPackage ../applications/networking/irc/communi { };
@@ -24463,9 +24891,9 @@ with pkgs;
   firefox-esr-91-unwrapped = firefoxPackages.firefox-esr-91;
   firefox = wrapFirefox firefox-unwrapped { };
   firefox-wayland = wrapFirefox firefox-unwrapped { forceWayland = true; };
+  firefox-esr-wayland = wrapFirefox firefox-esr-91-unwrapped { forceWayland = true; };
   firefox-esr-78 = wrapFirefox firefox-esr-78-unwrapped { };
   firefox-esr-91 = wrapFirefox firefox-esr-91-unwrapped { };
-
   firefox-esr = firefox-esr-78;
   firefox-esr-unwrapped = firefoxPackages.firefox-esr-78;
   firefox-esr-wayland = wrapFirefox firefox-esr-91-unwrapped { forceWayland = true; };
@@ -25075,6 +25503,7 @@ with pkgs;
   };
 
   wlroots_0_12 = callPackage ../development/libraries/wlroots/0.12.nix {};
+  wlroots_0_13 = callPackage ../development/libraries/wlroots/0.13.nix {};
 
   sway-unwrapped = callPackage ../applications/window-managers/sway { };
   sway = callPackage ../applications/window-managers/sway/wrapper.nix { };
@@ -25096,7 +25525,9 @@ with pkgs;
 
   wbg = callPackage ../applications/misc/wbg { };
 
-  hikari = callPackage ../applications/window-managers/hikari { };
+  hikari = callPackage ../applications/window-managers/hikari {
+    wlroots = wlroots_0_13;
+  };
 
   i3 = callPackage ../applications/window-managers/i3 {
     xcb-util-cursor = if stdenv.isDarwin then xcb-util-cursor-HEAD else xcb-util-cursor;
@@ -25545,9 +25976,9 @@ with pkgs;
 
   fluxcd = callPackage ../applications/networking/cluster/fluxcd { };
 
-  linkerd_edge = (callPackage ../applications/networking/cluster/linkerd { }).edge;
   linkerd_stable = (callPackage ../applications/networking/cluster/linkerd { }).stable;
-  linkerd = linkerd_stable;
+  linkerd_edge = (callPackage ../applications/networking/cluster/linkerd { }).edge;
+  linkerd = linkerd_edge;
 
   kile-wl = callPackage ../applications/misc/kile-wl { };
 
@@ -26299,6 +26730,8 @@ with pkgs;
   prevo = callPackage ../applications/misc/prevo { };
   prevo-data = callPackage ../applications/misc/prevo/data.nix { };
   prevo-tools = callPackage ../applications/misc/prevo/tools.nix { };
+
+  psi-notify = callPackage ../applications/misc/psi-notify { };
 
   ptex = callPackage ../development/libraries/ptex {};
 
@@ -27689,6 +28122,19 @@ with pkgs;
   thunderbird-78 = wrapThunderbird thunderbird-78-unwrapped { };
   thunderbird-wayland = wrapThunderbird thunderbird-unwrapped { forceWayland = true; };
 
+  thunderbird-91-unwrapped = callPackage ../applications/networking/mailreaders/thunderbird/91 {
+    callPackage = pkgs.newScope {
+      inherit (rustPackages) cargo rustc;
+      libpng = libpng_apng;
+      gnused = gnused_422;
+      inherit (darwin.apple_sdk.frameworks) CoreMedia ExceptionHandling
+                                            Kerberos AVFoundation MediaToolbox
+                                            CoreLocation Foundation AddressBook;
+      inherit (darwin) libobjc;
+    };
+  };
+  thunderbird-91 = wrapThunderbird thunderbird-91-unwrapped { };
+
   thunderbolt = callPackage ../os-specific/linux/thunderbolt {};
 
   thunderbird-bin = thunderbird-bin-91;
@@ -28174,7 +28620,8 @@ with pkgs;
   wayfireApplications = wayfireApplications-unwrapped.withPlugins (plugins: [ plugins.wf-shell ]);
   inherit (wayfireApplications) wayfire wcm;
   wayfireApplications-unwrapped = recurseIntoAttrs (
-    callPackage ../applications/window-managers/wayfire/applications.nix { }
+    (callPackage ../applications/window-managers/wayfire/applications.nix { }).
+    extend (_: _: { wlroots = wlroots_0_13; })
   );
   wayfirePlugins = recurseIntoAttrs (
     callPackage ../applications/window-managers/wayfire/plugins.nix {
@@ -28224,7 +28671,9 @@ with pkgs;
 
   weston = callPackage ../applications/window-managers/weston { pipewire = pipewire_0_2; };
 
-  wio = callPackage ../applications/window-managers/wio { };
+  wio = callPackage ../applications/window-managers/wio {
+    wlroots = wlroots_0_13;
+  };
 
   whitebox-tools = callPackage ../applications/gis/whitebox-tools {
     inherit (darwin.apple_sdk.frameworks) Security;
@@ -28280,7 +28729,8 @@ with pkgs;
 
   wrapFirefox = callPackage ../applications/networking/browsers/firefox/wrapper.nix { };
 
-  wrapThunderbird = callPackage ../applications/networking/mailreaders/thunderbird/wrapper.nix { };
+  # Only used for new Thunderbird 91.x
+  wrapThunderbird = callPackage ../applications/networking/mailreaders/thunderbird/91/wrapper.nix { };
 
   wp-cli = callPackage ../development/tools/wp-cli { };
 
@@ -29218,9 +29668,7 @@ with pkgs;
 
   ecwolf = callPackage ../games/ecwolf { };
 
-  eduke32 = callPackage ../games/eduke32 {
-    inherit (darwin.apple_sdk.frameworks) AGL Cocoa GLUT OpenGL;
-  };
+  eduke32 = callPackage ../games/eduke32 { };
 
   egoboo = callPackage ../games/egoboo { };
 

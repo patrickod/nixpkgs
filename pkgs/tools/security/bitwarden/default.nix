@@ -17,11 +17,11 @@ let
   pname = "bitwarden";
 
   version = {
-    x86_64-linux = "1.27.1";
+    x86_64-linux = "1.26.4";
   }.${system} or "";
 
   sha256 = {
-    x86_64-linux = "sha256-CqyIARPHri018AOgI1rFJ9Td3K8OamXVgupAINME7BY=";
+    x86_64-linux = "sha256-PYqLf1Y3SwPFjq8JJMxHrKWKuCqbVpmzugi3DjRNWUg=";
   }.${system} or "";
 
   meta = with lib; {

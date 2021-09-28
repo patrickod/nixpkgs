@@ -1,15 +1,15 @@
-{ lib, mkDerivation, fetchFromGitHub, cmake, jdk8, jdk, zlib, file, makeWrapper, xorg, libpulseaudio, qtbase, libGL, msaClientID ? "" }:
+{ lib, mkDerivation, fetchFromGitHub, cmake, jdk8, jdk, zlib, file, makeWrapper, xorg, libpulseaudio, qtbase, libGL }:
 
 let
   libpath = with xorg; lib.makeLibraryPath [ libX11 libXext libXcursor libXrandr libXxf86vm libpulseaudio libGL ];
 in mkDerivation rec {
   pname = "multimc";
-  version = "unstable-2021-09-08";
+  version = "unstable-2021-06-21";
   src = fetchFromGitHub {
     owner = "MultiMC";
     repo = "MultiMC5";
-    rev = "e2355eb276bf355ca4acf526a0f3cc390aa88f8b";
-    sha256 = "3G9QPoAbC+uVfUYR0Kq6hnxl9c2mvCzIEYGjwfarQJ8=";
+    rev = "8179a89103833805d5374399d80a4305be1b8355";
+    sha256 = "lPz6ZM7TjaixfwWMPaXijKZJQKFPrCegBhvbJ8Xg4P8=";
     fetchSubmodules = true;
   };
   nativeBuildInputs = [ cmake file makeWrapper ];
@@ -19,13 +19,9 @@ in mkDerivation rec {
 
   postPatch = ''
     # hardcode jdk paths
-    substituteInPlace launcher/java/JavaUtils.cpp \
+    substituteInPlace api/logic/java/JavaUtils.cpp \
       --replace 'scanJavaDir("/usr/lib/jvm")' 'javas.append("${jdk}/lib/openjdk/bin/java")' \
       --replace 'scanJavaDir("/usr/lib32/jvm")' 'javas.append("${jdk8}/lib/openjdk/bin/java")'
-
-    # add client ID
-    substituteInPlace notsecrets/Secrets.cpp \
-      --replace 'QString MSAClientID = "";' 'QString MSAClientID = "${msaClientID}";'
   '';
 
   cmakeFlags = [ "-DMultiMC_LAYOUT=lin-system" ];

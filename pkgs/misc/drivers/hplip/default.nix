@@ -159,6 +159,12 @@ python3Packages.buildPythonApplication {
       --replace "GZIP_ENV = --best" "GZIP_ENV = --best -n"
   '';
 
+  postConfigure = ''
+    # don't save timestamp, in order to improve reproducibility
+    substituteInPlace Makefile \
+      --replace "GZIP_ENV = --best" "GZIP_ENV = --best -n"
+  '';
+
   enableParallelBuilding = true;
 
   #

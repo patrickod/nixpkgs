@@ -52,8 +52,8 @@ in
   buildkite-agents = handleTest ./buildkite-agents.nix {};
   caddy = handleTest ./caddy.nix {};
   cadvisor = handleTestOn ["x86_64-linux"] ./cadvisor.nix {};
-  cage = handleTest ./cage.nix {};
-  cagebreak = handleTest ./cagebreak.nix {};
+  cage = handleTestOn ["x86_64-linux"] ./cage.nix {};
+  cagebreak = handleTestOn ["x86_64-linux"] ./cagebreak.nix {};
   calibre-web = handleTest ./calibre-web.nix {};
   cassandra_2_1 = handleTest ./cassandra.nix { testPackage = pkgs.cassandra_2_1; };
   cassandra_2_2 = handleTest ./cassandra.nix { testPackage = pkgs.cassandra_2_2; };
@@ -96,7 +96,6 @@ in
   croc = handleTest ./croc.nix {};
   cryptpad = handleTest ./cryptpad.nix {};
   deluge = handleTest ./deluge.nix {};
-  dendrite = handleTest ./dendrite.nix {};
   dhparams = handleTest ./dhparams.nix {};
   disable-installer-tools = handleTest ./disable-installer-tools.nix {};
   discourse = handleTest ./discourse.nix {};
@@ -210,8 +209,6 @@ in
   k3s = handleTest ./k3s.nix {};
   kafka = handleTest ./kafka.nix {};
   kbd-setfont-decompress = handleTest ./kbd-setfont-decompress.nix {};
-  kbd-update-search-paths-patch = handleTest ./kbd-update-search-paths-patch.nix {};
-  kea = handleTest ./kea.nix {};
   keepalived = handleTest ./keepalived.nix {};
   keepassxc = handleTest ./keepassxc.nix {};
   kerberos = handleTest ./kerberos/default.nix {};
@@ -415,7 +412,7 @@ in
   sssd-ldap = handleTestOn ["x86_64-linux"] ./sssd-ldap.nix {};
   strongswan-swanctl = handleTest ./strongswan-swanctl.nix {};
   sudo = handleTest ./sudo.nix {};
-  sway = handleTest ./sway.nix {};
+  sway = handleTestOn ["x86_64-linux"] ./sway.nix {};
   switchTest = handleTest ./switch-test.nix {};
   sympa = handleTest ./sympa.nix {};
   syncthing = handleTest ./syncthing.nix {};

@@ -40,9 +40,7 @@ stdenv.mkDerivation rec {
     sed -i -s -E 's!\bcat\b!${coreutils}/bin/cat!g' src/lib-smtp/test-bin/*.sh
 
     patchShebangs src/config/settings-get.pl
-  '' + lib.optionalString stdenv.isLinux ''
-    export systemdsystemunitdir=$out/etc/systemd/system
-  '';
+  '' + lib.optionalString (stdenv.isLinux) "export systemdsystemunitdir=$out/etc/systemd/system";
 
   # We need this for sysconfdir, see remark below.
   installFlags = [ "DESTDIR=$(out)" ];

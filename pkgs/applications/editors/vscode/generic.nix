@@ -111,21 +111,6 @@ let
       )
     '';
 
-    # See https://github.com/NixOS/nixpkgs/issues/49643#issuecomment-873853897
-    postPatch = ''
-      # this is a fix for "save as root" functionality
-      packed="resources/app/node_modules.asar"
-      unpacked="resources/app/node_modules"
-      ${nodePackages.asar}/bin/asar extract "$packed" "$unpacked"
-      substituteInPlace $unpacked/sudo-prompt/index.js \
-        --replace "/usr/bin/pkexec" "/run/wrappers/bin/pkexec" \
-        --replace "/bin/bash" "${bash}/bin/bash"
-      rm -rf "$packed"
-
-      # this fixes bundled ripgrep
-      chmod +x resources/app/node_modules/vscode-ripgrep/bin/rg
-    '';
-
     inherit meta;
   };
 

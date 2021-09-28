@@ -1,4 +1,4 @@
-{ lib, buildPythonPackage, fetchPypi, flask, ldapdomaindump, pycryptodomex, pyasn1, pyopenssl, chardet, setuptools }:
+{ lib, buildPythonPackage, fetchPypi, flask, ldapdomaindump, pycryptodomex, pyasn1, pyopenssl, chardet }:
 
 buildPythonPackage rec {
   pname = "impacket";
@@ -6,10 +6,10 @@ buildPythonPackage rec {
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "1c1be8a50cdbe3cffc566ba64f552b1b28bcc79b7a406b833956b49c56d77184";
+    sha256 = "113isxb9rd2n761nnh3skg3vqa0v5dalz9kbavyczqyv1jjyh6qw";
   };
 
-  propagatedBuildInputs = [ flask ldapdomaindump pycryptodomex pyasn1 pyopenssl chardet setuptools ];
+  propagatedBuildInputs = [ flask ldapdomaindump pycryptodomex pyasn1 pyopenssl chardet ];
 
   # fail with:
   # RecursionError: maximum recursion depth exceeded

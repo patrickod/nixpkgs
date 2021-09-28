@@ -7,7 +7,7 @@
 
 stdenv.mkDerivation rec {
   pname = "gnome-shell-extension-dash-to-dock";
-  version = "unstable-2021-07-07";
+  version = "69";
 
   # temporarily switched to https://github.com/micheleg/dash-to-dock/pull/1402 because upstream doesn't work with GNOME 40 yet.
   src = fetchFromGitHub {

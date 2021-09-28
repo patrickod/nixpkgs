@@ -1,17 +1,9 @@
-{ lib
-, stdenv
-, fetchFromGitHub
-, ocamlPackages
-, fontschumachermisc
-, xset
-, makeWrapper
-, ncurses
-, gnugrep
-, fetchpatch
-, copyDesktopItems
-, makeDesktopItem
-, enableX11 ? true
-}:
+{lib, stdenv, fetchFromGitHub, ocamlPackages, fontschumachermisc, xset, makeWrapper, ncurses, gnugrep, fetchpatch
+, enableX11 ? true}:
+
+let inherit (ocamlPackages) ocaml lablgtk; in
+
+stdenv.mkDerivation (rec {
 
 stdenv.mkDerivation rec {
   pname = "unison";
@@ -38,10 +30,10 @@ stdenv.mkDerivation rec {
     })
   ];
 
-  preBuild = lib.optionalString enableX11 ''
-    sed -i "s|\(OCAMLOPT=.*\)$|\1 -I $(echo "${ocamlPackages.lablgtk}"/lib/ocaml/*/site-lib/lablgtk2)|" src/Makefile.OCaml
-  '' + ''
-    echo -e '\ninstall:\n\tcp $(FSMONITOR)$(EXEC_EXT) $(INSTALLDIR)' >> src/fsmonitor/linux/Makefile
+  preBuild = (if enableX11 then ''
+    sed -i "s|\(OCAMLOPT=.*\)$|\1 -I $(echo "${lablgtk}"/lib/ocaml/*/site-lib/lablgtk2)|" src/Makefile.OCaml
+  '' else "") + ''
+  echo -e '\ninstall:\n\tcp $(FSMONITOR)$(EXEC_EXT) $(INSTALLDIR)' >> src/fsmonitor/linux/Makefile
   '';
 
   makeFlags = [

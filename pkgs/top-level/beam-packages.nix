@@ -1,7 +1,4 @@
-{ beam, callPackage, wxGTK30, buildPackages, stdenv
-, wxSupport ? true
-, systemdSupport ? stdenv.isLinux
-}:
+{ callPackage, wxGTK30, buildPackages, wxSupport ? true }:
 
 with beam; {
   lib = callPackage ../development/beam-modules/lib.nix { };

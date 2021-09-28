@@ -1,42 +1,8 @@
-{ stdenv
-, lib
-, fetchurl
-, fetchpatch
-, makeWrapper
-, cmake
-, git
-, ftgl
-, gl2ps
-, glew
-, gsl
-, libX11
-, libXpm
-, libXft
-, libXext
-, libGLU
-, libGL
-, libxml2
-, llvm_9
-, lz4
-, xz
-, pcre
-, nlohmann_json
-, pkg-config
-, python
-, xxHash
-, zlib
-, zstd
-, libAfterImage
-, giflib
-, libjpeg
-, libtiff
-, libpng
-, tbb
-, Cocoa
-, CoreSymbolication
-, OpenGL
-, noSplash ? false
-}:
+{ stdenv, lib, fetchurl, makeWrapper, cmake, ftgl, gl2ps, glew, gsl, llvm_5
+, libX11, libXpm, libXft, libXext, libGLU, libGL, libxml2, lz4, xz, pcre
+, pkg-config, python, xxHash, zlib, zstd
+, libAfterImage, giflib, libjpeg, libtiff, libpng
+, Cocoa, CoreSymbolication, OpenGL, noSplash ? false }:
 
 stdenv.mkDerivation rec {
   pname = "root";
@@ -47,32 +13,11 @@ stdenv.mkDerivation rec {
     sha256 = "sha256-kH9p9LrKHk8w7rSXlZjKdZm2qoA8oEboDiW2u6oO9SI=";
   };
 
-  nativeBuildInputs = [ makeWrapper cmake pkg-config git ];
-  buildInputs = [
-    ftgl
-    gl2ps
-    glew
-    pcre
-    zlib
-    zstd
-    libxml2
-    llvm_9
-    lz4
-    xz
-    gsl
-    xxHash
-    libAfterImage
-    giflib
-    libjpeg
-    libtiff
-    libpng
-    nlohmann_json
-    python.pkgs.numpy
-    tbb
-  ]
-  ++ lib.optionals (!stdenv.isDarwin) [ libX11 libXpm libXft libXext libGLU libGL ]
-  ++ lib.optionals (stdenv.isDarwin) [ Cocoa CoreSymbolication OpenGL ]
-  ;
+  nativeBuildInputs = [ makeWrapper cmake pkg-config llvm_5.dev ];
+  buildInputs = [ ftgl gl2ps glew pcre zlib zstd llvm_5 libxml2 lz4 xz gsl xxHash libAfterImage giflib libjpeg libtiff libpng python.pkgs.numpy ]
+    ++ lib.optionals (!stdenv.isDarwin) [ libX11 libXpm libXft libXext libGLU libGL ]
+    ++ lib.optionals (stdenv.isDarwin) [ Cocoa CoreSymbolication OpenGL ]
+    ;
 
   patches = [
     ./sw_vers.patch

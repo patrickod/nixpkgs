@@ -37,9 +37,6 @@ mkYarnPackage rec {
 
   nativeBuildInputs = [ makeWrapper ];
 
-  seshat = callPackage ./seshat { inherit CoreServices; };
-  keytar = callPackage ./keytar { inherit Security AppKit; };
-
   buildPhase = ''
     runHook preBuild
     export HOME=$(mktemp -d)
@@ -48,9 +45,6 @@ mkYarnPackage rec {
     yarn run i18n
     node ./scripts/copy-res.js
     popd
-    rm -rf node_modules/matrix-seshat node_modules/keytar
-    ln -s $keytar node_modules/keytar
-    ln -s $seshat node_modules/matrix-seshat
     runHook postBuild
   '';
 
@@ -63,7 +57,6 @@ mkYarnPackage rec {
     rm "$out/share/element/electron/node_modules"
     cp -r './node_modules' "$out/share/element/electron"
     cp $out/share/element/electron/lib/i18n/strings/en_EN.json $out/share/element/electron/lib/i18n/strings/en-us.json
-    ln -s $out/share/element/electron/lib/i18n/strings/en{-us,}.json
 
     # icons
     for icon in $out/share/element/electron/build/icons/*.png; do
@@ -76,8 +69,8 @@ mkYarnPackage rec {
     ln -s "${desktopItem}/share/applications" "$out/share/applications"
 
     # executable wrapper
-    makeWrapper '${electron_exec}' "$out/bin/${executableName}" \
-      --add-flags "$out/share/element/electron${lib.optionalString useWayland " --enable-features=UseOzonePlatform --ozone-platform=wayland"}"
+    makeWrapper '${electron}/bin/electron' "$out/bin/${executableName}" \
+      --add-flags "$out/share/element/electron"
   '';
 
   # Do not attempt generating a tarball for element-web again.

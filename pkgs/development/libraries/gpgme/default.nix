@@ -21,8 +21,6 @@ stdenv.mkDerivation rec {
   };
 
   patches = [
-    # probably included in > 1.16.0
-    ./test_t-edit-sign.diff
     # https://dev.gnupg.org/rMc4cf527ea227edb468a84bf9b8ce996807bd6992
     ./fix_gpg_list_keys.diff
     # https://lists.gnupg.org/pipermail/gnupg-devel/2020-April/034591.html

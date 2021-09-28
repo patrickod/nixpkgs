@@ -350,6 +350,7 @@ in
             RemainAfterExit = true;
           };
           unitConfig = {
+            ConditionPathIsMountPoint = "!/sys/fs/pstore";
             ConditionVirtualization = "!container";
             DefaultDependencies = false; # needed to prevent a cycle
           };

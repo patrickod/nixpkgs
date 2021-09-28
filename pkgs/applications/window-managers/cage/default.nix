@@ -17,7 +17,12 @@ stdenv.mkDerivation rec {
     sha256 = "0vm96gxinhy48m3x9p1sfldyd03w3gk6iflb7n9kn06j1vqyswr6";
   };
 
-  nativeBuildInputs = [ meson ninja pkg-config wayland-scanner scdoc makeWrapper ];
+  patches = [
+    # To fix the build with wlroots 0.14.0:
+    ./wlroots-0_14.patch
+  ];
+
+  nativeBuildInputs = [ meson ninja pkg-config wayland scdoc makeWrapper ];
 
   buildInputs = [
     wlroots wayland wayland-protocols pixman libxkbcommon

@@ -15,11 +15,11 @@
 
 stdenv.mkDerivation rec {
   pname = "fossil";
-  version = "2.16";
+  version = "2.14.2";
 
   src = fetchurl {
     url = "https://www.fossil-scm.org/home/tarball/version-${version}/fossil-${version}.tar.gz";
-    sha256 = "1z5ji25f2rqaxd1nj4fj84afl1v0m3mnbskgfwsjr3fr0h5p9aqy";
+    sha256 = "1611xyy70vwymj1wa8hpanyd903dv9gw07r74vrzi5myn0r8kr7z";
   };
 
   nativeBuildInputs = [ installShellFiles tcl tcllib ];

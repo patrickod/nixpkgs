@@ -90,7 +90,7 @@ stdenv.mkDerivation rec {
   version = "5.4.2";
 
   src = fetchurl {
-    url = "https://bin.appgate-sdp.com/${versions.majorMinor version}/client/appgate-sdp_${version}_amd64.deb";
+    url = "https://bin.appgate-sdp.com/${lib.versions.majorMinor version}/client/appgate-sdp_${version}_amd64.deb";
     sha256 = "sha256-wAhcTRO/Cd4MG1lfPNDq92yGcu3NOfymucddy92VaXo=";
   };
 

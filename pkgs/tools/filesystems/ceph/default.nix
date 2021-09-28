@@ -132,7 +132,7 @@ let
     ps.cherrypy
     ps.cmd2
     ps.colorama
-    ps.python-dateutil
+    ps.dateutil
     ps.jsonpatch
     ps.pecan
     ps.prettytable

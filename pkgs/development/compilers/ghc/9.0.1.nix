@@ -135,6 +135,15 @@ let
     targetPackages.stdenv.cc.bintools.bintools
   ];
 
+  runtimeDeps = [
+    targetPackages.stdenv.cc.bintools
+    coreutils
+  ]
+  # On darwin, we need unwrapped bintools as well (for otool)
+  ++ lib.optionals (stdenv.targetPlatform.linker == "cctools") [
+    targetPackages.stdenv.cc.bintools.bintools
+  ];
+
 in
 stdenv.mkDerivation (rec {
   version = "9.0.1";

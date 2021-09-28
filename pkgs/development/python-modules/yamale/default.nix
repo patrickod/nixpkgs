@@ -28,6 +28,7 @@ buildPythonPackage rec {
   checkInputs = [
     pytestCheckHook
   ];
+  pythonImportsCheck = [ "yamale" ];
 
   pythonImportsCheck = [ "yamale" ];
 

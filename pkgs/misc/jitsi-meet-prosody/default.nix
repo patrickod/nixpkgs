@@ -23,8 +23,6 @@ stdenv.mkDerivation rec {
     single-node-smoke-test = nixosTests.jitsi-meet;
   };
 
-  passthru.updateScript = ./update.sh;
-
   meta = with lib; {
     description = "Prosody configuration for Jitsi Meet";
     longDescription = ''

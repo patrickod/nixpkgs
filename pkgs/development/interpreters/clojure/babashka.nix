@@ -2,11 +2,17 @@
 
 stdenv.mkDerivation rec {
   pname = "babashka";
-  version = "0.6.1";
+  version = "0.4.3";
+
+  reflectionJson = fetchurl {
+    name = "reflection.json";
+    url = "https://github.com/babashka/${pname}/releases/download/v${version}/${pname}-${version}-reflection.json";
+    sha256 = "sha256-TVFdGFXclJE9GpolKzTGSmeianBdb2Yp3kbNUWlddPw=";
+  };
 
   src = fetchurl {
     url = "https://github.com/babashka/${pname}/releases/download/v${version}/${pname}-${version}-standalone.jar";
-    sha256 = "sha256-s0fZzx/sEAUwXY2cx2ODDhwIrJb5LykFgHBcscsZQO0=";
+    sha256 = "sha256-teZKAwSv9wliVFKdT76yQjMC5g7SGPAqcq/jZ07sYjQ=";
   };
 
   dontUnpack = true;
@@ -84,7 +90,6 @@ stdenv.mkDerivation rec {
     - Library support via popular tools like the clojure CLI
     '';
     homepage = "https://github.com/babashka/babashka";
-    changelog = "https://github.com/babashka/babashka/blob/v${version}/CHANGELOG.md";
     license = licenses.epl10;
     platforms = graalvm11-ce.meta.platforms;
     maintainers = with maintainers; [

@@ -1,20 +1,20 @@
-{ lib, stdenv, fetchFromGitHub
+{ lib, stdenv, fetchFromGitHub, fetchpatch
 , pkg-config, cmake, ninja, yasm
-, libjpeg, openssl, libopus, ffmpeg, alsa-lib, libpulseaudio, protobuf
-, openh264, usrsctp, libevent, libvpx
-, libX11, libXtst, libXcomposite, libXdamage, libXext, libXrender, libXrandr, libXi
+, libjpeg, openssl, libopus, ffmpeg, alsaLib, libpulseaudio, protobuf
+, xorg, libXtst, libXcomposite, libXdamage, libXext, libXrender, libXrandr
 , glib, abseil-cpp, pcre, util-linuxMinimal, libselinux, libsepol, pipewire
+, libXi
 }:
 
 stdenv.mkDerivation {
   pname = "tg_owt";
-  version = "unstable-2021-09-15";
+  version = "unstable-2021-06-27";
 
   src = fetchFromGitHub {
     owner = "desktop-app";
     repo = "tg_owt";
-    rev = "575fb17d2853c43329e45f6693370f5e41668055";
-    sha256 = "17lhy5g4apdakspv75zm070k7003crf1i80m8wy8f631s86v30md";
+    rev = "91d836dc84a16584c6ac52b36c04c0de504d9c34";
+    sha256 = "1ir4svv5mijpzr0rmx65088iikck83vhcdqrpf9dnk6yp4j9v4v2";
     fetchSubmodules = true;
   };
 
@@ -23,10 +23,10 @@ stdenv.mkDerivation {
   nativeBuildInputs = [ pkg-config cmake ninja yasm ];
 
   buildInputs = [
-    libjpeg openssl libopus ffmpeg alsa-lib libpulseaudio protobuf
-    openh264 usrsctp libevent libvpx
-    libX11 libXtst libXcomposite libXdamage libXext libXrender libXrandr libXi
+    libjpeg openssl libopus ffmpeg alsaLib libpulseaudio protobuf
+    xorg.libX11 libXtst libXcomposite libXdamage libXext libXrender libXrandr
     glib abseil-cpp pcre util-linuxMinimal libselinux libsepol pipewire
+    libXi
   ];
 
   cmakeFlags = [

@@ -16,7 +16,7 @@ python3Packages.buildPythonApplication rec {
     ecdsa
     hidapi
     onlykey-solo-python
-    prompt-toolkit
+    prompt_toolkit
     pynacl
     six
   ];

@@ -2,7 +2,7 @@
 
 buildGoModule rec {
   pname = "grafana";
-  version = "8.1.5";
+  version = "7.5.10";
 
   excludedPackages = "\\(alert_webhook_listener\\|clean-swagger\\|release_publisher\\|slow_proxy\\|slow_proxy_mac\\|macaron\\)";
 
@@ -10,33 +10,15 @@ buildGoModule rec {
     rev = "v${version}";
     owner = "grafana";
     repo = "grafana";
-    sha256 = "sha256-Tr5U+bXBW7UIcmqrbmt/e82sZWLDMEObYsxl0INqXxw=";
+    sha256 = "sha256-e+Nkw9TLQoJfJUSXEGvqqWJMcwjNoN0JoB/zfIPHxYw=";
   };
 
   srcStatic = fetchurl {
     url = "https://dl.grafana.com/oss/release/grafana-${version}.linux-amd64.tar.gz";
-    sha256 = "sha256-yE7mhX3peYnTdiY0YwKJ7SMvz4iXmvJncz002vdFXFg=";
+    sha256 = "sha256-xwbd5Qu+btRSqowXCVhmceOGiXiSHeBamJi0Tx79zsc=";
   };
 
-  vendorSha256 = "sha256-DFD6orsM5oDOLgHbCbrD+zNKVGbQT3Izm1VtNCZO40I=";
-
-  preBuild = ''
-    # The testcase makes an API call against grafana.com:
-    #
-    # --- Expected
-    # +++ Actual
-    # @@ -1,4 +1,4 @@
-    #  (map[string]interface {}) (len=2) {
-    # - (string) (len=5) "error": (string) (len=16) "plugin not found",
-    # - (string) (len=7) "message": (string) (len=16) "Plugin not found"
-    # + (string) (len=5) "error": (string) (len=171) "Failed to send request: Get \"https://grafana.com/api/plugins/repo/test\": dial tcp: lookup grafana.com on [::1]:53: read udp [::1]:48019->[::1]:53: read: connection refused",
-    # + (string) (len=7) "message": (string) (len=24) "Failed to install plugin"
-    #  }
-    sed -i -e '/func TestPluginInstallAccess/a t.Skip();' pkg/tests/api/plugins/api_install_test.go
-
-    # Skip a flaky test (https://github.com/NixOS/nixpkgs/pull/126928#issuecomment-861424128)
-    sed -i -e '/it should change folder successfully and return correct result/{N;s/$/\nt.Skip();/}'\
-      pkg/services/libraryelements/libraryelements_patch_test.go
+  vendorSha256 = "sha256-FdotpFi1ee92mCX59bBuqzCyjIq6yujWixReYxmKbS8=";
 
 
     # main module (github.com/grafana/grafana) does not contain package github.com/grafana/grafana/scripts/go

@@ -29,7 +29,7 @@
 , qttools
 , withGstreamer ? true
 , glib-networking
-, gst_all_1
+, gst_all_1 ? null
 , withVlc ? true
 , libvlc
 }:
@@ -67,7 +67,8 @@ mkDerivation rec {
     libselinux
     libsepol
     p11-kit
-  ] ++ lib.optionals withGstreamer (with gst_all_1; [
+  ]
+  ++ lib.optionals withGstreamer (with gst_all_1; [
     glib-networking
     gstreamer
     gst-plugins-base

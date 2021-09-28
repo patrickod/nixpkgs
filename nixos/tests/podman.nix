@@ -124,7 +124,7 @@ import ./make-test-python.nix (
 
       with subtest("Run container via docker cli"):
           podman.succeed("docker network create default")
-          podman.succeed("tar cvf scratchimg.tar --files-from /dev/null && podman import scratchimg.tar scratchimg")
+          podman.succeed("tar cv --files-from /dev/null | podman import - scratchimg")
           podman.succeed(
             "docker run -d --name=sleeping -v /nix/store:/nix/store -v /run/current-system/sw/bin:/bin scratchimg /bin/sleep 10"
           )

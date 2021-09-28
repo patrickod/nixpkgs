@@ -21,7 +21,7 @@ formats commits for you.
 
 */
 
-{ lib, stdenv, texinfo, writeText, gcc, pkgs, buildPackages }:
+{ lib, stdenv, buildPackages, texinfo, writeText }:
 
 self: let
 

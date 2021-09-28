@@ -1,6 +1,7 @@
 { lib
 , buildPythonPackage
 , fetchFromGitHub
+, fetchpatch
 , aniso8601
 , jsonschema
 , flask
@@ -28,14 +29,16 @@ buildPythonPackage rec {
     sha256 = "18vrmknyxw6adn62pz3kr9kvazfgjgl4pgimdf8527fyyiwcqy15";
   };
 
-  propagatedBuildInputs = [
-    aniso8601
-    flask
-    jsonschema
-    pytz
-    six
-    werkzeug
+  patches = [
+    (fetchpatch {
+      name = "CVE-2021-32838.patch";
+      url = "https://github.com/python-restx/flask-restx/commit/bab31e085f355dd73858fd3715f7ed71849656da.patch";
+      sha256 = "1n786f0zq3gyrp9s28qw3j8bkqhys38vbaafaizplaf4f76bh7m8";
+    })
   ];
+
+  propagatedBuildInputs = [ aniso8601 jsonschema flask werkzeug pytz six ]
+    ++ lib.optionals isPy27 [ enum34 ];
 
   checkInputs = [
     blinker

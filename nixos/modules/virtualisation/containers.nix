@@ -65,18 +65,6 @@ in
       '';
     };
 
-    storage.settings = mkOption {
-      type = toml.type;
-      default = {
-        storage = {
-          driver = "overlay";
-          graphroot = "/var/lib/containers/storage";
-          runroot = "/run/containers/storage";
-        };
-      };
-      description = "storage.conf configuration";
-    };
-
     registries = {
       search = mkOption {
         type = types.listOf types.str;

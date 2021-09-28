@@ -1,4 +1,4 @@
-{ callPackage, fetchurl, lib, stdenv, gtk3, pkg-config, libxml2, llvm, perl, sqlite }:
+{ fetchurl, lib, stdenv, pkg-config, libxml2, llvm, perl }:
 
 let
   GCC_BASE = "${stdenv.cc.cc}/lib/gcc/${stdenv.hostPlatform.uname.processor}-unknown-linux-gnu/${stdenv.cc.cc.version}";
@@ -18,7 +18,7 @@ in stdenv.mkDerivation rec {
   '';
 
   nativeBuildInputs = [ pkg-config ];
-  buildInputs = [ gtk3 libxml2 llvm perl sqlite ];
+  buildInputs = [ libxml2 llvm perl ];
   doCheck = true;
   buildFlags = "GCC_BASE:=${GCC_BASE}";
 

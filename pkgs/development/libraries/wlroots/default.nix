@@ -1,7 +1,7 @@
 { lib, stdenv, fetchFromGitHub, meson, ninja, pkg-config, wayland-scanner
 , libGL, wayland, wayland-protocols, libinput, libxkbcommon, pixman
 , xcbutilwm, libX11, libcap, xcbutilimage, xcbutilerrors, mesa
-, libpng, ffmpeg, xcbutilrenderutil, xwayland, seatd
+, libpng, ffmpeg, xcbutilrenderutil, xwayland, libseat
 }:
 
 stdenv.mkDerivation rec {
@@ -25,7 +25,7 @@ stdenv.mkDerivation rec {
   buildInputs = [
     libGL wayland wayland-protocols libinput libxkbcommon pixman
     xcbutilwm libX11 libcap xcbutilimage xcbutilerrors mesa
-    libpng ffmpeg xcbutilrenderutil xwayland seatd
+    libpng ffmpeg xcbutilrenderutil xwayland libseat
   ];
 
   postFixup = ''

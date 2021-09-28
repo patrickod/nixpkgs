@@ -9,13 +9,13 @@
 
 stdenv.mkDerivation rec {
   pname = "icinga2${nameSuffix}";
-  version = "2.13.1";
+  version = "2.12.6";
 
   src = fetchFromGitHub {
     owner = "icinga";
     repo = "icinga2";
     rev = "v${version}";
-    sha256 = "sha256-cGVUNO3p00bkPd4tPbipevuixHz8ptk6W8y1rl3dge8=";
+    sha256 = "1xgcwdqv6qzay5qhy25jr858kgszsy84ym8v9py53rnblj1rlcpn";
   };
 
   patches = [

@@ -3,9 +3,7 @@
 let
   pythonEnv = python3.withPackages (ps: with ps; [ pyqt5_with_qtmultimedia ]);
 in mkDerivation {
-  pname = "qarte";
-  version = "4.12.0";
-
+  name = "qarte-4.12.0";
   src = fetchbzr {
     url = "http://bazaar.launchpad.net/~vincent-vandevyvre/qarte/qarte-4";
     rev = "56";

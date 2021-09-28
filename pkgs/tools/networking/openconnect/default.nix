@@ -8,8 +8,8 @@
 , libxml2
 , stoken
 , zlib
-, vpnc-scripts
-, PCSC
+, fetchgit
+, darwin
 , head ? false
   , fetchFromGitLab
   , autoreconfHook
@@ -17,7 +17,13 @@
 
 assert (openssl != null) == (gnutls == null);
 
-stdenv.mkDerivation rec {
+let vpnc = fetchgit {
+  url = "git://git.infradead.org/users/dwmw2/vpnc-scripts.git";
+  rev = "c0122e891f7e033f35f047dad963702199d5cb9e";
+  sha256 = "11b1ls012mb704jphqxjmqrfbbhkdjb64j2q4k8wb5jmja8jnd14";
+};
+
+in stdenv.mkDerivation rec {
   pname = "openconnect${lib.optionalString head "-head"}";
   version = if head then "2021-05-05" else "8.10";
 
@@ -42,13 +48,13 @@ stdenv.mkDerivation rec {
   ];
 
   buildInputs = [ openssl gnutls gmp libxml2 stoken zlib ]
-    ++ lib.optional stdenv.isDarwin PCSC;
+    ++ lib.optional stdenv.isDarwin darwin.apple_sdk.frameworks.PCSC;
   nativeBuildInputs = [ pkg-config ]
     ++ lib.optional head autoreconfHook;
 
   meta = with lib; {
     description = "VPN Client for Cisco's AnyConnect SSL VPN";
-    homepage = "https://www.infradead.org/openconnect/";
+    homepage = "http://www.infradead.org/openconnect/";
     license = licenses.lgpl21Only;
     maintainers = with maintainers; [ pradeepchhetri tricktron ];
     platforms = lib.platforms.linux ++ lib.platforms.darwin;

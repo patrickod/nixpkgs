@@ -66,7 +66,7 @@ stdenv.mkDerivation rec {
   nativeBuildInputs = [ autoreconfHook pkg-config flex ];
 
   passthru.tests = {
-    inherit (nixosTests) keymap kbd-setfont-decompress kbd-update-search-paths-patch;
+    inherit (nixosTests) keymap kbd-setfont-decompress;
   };
 
   meta = with lib; {

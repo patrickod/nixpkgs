@@ -29,8 +29,12 @@ with lib;
           then []
           else [ pkgs.grub2 pkgs.syslinux ]);
 
-    fileSystems."/" = mkImageMediaOverride
-      { fsType = "tmpfs";
+    fileSystems."/" =
+      # This module is often over-layed onto an existing host config
+      # that defines `/`. We use mkOverride 60 to override standard
+      # values, but at the same time leave room for mkForce values
+      # targeted at the image build.
+      { fsType = mkOverride 60 "tmpfs";
         options = [ "mode=0755" ];
       };
 

@@ -428,6 +428,9 @@ let
       # Rewrite dates for everything in the FS
       find . -exec touch --date=2000-01-01 {} +
 
+      # Rewrite dates for everything in the FS
+      find . -exec touch --date=2000-01-01 {} +
+
       # Round up to the nearest multiple of 1MB, for more deterministic du output
       usage_size=$(( $(du -s --block-size=1M --apparent-size . | tr -cd '[:digit:]') * 1024 * 1024 ))
       # Make the image 110% as big as the files need to make up for FAT overhead
@@ -702,7 +705,48 @@ in
         "boot.shell_on_fail"
       ];
 
-    fileSystems = config.lib.isoFileSystems;
+    fileSystems."/" =
+      # This module is often over-layed onto an existing host config
+      # that defines `/`. We use mkOverride 60 to override standard
+      # values, but at the same time leave room for mkForce values
+      # targeted at the image build.
+      { fsType = mkOverride 60 "tmpfs";
+        options = [ "mode=0755" ];
+      };
+
+    # Note that /dev/root is a symlink to the actual root device
+    # specified on the kernel command line, created in the stage 1
+    # init script.
+    fileSystems."/iso" =
+      { device = "/dev/root";
+        neededForBoot = true;
+        noCheck = true;
+      };
+
+    # In stage 1, mount a tmpfs on top of /nix/store (the squashfs
+    # image) to make this a live CD.
+    fileSystems."/nix/.ro-store" =
+      { fsType = "squashfs";
+        device = "/iso/nix-store.squashfs";
+        options = [ "loop" ];
+        neededForBoot = true;
+      };
+
+    fileSystems."/nix/.rw-store" =
+      { fsType = "tmpfs";
+        options = [ "mode=0755" ];
+        neededForBoot = true;
+      };
+
+    fileSystems."/nix/store" =
+      { fsType = "overlay";
+        device = "overlay";
+        options = [
+          "lowerdir=/nix/.ro-store"
+          "upperdir=/nix/.rw-store/store"
+          "workdir=/nix/.rw-store/work"
+        ];
+      };
 
     boot.initrd.availableKernelModules = [ "squashfs" "iso9660" "uas" "overlay" ];
 

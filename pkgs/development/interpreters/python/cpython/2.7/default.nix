@@ -26,8 +26,8 @@
 , sourceVersion
 , sha256
 , passthruFun
-, static ? stdenv.hostPlatform.isStatic
-, stripBytecode ? reproducibleBuild
+, static ? false
+, stripBytecode ? true
 , rebuildBytecode ? true
 , reproducibleBuild ? false
 , enableOptimizations ? false

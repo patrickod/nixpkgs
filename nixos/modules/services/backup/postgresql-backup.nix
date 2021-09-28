@@ -33,23 +33,21 @@ let
 
       requires = [ "postgresql.service" ];
 
-      path = [ pkgs.coreutils config.services.postgresql.package ];
+      path = [ pkgs.coreutils pkgs.gzip config.services.postgresql.package ];
 
       script = ''
         set -e -o pipefail
 
         umask 0077 # ensure backup is only readable by postgres user
 
-        if [ -e ${curFile} ]; then
-          rm -f ${toString prevFiles}
-          mv ${curFile} ${prevFile}
+        if [ -e ${cfg.location}/${db}.sql.gz ]; then
+          mv ${cfg.location}/${db}.sql.gz ${cfg.location}/${db}.prev.sql.gz
         fi
 
-        ${dumpCmd} \
-          | ${compressCmd} \
-          > ${inProgressFile}
+        ${dumpCmd} | \
+          gzip -c > ${cfg.location}/${db}.in-progress.sql.gz
 
-        mv ${inProgressFile} ${curFile}
+        mv ${cfg.location}/${db}.in-progress.sql.gz ${cfg.location}/${db}.sql.gz
       '';
 
       serviceConfig = {

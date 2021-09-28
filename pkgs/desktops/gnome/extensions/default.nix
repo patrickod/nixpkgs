@@ -61,9 +61,8 @@ in rec {
   gnome40Extensions = mapUuidNames (produceExtensionsList "40");
 
   gnomeExtensions = lib.recurseIntoAttrs (
-    (mapReadableNames
-      (lib.attrValues (gnome40Extensions // (callPackages ./manuallyPackaged.nix {})))
-    )
+    (mapReadableNames (produceExtensionsList "40"))
+    // (callPackage ./manuallyPackaged.nix {})
     // lib.optionalAttrs (config.allowAliases or true) {
       unite-shell = gnomeExtensions.unite; # added 2021-01-19
       arc-menu = gnomeExtensions.arcmenu; # added 2021-02-14

@@ -92,7 +92,7 @@ in {
     package = mkOption {
       type = types.package;
       description = "Which package to use for the Nextcloud instance.";
-      relatedPackages = [ "nextcloud20" "nextcloud21" "nextcloud22" ];
+      relatedPackages = [ "nextcloud19" "nextcloud20" "nextcloud21" "nextcloud22" ];
     };
 
     maxUploadSize = mkOption {

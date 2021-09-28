@@ -2,7 +2,7 @@
 
 stdenv.mkDerivation rec {
   pname = "gnome-shell-extension-arcmenu";
-  version = "14";
+  version = "10";
 
   src = fetchFromGitLab {
     owner = "arcmenu";

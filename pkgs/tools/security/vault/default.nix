@@ -1,4 +1,4 @@
-{ stdenv, lib, fetchFromGitHub, buildGoModule, installShellFiles, nixosTests
+{ stdenv, lib, fetchFromGitHub, buildGoPackage, installShellFiles, nixosTests
 , makeWrapper
 , gawk
 , glibc
@@ -6,13 +6,13 @@
 
 buildGoModule rec {
   pname = "vault";
-  version = "1.8.2";
+  version = "1.7.4";
 
   src = fetchFromGitHub {
     owner = "hashicorp";
     repo = "vault";
     rev = "v${version}";
-    sha256 = "sha256-SFzThZX9oYBM7OGjlvWq1by1mUOA4qc89TMEvCZU9I0=";
+    sha256 = "sha256-SODweNtIwjme00/cm9YQG7HDRaRf9bGrOV77txd0iuw=";
   };
 
   vendorSha256 = "sha256-Fhj1qWv4NN5oHxS5xZt2BnLBPTTcxKq47Q1kd+60xY4=";

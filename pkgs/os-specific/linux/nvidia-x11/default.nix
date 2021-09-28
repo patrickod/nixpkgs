@@ -19,18 +19,18 @@ rec {
   # Policy: use the highest stable version as the default (on our master).
   stable = if stdenv.hostPlatform.system == "x86_64-linux"
     then generic {
-      version = "470.74";
-      sha256_64bit = "sha256:0snzrb78f283rl92r5cqnr7bdk3yfkqpjac80sqskwi9wgg17r9k";
-      settingsSha256 = "sha256:0hd9973l0zd8a0ia1dysfrk30jqxff1rr07b79ggvqd1xnvv0iqn";
-      persistencedSha256 = "sha256:0i8wfhz53hdnabdcx9awki3nk6xa6dadzn91iswhmfm4jj6964jf";
+      version = "470.63.01";
+      sha256_64bit = "sha256:057dsc0j3136r5gc08id3rwz9c0x7i01xkcwfk77vqic9b6486kg";
+      settingsSha256 = "sha256:0lizp4hn49yvca2yd76yh3awld98pkaa35a067lpcld35vb5brgv";
+      persistencedSha256 = "sha256:1f3gdpa23ipjy2xwf7qnxmw7w8xxhqy25rmcz34xkngjf4fn4pbs";
     }
     else legacy_390;
 
   beta = generic {
-    version = "470.42.01";
-    sha256_64bit = "04w9nmi3vyww07pmgbd2r1x37s5p6xiy4qg9s06a1kjwzpm59xfd";
-    settingsSha256 = "Ohbkm7j0/V0kzcxfsHujBkrdnaefneoLutf2Rju2hIQ=";
-    persistencedSha256 = "1gfj4ffkidbhgjzdi6sv2sngdcb27w7b0rvfnj129rs36mcxy02j";
+    version = "465.31";
+    sha256_64bit = "YAjQAckzWGMEnDOOe6arlkBvT3rzFCeqjBjG0ncnLNo=";
+    settingsSha256 = "33zHXxfG/t6REbHqhYjzBhtuus7jP34r2wK90sBT9vE=";
+    persistencedSha256 = "1r/QqjOxg6836mQ46hNsPscKliNAtpN9xW6M++02woY=";
   };
 
   # Vulkan developer beta driver

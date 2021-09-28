@@ -24,6 +24,19 @@ buildGoModule rec {
     makeFlagsArray+=(BUILD_TAGS="${BUILDTAGS}")
   '';
 
+  buildFlagsArray = ''
+    -ldflags=
+      -s -w
+      -X main.Version=v${version}
+      -X main.DefaultBuildkitdImage=earthly/buildkitd:v${version}
+      -extldflags -static
+  '';
+
+  BUILDTAGS = "dfrunmount dfrunsecurity dfsecrets dfssh dfrunnetwork";
+  preBuild = ''
+    makeFlagsArray+=(BUILD_TAGS="${BUILDTAGS}")
+  '';
+
   postInstall = ''
     mv $out/bin/debugger $out/bin/earthly-debugger
     mv $out/bin/shellrepeater $out/bin/earthly-shellrepeater

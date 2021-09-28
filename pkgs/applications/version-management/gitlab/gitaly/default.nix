@@ -41,9 +41,11 @@ buildGoModule {
     inherit rubyEnv;
   };
 
-  ldflags = "-X ${gitaly_package}/internal/version.version=${version} -X ${gitaly_package}/internal/version.moduleVersion=${version}";
+  buildFlagsArray = [
+    "-ldflags= -X ${gitaly_package}/internal/version.version=${version} -X ${gitaly_package}/internal/version.moduleVersion=${version}"
+  ];
 
-  tags = [ "static,system_libgit2" ];
+  buildFlags = [ "-tags=static,system_libgit2" ];
   nativeBuildInputs = [ pkg-config ];
   buildInputs = [ rubyEnv.wrappedRuby libgit2 openssl zlib pcre http-parser ];
   doCheck = false;

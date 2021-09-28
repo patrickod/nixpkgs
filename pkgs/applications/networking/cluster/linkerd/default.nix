@@ -16,20 +16,15 @@ let generic = { channel, version, sha256, vendorSha256 }:
     runVend = true;
 
     preBuild = ''
+      buildFlagsArray+=(
+        "-tags=prod"
+        "-ldflags=-s -w -X github.com/linkerd/linkerd2/pkg/version.Version=${src.rev}"
+      )
       env GOFLAGS="" go generate ./pkg/charts/static
       env GOFLAGS="" go generate ./jaeger/static
       env GOFLAGS="" go generate ./multicluster/static
       env GOFLAGS="" go generate ./viz/static
     '';
-
-    tags = [
-      "prod"
-    ];
-
-    ldflags = [
-      "-s" "-w"
-      "-X github.com/linkerd/linkerd2/pkg/version.Version=${src.rev}"
-    ];
 
     nativeBuildInputs = [ installShellFiles ];
 
@@ -64,8 +59,8 @@ in
     };
     edge = generic {
       channel = "edge";
-      version = "21.9.3";
-      sha256 = "0swqx4myvr24visj39icg8g90kj325pvf22bq447rnm0whq3cnyz";
-      vendorSha256 = "sha256-fMtAR66TwMNR/HCVQ9Jg3sJ0XBx2jUKDG7/ts0lEZM4=";
+      version = "21.6.2";
+      sha256 = "sha256-kgdKH+cIYRg5A3+wrJJ7jcY6Xl206EwBYa37PT3xn1k";
+      vendorSha256 = "sha256-QVLg1ZRsNQPM4lERVHpZLbd+I32JZ1pbGNSGIVTbseg=";
     };
   }

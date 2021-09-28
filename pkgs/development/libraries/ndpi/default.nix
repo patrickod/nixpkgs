@@ -20,6 +20,10 @@ stdenv.mkDerivation rec {
     sha256 = "0snzvlracc6s7r2pgdn0jqcc7nxjxzcivsa579h90g5ibhhplv5x";
   };
 
+  patches = [
+    ./3.4-CVE-2021-36082.patch
+  ];
+
   configureScript = "./autogen.sh";
 
   nativeBuildInputs = [ which autoconf automake libtool pkg-config ];

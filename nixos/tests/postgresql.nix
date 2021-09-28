@@ -74,32 +74,9 @@ let
       with subtest("Backup service works"):
           machine.succeed(
               "systemctl start ${backupService}.service",
-              "zcat ${backupFileBase}.sql.gz | grep '<test>ok</test>'",
+              "zcat /var/backup/postgresql/${backupName}.sql.gz | grep '<test>ok</test>'",
               "ls -hal /var/backup/postgresql/ >/dev/console",
-              "stat -c '%a' ${backupFileBase}.sql.gz | grep 600",
-          )
-      with subtest("Backup service removes prev files"):
-          machine.succeed(
-              # Create dummy prev files.
-              "touch ${backupFileBase}.prev.sql{,.gz,.zstd}",
-              "chown postgres:postgres ${backupFileBase}.prev.sql{,.gz,.zstd}",
-
-              # Run backup.
-              "systemctl start ${backupService}.service",
-              "ls -hal /var/backup/postgresql/ >/dev/console",
-
-              # Since nothing has changed in the database, the cur and prev files
-              # should match.
-              "zcat ${backupFileBase}.sql.gz | grep '<test>ok</test>'",
-              "cmp ${backupFileBase}.sql.gz ${backupFileBase}.prev.sql.gz",
-
-              # The prev files with unused suffix should be removed.
-              "[ ! -f '${backupFileBase}.prev.sql' ]",
-              "[ ! -f '${backupFileBase}.prev.sql.zstd' ]",
-
-              # Both cur and prev file should only be accessible by the postgres user.
-              "stat -c '%a' ${backupFileBase}.sql.gz | grep 600",
-              "stat -c '%a' '${backupFileBase}.prev.sql.gz' | grep 600",
+              "stat -c '%a' /var/backup/postgresql/${backupName}.sql.gz | grep 600",
           )
       with subtest("Backup service fails gracefully"):
           # Sabotage the backup process
@@ -109,8 +86,8 @@ let
           )
           machine.succeed(
               "ls -hal /var/backup/postgresql/ >/dev/console",
-              "zcat ${backupFileBase}.prev.sql.gz | grep '<test>ok</test>'",
-              "stat ${backupFileBase}.in-progress.sql.gz",
+              "zcat /var/backup/postgresql/${backupName}.prev.sql.gz | grep '<test>ok</test>'",
+              "stat /var/backup/postgresql/${backupName}.in-progress.sql.gz",
           )
           # In a previous version, the second run would overwrite prev.sql.gz,
           # so we test a second run as well.
@@ -118,8 +95,8 @@ let
               "systemctl start ${backupService}.service",
           )
           machine.succeed(
-              "stat ${backupFileBase}.in-progress.sql.gz",
-              "zcat ${backupFileBase}.prev.sql.gz | grep '<test>ok</test>'",
+              "stat /var/backup/postgresql/${backupName}.in-progress.sql.gz",
+              "zcat /var/backup/postgresql/${backupName}.prev.sql.gz | grep '<test>ok</test>'",
           )
 
 

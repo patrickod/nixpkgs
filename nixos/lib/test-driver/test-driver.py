@@ -466,10 +466,9 @@ class Machine:
         Should only be used during test development, not in the production test."""
         self.connect()
         self.log("Terminal is ready (there is no prompt):")
-        subprocess.run(
-            ["socat", "READLINE", f"FD:{self.shell.fileno()}"],
-            pass_fds=[self.shell.fileno()],
-        )
+        telnet = telnetlib.Telnet()
+        telnet.sock = self.shell  # type: ignore
+        telnet.interact()
 
     def succeed(self, *commands: str) -> str:
         """Execute each command and check that it succeeds."""

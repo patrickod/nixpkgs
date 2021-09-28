@@ -12,6 +12,19 @@
 }:
 
 let
+  version = "3.66";
+
+  underscoreVersion = builtins.replaceStrings ["."] ["_"] version;
+in
+
+stdenv.mkDerivation {
+  name = "nss-cacert-${version}";
+
+  src = fetchurl {
+    url = "mirror://mozilla/security/nss/releases/NSS_${underscoreVersion}_RTM/src/nss-${version}.tar.gz";
+    sha256 = "1jfdnh5l4k57r2vb07s06hqi7m2qzk0d9x25lsdsrw3cflx9x9w9";
+  };
+
   certdata2pem = fetchurl {
     name = "certdata2pem.py";
     urls = [

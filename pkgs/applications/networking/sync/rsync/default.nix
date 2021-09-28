@@ -1,21 +1,9 @@
-{ lib
-, stdenv
-, fetchurl
-, fetchpatch
-, perl
-, libiconv
-, zlib
-, popt
-, enableACLs ? lib.meta.availableOn stdenv.hostPlatform acl
-, acl
-, enableLZ4 ? true
-, lz4
-, enableOpenSSL ? true
-, openssl
-, enableXXHash ? true
-, xxHash
-, enableZstd ? true
-, zstd
+{ lib, stdenv, fetchurl, fetchpatch, perl, libiconv, zlib, popt
+, enableACLs ? !(stdenv.isDarwin || stdenv.isSunOS || stdenv.isFreeBSD), acl ? null
+, enableLZ4 ? true, lz4 ? null
+, enableOpenSSL ? true, openssl ? null
+, enableXXHash ? true, xxHash ? null
+, enableZstd ? true, zstd ? null
 , enableCopyDevicesPatch ? false
 , nixosTests
 }:
@@ -31,7 +19,7 @@ stdenv.mkDerivation rec {
 
   patchesSrc = base.upstreamPatchTarball;
 
-  srcs = [ mainSrc ] ++ lib.optional enableCopyDevicesPatch patchesSrc;
+  srcs = [mainSrc] ++ lib.optional enableCopyDevicesPatch patchesSrc;
   patches = lib.optional enableCopyDevicesPatch "./patches/copy-devices.diff"
     ++ base.extraPatches;
 

@@ -25,11 +25,15 @@ stdenv.mkDerivation rec {
     # This patch adds an option to pad filesystems (increasing size) in
     # exchange for better chunking / binary diff calculation.
     ./4k-align.patch
-    # Otherwise sizes of some files may break in our ISO; see
-    # https://github.com/NixOS/nixpkgs/issues/132286
+    # Add -no-hardlinks option. This is a rebased version of
+    # c37bb4da4a5fa8c1cf114237ba364692dd522262, can be removed
+    # when upgrading to the next version after 4.4
+    ./0001-Mksquashfs-add-no-hardlinks-option.patch
     (fetchpatch {
-      url = "https://github.com/plougher/squashfs-tools/commit/19b161c1cd3e31f7a396ea92dea4390ad43f27b9.diff";
-      sha256 = "15ng8m2my3a6a9hnfx474bip2vwdh08hzs2k0l5gwd36jv2z1h3f";
+      name = "CVE-2021-40153.patch";
+      url = "https://github.com/plougher/squashfs-tools/commit/79b5a555058eef4e1e7ff220c344d39f8cd09646.patch";
+      excludes = [ "squashfs-tools/unsquashfs.c" ];
+      sha256 = "1sqc076a2dp8w4pfpdmak0xy4ic364ln2ayngcbp5mp3k3jl3rlr";
     })
   ] ++ lib.optional stdenv.isDarwin ./darwin.patch;
 

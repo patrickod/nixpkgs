@@ -24,5 +24,8 @@ in mkRambox rec {
     maintainers = with maintainers; [ ];
     platforms = ["i686-linux" "x86_64-linux"];
     hydraPlatforms = [];
+    knownVulnerabilities = [
+      "Electron 7.2.4 is EOL and contains at least the following vulnerabilities: CVE-2020-6458, CVE-2020-6460 and more (https://www.electronjs.org/releases/stable?version=7). Consider using an alternative such as `ferdi'."
+    ];
   };
 }

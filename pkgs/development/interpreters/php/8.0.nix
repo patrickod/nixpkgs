@@ -1,7 +1,9 @@
 { callPackage, lib, stdenv, ... }@_args:
 
 let
-  base = callPackage ./generic.nix (_args // {
+  generic = (import ./generic.nix) _args;
+
+  base = callPackage generic (_args // {
     version = "8.0.10";
     sha256 = "sha256-yUVHJxQQkAhFsITsK8s0Zq82PuypLLJL1hHcvcJvFYc=";
   });
