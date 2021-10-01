@@ -48,6 +48,7 @@ let
       lxml
       pillow
       scour
+      urllib3
     ]);
 in
 stdenv.mkDerivation rec {
