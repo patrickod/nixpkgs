@@ -49,6 +49,7 @@ let
       pillow
       scour
       urllib3
+      requests
     ]);
 in
 stdenv.mkDerivation rec {
