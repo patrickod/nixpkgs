@@ -50,6 +50,7 @@ let
       scour
       urllib3
       requests
+      appdirs
     ]);
 in
 stdenv.mkDerivation rec {
