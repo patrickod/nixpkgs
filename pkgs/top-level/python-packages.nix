@@ -403,6 +403,8 @@ in {
 
   airly = callPackage ../development/python-modules/airly { };
 
+  airthings = callPackage ../development/python-modules/airthings { };
+
   ajpy = callPackage ../development/python-modules/ajpy { };
 
   ajsonrpc = callPackage ../development/python-modules/ajsonrpc { };
@@ -1956,6 +1958,8 @@ in {
 
   demjson = callPackage ../development/python-modules/demjson { };
 
+  demjson3 = callPackage ../development/python-modules/demjson3 { };
+
   dendropy = callPackage ../development/python-modules/dendropy { };
 
   denonavr = callPackage ../development/python-modules/denonavr { };
@@ -3281,6 +3285,8 @@ in {
     gst-plugins-base = pkgs.gst_all_1.gst-plugins-base;
   };
 
+  gtfs-realtime-bindings = callPackage ../development/python-modules/gtfs-realtime-bindings { };
+
   gtimelog = callPackage ../development/python-modules/gtimelog { };
 
   gtts = callPackage ../development/python-modules/gtts { };
@@ -3766,6 +3772,8 @@ in {
   ismartgate = callPackage ../development/python-modules/ismartgate { };
 
   iso-639 = callPackage ../development/python-modules/iso-639 { };
+
+  iso4217 = callPackage ../development/python-modules/iso4217 { };
 
   iso8601 = callPackage ../development/python-modules/iso8601 { };
 
@@ -5369,9 +5377,11 @@ in {
 
   paste = callPackage ../development/python-modules/paste { };
 
-  PasteDeploy = callPackage ../development/python-modules/pastedeploy { };
+  pastedeploy = callPackage ../development/python-modules/pastedeploy { };
 
   pastel = callPackage ../development/python-modules/pastel { };
+
+  pastescript = callPackage ../development/python-modules/pastescript { };
 
   patator = callPackage ../development/python-modules/patator { };
 
@@ -5402,6 +5412,8 @@ in {
   patool = callPackage ../development/python-modules/patool { };
 
   patsy = callPackage ../development/python-modules/patsy { };
+
+  patrowl4py = callPackage ../development/python-modules/patrowl4py { };
 
   paver = callPackage ../development/python-modules/paver { };
 
@@ -6192,11 +6204,15 @@ in {
 
   pyechonest = callPackage ../development/python-modules/pyechonest { };
 
+  pyeclib = callPackage ../development/python-modules/pyeclib { };
+
   pyeconet = callPackage ../development/python-modules/pyeconet { };
 
   pyedimax = callPackage ../development/python-modules/pyedimax { };
 
   pyee = callPackage ../development/python-modules/pyee { };
+
+  pyefergy = callPackage ../development/python-modules/pyefergy { };
 
   pyeight = callPackage ../development/python-modules/pyeight { };
 
@@ -7569,6 +7585,10 @@ in {
 
   pytrafikverket = callPackage ../development/python-modules/pytrafikverket { };
 
+  pytransportnsw = callPackage ../development/python-modules/pytransportnsw { };
+
+  pytransportnswv2 = callPackage ../development/python-modules/pytransportnswv2 { };
+
   pytrends = callPackage ../development/python-modules/pytrends { };
 
   pytricia = callPackage ../development/python-modules/pytricia { };
@@ -8091,6 +8111,8 @@ in {
   rx = callPackage ../development/python-modules/rx { };
 
   rxv = callPackage ../development/python-modules/rxv { };
+
+  rzpipe = callPackage ../development/python-modules/rzpipe { };
 
   s2clientprotocol = callPackage ../development/python-modules/s2clientprotocol { };
 
@@ -8816,6 +8838,8 @@ in {
   swagger-spec-validator = callPackage ../development/python-modules/swagger-spec-validator { };
 
   swagger-ui-bundle = callPackage ../development/python-modules/swagger-ui-bundle { };
+
+  swift = callPackage ../development/python-modules/swift { };
 
   swisshydrodata = callPackage ../development/python-modules/swisshydrodata { };
 
