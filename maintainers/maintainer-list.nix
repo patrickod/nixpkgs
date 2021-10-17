@@ -440,6 +440,12 @@
     githubId = 173595;
     name = "Caleb Maclennan";
   };
+  ALEX11BR = {
+    email = "alexioanpopa11@gmail.com";
+    github = "ALEX11BR";
+    githubId = 49609151;
+    name = "Popa Ioan Alexandru";
+  };
   alexarice = {
     email = "alexrice999@hotmail.co.uk";
     github = "alexarice";
@@ -895,6 +901,12 @@
     github = "ariutta";
     githubId = 1296771;
     name = "Anders Riutta";
+  };
+  arkivm = {
+    email = "vikram186@gmail.com";
+    github = "arkivm";
+    githubId = 1118815;
+    name = "Vikram Narayanan";
   };
   armijnhemel = {
     email = "armijn@tjaldur.nl";
@@ -1908,6 +1920,12 @@
   chattered = {
     email = "me@philscotted.com";
     name = "Phil Scott";
+  };
+  chekoopa = {
+    email = "chekoopa@mail.ru";
+    github = "chekoopa";
+    githubId = 1689801;
+    name = "Mikhail Chekan";
   };
   ChengCat = {
     email = "yu@cheng.cat";
@@ -5144,6 +5162,12 @@
     githubId = 117874;
     name = "Jeroen de Haas";
   };
+  jdreaver = {
+    email = "johndreaver@gmail.com";
+    github = "jdreaver";
+    githubId = 1253071;
+    name = "David Reaver";
+  };
   jduan = {
     name = "Jingjing Duan";
     email = "duanjingjing@gmail.com";
@@ -5442,6 +5466,12 @@
     github = "johnramsden";
     githubId = 8735102;
     name = "John Ramsden";
+  };
+  johnrichardrinehart = {
+    email = "johnrichardrinehart@gmail.com";
+    github = "johnrichardrinehart";
+    githubId = 6321578;
+    name = "John Rinehart";
   };
   johntitor = {
     email = "huyuumi.dev@gmail.com";
@@ -6487,6 +6517,12 @@
     github = "linquize";
     githubId = 791115;
     name = "Linquize";
+  };
+  linsui = {
+    email = "linsui555@gmail.com";
+    github = "linsui";
+    githubId = 36977733;
+    name = "linsui";
   };
   linus = {
     email = "linusarver@gmail.com";
@@ -10127,6 +10163,12 @@
     github = "seqizz";
     githubId = 307899;
     name = "Gurkan Gur";
+  };
+  sersorrel = {
+    email = "ash@sorrel.sh";
+    github = "sersorrel";
+    githubId = 9433472;
+    name = "ash";
   };
   servalcatty = {
     email = "servalcat@pm.me";
