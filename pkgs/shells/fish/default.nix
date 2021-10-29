@@ -211,7 +211,7 @@ let
       gettext
     ] ++ lib.optional (!stdenv.isDarwin) man-db;
 
-    doCheck = false;
+    doCheck = true;
 
     checkInputs = [
       coreutils
