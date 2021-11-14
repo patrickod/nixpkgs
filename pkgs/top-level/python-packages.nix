@@ -2968,6 +2968,8 @@ in {
     pythonPackages = self;
   });
 
+  gaphas = callPackage ../development/python-modules/gaphas { };
+
   garminconnect-aio = callPackage ../development/python-modules/garminconnect-aio { };
 
   garminconnect-ha = callPackage ../development/python-modules/garminconnect-ha { };
@@ -3005,6 +3007,8 @@ in {
   gemfileparser = callPackage ../development/python-modules/gemfileparser { };
 
   genanki = callPackage ../development/python-modules/genanki { };
+
+  generic = callPackage ../development/python-modules/generic { };
 
   genome-collector = callPackage ../development/python-modules/genome-collector { };
 
@@ -4581,6 +4585,10 @@ in {
 
   manhole = callPackage ../development/python-modules/manhole { };
 
+  manimpango = callPackage ../development/python-modules/manimpango {
+    inherit (pkgs.darwin.apple_sdk.frameworks) AppKit;
+  };
+
   manifestparser = callPackage ../development/python-modules/marionette-harness/manifestparser.nix { };
 
   manuel = callPackage ../development/python-modules/manuel { };
@@ -4743,6 +4751,8 @@ in {
   milc = callPackage ../development/python-modules/milc { };
 
   milksnake = callPackage ../development/python-modules/milksnake { };
+
+  mill-local = callPackage ../development/python-modules/mill-local { };
 
   millheater = callPackage ../development/python-modules/millheater { };
 
@@ -5421,6 +5431,8 @@ in {
   pamela = callPackage ../development/python-modules/pamela { };
 
   pamqp = callPackage ../development/python-modules/pamqp { };
+
+  panacotta = callPackage ../development/python-modules/panacotta { };
 
   pandas = callPackage ../development/python-modules/pandas { };
 
@@ -6143,6 +6155,8 @@ in {
 
   pyaxmlparser = callPackage ../development/python-modules/pyaxmlparser { };
 
+  pybalboa = callPackage ../development/python-modules/pybalboa { };
+
   pybase64 = callPackage ../development/python-modules/pybase64 { };
 
   pybids = callPackage ../development/python-modules/pybids { };
@@ -6561,6 +6575,8 @@ in {
   pylast = callPackage ../development/python-modules/pylast { };
 
   pylatexenc = callPackage ../development/python-modules/pylatexenc { };
+
+  pylaunches = callPackage ../development/python-modules/pylaunches { };
 
   PyLD = callPackage ../development/python-modules/PyLD { };
 
@@ -7718,6 +7734,8 @@ in {
     cudaSupport = false;
   };
 
+  pytraccar = callPackage ../development/python-modules/pytraccar { };
+
   pytradfri = callPackage ../development/python-modules/pytradfri { };
 
   pytrafikverket = callPackage ../development/python-modules/pytrafikverket { };
@@ -7766,6 +7784,8 @@ in {
   pyupdate = callPackage ../development/python-modules/pyupdate { };
 
   pyupgrade = callPackage ../development/python-modules/pyupgrade { };
+
+  pyuptimerobot = callPackage ../development/python-modules/pyuptimerobot { };
 
   pyusb = callPackage ../development/python-modules/pyusb {
     inherit (pkgs) libusb1;
@@ -8532,7 +8552,7 @@ in {
 
   simplekml = callPackage ../development/python-modules/simplekml { };
 
-  simple-di = callPackage ../development/python-modules/simple_di { };
+  simple-di = callPackage ../development/python-modules/simple-di { };
 
   simple-rest-client = callPackage ../development/python-modules/simple-rest-client { };
 

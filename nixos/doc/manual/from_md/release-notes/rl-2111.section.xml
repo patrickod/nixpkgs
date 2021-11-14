@@ -479,6 +479,16 @@
           RandomX benchmark.
         </para>
       </listitem>
+      <listitem>
+        <para>
+          Auto nice daemons
+          <link xlink:href="https://github.com/Nefelim4ag/Ananicy">ananicy</link>
+          and
+          <link xlink:href="https://gitlab.com/ananicy-cpp/ananicy-cpp/">ananicy-cpp</link>.
+          Available as
+          <link linkend="opt-services.ananicy.enable">services.ananicy</link>.
+        </para>
+      </listitem>
     </itemizedlist>
   </section>
   <section xml:id="sec-release-21.11-incompatibilities">
@@ -614,7 +624,7 @@ Superuser created successfully.
       <listitem>
         <para>
           The <literal>staticjinja</literal> package has been upgraded
-          from 1.0.4 to 4.1.0
+          from 1.0.4 to 4.1.1
         </para>
       </listitem>
       <listitem>
