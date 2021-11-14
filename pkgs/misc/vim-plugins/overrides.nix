@@ -30,6 +30,7 @@
 , nodePackages
 , skim
 , sqlite
+, statix
 , stylish-haskell
 , tabnine
 , vim
@@ -175,6 +176,10 @@ self: super: {
       export PY3=ON
       ./install.sh
     '';
+  });
+
+  crates-nvim = super.crates-nvim.overrideAttrs (old: {
+    dependencies = with self; [ plenary-nvim ];
   });
 
   ctrlp-cmatcher = super.ctrlp-cmatcher.overrideAttrs (old: {
@@ -372,6 +377,10 @@ self: super: {
       '';
     };
 
+  lean-nvim = super.lean-nvim.overrideAttrs (old: {
+    dependencies = with self; [ nvim-lspconfig plenary-nvim ];
+  });
+
   lens-vim = super.lens-vim.overrideAttrs (old: {
     # remove duplicate g:lens#animate in doc/lens.txt
     # https://github.com/NixOS/nixpkgs/pull/105810#issuecomment-740007985
@@ -526,6 +535,21 @@ self: super: {
         --replace "path = vim.g.sqlite_clib_path" "path = vim.g.sqlite_clib_path or ${lib.escapeShellArg libsqlite}"
     '';
   });
+
+  statix = buildVimPluginFrom2Nix rec {
+    inherit (statix) pname src meta;
+    version = "0.1.0";
+    dependencies = with self; [ statix ];
+    postPatch = ''
+      # check that version is up to date
+      grep 'pname = "statix-vim"' -A 1 flake.nix \
+        | grep -F 'version = "${version}"'
+
+      cd vim-plugin
+      substituteInPlace ftplugin/nix.vim --replace statix ${statix}/bin/statix
+      substituteInPlace plugin/statix.vim --replace statix ${statix}/bin/statix
+    '';
+  };
 
   sved =
     let

@@ -3518,6 +3518,26 @@ let
     };
   };
 
+  CompressRawLzma = buildPerlPackage {
+    pname = "Compress-Raw-Lzma";
+    version = "2.101";
+    src = fetchurl {
+      url = "mirror://cpan/authors/id/P/PM/PMQS/Compress-Raw-Lzma-2.101.tar.gz";
+      sha256 = "bb267fd31981eda11f444038f8a0fca4b94a51ae61b2db71246abf6a4d322a36";
+    };
+    preConfigure = ''
+      cat > config.in <<EOF
+        INCLUDE      = ${pkgs.xz.dev}/include
+        LIB          = ${pkgs.xz.out}/lib
+      EOF
+    '';
+    meta = {
+      homepage = "https://github.com/pmqs/Compress-Raw-Lzma";
+      description = "Low-Level Interface to lzma compression library";
+      license = with lib.licenses; [ artistic1 gpl1Plus ];
+    };
+  };
+
   CompressRawZlib = buildPerlPackage {
     pname = "Compress-Raw-Zlib";
     version = "2.096";
@@ -5781,6 +5801,20 @@ let
     meta = {
       description = "Localization support for DateTime.pm";
       license = with lib.licenses; [ artistic1 gpl1Plus ];
+    };
+  };
+
+  DateTimeFormatRFC3339 = buildPerlPackage rec {
+    pname = "DateTime-Format-RFC3339";
+    version = "1.2.0";
+    src = fetchurl {
+      url = "mirror://cpan/authors/id/I/IK/IKEGAMI/DateTime-Format-RFC3339-v${version}.tar.gz";
+      sha256 = "1xqdbbiksy6kapc3mv3ayjahmxxlzmb5x7rad4by1iii9hif2vhk";
+    };
+    propagatedBuildInputs = [ DateTime ];
+    meta = {
+      description = "Parse and format RFC3339 datetime strings";
+      license = lib.licenses.cc0;
     };
   };
 
@@ -9688,10 +9722,10 @@ let
 
   Gtk3ImageView = buildPerlPackage rec {
     pname = "Gtk3-ImageView";
-    version = "9";
+    version = "10";
     src = fetchurl {
       url = "mirror://cpan/authors/id/A/AS/ASOKOLOV/Gtk3-ImageView-${version}.tar.gz";
-      sha256 = "sha256-0dxe0p1UQglq+xok7g4l2clJ9WqOHxCeAzWD65E0H9w=";
+      sha256 = "sha256-vHfnBgaeZPK7hBgZcP1KjepG+IvsDE3XwrH9U4xoN+Y=";
     };
     buildInputs = [ pkgs.gtk3 ];
     propagatedBuildInputs = [ Readonly Gtk3 ];
@@ -20590,12 +20624,12 @@ let
 
   SysVirt = buildPerlModule rec {
     pname = "Sys-Virt";
-    version = "7.8.0";
+    version = "7.9.0";
     src = fetchFromGitLab {
       owner = "libvirt";
       repo = "libvirt-perl";
-      rev = "v7.8.0";
-      sha256 = "sha256-D/sVIKMWy3WnDM97+ofG3ClgGhJJuK2a6NJLC03S4LI=";
+      rev = "v7.9.0";
+      sha256 = "sha256-QxY6TRVQWrN689CD76CQZeyXsDVWxk24N1v67DCvmDo=";
     };
     nativeBuildInputs = [ pkgs.pkg-config ];
     buildInputs = [ pkgs.libvirt CPANChanges TestPod TestPodCoverage XMLXPath ];
@@ -24666,7 +24700,8 @@ let
       sha256 = "068nhmld1031grgi4qm7k5niwxlbn6qd08zf6g1gj4c7qfas62q1";
     };
     SKIP_SAX_INSTALL = 1;
-    buildInputs = [ AlienBuild AlienLibxml2 ];
+    buildInputs = [ AlienBuild AlienLibxml2 ]
+      ++ lib.optional stdenv.isDarwin pkgs.libiconv;
     propagatedBuildInputs = [ XMLSAX ];
   };
 

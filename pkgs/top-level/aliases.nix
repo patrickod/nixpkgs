@@ -164,6 +164,7 @@ mapAliases ({
   cupsBjnp = cups-bjnp; # added 2016-01-02
   cups_filters = cups-filters; # added 2016-08
   cups-googlecloudprint = throw "Google Cloudprint is officially discontinued since Jan 2021, more info https://support.google.com/chrome/a/answer/9633006";
+  cloud-print-connector = throw "Google Cloudprint is officially discontinued since Jan 2021, more info https://support.google.com/chrome/a/answer/9633006";
   curaLulzbot = throw "curaLulzbot has been removed due to insufficient upstream support for a modern dependency chain"; # added 2021-10-23
   cquery = throw "cquery has been removed because it is abandoned by upstream. Consider switching to clangd or ccls instead."; # added 2020-06-15
   cv = progress; # added 2015-09-06
@@ -212,6 +213,7 @@ mapAliases ({
   ec2_ami_tools = ec2-ami-tools; # added 2021-10-08
   ec2_api_tools = ec2-api-tools; # added 2021-10-08
   elasticmq = throw "elasticmq has been removed in favour of elasticmq-server-bin"; # added 2021-01-17
+  elasticsearch7-oss = throw "elasticsearch7-oss has been removed, as the distribution is no longer provided by upstream. https://github.com/NixOS/nixpkgs/pull/114456"; # added 2021-06-09
   emacsPackagesGen = emacsPackagesFor; # added 2018-08-18
   emacsPackagesNgGen = emacsPackagesFor; # added 2018-08-18
   emacsPackagesNgFor = emacsPackagesFor; # added 2019-08-07
@@ -265,6 +267,7 @@ mapAliases ({
     and has only been used for old fontconfig caches.
   '';
   foomatic_filters = foomatic-filters;  # 2016-08
+  fscryptctl-experimental = throw "The package fscryptctl-experimental has been removed. Please switch to fscryptctl."; # 2021-11-07
   fsharp41 = throw "fsharp41 has been removed, please use dotnet-sdk_5 or later";
   fuse_exfat = exfat;                   # 2015-09-11
   fuseki = apache-jena-fuseki; # added 2018-04-25
@@ -375,6 +378,7 @@ mapAliases ({
   json_glib = json-glib; # added 2018-02-25
   kdecoration-viewer = throw "kdecoration-viewer has been removed from nixpkgs, as there is no upstream activity"; # 2020-06-16
   k9copy = throw "k9copy has been removed from nixpkgs, as there is no upstream activity"; # 2020-11-06
+  kibana7-oss = throw "kibana7-oss has been removed, as the distribution is no longer provided by upstream. https://github.com/NixOS/nixpkgs/pull/114456"; # added 2021-06-09
   kodiGBM = kodi-gbm;
   kodiPlain = kodi;
   kodiPlainWayland = kodi-wayland;
@@ -428,6 +432,7 @@ mapAliases ({
   libintlOrEmpty = lib.optional (!stdenv.isLinux || stdenv.hostPlatform.libc != "glibc") gettext; # added 2018-03-14
   libjpeg_drop = libjpeg_original; # added 2020-06-05
   libjson_rpc_cpp = libjson-rpc-cpp; # added 2017-02-28
+  libkml = throw "libkml has been removed from nixpkgs, as it's abandoned and no package needed it."; # added 2021-11-09
   liblapackWithoutAtlas = lapack-reference; # added 2018-11-05
   liblastfm = libsForQt5.liblastfm; # added 2020-06-14
   liblrdf = lrdf; # added 2018-04-25
@@ -585,8 +590,9 @@ mapAliases ({
   nfsUtils = nfs-utils;  # added 2014-12-06
   nginxUnstable = nginxMainline; # added 2018-04-25
   nilfs_utils = nilfs-utils; # added 2018-04-25
+  nix-direnv-flakes = nix-direnv;
   nix-review = nixpkgs-review; # added 2019-12-22
-  nixFlakes = nixUnstable; # added 2021-05-21
+  nixFlakes = nixStable; # added 2021-05-21
   nmap_graphical = nmap-graphical;  # added 2017-01-19
   nmap-unfree = nmap; # added 2021-04-06
   nologin = shadow; # added 2018-04-25
@@ -967,6 +973,7 @@ mapAliases ({
   virtmanager-qt = virt-manager-qt; # added 2019-10-29
   virtinst = throw "virtinst has been removed, as it's included in virt-manager"; # added 2021-07-21
   vorbisTools = vorbis-tools; # added 2016-01-26
+  vtun = throw "vtune has been removed as it's unmaintained upstream."; # added 2021-10-29
   way-cooler = throw "way-cooler is abandoned by its author: https://way-cooler.org/blog/2020/01/09/way-cooler-post-mortem.html"; # added 2020-01-13
   webkit = webkitgtk; # added 2019-03-05
   webkitgtk24x-gtk3 = throw "webkitgtk24x-gtk3 has been removed because it's insecure. Please use webkitgtk."; # added 2019-12-05
