@@ -495,7 +495,7 @@ in {
       ACTION=="add|remove", SUBSYSTEM=="net", ENV{DEVTYPE}=="wlan", \
       RUN+="${systemctl} try-restart wpa_supplicant.service"
     '';
+    meta.maintainers = with lib.maintainers; [ globin rnhmjoj ];
   };
 
-  meta.maintainers = with lib.maintainers; [ globin rnhmjoj ];
 }
