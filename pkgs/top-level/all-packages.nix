@@ -10402,12 +10402,6 @@ with pkgs;
   };
 
   openconnect_head = callPackage ../tools/networking/openconnect {
-    inherit (darwin.apple_sdk.frameworks) PCSC;
-    head = true;
-    openssl = null;
-  };
-
-  openconnect_head = callPackage ../tools/networking/openconnect {
     head = true;
     openssl = null;
   };
