@@ -38,8 +38,8 @@ in
           # Use services.matterbridge.configPath instead.
 
           [irc]
-              [irc.libera]
-              Server="irc.libera.chat:6667"
+              [irc.freenode]
+              Server="irc.freenode.net:6667"
               Nick="matterbot"
 
           [mattermost]
@@ -55,7 +55,7 @@ in
           name="gateway1"
           enable=true
               [[gateway.inout]]
-              account="irc.libera"
+              account="irc.freenode"
               channel="#testing"
 
               [[gateway.inout]]

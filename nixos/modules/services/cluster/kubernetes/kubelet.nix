@@ -96,7 +96,7 @@ in
         description = "Kubernetes CNI configuration.";
         type = listOf attrs;
         default = [];
-        example = literalExpression ''
+        example = literalExample ''
           [{
             "cniVersion": "0.3.1",
             "name": "mynet",
@@ -337,13 +337,10 @@ in
           '';
           WorkingDirectory = top.dataDir;
         };
-        unitConfig = {
-          StartLimitIntervalSec = 0;
-        };
       };
 
       # Allways include cni plugins
-      services.kubernetes.kubelet.cni.packages = [pkgs.cni-plugins pkgs.cni-plugin-flannel];
+      services.kubernetes.kubelet.cni.packages = [pkgs.cni-plugins];
 
       boot.kernelModules = ["br_netfilter" "overlay"];
 

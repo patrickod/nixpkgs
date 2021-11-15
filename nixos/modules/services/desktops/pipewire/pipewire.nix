@@ -50,7 +50,8 @@ in {
       package = mkOption {
         type = types.package;
         default = pkgs.pipewire;
-        defaultText = literalExpression "pkgs.pipewire";
+        defaultText = "pkgs.pipewire";
+        example = literalExample "pkgs.pipewire";
         description = ''
           The pipewire derivation to use.
         '';

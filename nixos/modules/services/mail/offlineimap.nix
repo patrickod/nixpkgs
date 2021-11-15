@@ -25,14 +25,14 @@ in {
     package = mkOption {
       type = types.package;
       default = pkgs.offlineimap;
-      defaultText = literalExpression "pkgs.offlineimap";
+      defaultText = "pkgs.offlineimap";
       description = "Offlineimap derivation to use.";
     };
 
     path = mkOption {
       type = types.listOf types.path;
       default = [];
-      example = literalExpression "[ pkgs.pass pkgs.bash pkgs.notmuch ]";
+      example = literalExample "[ pkgs.pass pkgs.bash pkgs.notmuch ]";
       description = "List of derivations to put in Offlineimap's path.";
     };
 

@@ -19,7 +19,7 @@ in
       package = mkOption {
         type = types.package;
         default = pkgs.lidarr;
-        defaultText = literalExpression "pkgs.lidarr";
+        defaultText = "pkgs.lidarr";
         description = "The Lidarr package to use";
       };
 

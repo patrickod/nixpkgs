@@ -23,7 +23,7 @@ in
 
     boot.kernel.features = mkOption {
       default = {};
-      example = literalExpression "{ debug = true; }";
+      example = literalExample "{ debug = true; }";
       internal = true;
       description = ''
         This option allows to enable or disable certain kernel features.
@@ -46,8 +46,8 @@ in
       });
       # We don't want to evaluate all of linuxPackages for the manual
       # - some of it might not even evaluate correctly.
-      defaultText = literalExpression "pkgs.linuxPackages";
-      example = literalExpression "pkgs.linuxKernel.packages.linux_5_10";
+      defaultText = "pkgs.linuxPackages";
+      example = literalExample "pkgs.linuxPackages_2_6_25";
       description = ''
         This option allows you to override the Linux kernel used by
         NixOS.  Since things like external kernel module packages are
@@ -65,7 +65,7 @@ in
     boot.kernelPatches = mkOption {
       type = types.listOf types.attrs;
       default = [];
-      example = literalExpression "[ pkgs.kernelPatches.ubuntu_fan_4_4 ]";
+      example = literalExample "[ pkgs.kernelPatches.ubuntu_fan_4_4 ]";
       description = "A list of additional patches to apply to the kernel.";
     };
 
@@ -83,10 +83,7 @@ in
     };
 
     boot.kernelParams = mkOption {
-      type = types.listOf (types.strMatching ''([^"[:space:]]|"[^"]*")+'' // {
-        name = "kernelParam";
-        description = "string, with spaces inside double quotes";
-      });
+      type = types.listOf types.str;
       default = [ ];
       description = "Parameters added to the kernel command line.";
     };
@@ -116,7 +113,7 @@ in
     boot.extraModulePackages = mkOption {
       type = types.listOf types.package;
       default = [];
-      example = literalExpression "[ config.boot.kernelPackages.nvidia_x11 ]";
+      example = literalExample "[ config.boot.kernelPackages.nvidia_x11 ]";
       description = "A list of additional packages supplying kernel modules.";
     };
 
@@ -184,7 +181,7 @@ in
 
     system.requiredKernelConfig = mkOption {
       default = [];
-      example = literalExpression ''
+      example = literalExample ''
         with config.lib.kernelConfig; [
           (isYes "MODULES")
           (isEnabled "FB_CON_DECOR")

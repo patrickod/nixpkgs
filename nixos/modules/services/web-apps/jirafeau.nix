@@ -84,19 +84,18 @@ in
       type = types.submodule
         (import ../web-servers/nginx/vhost-options.nix { inherit config lib; });
       default = {};
-      example = literalExpression ''
-        {
-          serverAliases = [ "wiki.''${config.networking.domain}" ];
-        }
-      '';
+      example = {
+        serverAliases = [ "wiki.\${config.networking.domain}" ];
+      };
       description = "Extra configuration for the nginx virtual host of Jirafeau.";
     };
 
     package = mkOption {
       type = types.package;
       default = pkgs.jirafeau;
-      defaultText = literalExpression "pkgs.jirafeau";
+      defaultText = "pkgs.jirafeau";
       description = "Jirafeau package to use";
+      example = "pkgs.jirafeau";
     };
 
     poolConfig = mkOption {

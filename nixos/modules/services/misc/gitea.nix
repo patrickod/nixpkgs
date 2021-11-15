@@ -32,7 +32,7 @@ in
       package = mkOption {
         default = pkgs.gitea;
         type = types.package;
-        defaultText = literalExpression "pkgs.gitea";
+        defaultText = "pkgs.gitea";
         description = "gitea derivation to use";
       };
 
@@ -55,7 +55,7 @@ in
           description = "Root path for log files.";
         };
         level = mkOption {
-          default = "Info";
+          default = "Trace";
           type = types.enum [ "Trace" "Debug" "Info" "Warn" "Error" "Critical" ];
           description = "General log level.";
         };
@@ -82,7 +82,7 @@ in
         };
 
         port = mkOption {
-          type = types.port;
+          type = types.int;
           default = (if !usePostgresql then 3306 else pg.port);
           description = "Database host port.";
         };
@@ -122,7 +122,7 @@ in
         socket = mkOption {
           type = types.nullOr types.path;
           default = if (cfg.database.createDatabase && usePostgresql) then "/run/postgresql" else if (cfg.database.createDatabase && useMysql) then "/run/mysqld/mysqld.sock" else null;
-          defaultText = literalExpression "null";
+          defaultText = "null";
           example = "/run/mysqld/mysqld.sock";
           description = "Path to the unix socket file to use for authentication.";
         };
@@ -255,9 +255,8 @@ in
       };
 
       staticRootPath = mkOption {
-        type = types.either types.str types.path;
-        default = gitea.data;
-        defaultText = literalExpression "package.data";
+        type = types.str;
+        default = "${gitea.data}";
         example = "/var/lib/gitea/data";
         description = "Upper level of template and static files path.";
       };
@@ -288,7 +287,7 @@ in
           Gitea configuration. Refer to <link xlink:href="https://docs.gitea.io/en-us/config-cheat-sheet/"/>
           for details on supported values.
         '';
-        example = literalExpression ''
+        example = literalExample ''
           {
             "cron.sync_external_users" = {
               RUN_AT_START = true;
@@ -349,7 +348,7 @@ in
       server = mkMerge [
         {
           DOMAIN = cfg.domain;
-          STATIC_ROOT_PATH = toString cfg.staticRootPath;
+          STATIC_ROOT_PATH = cfg.staticRootPath;
           LFS_JWT_SECRET = "#lfsjwtsecret#";
           ROOT_URL = cfg.rootUrl;
         }

@@ -33,7 +33,7 @@ in
     security.wrappers = mkIf cfg.withUtempter {
       utempter = {
         source = "${pkgs.libutempter}/lib/utempter/utempter";
-        owner = "root";
+        owner = "nobody";
         group = "utmp";
         setuid = false;
         setgid = true;

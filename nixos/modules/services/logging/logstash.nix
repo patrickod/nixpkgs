@@ -53,14 +53,15 @@ in
       package = mkOption {
         type = types.package;
         default = pkgs.logstash;
-        defaultText = literalExpression "pkgs.logstash";
+        defaultText = "pkgs.logstash";
+        example = literalExample "pkgs.logstash";
         description = "Logstash package to use.";
       };
 
       plugins = mkOption {
         type = types.listOf types.path;
         default = [ ];
-        example = literalExpression "[ pkgs.logstash-contrib ]";
+        example = literalExample "[ pkgs.logstash-contrib ]";
         description = "The paths to find other logstash plugins in.";
       };
 
@@ -101,14 +102,12 @@ in
         type = types.lines;
         default = "generator { }";
         description = "Logstash input configuration.";
-        example = literalExpression ''
-          '''
-            # Read from journal
-            pipe {
-              command => "''${pkgs.systemd}/bin/journalctl -f -o json"
-              type => "syslog" codec => json {}
-            }
-          '''
+        example = ''
+          # Read from journal
+          pipe {
+            command => "''${pkgs.systemd}/bin/journalctl -f -o json"
+            type => "syslog" codec => json {}
+          }
         '';
       };
 

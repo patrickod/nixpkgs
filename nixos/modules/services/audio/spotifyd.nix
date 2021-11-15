@@ -4,15 +4,7 @@ with lib;
 
 let
   cfg = config.services.spotifyd;
-  toml = pkgs.formats.toml {};
-  warnConfig =
-    if cfg.config != ""
-    then lib.trace "Using the stringly typed .config attribute is discouraged. Use the TOML typed .settings attribute instead."
-    else id;
-  spotifydConf =
-    if cfg.settings != {}
-    then toml.generate "spotify.conf" cfg.settings
-    else warnConfig (pkgs.writeText "spotifyd.conf" cfg.config);
+  spotifydConf = pkgs.writeText "spotifyd.conf" cfg.config;
 in
 {
   options = {
@@ -23,16 +15,6 @@ in
         default = "";
         type = types.lines;
         description = ''
-          (Deprecated) Configuration for Spotifyd. For syntax and directives, see
-          <link xlink:href="https://github.com/Spotifyd/spotifyd#Configuration"/>.
-        '';
-      };
-
-      settings = mkOption {
-        default = {};
-        type = toml.type;
-        example = { global.bitrate = 320; };
-        description = ''
           Configuration for Spotifyd. For syntax and directives, see
           <link xlink:href="https://github.com/Spotifyd/spotifyd#Configuration"/>.
         '';
@@ -41,13 +23,6 @@ in
   };
 
   config = mkIf cfg.enable {
-    assertions = [
-      {
-        assertion = cfg.config == "" || cfg.settings == {};
-        message = "At most one of the .config attribute and the .settings attribute may be set";
-      }
-    ];
-
     systemd.services.spotifyd = {
       wantedBy = [ "multi-user.target" ];
       after = [ "network-online.target" "sound.target" ];

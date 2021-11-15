@@ -149,10 +149,12 @@ in
     users.users = optionalAttrs (cfg.user == "tss") {
       tss = {
         group = "tss";
-        isSystemUser = true;
+        uid = config.ids.uids.tss;
       };
     };
 
-    users.groups = optionalAttrs (cfg.group == "tss") { tss = {}; };
+    users.groups = optionalAttrs (cfg.group == "tss") {
+      tss.gid = config.ids.gids.tss;
+    };
   };
 }

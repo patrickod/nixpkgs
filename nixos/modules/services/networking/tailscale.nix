@@ -15,16 +15,10 @@ in {
       description = "The port to listen on for tunnel traffic (0=autoselect).";
     };
 
-    interfaceName = mkOption {
-      type = types.str;
-      default = "tailscale0";
-      description = ''The interface name for tunnel traffic. Use "userspace-networking" (beta) to not use TUN.'';
-    };
-
     package = mkOption {
       type = types.package;
       default = pkgs.tailscale;
-      defaultText = literalExpression "pkgs.tailscale";
+      defaultText = "pkgs.tailscale";
       description = "The package to use for tailscale";
     };
   };
@@ -34,11 +28,8 @@ in {
     systemd.packages = [ cfg.package ];
     systemd.services.tailscaled = {
       wantedBy = [ "multi-user.target" ];
-      path = [ pkgs.openresolv pkgs.procps ];
-      serviceConfig.Environment = [
-        "PORT=${toString cfg.port}"
-        ''"FLAGS=--tun ${lib.escapeShellArg cfg.interfaceName}"''
-      ];
+      path = [ pkgs.openresolv ];
+      serviceConfig.Environment = "PORT=${toString cfg.port}";
     };
   };
 }

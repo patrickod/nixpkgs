@@ -20,7 +20,6 @@ import ./make-test-python.nix ({ pkgs, ... }:
       server =
         { ... }:
         { services.samba.enable = true;
-          services.samba.openFirewall = true;
           services.samba.shares.public =
             { path = "/public";
               "read only" = true;
@@ -28,6 +27,8 @@ import ./make-test-python.nix ({ pkgs, ... }:
               "guest ok" = "yes";
               comment = "Public samba share.";
             };
+          networking.firewall.allowedTCPPorts = [ 139 445 ];
+          networking.firewall.allowedUDPPorts = [ 137 138 ];
         };
     };
 

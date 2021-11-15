@@ -45,8 +45,7 @@ in
 
       package = mkOption {
         default = pkgs.yabar-unstable;
-        defaultText = literalExpression "pkgs.yabar-unstable";
-        example = literalExpression "pkgs.yabar";
+        example = literalExample "pkgs.yabar";
         type = types.package;
 
         # `yabar-stable` segfaults under certain conditions.

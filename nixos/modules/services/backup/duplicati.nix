@@ -54,13 +54,11 @@ in
       };
     };
 
-    users.users = lib.optionalAttrs (cfg.user == "duplicati") {
-      duplicati = {
-        uid = config.ids.uids.duplicati;
-        home = "/var/lib/duplicati";
-        createHome = true;
-        group = "duplicati";
-      };
+    users.users.duplicati = lib.optionalAttrs (cfg.user == "duplicati") {
+      uid = config.ids.uids.duplicati;
+      home = "/var/lib/duplicati";
+      createHome = true;
+      group = "duplicati";
     };
     users.groups.duplicati.gid = config.ids.gids.duplicati;
 

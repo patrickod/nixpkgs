@@ -67,9 +67,7 @@ in
     users.users = optionalAttrs (cfg.user == "memcached") {
       memcached.description = "Memcached server user";
       memcached.isSystemUser = true;
-      memcached.group = "memcached";
     };
-    users.groups = optionalAttrs (cfg.user == "memcached") { memcached = {}; };
 
     environment.systemPackages = [ memcached ];
 

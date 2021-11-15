@@ -17,50 +17,6 @@ let
     '';
   });
 
-  systemActivationScript = set: onlyDry: let
-    set' = mapAttrs (_: v: if isString v then (noDepEntry v) // { supportsDryActivation = false; } else v) set;
-    withHeadlines = addAttributeName set';
-    # When building a dry activation script, this replaces all activation scripts
-    # that do not support dry mode with a comment that does nothing. Filtering these
-    # activation scripts out so they don't get generated into the dry activation script
-    # does not work because when an activation script that supports dry mode depends on
-    # an activation script that does not, the dependency cannot be resolved and the eval
-    # fails.
-    withDrySnippets = mapAttrs (a: v: if onlyDry && !v.supportsDryActivation then v // {
-      text = "#### Activation script snippet ${a} does not support dry activation.";
-    } else v) withHeadlines;
-  in
-    ''
-      #!${pkgs.runtimeShell}
-
-      systemConfig='@out@'
-
-      export PATH=/empty
-      for i in ${toString path}; do
-          PATH=$PATH:$i/bin:$i/sbin
-      done
-
-      _status=0
-      trap "_status=1 _localstatus=\$?" ERR
-
-      # Ensure a consistent umask.
-      umask 0022
-
-      ${textClosureMap id (withDrySnippets) (attrNames withDrySnippets)}
-
-    '' + optionalString (!onlyDry) ''
-      # Make this configuration the current configuration.
-      # The readlink is there to ensure that when $systemConfig = /system
-      # (which is a symlink to the store), /run/current-system is still
-      # used as a garbage collection root.
-      ln -sfn "$(readlink -f "$systemConfig")" /run/current-system
-
-      # Prevent the current configuration from being garbage-collected.
-      ln -sfn /run/current-system /nix/var/nix/gcroots/current-system
-
-      exit $_status
-    '';
-
   path = with pkgs; map getBin
     [ coreutils
       gnugrep
@@ -72,7 +28,7 @@ let
       util-linux # needed for mount and mountpoint
     ];
 
-  scriptType = withDry: with types;
+  scriptType = with types;
     let scriptOptions =
       { deps = mkOption
           { type = types.listOf types.str;
@@ -82,19 +38,6 @@ let
         text = mkOption
           { type = types.lines;
             description = "The content of the script.";
-          };
-      } // optionalAttrs withDry {
-        supportsDryActivation = mkOption
-          { type = types.bool;
-            default = false;
-            description = ''
-              Whether this activation script supports being dry-activated.
-              These activation scripts will also be executed on dry-activate
-              activations with the environment variable
-              <literal>NIXOS_ACTION</literal> being set to <literal>dry-activate
-              </literal>.  it's important that these activation scripts  don't
-              modify anything about the system when the variable is set.
-            '';
           };
       };
     in either str (submodule { options = scriptOptions; });
@@ -110,7 +53,7 @@ in
     system.activationScripts = mkOption {
       default = {};
 
-      example = literalExpression ''
+      example = literalExample ''
         { stdio.text =
           '''
             # Needed by some programs.
@@ -131,23 +74,51 @@ in
         idempotent and fast.
       '';
 
-      type = types.attrsOf (scriptType true);
-      apply = set: set // {
-        script = systemActivationScript set false;
-      };
-    };
+      type = types.attrsOf scriptType;
 
-    system.dryActivationScript = mkOption {
-      description = "The shell script that is to be run when dry-activating a system.";
-      readOnly = true;
-      internal = true;
-      default = systemActivationScript (removeAttrs config.system.activationScripts [ "script" ]) true;
+      apply = set: {
+        script =
+          ''
+            #! ${pkgs.runtimeShell}
+
+            systemConfig=@out@
+
+            export PATH=/empty
+            for i in ${toString path}; do
+                PATH=$PATH:$i/bin:$i/sbin
+            done
+
+            _status=0
+            trap "_status=1 _localstatus=\$?" ERR
+
+            # Ensure a consistent umask.
+            umask 0022
+
+            ${
+              let
+                set' = mapAttrs (n: v: if isString v then noDepEntry v else v) set;
+                withHeadlines = addAttributeName set';
+              in textClosureMap id (withHeadlines) (attrNames withHeadlines)
+            }
+
+            # Make this configuration the current configuration.
+            # The readlink is there to ensure that when $systemConfig = /system
+            # (which is a symlink to the store), /run/current-system is still
+            # used as a garbage collection root.
+            ln -sfn "$(readlink -f "$systemConfig")" /run/current-system
+
+            # Prevent the current configuration from being garbage-collected.
+            ln -sfn /run/current-system /nix/var/nix/gcroots/current-system
+
+            exit $_status
+          '';
+      };
     };
 
     system.userActivationScripts = mkOption {
       default = {};
 
-      example = literalExpression ''
+      example = literalExample ''
         { plasmaSetup = {
             text = '''
               ${pkgs.libsForQt5.kservice}/bin/kbuildsycoca5"
@@ -166,7 +137,7 @@ in
         idempotent and fast.
       '';
 
-      type = with types; attrsOf (scriptType false);
+      type = with types; attrsOf scriptType;
 
       apply = set: {
         script = ''
@@ -193,8 +164,9 @@ in
 
     environment.usrbinenv = mkOption {
       default = "${pkgs.coreutils}/bin/env";
-      defaultText = literalExpression ''"''${pkgs.coreutils}/bin/env"'';
-      example = literalExpression ''"''${pkgs.busybox}/bin/env"'';
+      example = literalExample ''
+        "''${pkgs.busybox}/bin/env"
+      '';
       type = types.nullOr types.path;
       visible = false;
       description = ''
@@ -262,7 +234,6 @@ in
         script = config.system.userActivationScripts.script;
         unitConfig.ConditionUser = "!@system";
         serviceConfig.Type = "oneshot";
-        wantedBy = [ "default.target" ];
       };
     };
   };

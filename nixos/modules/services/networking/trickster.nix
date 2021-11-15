@@ -20,7 +20,7 @@ in
       package = mkOption {
         type = types.package;
         default = pkgs.trickster;
-        defaultText = literalExpression "pkgs.trickster";
+        defaultText = "pkgs.trickster";
         description = ''
           Package that should be used for trickster.
         '';

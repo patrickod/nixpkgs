@@ -62,8 +62,8 @@ in
       default = {
         host = config.networking.hostName;
       };
-      defaultText = literalExpression "{ host = config.networking.hostName; }";
-      example = literalExpression ''
+      defaultText = "{ host = config.networking.hostName; }";
+      example = literalExample ''
         {
           host = config.networking.hostName;
           custom_label = "some_value";

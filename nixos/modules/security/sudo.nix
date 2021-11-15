@@ -45,7 +45,7 @@ in
     security.sudo.package = mkOption {
       type = types.package;
       default = pkgs.sudo;
-      defaultText = literalExpression "pkgs.sudo";
+      defaultText = "pkgs.sudo";
       description = ''
         Which package to use for `sudo`.
       '';
@@ -91,7 +91,7 @@ in
         this is the case when configuration options are merged.
       '';
       default = [];
-      example = literalExpression ''
+      example = literalExample ''
         [
           # Allow execution of any command by all users in group sudo,
           # requiring a password.

@@ -62,7 +62,7 @@ in
       };
 
       port = mkOption {
-        type = types.port;
+        type = types.int;
         default = 2947;
         description = ''
           The port where to listen for TCP connections.
@@ -88,7 +88,6 @@ in
 
     users.users.gpsd =
       { inherit uid;
-        group = "gpsd";
         description = "gpsd daemon user";
         home = "/var/empty";
       };

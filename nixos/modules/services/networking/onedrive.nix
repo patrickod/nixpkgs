@@ -35,7 +35,8 @@ in {
      package = lib.mkOption {
        type = lib.types.package;
        default = pkgs.onedrive;
-       defaultText = lib.literalExpression "pkgs.onedrive";
+       defaultText = "pkgs.onedrive";
+       example = lib.literalExample "pkgs.onedrive";
        description = ''
          OneDrive package to use.
        '';

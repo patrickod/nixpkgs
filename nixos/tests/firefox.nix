@@ -14,7 +14,7 @@ import ./make-test-python.nix ({ pkgs, firefoxPackage, ... }: {
       ];
 
       # Need some more memory to record audio.
-      virtualisation.memorySize = 500;
+      virtualisation.memorySize = "500";
 
       # Create a virtual sound device, with mixing
       # and all, for recording audio.
@@ -47,7 +47,7 @@ import ./make-test-python.nix ({ pkgs, firefoxPackage, ... }: {
 
       systemd.services.audio-recorder = {
         description = "Record NixOS test audio to /tmp/record.wav";
-        script = "${pkgs.alsa-utils}/bin/arecord -D recorder -f S16_LE -r48000 /tmp/record.wav";
+        script = "${pkgs.alsaUtils}/bin/arecord -D recorder -f S16_LE -r48000 /tmp/record.wav";
       };
 
     };
@@ -91,7 +91,7 @@ import ./make-test-python.nix ({ pkgs, firefoxPackage, ... }: {
 
       with subtest("Wait until Firefox has finished loading the Valgrind docs page"):
           machine.execute(
-              "xterm -e 'firefox file://${pkgs.valgrind.doc}/share/doc/valgrind/html/index.html' >&2 &"
+              "xterm -e 'firefox file://${pkgs.valgrind.doc}/share/doc/valgrind/html/index.html' &"
           )
           machine.wait_for_window("Valgrind")
           machine.sleep(40)
@@ -99,7 +99,7 @@ import ./make-test-python.nix ({ pkgs, firefoxPackage, ... }: {
       with subtest("Check whether Firefox can play sound"):
           with audio_recording(machine):
               machine.succeed(
-                  "firefox file://${pkgs.sound-theme-freedesktop}/share/sounds/freedesktop/stereo/phone-incoming-call.oga >&2 &"
+                  "firefox file://${pkgs.sound-theme-freedesktop}/share/sounds/freedesktop/stereo/phone-incoming-call.oga &"
               )
               wait_for_sound(machine)
           machine.copy_from_vm("/tmp/record.wav")

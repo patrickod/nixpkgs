@@ -81,7 +81,13 @@ let
     monitors = forEach xrandrHeads (h: ''
       Option "monitor-${h.config.output}" "${h.name}"
     '');
-  in concatStrings monitors;
+    # First option is indented through the space in the config but any
+    # subsequent options aren't so we need to apply indentation to
+    # them here
+    monitorsIndented = if length monitors > 1
+      then singleton (head monitors) ++ map (m: "  " + m) (tail monitors)
+      else monitors;
+  in concatStrings monitorsIndented;
 
   # Here we chain every monitor from the left to right, so we have:
   # m4 right of m3 right of m2 right of m1   .----.----.----.----.
@@ -132,15 +138,10 @@ let
 
         echo '${cfg.filesSection}' >> $out
         echo 'EndSection' >> $out
-        echo >> $out
 
         echo "$config" >> $out
       ''; # */
 
-  prefixStringLines = prefix: str:
-    concatMapStringsSep "\n" (line: prefix + line) (splitString "\n" str);
-
-  indent = prefixStringLines "  ";
 in
 
 {
@@ -217,7 +218,7 @@ in
       inputClassSections = mkOption {
         type = types.listOf types.lines;
         default = [];
-        example = literalExpression ''
+        example = literalExample ''
           [ '''
               Identifier      "Trackpoint Wheel Emulation"
               MatchProduct    "ThinkPad USB Keyboard with TrackPoint"
@@ -233,7 +234,7 @@ in
       modules = mkOption {
         type = types.listOf types.path;
         default = [];
-        example = literalExpression "[ pkgs.xf86_input_wacom ]";
+        example = literalExample "[ pkgs.xf86_input_wacom ]";
         description = "Packages to be added to the module search path of the X server.";
       };
 
@@ -297,11 +298,7 @@ in
       dpi = mkOption {
         type = types.nullOr types.int;
         default = null;
-        description = ''
-          Force global DPI resolution to use for X server. It's recommended to
-          use this only when DPI is detected incorrectly; also consider using
-          <literal>Monitor</literal> section in configuration file instead.
-        '';
+        description = "DPI resolution to use for X server.";
       };
 
       updateDbusEnvironment = mkOption {
@@ -351,7 +348,6 @@ in
       xkbDir = mkOption {
         type = types.path;
         default = "${pkgs.xkeyboard_config}/etc/X11/xkb";
-        defaultText = literalExpression ''"''${pkgs.xkeyboard_config}/etc/X11/xkb"'';
         description = ''
           Path used for -xkbdir xserver parameter.
         '';
@@ -362,13 +358,6 @@ in
         description = ''
           The contents of the configuration file of the X server
           (<filename>xorg.conf</filename>).
-
-          This option is set by multiple modules, and the configs are
-          concatenated together.
-
-          In Xorg configs the last config entries take precedence,
-          so you may want to use <literal>lib.mkAfter</literal> on this option
-          to override NixOS's defaults.
         '';
       };
 
@@ -739,9 +728,6 @@ in
       nativeBuildInputs = with pkgs.buildPackages; [ xkbvalidate ];
       preferLocalBuild = true;
     } ''
-      ${optionalString (config.environment.sessionVariables ? XKB_CONFIG_ROOT)
-        "export XKB_CONFIG_ROOT=${config.environment.sessionVariables.XKB_CONFIG_ROOT}"
-      }
       xkbvalidate "$xkbModel" "$layout" "$xkbVariant" "$xkbOptions"
       touch "$out"
     '');
@@ -751,29 +737,29 @@ in
         Section "ServerFlags"
           Option "AllowMouseOpenFail" "on"
           Option "DontZap" "${if cfg.enableCtrlAltBackspace then "off" else "on"}"
-        ${indent cfg.serverFlagsSection}
+          ${cfg.serverFlagsSection}
         EndSection
 
         Section "Module"
-        ${indent cfg.moduleSection}
+          ${cfg.moduleSection}
         EndSection
 
         Section "Monitor"
           Identifier "Monitor[0]"
-        ${indent cfg.monitorSection}
+          ${cfg.monitorSection}
         EndSection
 
         # Additional "InputClass" sections
-        ${flip (concatMapStringsSep "\n") cfg.inputClassSections (inputClassSection: ''
-          Section "InputClass"
-          ${indent inputClassSection}
-          EndSection
+        ${flip concatMapStrings cfg.inputClassSections (inputClassSection: ''
+        Section "InputClass"
+          ${inputClassSection}
+        EndSection
         '')}
 
 
         Section "ServerLayout"
           Identifier "Layout[all]"
-        ${indent cfg.serverLayoutSection}
+          ${cfg.serverLayoutSection}
           # Reference the Screen sections for each driver.  This will
           # cause the X server to try each in turn.
           ${flip concatMapStrings (filter (d: d.display) cfg.drivers) (d: ''
@@ -796,9 +782,9 @@ in
             Identifier "Device-${driver.name}[0]"
             Driver "${driver.driverName or driver.name}"
             ${if cfg.useGlamor then ''Option "AccelMethod" "glamor"'' else ""}
-          ${indent cfg.deviceSection}
-          ${indent (driver.deviceSection or "")}
-          ${indent xrandrDeviceSection}
+            ${cfg.deviceSection}
+            ${driver.deviceSection or ""}
+            ${xrandrDeviceSection}
           EndSection
           ${optionalString driver.display ''
 
@@ -809,22 +795,18 @@ in
                 Monitor "Monitor[0]"
               ''}
 
-            ${indent cfg.screenSection}
-            ${indent (driver.screenSection or "")}
+              ${cfg.screenSection}
+              ${driver.screenSection or ""}
 
               ${optionalString (cfg.defaultDepth != 0) ''
                 DefaultDepth ${toString cfg.defaultDepth}
               ''}
 
               ${optionalString
-                (
-                  driver.name != "virtualbox"
-                  &&
+                  (driver.name != "virtualbox" &&
                   (cfg.resolutions != [] ||
                     cfg.extraDisplaySettings != "" ||
-                    cfg.virtualScreen != null
-                  )
-                )
+                    cfg.virtualScreen != null))
                 (let
                   f = depth:
                     ''
@@ -832,7 +814,7 @@ in
                         Depth ${toString depth}
                         ${optionalString (cfg.resolutions != [])
                           "Modes ${concatMapStrings (res: ''"${toString res.x}x${toString res.y}"'') cfg.resolutions}"}
-                      ${indent cfg.extraDisplaySettings}
+                        ${cfg.extraDisplaySettings}
                         ${optionalString (cfg.virtualScreen != null)
                           "Virtual ${toString cfg.virtualScreen.x} ${toString cfg.virtualScreen.y}"}
                       EndSubSection

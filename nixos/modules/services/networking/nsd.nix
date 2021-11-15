@@ -260,6 +260,7 @@ let
       data = mkOption {
         type = types.lines;
         default = "";
+        example = "";
         description = ''
           The actual zone data. This is the content of your zone file.
           Use imports or pkgs.lib.readFile if you don't want this data in your config file.
@@ -396,6 +397,7 @@ let
       requestXFR = mkOption {
         type = types.listOf types.str;
         default = [];
+        example = [];
         description = ''
           Format: <code>[AXFR|UDP] &lt;ip-address&gt; &lt;key-name | NOKEY&gt;</code>
         '';
@@ -724,7 +726,7 @@ in
         };
       });
       default = {};
-      example = literalExpression ''
+      example = literalExample ''
         { "tsig.example.org" = {
             algorithm = "hmac-md5";
             keyFile = "/path/to/my/key";
@@ -859,7 +861,7 @@ in
     zones = mkOption {
       type = types.attrsOf zoneOptions;
       default = {};
-      example = literalExpression ''
+      example = literalExample ''
         { "serverGroup1" = {
             provideXFR = [ "10.1.2.3 NOKEY" ];
             children = {

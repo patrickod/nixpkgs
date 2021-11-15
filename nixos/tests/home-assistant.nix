@@ -12,18 +12,19 @@ in {
     environment.systemPackages = with pkgs; [ mosquitto ];
     services.mosquitto = {
       enable = true;
-      listeners = [ {
-        users = {
-          "${mqttUsername}" = {
-            acl = [ "readwrite #" ];
-            password = mqttPassword;
-          };
+      checkPasswords = true;
+      users = {
+        "${mqttUsername}" = {
+          acl = [ "topic readwrite #" ];
+          password = mqttPassword;
         };
-      } ];
+      };
     };
     services.home-assistant = {
       inherit configDir;
       enable = true;
+      # includes the package with all tests enabled
+      package = pkgs.home-assistant;
       config = {
         homeassistant = {
           name = "Home";
@@ -44,7 +45,6 @@ in {
           payload_on = "let_there_be_light";
           payload_off = "off";
         }];
-        # tests component-based capability assignment (CAP_NET_BIND_SERVICE)
         emulated_hue = {
           host_ip = "127.0.0.1";
           listen_port = 80;
@@ -100,7 +100,6 @@ in {
         assert "let_there_be_light" in output_log
 
     with subtest("Check systemd unit hardening"):
-        hass.log(hass.succeed("systemctl show home-assistant.service"))
         hass.log(hass.succeed("systemd-analyze security home-assistant.service"))
   '';
 })

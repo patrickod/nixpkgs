@@ -14,7 +14,7 @@ in
       package = mkOption {
         type = types.package;
         default = pkgs.herbstluftwm;
-        defaultText = literalExpression "pkgs.herbstluftwm";
+        defaultText = "pkgs.herbstluftwm";
         description = ''
           Herbstluftwm package to use.
         '';

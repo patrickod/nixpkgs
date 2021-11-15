@@ -45,7 +45,7 @@ in {
 
     package = mkOption {
       default = pkgs.collectd;
-      defaultText = literalExpression "pkgs.collectd";
+      defaultText = "pkgs.collectd";
       description = ''
         Which collectd package to use.
       '';
@@ -57,7 +57,7 @@ in {
       description = ''
         Build a minimal collectd package with only the configured `services.collectd.plugins`
       '';
-      type = bool;
+      type = types.bool;
     };
 
     user = mkOption {
@@ -98,7 +98,7 @@ in {
       description = ''
         Attribute set of plugin names to plugin config segments
       '';
-      type = attrsOf lines;
+      type = types.attrsOf types.str;
     };
 
     extraConfig = mkOption {

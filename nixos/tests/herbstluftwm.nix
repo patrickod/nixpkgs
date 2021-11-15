@@ -3,6 +3,7 @@ import ./make-test-python.nix ({ lib, ...} : {
 
   meta = {
     maintainers = with lib.maintainers; [ thibautmarty ];
+    timeout = 30;
   };
 
   machine = { pkgs, lib, ... }: {

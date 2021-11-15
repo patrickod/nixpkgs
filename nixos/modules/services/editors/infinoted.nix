@@ -11,7 +11,7 @@ in {
     package = mkOption {
       type = types.package;
       default = pkgs.libinfinity;
-      defaultText = literalExpression "pkgs.libinfinity";
+      defaultText = "pkgs.libinfinity";
       description = ''
         Package providing infinoted
       '';
@@ -51,7 +51,7 @@ in {
     };
 
     port = mkOption {
-      type = types.port;
+      type = types.int;
       default = 6523;
       description = ''
         Port to listen on

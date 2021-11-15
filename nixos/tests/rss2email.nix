@@ -1,5 +1,5 @@
 import ./make-test-python.nix {
-  name = "rss2email";
+  name = "opensmtpd";
 
   nodes = {
     server = { pkgs, ... }: {

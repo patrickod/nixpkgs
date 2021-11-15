@@ -49,7 +49,7 @@ in {
     package = mkOption {
       type = types.package;
       default = pkgs.pgmanage;
-      defaultText = literalExpression "pkgs.pgmanage";
+      defaultText = "pkgs.pgmanage";
       description = ''
         The pgmanage package to use.
       '';

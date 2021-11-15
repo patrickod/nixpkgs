@@ -15,7 +15,6 @@ let
       package = mkOption {
         type = types.package;
         default = pkgs.blockbook;
-        defaultText = literalExpression "pkgs.blockbook";
         description = "Which blockbook package to use.";
       };
 
@@ -51,6 +50,7 @@ let
       coinName = mkOption {
         type = types.str;
         default = "Bitcoin";
+        example = "Bitcoin";
         description = ''
           See <link xlink:href="https://github.com/trezor/blockbook/blob/master/bchain/coins/blockchain.go#L61"/>
           for current of coins supported in master (Note: may differ from release).
@@ -60,8 +60,7 @@ let
       cssDir = mkOption {
         type = types.path;
         default = "${config.package}/share/css/";
-        defaultText = literalExpression ''"''${package}/share/css/"'';
-        example = literalExpression ''"''${dataDir}/static/css/"'';
+        example = "${config.dataDir}/static/css/";
         description = ''
           Location of the dir with <filename>main.css</filename> CSS file.
           By default, the one shipped with the package is used.
@@ -83,18 +82,21 @@ let
       internal = mkOption {
         type = types.nullOr types.str;
         default = ":9030";
+        example = ":9030";
         description = "Internal http server binding <literal>[address]:port</literal>.";
       };
 
       messageQueueBinding = mkOption {
         type = types.str;
         default = "tcp://127.0.0.1:38330";
+        example = "tcp://127.0.0.1:38330";
         description = "Message Queue Binding <literal>address:port</literal>.";
       };
 
       public = mkOption {
         type = types.nullOr types.str;
         default = ":9130";
+        example = ":9130";
         description = "Public http server binding <literal>[address]:port</literal>.";
       };
 
@@ -114,12 +116,14 @@ let
         user = mkOption {
           type = types.str;
           default = "rpc";
+          example = "rpc";
           description = "Username for JSON-RPC connections.";
         };
 
         password = mkOption {
           type = types.str;
           default = "rpc";
+          example = "rpc";
           description = ''
             RPC password for JSON-RPC connections.
             Warning: this is stored in cleartext in the Nix store!!!
@@ -146,15 +150,14 @@ let
       templateDir = mkOption {
         type = types.path;
         default = "${config.package}/share/templates/";
-        defaultText = literalExpression ''"''${package}/share/templates/"'';
-        example = literalExpression ''"''${dataDir}/templates/static/"'';
+        example = "${config.dataDir}/templates/static/";
         description = "Location of the HTML templates. By default, ones shipped with the package are used.";
       };
 
       extraConfig = mkOption {
         type = types.attrs;
         default = {};
-        example = literalExpression '' {
+        example = literalExample '' {
           "alternative_estimate_fee" = "whatthefee-disabled";
           "alternative_estimate_fee_params" = "{\"url\": \"https://whatthefee.io/data.json\", \"periodSeconds\": 60}";
           "fiat_rates" = "coingecko";

@@ -13,7 +13,7 @@ in {
   extraOpts = {
     controlSocketPaths = mkOption {
       type = types.listOf types.str;
-      example = literalExpression ''
+      example = literalExample ''
         [
           "/run/kea/kea-dhcp4.socket"
           "/run/kea/kea-dhcp6.socket"
@@ -26,7 +26,6 @@ in {
   };
   serviceOpts = {
     serviceConfig = {
-      User = "kea";
       ExecStart = ''
         ${pkgs.prometheus-kea-exporter}/bin/kea-exporter \
           --address ${cfg.listenAddress} \
@@ -34,10 +33,6 @@ in {
           ${concatStringsSep " \\n" cfg.controlSocketPaths}
       '';
       SupplementaryGroups = [ "kea" ];
-      RestrictAddressFamilies = [
-        # Need AF_UNIX to collect data
-        "AF_UNIX"
-      ];
     };
   };
 }

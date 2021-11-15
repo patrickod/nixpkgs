@@ -34,7 +34,7 @@ in {
       package = mkOption {
         type = types.package;
         default = pkgs.opensmtpd;
-        defaultText = literalExpression "pkgs.opensmtpd";
+        defaultText = "pkgs.opensmtpd";
         description = "The OpenSMTPD package to use.";
       };
 
@@ -103,15 +103,12 @@ in {
     };
 
     security.wrappers.smtpctl = {
-      owner = "root";
       group = "smtpq";
-      setuid = false;
       setgid = true;
       source = "${cfg.package}/bin/smtpctl";
     };
 
-    services.mail.sendmailSetuidWrapper = mkIf cfg.setSendmail
-      (security.wrappers.smtpctl // { program = "sendmail"; });
+    services.mail.sendmailSetuidWrapper = mkIf cfg.setSendmail security.wrappers.smtpctl;
 
     systemd.tmpfiles.rules = [
       "d /var/spool/smtpd 711 root - - -"

@@ -66,7 +66,7 @@ in
     package = mkOption {
       type = types.package;
       default = pkgs.emacs;
-      defaultText = literalExpression "pkgs.emacs";
+      defaultText = "pkgs.emacs";
       description = ''
         emacs derivation to use.
       '';

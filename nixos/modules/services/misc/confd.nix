@@ -64,7 +64,7 @@ in {
     package = mkOption {
       description = "Confd package to use.";
       default = pkgs.confd;
-      defaultText = literalExpression "pkgs.confd";
+      defaultText = "pkgs.confd";
       type = types.package;
     };
   };

@@ -37,7 +37,7 @@ in {
       enable = mkOption {
         type = types.bool;
         default = config.services.pipewire.enable;
-        defaultText = literalExpression "config.services.pipewire.enable";
+        defaultText = "config.services.pipewire.enable";
         description = "Example pipewire session manager";
       };
 

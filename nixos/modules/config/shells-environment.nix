@@ -126,18 +126,12 @@ in
       type = types.bool;
     };
 
-    environment.localBinInPath = mkOption {
-      description = ''
-        Add ~/.local/bin/ to $PATH
-      '';
-      default = false;
-      type = types.bool;
-    };
-
     environment.binsh = mkOption {
       default = "${config.system.build.binsh}/bin/sh";
-      defaultText = literalExpression ''"''${config.system.build.binsh}/bin/sh"'';
-      example = literalExpression ''"''${pkgs.dash}/bin/dash"'';
+      defaultText = "\${config.system.build.binsh}/bin/sh";
+      example = literalExample ''
+        "''${pkgs.dash}/bin/dash"
+      '';
       type = types.path;
       visible = false;
       description = ''
@@ -150,7 +144,7 @@ in
 
     environment.shells = mkOption {
       default = [];
-      example = literalExpression "[ pkgs.bashInteractive pkgs.zsh ]";
+      example = literalExample "[ pkgs.bashInteractive pkgs.zsh ]";
       description = ''
         A list of permissible login shells for user accounts.
         No need to mention <literal>/bin/sh</literal>
@@ -203,10 +197,6 @@ in
         ${optionalString cfg.homeBinInPath ''
           # ~/bin if it exists overrides other bin directories.
           export PATH="$HOME/bin:$PATH"
-        ''}
-
-        ${optionalString cfg.localBinInPath ''
-          export PATH="$HOME/.local/bin:$PATH"
         ''}
       '';
 

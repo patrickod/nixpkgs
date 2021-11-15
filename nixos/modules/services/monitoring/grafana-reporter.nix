@@ -41,9 +41,8 @@ in {
 
     templateDir = mkOption {
       description = "Optional template directory to use custom tex templates";
-      default = pkgs.grafana_reporter;
-      defaultText = literalExpression "pkgs.grafana_reporter";
-      type = types.either types.str types.path;
+      default = "${pkgs.grafana_reporter}";
+      type = types.str;
     };
   };
 

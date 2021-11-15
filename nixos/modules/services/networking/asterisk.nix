@@ -115,7 +115,7 @@ in
       confFiles = mkOption {
         default = {};
         type = types.attrsOf types.str;
-        example = literalExpression
+        example = literalExample
           ''
             {
               "extensions.conf" = '''
@@ -200,7 +200,7 @@ in
       package = mkOption {
         type = types.package;
         default = pkgs.asterisk;
-        defaultText = literalExpression "pkgs.asterisk";
+        defaultText = "pkgs.asterisk";
         description = "The Asterisk package to use.";
       };
     };

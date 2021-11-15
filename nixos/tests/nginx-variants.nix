@@ -29,5 +29,5 @@ builtins.listToAttrs (
         };
       }
     )
-    [ "nginxStable" "nginxMainline" "nginxQuic" "nginxShibboleth" "openresty" "tengine" ]
+    [ "nginxStable" "nginxUnstable" "nginxShibboleth" "openresty" "tengine" ]
 )

@@ -53,10 +53,18 @@ in {
 
     start_all()
 
-    with subtest("Make sure that cups is up on both sides and printers are set up"):
+    with subtest("Make sure that cups is up on both sides"):
         serviceServer.wait_for_unit("cups.service")
         serviceClient.wait_for_unit("cups.service")
-        socketActivatedClient.wait_for_unit("ensure-printers.service")
+
+    with subtest(
+        "Wait until cups is fully initialized and ensure-printers has "
+        "executed with 10s delay"
+    ):
+        serviceClient.sleep(20)
+        socketActivatedClient.wait_until_succeeds(
+            "systemctl status ensure-printers | grep -q -E 'code=exited, status=0/SUCCESS'"
+        )
 
 
     def test_printing(client, server):

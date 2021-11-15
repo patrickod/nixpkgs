@@ -32,11 +32,7 @@ with lib;
   config = mkIf config.services.tinydns.enable {
     environment.systemPackages = [ pkgs.djbdns ];
 
-    users.users.tinydns = {
-      isSystemUser = true;
-      group = "tinydns";
-    };
-    users.groups.tinydns = {};
+    users.users.tinydns.isSystemUser = true;
 
     systemd.services.tinydns = {
       description = "djbdns tinydns server";

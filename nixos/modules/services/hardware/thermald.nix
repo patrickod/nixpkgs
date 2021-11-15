@@ -27,7 +27,7 @@ in {
       package = mkOption {
         type = types.package;
         default = pkgs.thermald;
-        defaultText = literalExpression "pkgs.thermald";
+        defaultText = "pkgs.thermald";
         description = "Which thermald package to use.";
       };
     };

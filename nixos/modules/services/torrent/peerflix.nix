@@ -60,10 +60,6 @@ in {
       };
     };
 
-    users.users.peerflix = {
-      isSystemUser = true;
-      group = "peerflix";
-    };
-    users.groups.peerflix = {};
+    users.users.peerflix.uid = config.ids.uids.peerflix;
   };
 }

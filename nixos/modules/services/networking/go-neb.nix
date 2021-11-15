@@ -5,8 +5,7 @@ with lib;
 let
   cfg = config.services.go-neb;
 
-  settingsFormat = pkgs.formats.yaml {};
-  configFile = settingsFormat.generate "config.yaml" cfg.config;
+  configFile = pkgs.writeText "config.yml" (builtins.toJSON cfg.config);
 in {
   options.services.go-neb = {
     enable = mkEnableOption "Extensible matrix bot written in Go";
@@ -17,26 +16,13 @@ in {
       default = ":4050";
     };
 
-    secretFile = mkOption {
-      type = types.nullOr types.path;
-      default = null;
-      example = "/run/keys/go-neb.env";
-      description = ''
-        Environment variables from this file will be interpolated into the
-        final config file using envsubst with this syntax: <literal>$ENVIRONMENT</literal>
-        or <literal>''${VARIABLE}</literal>.
-        The file should contain lines formatted as <literal>SECRET_VAR=SECRET_VALUE</literal>.
-        This is useful to avoid putting secrets into the nix store.
-      '';
-    };
-
     baseUrl = mkOption {
       type = types.str;
       description = "Public-facing endpoint that can receive webhooks.";
     };
 
     config = mkOption {
-      inherit (settingsFormat) type;
+      type = types.uniq types.attrs;
       description = ''
         Your <filename>config.yaml</filename> as a Nix attribute set.
         See <link xlink:href="https://github.com/matrix-org/go-neb/blob/master/config.sample.yaml">config.sample.yaml</link>
@@ -46,30 +32,18 @@ in {
   };
 
   config = mkIf cfg.enable {
-    systemd.services.go-neb = let
-      finalConfigFile = if cfg.secretFile == null then configFile else "/var/run/go-neb/config.yaml";
-    in {
+    systemd.services.go-neb = {
       description = "Extensible matrix bot written in Go";
       after = [ "network.target" ];
       wantedBy = [ "multi-user.target" ];
       environment = {
         BASE_URL = cfg.baseUrl;
         BIND_ADDRESS = cfg.bindAddress;
-        CONFIG_FILE = finalConfigFile;
+        CONFIG_FILE = configFile;
       };
 
       serviceConfig = {
-        ExecStartPre = lib.optional (cfg.secretFile != null)
-          (pkgs.writeShellScript "pre-start" ''
-            umask 077
-            export $(xargs < ${cfg.secretFile})
-            ${pkgs.envsubst}/bin/envsubst -i "${configFile}" > ${finalConfigFile}
-            chown go-neb ${finalConfigFile}
-          '');
-        PermissionsStartOnly = true;
-        RuntimeDirectory = "go-neb";
         ExecStart = "${pkgs.go-neb}/bin/go-neb";
-        User = "go-neb";
         DynamicUser = true;
       };
     };

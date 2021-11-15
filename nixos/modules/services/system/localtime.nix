@@ -37,9 +37,7 @@ in {
     users.users.localtimed = {
       description = "localtime daemon";
       isSystemUser = true;
-      group = "localtimed";
     };
-    users.groups.localtimed = {};
 
     systemd.services.localtime = {
       wantedBy = [ "multi-user.target" ];

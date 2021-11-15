@@ -20,7 +20,6 @@ in {
       package = mkOption {
         type = types.package;
         default = pkgs.mtr;
-        defaultText = literalExpression "pkgs.mtr";
         description = ''
           The package to use.
         '';
@@ -32,10 +31,8 @@ in {
     environment.systemPackages = with pkgs; [ cfg.package ];
 
     security.wrappers.mtr-packet = {
-      owner = "root";
-      group = "root";
-      capabilities = "cap_net_raw+p";
       source = "${cfg.package}/bin/mtr-packet";
+      capabilities = "cap_net_raw+p";
     };
   };
 }

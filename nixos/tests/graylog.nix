@@ -1,6 +1,6 @@
 import ./make-test-python.nix ({ pkgs, lib, ... }: {
   name = "graylog";
-  meta.maintainers = with lib.maintainers; [ ];
+  meta.maintainers = with lib.maintainers; [ ma27 ];
 
   machine = { pkgs, ... }: {
     virtualisation.memorySize = 4096;

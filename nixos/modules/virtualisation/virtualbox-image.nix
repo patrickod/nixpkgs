@@ -65,19 +65,7 @@ in {
 
           Run <literal>VBoxManage modifyvm --help</literal> to see more options.
         '';
-      };
-      exportParams = mkOption {
-        type = with types; listOf (oneOf [ str int bool (listOf str) ]);
-        example = [
-          "--vsys" "0" "--vendor" "ACME Inc."
-        ];
-        default = [];
-        description = ''
-          Parameters passed to the Virtualbox export command.
-
-          Run <literal>VBoxManage export --help</literal> to see more options.
-        '';
-      };
+     };
       extraDisk = mkOption {
         description = ''
           Optional extra disk/hdd configuration.
@@ -178,7 +166,7 @@ in {
           echo "exporting VirtualBox VM..."
           mkdir -p $out
           fn="$out/${cfg.vmFileName}"
-          VBoxManage export "$vmName" --output "$fn" --options manifest ${escapeShellArgs cfg.exportParams}
+          VBoxManage export "$vmName" --output "$fn" --options manifest
 
           rm -v $diskImage
 

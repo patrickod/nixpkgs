@@ -93,7 +93,6 @@ in {
         type = types.path;
         description = "Optionally pass master.cfg path. Other options in this configuration will be ignored.";
         default = defaultMasterCfg;
-        defaultText = literalDocBook ''generated configuration file'';
         example = "/etc/nixos/buildbot/master.cfg";
       };
 
@@ -211,14 +210,14 @@ in {
       package = mkOption {
         type = types.package;
         default = pkgs.python3Packages.buildbot-full;
-        defaultText = literalExpression "pkgs.python3Packages.buildbot-full";
+        defaultText = "pkgs.python3Packages.buildbot-full";
         description = "Package to use for buildbot.";
-        example = literalExpression "pkgs.python3Packages.buildbot";
+        example = literalExample "pkgs.python3Packages.buildbot";
       };
 
       packages = mkOption {
         default = [ pkgs.git ];
-        defaultText = literalExpression "[ pkgs.git ]";
+        example = literalExample "[ pkgs.git ]";
         type = types.listOf types.package;
         description = "Packages to add to PATH for the buildbot process.";
       };
@@ -226,9 +225,9 @@ in {
       pythonPackages = mkOption {
         type = types.functionTo (types.listOf types.package);
         default = pythonPackages: with pythonPackages; [ ];
-        defaultText = literalExpression "pythonPackages: with pythonPackages; [ ]";
+        defaultText = "pythonPackages: with pythonPackages; [ ]";
         description = "Packages to add the to the PYTHONPATH of the buildbot process.";
-        example = literalExpression "pythonPackages: with pythonPackages; [ requests ]";
+        example = literalExample "pythonPackages: with pythonPackages; [ requests ]";
       };
     };
   };

@@ -33,7 +33,7 @@ in
       enable = mkEnableOption "ttyd daemon";
 
       port = mkOption {
-        type = types.port;
+        type = types.int;
         default = 7681;
         description = "Port to listen on (use 0 for random port)";
       };
@@ -78,7 +78,7 @@ in
       clientOptions = mkOption {
         type = types.attrsOf types.str;
         default = {};
-        example = literalExpression ''{
+        example = literalExample ''{
           fontSize = "16";
           fontFamily = "Fira Code";
 

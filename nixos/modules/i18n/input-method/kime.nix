@@ -10,7 +10,7 @@ in
       config = mkOption {
         type = yamlFormat.type;
         default = { };
-        example = literalExpression ''
+        example = literalExample ''
           {
             daemon = {
               modules = ["Xim" "Indicator"];

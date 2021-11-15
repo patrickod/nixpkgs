@@ -40,7 +40,7 @@ in
       };
 
       port = mkOption {
-        type = types.port;
+        type = types.int;
         default = 5000;
         description = ''
           Port to bind OctoPrint to.
@@ -68,8 +68,8 @@ in
       plugins = mkOption {
         type = types.functionTo (types.listOf types.package);
         default = plugins: [];
-        defaultText = literalExpression "plugins: []";
-        example = literalExpression "plugins: with plugins; [ themeify stlviewer ]";
+        defaultText = "plugins: []";
+        example = literalExample "plugins: with plugins; [ themeify stlviewer ]";
         description = "Additional plugins to be used. Available plugins are passed through the plugins input.";
       };
 
@@ -122,9 +122,6 @@ in
         ExecStart = "${pluginsEnv}/bin/octoprint serve -b ${cfg.stateDir}";
         User = cfg.user;
         Group = cfg.group;
-        SupplementaryGroups = [
-          "dialout"
-        ];
       };
     };
 

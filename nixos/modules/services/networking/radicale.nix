@@ -33,7 +33,7 @@ in {
       # warnings about incompatible configuration and storage formats.
       type = with types; nullOr package // { inherit (package) description; };
       default = null;
-      defaultText = literalExpression "pkgs.radicale";
+      defaultText = "pkgs.radicale";
     };
 
     config = mkOption {
@@ -55,7 +55,7 @@ in {
         <link xlink:href="https://radicale.org/3.0.html#documentation/configuration" />.
         This option is mutually exclusive with <option>config</option>.
       '';
-      example = literalExpression ''
+      example = literalExample ''
         server = {
           hosts = [ "0.0.0.0:5232" "[::]:5232" ];
         };
@@ -80,7 +80,7 @@ in {
         <option>settings.rights.file</option> to approriate values.
       '';
       default = { };
-      example = literalExpression ''
+      example = literalExample ''
         root = {
           user = ".+";
           collection = "";
@@ -140,12 +140,9 @@ in {
 
     environment.systemPackages = [ pkg ];
 
-    users.users.radicale = {
-      isSystemUser = true;
-      group = "radicale";
-    };
+    users.users.radicale.uid = config.ids.uids.radicale;
 
-    users.groups.radicale = {};
+    users.groups.radicale.gid = config.ids.gids.radicale;
 
     systemd.services.radicale = {
       description = "A Simple Calendar and Contact Server";

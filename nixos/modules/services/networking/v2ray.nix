@@ -16,15 +16,6 @@ with lib;
         '';
       };
 
-      package = mkOption {
-        type = types.package;
-        default = pkgs.v2ray;
-        defaultText = literalExpression "pkgs.v2ray";
-        description = ''
-          Which v2ray package to use.
-        '';
-      };
-
       configFile = mkOption {
         type = types.nullOr types.str;
         default = null;
@@ -34,7 +25,7 @@ with lib;
 
           Either <literal>configFile</literal> or <literal>config</literal> must be specified.
 
-          See <link xlink:href="https://www.v2fly.org/en_US/config/overview.html"/>.
+          See <link xlink:href="https://v2ray.com/en/configuration/overview.html"/>.
         '';
       };
 
@@ -56,7 +47,7 @@ with lib;
 
           Either `configFile` or `config` must be specified.
 
-          See <link xlink:href="https://www.v2fly.org/en_US/config/overview.html"/>.
+          See <link xlink:href="https://v2ray.com/en/configuration/overview.html"/>.
         '';
       };
     };
@@ -71,7 +62,7 @@ with lib;
         name = "v2ray.json";
         text = builtins.toJSON cfg.config;
         checkPhase = ''
-          ${cfg.package}/bin/v2ray -test -config $out
+          ${pkgs.v2ray}/bin/v2ray -test -config $out
         '';
       };
 
@@ -87,9 +78,10 @@ with lib;
       description = "v2ray Daemon";
       after = [ "network.target" ];
       wantedBy = [ "multi-user.target" ];
-      serviceConfig = {
-        ExecStart = "${cfg.package}/bin/v2ray -config ${configFile}";
-      };
+      path = [ pkgs.v2ray ];
+      script = ''
+        exec v2ray -config ${configFile}
+      '';
     };
   };
 }

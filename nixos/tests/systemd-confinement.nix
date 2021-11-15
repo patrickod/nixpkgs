@@ -44,26 +44,30 @@ import ./make-test-python.nix {
       { config.confinement.mode = "chroot-only";
         testScript = ''
           with subtest("chroot-only confinement"):
-              paths = machine.succeed('chroot-exec ls -1 / | paste -sd,').strip()
-              assert_eq(paths, "bin,nix,run")
-              uid = machine.succeed('chroot-exec id -u').strip()
-              assert_eq(uid, "0")
-              machine.succeed("chroot-exec chown 65534 /bin")
+              machine.succeed(
+                  'test "$(chroot-exec ls -1 / | paste -sd,)" = bin,nix',
+                  'test "$(chroot-exec id -u)" = 0',
+                  "chroot-exec chown 65534 /bin",
+              )
         '';
       }
       { testScript = ''
           with subtest("full confinement with APIVFS"):
-              machine.fail("chroot-exec ls -l /etc")
-              machine.fail("chroot-exec chown 65534 /bin")
-              assert_eq(machine.succeed('chroot-exec id -u').strip(), "0")
-              machine.succeed("chroot-exec chown 0 /bin")
+              machine.fail(
+                  "chroot-exec ls -l /etc",
+                  "chroot-exec ls -l /run",
+                  "chroot-exec chown 65534 /bin",
+              )
+              machine.succeed(
+                  'test "$(chroot-exec id -u)" = 0',
+                  "chroot-exec chown 0 /bin",
+              )
         '';
       }
       { config.serviceConfig.BindReadOnlyPaths = [ "/etc" ];
         testScript = ''
           with subtest("check existence of bind-mounted /etc"):
-              passwd = machine.succeed('chroot-exec cat /etc/passwd').strip()
-              assert len(passwd) > 0, "/etc/passwd must not be empty"
+              machine.succeed('test -n "$(chroot-exec cat /etc/passwd)"')
         '';
       }
       { config.serviceConfig.User = "chroot-testuser";
@@ -71,8 +75,7 @@ import ./make-test-python.nix {
         testScript = ''
           with subtest("check if User/Group really runs as non-root"):
               machine.succeed("chroot-exec ls -l /dev")
-              uid = machine.succeed('chroot-exec id -u').strip()
-              assert uid != "0", "UID of chroot-testuser shouldn't be 0"
+              machine.succeed('test "$(chroot-exec id -u)" != 0')
               machine.fail("chroot-exec touch /bin/test")
         '';
       }
@@ -85,8 +88,10 @@ import ./make-test-python.nix {
         testScript = ''
           with subtest("check if symlinks are properly bind-mounted"):
               machine.fail("chroot-exec test -e /etc")
-              text = machine.succeed('chroot-exec cat ${symlink}').strip()
-              assert_eq(text, "got me")
+              machine.succeed(
+                  "chroot-exec cat ${symlink} >&2",
+                  'test "$(chroot-exec cat ${symlink})" = "got me"',
+              )
         '';
       })
       { config.serviceConfig.User = "chroot-testuser";
@@ -153,9 +158,6 @@ import ./make-test-python.nix {
   };
 
   testScript = { nodes, ... }: ''
-    def assert_eq(a, b):
-        assert a == b, f"{a} != {b}"
-
     machine.wait_for_unit("multi-user.target")
   '' + nodes.machine.config.__testSteps;
 }

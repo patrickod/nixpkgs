@@ -172,7 +172,7 @@ in
 
       extraRulesDirs = mkOption {
         default = [];
-        example = [ "/etc/logcheck" ];
+        example = "/etc/logcheck";
         type = types.listOf types.path;
         description = ''
           Directories with extra rules.
@@ -215,15 +215,11 @@ in
 
     users.users = optionalAttrs (cfg.user == "logcheck") {
       logcheck = {
-        group = "logcheck";
-        isSystemUser = true;
+        uid = config.ids.uids.logcheck;
         shell = "/bin/sh";
         description = "Logcheck user account";
         extraGroups = cfg.extraGroups;
       };
-    };
-    users.groups = optionalAttrs (cfg.user == "logcheck") {
-      logcheck = {};
     };
 
     system.activationScripts.logcheck = ''

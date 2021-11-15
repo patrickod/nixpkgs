@@ -58,9 +58,9 @@ let
           [ ./hardware-configuration.nix
             <nixpkgs/nixos/modules/testing/test-instrumentation.nix>
           ];
-    } // pkgs.lib.importJSON ${
+    } // (builtins.fromJSON (builtins.readFile ${
       pkgs.writeText "simpleConfig.json" (builtins.toJSON simpleConfig)
-    })
+    })))
   '';
 in {
   name = "os-prober";

@@ -46,7 +46,7 @@ let
 
               # set up process that expects all the keys to be entered
               machine.succeed(
-                  "{} {} {} {} >&2 &".format(
+                  "{} {} {} {} &".format(
                       cmd,
                       "${testReader}",
                       len(inputs),

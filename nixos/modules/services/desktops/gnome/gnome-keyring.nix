@@ -52,10 +52,8 @@ with lib;
     security.pam.services.login.enableGnomeKeyring = true;
 
     security.wrappers.gnome-keyring-daemon = {
-      owner = "root";
-      group = "root";
-      capabilities = "cap_ipc_lock=ep";
       source = "${pkgs.gnome.gnome-keyring}/bin/gnome-keyring-daemon";
+      capabilities = "cap_ipc_lock=ep";
     };
 
   };

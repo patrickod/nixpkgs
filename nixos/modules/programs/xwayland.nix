@@ -10,15 +10,14 @@ in
 {
   options.programs.xwayland = {
 
-    enable = mkEnableOption "Xwayland (an X server for interfacing X11 apps with the Wayland protocol)";
+    enable = mkEnableOption ''
+      Xwayland X server allows running X programs on a Wayland compositor.
+    '';
 
     defaultFontPath = mkOption {
       type = types.str;
       default = optionalString config.fonts.fontDir.enable
         "/run/current-system/sw/share/X11/fonts";
-      defaultText = literalExpression ''
-        optionalString config.fonts.fontDir.enable "/run/current-system/sw/share/X11/fonts"
-      '';
       description = ''
         Default font path. Setting this option causes Xwayland to be rebuilt.
       '';
@@ -26,15 +25,7 @@ in
 
     package = mkOption {
       type = types.path;
-      default = pkgs.xwayland.override (oldArgs: {
-        inherit (cfg) defaultFontPath;
-      });
-      defaultText = literalExpression ''
-        pkgs.xwayland.override (oldArgs: {
-          inherit (config.programs.xwayland) defaultFontPath;
-        })
-      '';
-      description = "The Xwayland package to use.";
+      description = "The Xwayland package";
     };
 
   };
@@ -45,6 +36,10 @@ in
     environment.pathsToLink = [ "/share/X11" ];
 
     environment.systemPackages = [ cfg.package ];
+
+    programs.xwayland.package = pkgs.xwayland.override (oldArgs: {
+      inherit (cfg) defaultFontPath;
+    });
 
   };
 }

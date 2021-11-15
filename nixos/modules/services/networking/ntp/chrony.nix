@@ -44,7 +44,7 @@ in
       package = mkOption {
         type = types.package;
         default = pkgs.chrony;
-        defaultText = literalExpression "pkgs.chrony";
+        defaultText = "pkgs.chrony";
         description = ''
           Which chrony package to use.
         '';
@@ -81,26 +81,17 @@ in
         '';
       };
 
-      initstepslew = {
-        enabled = mkOption {
-          type = types.bool;
-          default = true;
-          description = ''
-            Allow chronyd to make a rapid measurement of the system clock error
-            at boot time, and to correct the system clock by stepping before
-            normal operation begins.
-          '';
+      initstepslew = mkOption {
+        type = types.attrsOf (types.either types.bool types.int);
+        default = {
+          enabled = true;
+          threshold = 1000; # by default, same threshold as 'ntpd -g' (1000s)
         };
-
-        threshold = mkOption {
-          type = types.either types.float types.int;
-          default = 1000; # by default, same threshold as 'ntpd -g' (1000s)
-          description = ''
-            The threshold of system clock error (in seconds) above which the
-            clock will be stepped. If the correction required is less than the
-            threshold, a slew is used instead.
-          '';
-        };
+        description = ''
+          Allow chronyd to make a rapid measurement of the system clock error at
+          boot time, and to correct the system clock by stepping before normal
+          operation begins.
+        '';
       };
 
       directory = mkOption {
@@ -157,7 +148,7 @@ in
         wantedBy = [ "multi-user.target" ];
         wants    = [ "time-sync.target" ];
         before   = [ "time-sync.target" ];
-        after    = [ "network.target" "nss-lookup.target" ];
+        after    = [ "network.target" ];
         conflicts = [ "ntpd.service" "systemd-timesyncd.service" ];
 
         path = [ chronyPkg ];

@@ -17,7 +17,6 @@ in
     package = mkOption {
       type = types.package;
       default = pkgs.botamusique;
-      defaultText = literalExpression "pkgs.botamusique";
       description = "The botamusique package to use.";
     };
 

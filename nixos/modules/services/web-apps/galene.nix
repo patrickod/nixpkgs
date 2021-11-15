@@ -80,7 +80,6 @@ in
       staticDir = mkOption {
         type = types.str;
         default = "${cfg.package.static}/static";
-        defaultText = literalExpression ''"''${package.static}/static"'';
         example = "/var/lib/galene/static";
         description = "Web server directory.";
       };
@@ -108,7 +107,7 @@ in
 
       package = mkOption {
         default = pkgs.galene;
-        defaultText = literalExpression "pkgs.galene";
+        defaultText = "pkgs.galene";
         type = types.package;
         description = ''
           Package for running Galene.

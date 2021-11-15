@@ -14,7 +14,7 @@ in
       description = ''
         Path to a snmp exporter configuration file. Mutually exclusive with 'configuration' option.
       '';
-      example = literalExpression "./snmp.yml";
+      example = "./snmp.yml";
     };
 
     configuration = mkOption {
@@ -23,14 +23,16 @@ in
       description = ''
         Snmp exporter configuration as nix attribute set. Mutually exclusive with 'configurationPath' option.
       '';
-      example = {
-        "default" = {
-          "version" = 2;
-          "auth" = {
-            "community" = "public";
+      example = ''
+        {
+          "default" = {
+            "version" = 2;
+            "auth" = {
+              "community" = "public";
+            };
           };
         };
-      };
+      '';
     };
 
     logFormat = mkOption {

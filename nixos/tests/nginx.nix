@@ -56,11 +56,11 @@ import ./make-test-python.nix ({ pkgs, ... }: {
       };
 
       specialisation.reloadRestartSystem.configuration = {
-        services.nginx.package = pkgs.nginxMainline;
+        services.nginx.package = pkgs.nginxUnstable;
       };
 
       specialisation.reloadWithErrorsSystem.configuration = {
-        services.nginx.package = pkgs.nginxMainline;
+        services.nginx.package = pkgs.nginxUnstable;
         services.nginx.virtualHosts."!@$$(#*%".locations."~@#*$*!)".proxyPass = ";;;";
       };
     };

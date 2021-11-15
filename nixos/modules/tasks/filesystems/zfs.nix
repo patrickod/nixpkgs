@@ -104,7 +104,7 @@ in
         readOnly = true;
         type = types.package;
         default = if config.boot.zfs.enableUnstable then pkgs.zfsUnstable else pkgs.zfs;
-        defaultText = literalExpression "if config.boot.zfs.enableUnstable then pkgs.zfsUnstable else pkgs.zfs";
+        defaultText = "if config.boot.zfs.enableUnstable then pkgs.zfsUnstable else pkgs.zfs";
         description = "Configured ZFS userland tools package.";
       };
 
@@ -150,6 +150,7 @@ in
       devNodes = mkOption {
         type = types.path;
         default = "/dev/disk/by-id";
+        example = "/dev/disk/by-id";
         description = ''
           Name of directory from which to import ZFS devices.
 
@@ -350,7 +351,7 @@ in
 
       settings = mkOption {
         type = with types; attrsOf (oneOf [ str int bool (listOf str) ]);
-        example = literalExpression ''
+        example = literalExample ''
           {
             ZED_DEBUG_LOG = "/tmp/zed.debug.log";
 
@@ -561,8 +562,7 @@ in
                                   then cfgZfs.requestEncryptionCredentials
                                   else cfgZfs.requestEncryptionCredentials != []) ''
                   ${cfgZfs.package}/sbin/zfs list -rHo name,keylocation ${pool} | while IFS=$'\t' read ds kl; do
-                    {
-                      ${optionalString (!isBool cfgZfs.requestEncryptionCredentials) ''
+                    (${optionalString (!isBool cfgZfs.requestEncryptionCredentials) ''
                          if ! echo '${concatStringsSep "\n" cfgZfs.requestEncryptionCredentials}' | grep -qFx "$ds"; then
                            continue
                          fi
@@ -576,8 +576,7 @@ in
                       * )
                         ${cfgZfs.package}/sbin/zfs load-key "$ds"
                         ;;
-                    esac
-                    } < /dev/null # To protect while read ds kl in case anything reads stdin
+                    esac) < /dev/null # To protect while read ds kl in case anything reads stdin
                   done
                 ''}
                 echo "Successfully imported ${pool}"

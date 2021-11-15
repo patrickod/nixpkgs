@@ -31,7 +31,7 @@ in
         type = types.path;
         description = "The Disnix package";
         default = pkgs.disnix;
-        defaultText = literalExpression "pkgs.disnix";
+        defaultText = "pkgs.disnix";
       };
 
       enableProfilePath = mkEnableOption "exposing the Disnix profiles in the system's PATH";
@@ -39,6 +39,7 @@ in
       profiles = mkOption {
         type = types.listOf types.str;
         default = [ "default" ];
+        example = [ "default" ];
         description = "Names of the Disnix profiles to expose in the system's PATH";
       };
     };

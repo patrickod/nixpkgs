@@ -136,7 +136,7 @@ in
     checkInterval = mkOption {
       type = types.int;
       default = 0;
-      example = literalExpression "with lib; (length (attrNames config.services.gitlab-runner.services)) * 3";
+      example = literalExample "with lib; (length (attrNames config.services.gitlab-runner.services)) * 3";
       description = ''
         Defines the interval length, in seconds, between new jobs check.
         The default value is 3;
@@ -147,7 +147,7 @@ in
     concurrent = mkOption {
       type = types.int;
       default = 1;
-      example = literalExpression "config.nix.maxJobs";
+      example = literalExample "config.nix.maxJobs";
       description = ''
         Limits how many jobs globally can be run concurrently.
         The most upper limit of jobs using all defined runners.
@@ -203,7 +203,7 @@ in
         };
       };
       default = { };
-      example = literalExpression ''
+      example = literalExample ''
         {
           listenAddress = "0.0.0.0:8093";
         }
@@ -234,8 +234,8 @@ in
     package = mkOption {
       type = types.package;
       default = pkgs.gitlab-runner;
-      defaultText = literalExpression "pkgs.gitlab-runner";
-      example = literalExpression "pkgs.gitlab-runner_1_11";
+      defaultText = "pkgs.gitlab-runner";
+      example = literalExample "pkgs.gitlab-runner_1_11";
       description = "Gitlab Runner package to use.";
     };
     extraPackages = mkOption {
@@ -248,7 +248,7 @@ in
     services = mkOption {
       description = "GitLab Runner services.";
       default = { };
-      example = literalExpression ''
+      example = literalExample ''
         {
           # runner for building in docker via host's nix-daemon
           # nix store will be readable in runner, might be insecure
@@ -339,9 +339,6 @@ in
               <literal>CI_SERVER_URL=&lt;CI server URL&gt;</literal>
 
               <literal>REGISTRATION_TOKEN=&lt;registration secret&gt;</literal>
-
-              WARNING: make sure to use quoted absolute path,
-              or it is going to be copied to Nix Store.
             '';
           };
           registrationFlags = mkOption {
@@ -526,10 +523,7 @@ in
     };
   };
   config = mkIf cfg.enable {
-    warnings = (mapAttrsToList
-      (n: v: "services.gitlab-runner.services.${n}.`registrationConfigFile` points to a file in Nix Store. You should use quoted absolute path to prevent this.")
-      (filterAttrs (n: v: isStorePath v.registrationConfigFile) cfg.services))
-    ++ optional (cfg.configFile != null) "services.gitlab-runner.`configFile` is deprecated, please use services.gitlab-runner.`services`.";
+    warnings = optional (cfg.configFile != null) "services.gitlab-runner.`configFile` is deprecated, please use services.gitlab-runner.`services`.";
     environment.systemPackages = [ cfg.package ];
     systemd.services.gitlab-runner = {
       description = "Gitlab Runner";

@@ -15,7 +15,7 @@ in
         Path to a mikrotik exporter configuration file. Mutually exclusive with
         <option>configuration</option> option.
       '';
-      example = literalExpression "./mikrotik.yml";
+      example = literalExample "./mikrotik.yml";
     };
 
     configuration = mkOption {
@@ -28,7 +28,7 @@ in
         See <link xlink:href="https://github.com/nshttpd/mikrotik-exporter/blob/master/README.md"/>
         for the description of the configuration file format.
       '';
-      example = literalExpression ''
+      example = literalExample ''
         {
           devices = [
             {

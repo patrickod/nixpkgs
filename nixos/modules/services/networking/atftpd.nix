@@ -28,7 +28,7 @@ in
       extraOptions = mkOption {
         default = [];
         type = types.listOf types.str;
-        example = literalExpression ''
+        example = literalExample ''
           [ "--bind-address 192.168.9.1"
             "--verbose=7"
           ]

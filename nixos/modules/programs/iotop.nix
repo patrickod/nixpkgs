@@ -10,10 +10,8 @@ in {
   };
   config = mkIf cfg.enable {
     security.wrappers.iotop = {
-      owner = "root";
-      group = "root";
-      capabilities = "cap_net_admin+p";
       source = "${pkgs.iotop}/bin/iotop";
+      capabilities = "cap_net_admin+p";
     };
   };
 }

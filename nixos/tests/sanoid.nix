@@ -33,7 +33,7 @@ in {
 
           autosnap = true;
         };
-        datasets."pool/sanoid".use_template = [ "test" ];
+        datasets."pool/sanoid".useTemplate = [ "test" ];
         extraArgs = [ "--verbose" ];
       };
 
@@ -44,7 +44,7 @@ in {
           # Sync snapshot taken by sanoid
           "pool/sanoid" = {
             target = "root@target:pool/sanoid";
-            extraArgs = [ "--no-sync-snap" "--create-bookmark" ];
+            extraArgs = [ "--no-sync-snap" ];
           };
           # Take snapshot and sync
           "pool/syncoid".target = "root@target:pool/syncoid";
@@ -85,28 +85,15 @@ in {
         "chown -R syncoid:syncoid /var/lib/syncoid/",
     )
 
-    assert len(source.succeed("zfs allow pool")) == 0, "Pool shouldn't have delegated permissions set before snapshotting"
-    assert len(source.succeed("zfs allow pool/sanoid")) == 0, "Sanoid dataset shouldn't have delegated permissions set before snapshotting"
-    assert len(source.succeed("zfs allow pool/syncoid")) == 0, "Syncoid dataset shouldn't have delegated permissions set before snapshotting"
-
     # Take snapshot with sanoid
     source.succeed("touch /mnt/pool/sanoid/test.txt")
     source.systemctl("start --wait sanoid.service")
 
-    assert len(source.succeed("zfs allow pool")) == 0, "Pool shouldn't have delegated permissions set after snapshotting"
-    assert len(source.succeed("zfs allow pool/sanoid")) == 0, "Sanoid dataset shouldn't have delegated permissions set after snapshotting"
-    assert len(source.succeed("zfs allow pool/syncoid")) == 0, "Syncoid dataset shouldn't have delegated permissions set after snapshotting"
-
     # Sync snapshots
     target.wait_for_open_port(22)
     source.succeed("touch /mnt/pool/syncoid/test.txt")
-    source.systemctl("start --wait syncoid-pool-sanoid.service")
+    source.systemctl("start --wait syncoid.service")
     target.succeed("cat /mnt/pool/sanoid/test.txt")
-    source.systemctl("start --wait syncoid-pool-syncoid.service")
     target.succeed("cat /mnt/pool/syncoid/test.txt")
-
-    assert len(source.succeed("zfs allow pool")) == 0, "Pool shouldn't have delegated permissions set after syncing snapshots"
-    assert len(source.succeed("zfs allow pool/sanoid")) == 0, "Sanoid dataset shouldn't have delegated permissions set after syncing snapshots"
-    assert len(source.succeed("zfs allow pool/syncoid")) == 0, "Syncoid dataset shouldn't have delegated permissions set after syncing snapshots"
   '';
 })

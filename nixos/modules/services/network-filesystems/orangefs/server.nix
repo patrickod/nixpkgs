@@ -118,10 +118,12 @@ in {
       servers = mkOption {
         type = with types; attrsOf types.str;
         default = {};
-        example = {
-          node1 = "tcp://node1:3334";
-          node2 = "tcp://node2:3334";
-        };
+        example = ''
+          {
+            node1="tcp://node1:3334";
+            node2="tcp://node2:3334";
+          }
+        '';
         description = "URLs for storage server including port. The attribute names define the server alias.";
       };
 
@@ -130,7 +132,8 @@ in {
           These options will create the <literal>&lt;FileSystem&gt;</literal> sections of config file.
         '';
         default = { orangefs = {}; };
-        example = literalExpression ''
+        defaultText = literalExample "{ orangefs = {}; }";
+        example = literalExample ''
           {
             fs1 = {
               id = 101;
@@ -190,10 +193,7 @@ in {
     environment.systemPackages = [ pkgs.orangefs ];
 
     # orangefs daemon will run as user
-    users.users.orangefs = {
-      isSystemUser = true;
-      group = "orangfs";
-    };
+    users.users.orangefs.isSystemUser = true;
     users.groups.orangefs = {};
 
     # To format the file system the config file is needed.

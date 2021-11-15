@@ -36,14 +36,6 @@ in
         `<nixpkgs/nixos/modules/virtualisation/google-compute-image.nix>`.
       '';
     };
-
-    virtualisation.googleComputeImage.compressionLevel = mkOption {
-      type = types.int;
-      default = 6;
-      description = ''
-        GZIP compression level of the resulting disk image (1-9).
-      '';
-    };
   };
 
   #### implementation
@@ -55,8 +47,7 @@ in
         PATH=$PATH:${with pkgs; lib.makeBinPath [ gnutar gzip ]}
         pushd $out
         mv $diskImage disk.raw
-        tar -Sc disk.raw | gzip -${toString cfg.compressionLevel} > \
-          nixos-image-${config.system.nixos.label}-${pkgs.stdenv.hostPlatform.system}.raw.tar.gz
+        tar -Szcf nixos-image-${config.system.nixos.label}-${pkgs.stdenv.hostPlatform.system}.raw.tar.gz disk.raw
         rm $out/disk.raw
         popd
       '';

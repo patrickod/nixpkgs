@@ -34,6 +34,7 @@ in
 
           For example "ops" will resolve "vm.ops".
         '';
+        example = "ops";
         default = "ops";
       };
 

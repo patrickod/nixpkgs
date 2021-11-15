@@ -34,7 +34,8 @@ in
       package = mkOption {
         type = types.nullOr types.package;
         default = config.boot.kernelPackages.prl-tools;
-        defaultText = literalExpression "config.boot.kernelPackages.prl-tools";
+        defaultText = "config.boot.kernelPackages.prl-tools";
+        example = literalExample "config.boot.kernelPackages.prl-tools";
         description = ''
           Defines which package to use for prl-tools. Override to change the version.
         '';

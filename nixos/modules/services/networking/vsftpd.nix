@@ -159,7 +159,7 @@ in
       userlistFile = mkOption {
         type = types.path;
         default = pkgs.writeText "userlist" (concatMapStrings (x: "${x}\n") cfg.userlist);
-        defaultText = literalExpression ''pkgs.writeText "userlist" (concatMapStrings (x: "''${x}\n") cfg.userlist)'';
+        defaultText = "pkgs.writeText \"userlist\" (concatMapStrings (x: \"\${x}\n\") cfg.userlist)";
         description = ''
           Newline separated list of names to be allowed/denied if <option>userlistEnable</option>
           is <literal>true</literal>. Meaning see <option>userlistDeny</option>.
@@ -282,8 +282,7 @@ in
 
     users.users = {
       "vsftpd" = {
-        group = "vsftpd";
-        isSystemUser = true;
+        uid = config.ids.uids.vsftpd;
         description = "VSFTPD user";
         home = if cfg.localRoot != null
                then cfg.localRoot # <= Necessary for virtual users.
@@ -298,7 +297,6 @@ in
         };
     };
 
-    users.groups.vsftpd = {};
     users.groups.ftp.gid = config.ids.gids.ftp;
 
     # If you really have to access root via FTP use mkOverride or userlistDeny

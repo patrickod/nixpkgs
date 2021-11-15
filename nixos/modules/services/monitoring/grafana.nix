@@ -6,8 +6,6 @@ let
   cfg = config.services.grafana;
   opt = options.services.grafana;
   declarativePlugins = pkgs.linkFarm "grafana-plugins" (builtins.map (pkg: { name = pkg.pname; path = pkg; }) cfg.declarativePlugins);
-  useMysql = cfg.database.type == "mysql";
-  usePostgresql = cfg.database.type == "postgres";
 
   envOptions = {
     PATHS_DATA = cfg.dataDir;
@@ -96,7 +94,7 @@ let
         description = "Name of the datasource. Required.";
       };
       type = mkOption {
-        type = types.str;
+        type = types.enum ["graphite" "prometheus" "cloudwatch" "elasticsearch" "influxdb" "opentsdb" "mysql" "mssql" "postgres" "loki"];
         description = "Datasource type. Required.";
       };
       access = mkOption {
@@ -294,7 +292,7 @@ in {
     port = mkOption {
       description = "Listening port.";
       default = 3000;
-      type = types.port;
+      type = types.int;
     };
 
     socket = mkOption {
@@ -330,26 +328,20 @@ in {
     staticRootPath = mkOption {
       description = "Root path for static assets.";
       default = "${cfg.package}/share/grafana/public";
-      defaultText = literalExpression ''"''${package}/share/grafana/public"'';
       type = types.str;
     };
 
     package = mkOption {
       description = "Package to use.";
       default = pkgs.grafana;
-      defaultText = literalExpression "pkgs.grafana";
+      defaultText = "pkgs.grafana";
       type = types.package;
     };
-
     declarativePlugins = mkOption {
       type = with types; nullOr (listOf path);
       default = null;
       description = "If non-null, then a list of packages containing Grafana plugins to install. If set, plugins cannot be manually installed.";
-      example = literalExpression "with pkgs.grafanaPlugins; [ grafana-piechart-panel ]";
-      # Make sure each plugin is added only once; otherwise building
-      # the link farm fails, since the same path is added multiple
-      # times.
-      apply = x: if isList x then lib.unique x else x;
+      example = literalExample "with pkgs.grafanaPlugins; [ grafana-piechart-panel ]";
     };
 
     dataDir = mkOption {
@@ -638,33 +630,25 @@ in {
     systemd.services.grafana = {
       description = "Grafana Service Daemon";
       wantedBy = ["multi-user.target"];
-      after = ["networking.target"] ++ lib.optional usePostgresql "postgresql.service" ++ lib.optional useMysql "mysql.service";
+      after = ["networking.target"];
       environment = {
         QT_QPA_PLATFORM = "offscreen";
       } // mapAttrs' (n: v: nameValuePair "GF_${n}" (toString v)) envOptions;
       script = ''
-        set -o errexit -o pipefail -o nounset -o errtrace
-        shopt -s inherit_errexit
-
         ${optionalString (cfg.auth.google.clientSecretFile != null) ''
-          GF_AUTH_GOOGLE_CLIENT_SECRET="$(<${escapeShellArg cfg.auth.google.clientSecretFile})"
-          export GF_AUTH_GOOGLE_CLIENT_SECRET
+          export GF_AUTH_GOOGLE_CLIENT_SECRET="$(cat ${escapeShellArg cfg.auth.google.clientSecretFile})"
         ''}
         ${optionalString (cfg.database.passwordFile != null) ''
-          GF_DATABASE_PASSWORD="$(<${escapeShellArg cfg.database.passwordFile})"
-          export GF_DATABASE_PASSWORD
+          export GF_DATABASE_PASSWORD="$(cat ${escapeShellArg cfg.database.passwordFile})"
         ''}
         ${optionalString (cfg.security.adminPasswordFile != null) ''
-          GF_SECURITY_ADMIN_PASSWORD="$(<${escapeShellArg cfg.security.adminPasswordFile})"
-          export GF_SECURITY_ADMIN_PASSWORD
+          export GF_SECURITY_ADMIN_PASSWORD="$(cat ${escapeShellArg cfg.security.adminPasswordFile})"
         ''}
         ${optionalString (cfg.security.secretKeyFile != null) ''
-          GF_SECURITY_SECRET_KEY="$(<${escapeShellArg cfg.security.secretKeyFile})"
-          export GF_SECURITY_SECRET_KEY
+          export GF_SECURITY_SECRET_KEY="$(cat ${escapeShellArg cfg.security.secretKeyFile})"
         ''}
         ${optionalString (cfg.smtp.passwordFile != null) ''
-          GF_SMTP_PASSWORD="$(<${escapeShellArg cfg.smtp.passwordFile})"
-          export GF_SMTP_PASSWORD
+          export GF_SMTP_PASSWORD="$(cat ${escapeShellArg cfg.smtp.passwordFile})"
         ''}
         ${optionalString cfg.provision.enable ''
           export GF_PATHS_PROVISIONING=${provisionConfDir};
@@ -676,33 +660,6 @@ in {
         User = "grafana";
         RuntimeDirectory = "grafana";
         RuntimeDirectoryMode = "0755";
-        # Hardening
-        AmbientCapabilities = lib.mkIf (cfg.port < 1024) [ "CAP_NET_BIND_SERVICE" ];
-        CapabilityBoundingSet = if (cfg.port < 1024) then [ "CAP_NET_BIND_SERVICE" ] else [ "" ];
-        DeviceAllow = [ "" ];
-        LockPersonality = true;
-        NoNewPrivileges = true;
-        PrivateDevices = true;
-        PrivateTmp = true;
-        ProtectClock = true;
-        ProtectControlGroups = true;
-        ProtectHome = true;
-        ProtectHostname = true;
-        ProtectKernelLogs = true;
-        ProtectKernelModules = true;
-        ProtectKernelTunables = true;
-        ProtectProc = "invisible";
-        ProtectSystem = "full";
-        RemoveIPC = true;
-        RestrictAddressFamilies = [ "AF_INET" "AF_INET6" "AF_UNIX" ];
-        RestrictNamespaces = true;
-        RestrictRealtime = true;
-        RestrictSUIDSGID = true;
-        SystemCallArchitectures = "native";
-        # Upstream grafana is not setting SystemCallFilter for compatibility
-        # reasons, see https://github.com/grafana/grafana/pull/40176
-        SystemCallFilter = [ "@system-service" "~@privileged" "~@resources" ];
-        UMask = "0027";
       };
       preStart = ''
         ln -fs ${cfg.package}/share/grafana/conf ${cfg.dataDir}

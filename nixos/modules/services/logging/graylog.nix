@@ -38,13 +38,14 @@ in
       package = mkOption {
         type = types.package;
         default = pkgs.graylog;
-        defaultText = literalExpression "pkgs.graylog";
+        defaultText = "pkgs.graylog";
         description = "Graylog package to use.";
       };
 
       user = mkOption {
         type = types.str;
         default = "graylog";
+        example = literalExample "graylog";
         description = "User account under which graylog runs";
       };
 
@@ -89,7 +90,7 @@ in
 
       elasticsearchHosts = mkOption {
         type = types.listOf types.str;
-        example = literalExpression ''[ "http://node1:9200" "http://user:password@node2:19200" ]'';
+        example = literalExample ''[ "http://node1:9200" "http://user:password@node2:19200" ]'';
         description = "List of valid URIs of the http ports of your elastic nodes. If one or more of your elasticsearch hosts require authentication, include the credentials in each node URI that requires authentication";
       };
 
@@ -127,12 +128,10 @@ in
 
     users.users = mkIf (cfg.user == "graylog") {
       graylog = {
-        isSystemUser = true;
-        group = "graylog";
+        uid = config.ids.uids.graylog;
         description = "Graylog server daemon user";
       };
     };
-    users.groups = mkIf (cfg.user == "graylog") {};
 
     systemd.tmpfiles.rules = [
       "d '${cfg.messageJournalDir}' - ${cfg.user} - - -"

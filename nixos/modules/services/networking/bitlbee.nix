@@ -16,6 +16,7 @@ let
     ''
     [settings]
     RunMode = Daemon
+    User = bitlbee
     ConfigDir = ${cfg.configDir}
     DaemonInterface = ${cfg.interface}
     DaemonPort = ${toString cfg.portNumber}
@@ -108,7 +109,7 @@ in
       plugins = mkOption {
         type = types.listOf types.package;
         default = [];
-        example = literalExpression "[ pkgs.bitlbee-facebook ]";
+        example = literalExample "[ pkgs.bitlbee-facebook ]";
         description = ''
           The list of bitlbee plugins to install.
         '';
@@ -117,7 +118,7 @@ in
       libpurple_plugins = mkOption {
         type = types.listOf types.package;
         default = [];
-        example = literalExpression "[ pkgs.purple-matrix ]";
+        example = literalExample "[ pkgs.purple-matrix ]";
         description = ''
           The list of libpurple plugins to install.
         '';
@@ -165,17 +166,24 @@ in
 
   config =  mkMerge [
     (mkIf config.services.bitlbee.enable {
+      users.users.bitlbee = {
+        uid = bitlbeeUid;
+        description = "BitlBee user";
+        home = "/var/lib/bitlbee";
+        createHome = true;
+      };
+
+      users.groups.bitlbee = {
+        gid = config.ids.gids.bitlbee;
+      };
+
       systemd.services.bitlbee = {
         environment.PURPLE_PLUGIN_PATH = purple_plugin_path;
         description = "BitlBee IRC to other chat networks gateway";
         after = [ "network.target" ];
         wantedBy = [ "multi-user.target" ];
-
-        serviceConfig = {
-          DynamicUser = true;
-          StateDirectory = "bitlbee";
-          ExecStart = "${bitlbeePkg}/sbin/bitlbee -F -n -c ${bitlbeeConfig}";
-        };
+        serviceConfig.User = "bitlbee";
+        serviceConfig.ExecStart = "${bitlbeePkg}/sbin/bitlbee -F -n -c ${bitlbeeConfig}";
       };
 
       environment.systemPackages = [ bitlbeePkg ];

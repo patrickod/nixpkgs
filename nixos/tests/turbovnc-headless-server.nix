@@ -57,7 +57,6 @@ import ./make-test-python.nix ({ pkgs, lib, ... }: {
             else:
                 if check_success():
                     return
-            import time
             time.sleep(retry_sleep)
 
         if not check_success():
@@ -97,7 +96,7 @@ import ./make-test-python.nix ({ pkgs, lib, ... }: {
         )
         machine.execute(
             # Note trailing & for backgrounding.
-            f"({xvnc_command} | tee /tmp/Xvnc.stdout) 3>&1 1>&2 2>&3 | tee /tmp/Xvnc.stderr >&2 &",
+            f"({xvnc_command} | tee /tmp/Xvnc.stdout) 3>&1 1>&2 2>&3 | tee /tmp/Xvnc.stderr &",
         )
 
 
@@ -119,7 +118,7 @@ import ./make-test-python.nix ({ pkgs, lib, ... }: {
     def test_glxgears_failing_with_bad_driver_path():
         machine.execute(
             # Note trailing & for backgrounding.
-            "(env DISPLAY=:0 LIBGL_DRIVERS_PATH=/nonexistent glxgears -info | tee /tmp/glxgears-should-fail.stdout) 3>&1 1>&2 2>&3 | tee /tmp/glxgears-should-fail.stderr >&2 &"
+            "(env DISPLAY=:0 LIBGL_DRIVERS_PATH=/nonexistent glxgears -info | tee /tmp/glxgears-should-fail.stdout) 3>&1 1>&2 2>&3 | tee /tmp/glxgears-should-fail.stderr &"
         )
         machine.wait_until_succeeds("test -f /tmp/glxgears-should-fail.stderr")
         wait_until_terminated_or_succeeds(
@@ -136,7 +135,7 @@ import ./make-test-python.nix ({ pkgs, lib, ... }: {
     def test_glxgears_prints_renderer():
         machine.execute(
             # Note trailing & for backgrounding.
-            "(env DISPLAY=:0 glxgears -info | tee /tmp/glxgears.stdout) 3>&1 1>&2 2>&3 | tee /tmp/glxgears.stderr >&2 &"
+            "(env DISPLAY=:0 glxgears -info | tee /tmp/glxgears.stdout) 3>&1 1>&2 2>&3 | tee /tmp/glxgears.stderr &"
         )
         machine.wait_until_succeeds("test -f /tmp/glxgears.stderr")
         wait_until_terminated_or_succeeds(

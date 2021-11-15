@@ -11,142 +11,24 @@ let
     auth_unix_rw = "polkit"
     ${cfg.extraConfig}
   '';
-  ovmfFilePrefix = if pkgs.stdenv.isAarch64 then "AAVMF" else "OVMF";
   qemuConfigFile = pkgs.writeText "qemu.conf" ''
-    ${optionalString cfg.qemu.ovmf.enable ''
-      nvram = [ "/run/libvirt/nix-ovmf/${ovmfFilePrefix}_CODE.fd:/run/libvirt/nix-ovmf/${ovmfFilePrefix}_VARS.fd" ]
+    ${optionalString cfg.qemuOvmf ''
+      nvram = ["/run/libvirt/nix-ovmf/OVMF_CODE.fd:/run/libvirt/nix-ovmf/OVMF_VARS.fd"]
     ''}
-    ${optionalString (!cfg.qemu.runAsRoot) ''
+    ${optionalString (!cfg.qemuRunAsRoot) ''
       user = "qemu-libvirtd"
       group = "qemu-libvirtd"
     ''}
-    ${cfg.qemu.verbatimConfig}
+    ${cfg.qemuVerbatimConfig}
   '';
   dirName = "libvirt";
   subDirs = list: [ dirName ] ++ map (e: "${dirName}/${e}") list;
 
-  ovmfModule = types.submodule {
-    options = {
-      enable = mkOption {
-        type = types.bool;
-        default = true;
-        description = ''
-          Allows libvirtd to take advantage of OVMF when creating new
-          QEMU VMs with UEFI boot.
-        '';
-      };
-
-      package = mkOption {
-        type = types.package;
-        default = pkgs.OVMF;
-        defaultText = literalExpression "pkgs.OVMF";
-        example = literalExpression "pkgs.OVMFFull";
-        description = ''
-          OVMF package to use.
-        '';
-      };
-    };
-  };
-
-  swtpmModule = types.submodule {
-    options = {
-      enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = ''
-          Allows libvirtd to use swtpm to create an emulated TPM.
-        '';
-      };
-
-      package = mkOption {
-        type = types.package;
-        default = pkgs.swtpm;
-        defaultText = literalExpression "pkgs.swtpm";
-        description = ''
-          swtpm package to use.
-        '';
-      };
-    };
-  };
-
-  qemuModule = types.submodule {
-    options = {
-      package = mkOption {
-        type = types.package;
-        default = pkgs.qemu;
-        defaultText = literalExpression "pkgs.qemu";
-        description = ''
-          Qemu package to use with libvirt.
-          `pkgs.qemu` can emulate alien architectures (e.g. aarch64 on x86)
-          `pkgs.qemu_kvm` saves disk space allowing to emulate only host architectures.
-        '';
-      };
-
-      runAsRoot = mkOption {
-        type = types.bool;
-        default = true;
-        description = ''
-          If true,  libvirtd runs qemu as root.
-          If false, libvirtd runs qemu as unprivileged user qemu-libvirtd.
-          Changing this option to false may cause file permission issues
-          for existing guests. To fix these, manually change ownership
-          of affected files in /var/lib/libvirt/qemu to qemu-libvirtd.
-        '';
-      };
-
-      verbatimConfig = mkOption {
-        type = types.lines;
-        default = ''
-          namespaces = []
-        '';
-        description = ''
-          Contents written to the qemu configuration file, qemu.conf.
-          Make sure to include a proper namespace configuration when
-          supplying custom configuration.
-        '';
-      };
-
-      ovmf = mkOption {
-        type = ovmfModule;
-        default = { };
-        description = ''
-          QEMU's OVMF options.
-        '';
-      };
-
-      swtpm = mkOption {
-        type = swtpmModule;
-        default = { };
-        description = ''
-          QEMU's swtpm options.
-        '';
-      };
-    };
-  };
-in
-{
+in {
 
   imports = [
     (mkRemovedOptionModule [ "virtualisation" "libvirtd" "enableKVM" ]
-      "Set the option `virtualisation.libvirtd.qemu.package' instead.")
-    (mkRenamedOptionModule
-      [ "virtualisation" "libvirtd" "qemuPackage" ]
-      [ "virtualisation" "libvirtd" "qemu" "package" ])
-    (mkRenamedOptionModule
-      [ "virtualisation" "libvirtd" "qemuRunAsRoot" ]
-      [ "virtualisation" "libvirtd" "qemu" "runAsRoot" ])
-    (mkRenamedOptionModule
-      [ "virtualisation" "libvirtd" "qemuVerbatimConfig" ]
-      [ "virtualisation" "libvirtd" "qemu" "verbatimConfig" ])
-    (mkRenamedOptionModule
-      [ "virtualisation" "libvirtd" "qemuOvmf" ]
-      [ "virtualisation" "libvirtd" "qemu" "ovmf" "enable" ])
-    (mkRenamedOptionModule
-      [ "virtualisation" "libvirtd" "qemuOvmfPackage" ]
-      [ "virtualisation" "libvirtd" "qemu" "ovmf" "package" ])
-    (mkRenamedOptionModule
-      [ "virtualisation" "libvirtd" "qemuSwtpm" ]
-      [ "virtualisation" "libvirtd" "qemu" "swtpm" "enable" ])
+      "Set the option `virtualisation.libvirtd.qemuPackage' instead.")
   ];
 
   ###### interface
@@ -167,9 +49,19 @@ in
     package = mkOption {
       type = types.package;
       default = pkgs.libvirt;
-      defaultText = literalExpression "pkgs.libvirt";
+      defaultText = "pkgs.libvirt";
       description = ''
         libvirt package to use.
+      '';
+    };
+
+    qemuPackage = mkOption {
+      type = types.package;
+      default = pkgs.qemu;
+      description = ''
+        Qemu package to use with libvirt.
+        `pkgs.qemu` can emulate alien architectures (e.g. aarch64 on x86)
+        `pkgs.qemu_kvm` saves disk space allowing to emulate only host architectures.
       '';
     };
 
@@ -179,6 +71,39 @@ in
       description = ''
         Extra contents appended to the libvirtd configuration file,
         libvirtd.conf.
+      '';
+    };
+
+    qemuRunAsRoot = mkOption {
+      type = types.bool;
+      default = true;
+      description = ''
+        If true,  libvirtd runs qemu as root.
+        If false, libvirtd runs qemu as unprivileged user qemu-libvirtd.
+        Changing this option to false may cause file permission issues
+        for existing guests. To fix these, manually change ownership
+        of affected files in /var/lib/libvirt/qemu to qemu-libvirtd.
+      '';
+    };
+
+    qemuVerbatimConfig = mkOption {
+      type = types.lines;
+      default = ''
+        namespaces = []
+      '';
+      description = ''
+        Contents written to the qemu configuration file, qemu.conf.
+        Make sure to include a proper namespace configuration when
+        supplying custom configuration.
+      '';
+    };
+
+    qemuOvmf = mkOption {
+      type = types.bool;
+      default = true;
+      description = ''
+        Allows libvirtd to take advantage of OVMF when creating new
+        QEMU VMs with UEFI boot.
       '';
     };
 
@@ -192,7 +117,7 @@ in
     };
 
     onBoot = mkOption {
-      type = types.enum [ "start" "ignore" ];
+      type = types.enum ["start" "ignore" ];
       default = "start";
       description = ''
         Specifies the action to be done to / on the guests when the host boots.
@@ -204,7 +129,7 @@ in
     };
 
     onShutdown = mkOption {
-      type = types.enum [ "shutdown" "suspend" ];
+      type = types.enum ["shutdown" "suspend" ];
       default = "suspend";
       description = ''
         When shutting down / restarting the host what method should
@@ -222,30 +147,12 @@ in
       '';
     };
 
-    qemu = mkOption {
-      type = qemuModule;
-      default = { };
-      description = ''
-        QEMU related options.
-      '';
-    };
   };
 
 
   ###### implementation
 
   config = mkIf cfg.enable {
-
-    assertions = [
-      {
-        assertion = config.security.polkit.enable;
-        message = "The libvirtd module currently requires Polkit to be enabled ('security.polkit.enable = true').";
-      }
-      {
-        assertion = builtins.elem "fd" cfg.qemu.ovmf.package.outputs;
-        message = "The option 'virtualisation.libvirtd.qemuOvmfPackage' needs a package that has an 'fd' output.";
-      }
-    ];
 
     environment = {
       # this file is expected in /etc/qemu and not sysconfdir (/var/lib)
@@ -268,9 +175,6 @@ in
     };
 
     security.wrappers.qemu-bridge-helper = {
-      setuid = true;
-      owner = "root";
-      group = "root";
       source = "/run/${dirName}/nix-helpers/qemu-bridge-helper";
     };
 
@@ -293,17 +197,17 @@ in
         cp -f ${qemuConfigFile} /var/lib/${dirName}/qemu.conf
 
         # stable (not GC'able as in /nix/store) paths for using in <emulator> section of xml configs
-        for emulator in ${cfg.package}/libexec/libvirt_lxc ${cfg.qemu.package}/bin/qemu-kvm ${cfg.qemu.package}/bin/qemu-system-*; do
+        for emulator in ${cfg.package}/libexec/libvirt_lxc ${cfg.qemuPackage}/bin/qemu-kvm ${cfg.qemuPackage}/bin/qemu-system-*; do
           ln -s --force "$emulator" /run/${dirName}/nix-emulators/
         done
 
         for helper in libexec/qemu-bridge-helper bin/qemu-pr-helper; do
-          ln -s --force ${cfg.qemu.package}/$helper /run/${dirName}/nix-helpers/
+          ln -s --force ${cfg.qemuPackage}/$helper /run/${dirName}/nix-helpers/
         done
 
-        ${optionalString cfg.qemu.ovmf.enable ''
-          ln -s --force ${cfg.qemu.ovmf.package.fd}/FV/${ovmfFilePrefix}_CODE.fd /run/${dirName}/nix-ovmf/
-          ln -s --force ${cfg.qemu.ovmf.package.fd}/FV/${ovmfFilePrefix}_VARS.fd /run/${dirName}/nix-ovmf/
+        ${optionalString cfg.qemuOvmf ''
+          ln -s --force ${pkgs.OVMF.fd}/FV/OVMF_CODE.fd /run/${dirName}/nix-ovmf/
+          ln -s --force ${pkgs.OVMF.fd}/FV/OVMF_VARS.fd /run/${dirName}/nix-ovmf/
         ''}
       '';
 
@@ -319,20 +223,15 @@ in
     systemd.services.libvirtd = {
       requires = [ "libvirtd-config.service" ];
       after = [ "libvirtd-config.service" ]
-        ++ optional vswitch.enable "ovs-vswitchd.service";
+              ++ optional vswitch.enable "ovs-vswitchd.service";
 
       environment.LIBVIRTD_ARGS = escapeShellArgs (
-        [
-          "--config"
-          configFile
-          "--timeout"
-          "120" # from ${libvirt}/var/lib/sysconfig/libvirtd
-        ] ++ cfg.extraOptions
-      );
+        [ "--config" configFile
+          "--timeout" "120"     # from ${libvirt}/var/lib/sysconfig/libvirtd
+        ] ++ cfg.extraOptions);
 
-      path = [ cfg.qemu.package ] # libvirtd requires qemu-img to manage disk images
-        ++ optional vswitch.enable vswitch.package
-        ++ optional cfg.qemu.swtpm.enable cfg.qemu.swtpm.package;
+      path = [ cfg.qemuPackage ] # libvirtd requires qemu-img to manage disk images
+             ++ optional vswitch.enable vswitch.package;
 
       serviceConfig = {
         Type = "notify";

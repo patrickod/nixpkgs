@@ -1,9 +1,10 @@
 use strict;
-use warnings;
 use File::Path qw(make_path);
 use File::Slurp;
-use Getopt::Long;
 use JSON;
+
+make_path("/var/lib/nixos", { mode => 0755 });
+
 
 # Keep track of deleted uids and gids.
 my $uidMapFile = "/var/lib/nixos/uid-map";
@@ -12,19 +13,12 @@ my $uidMap = -e $uidMapFile ? decode_json(read_file($uidMapFile)) : {};
 my $gidMapFile = "/var/lib/nixos/gid-map";
 my $gidMap = -e $gidMapFile ? decode_json(read_file($gidMapFile)) : {};
 
-my $is_dry = ($ENV{'NIXOS_ACTION'} // "") eq "dry-activate";
-GetOptions("dry-activate" => \$is_dry);
-make_path("/var/lib/nixos", { mode => 0755 }) unless $is_dry;
 
 sub updateFile {
     my ($path, $contents, $perms) = @_;
-    return if $is_dry;
     write_file($path, { atomic => 1, binmode => ':utf8', perms => $perms // 0644 }, $contents) or die;
 }
 
-sub nscdInvalidate {
-    system("nscd", "--invalidate", $_[0]) unless $is_dry;
-}
 
 sub hashPassword {
     my ($password) = @_;
@@ -32,14 +26,6 @@ sub hashPassword {
     my @chars = ('.', '/', 0..9, 'A'..'Z', 'a'..'z');
     $salt .= $chars[rand 64] for (1..8);
     return crypt($password, '$6$' . $salt . '$');
-}
-
-sub dry_print {
-    if ($is_dry) {
-        print STDERR ("$_[1] $_[2]\n")
-    } else {
-        print STDERR ("$_[0] $_[2]\n")
-    }
 }
 
 
@@ -65,7 +51,7 @@ sub allocGid {
     my ($name) = @_;
     my $prevGid = $gidMap->{$name};
     if (defined $prevGid && !defined $gidsUsed{$prevGid}) {
-        dry_print("reviving", "would revive", "group '$name' with GID $prevGid");
+        print STDERR "reviving group '$name' with GID $prevGid\n";
         $gidsUsed{$prevGid} = 1;
         return $prevGid;
     }
@@ -77,14 +63,15 @@ sub allocUid {
     my ($min, $max, $up) = $isSystemUser ? (400, 999, 0) : (1000, 29999, 1);
     my $prevUid = $uidMap->{$name};
     if (defined $prevUid && $prevUid >= $min && $prevUid <= $max && !defined $uidsUsed{$prevUid}) {
-        dry_print("reviving", "would revive", "user '$name' with UID $prevUid");
+        print STDERR "reviving user '$name' with UID $prevUid\n";
         $uidsUsed{$prevUid} = 1;
         return $prevUid;
     }
     return allocId(\%uidsUsed, \%uidsPrevUsed, $min, $max, $up, sub { my ($uid) = @_; getpwuid($uid) });
 }
 
-# Read the declared users/groups
+
+# Read the declared users/groups.
 my $spec = decode_json(read_file($ARGV[0]));
 
 # Don't allocate UIDs/GIDs that are manually assigned.
@@ -147,7 +134,7 @@ foreach my $g (@{$spec->{groups}}) {
     if (defined $existing) {
         $g->{gid} = $existing->{gid} if !defined $g->{gid};
         if ($g->{gid} != $existing->{gid}) {
-            dry_print("warning: not applying", "warning: would not apply", "GID change of group ‘$name’ ($existing->{gid} -> $g->{gid})");
+            warn "warning: not applying GID change of group ‘$name’ ($existing->{gid} -> $g->{gid})\n";
             $g->{gid} = $existing->{gid};
         }
         $g->{password} = $existing->{password}; # do we want this?
@@ -176,7 +163,7 @@ foreach my $name (keys %groupsCur) {
     my $g = $groupsCur{$name};
     next if defined $groupsOut{$name};
     if (!$spec->{mutableUsers} || defined $declGroups{$name}) {
-        dry_print("removing group", "would remove group", "‘$name’");
+        print STDERR "removing group ‘$name’\n";
     } else {
         $groupsOut{$name} = $g;
     }
@@ -188,7 +175,7 @@ my @lines = map { join(":", $_->{name}, $_->{password}, $_->{gid}, $_->{members}
     (sort { $a->{gid} <=> $b->{gid} } values(%groupsOut));
 updateFile($gidMapFile, to_json($gidMap));
 updateFile("/etc/group", \@lines);
-nscdInvalidate("group");
+system("nscd --invalidate group");
 
 # Generate a new /etc/passwd containing the declared users.
 my %usersOut;
@@ -209,7 +196,7 @@ foreach my $u (@{$spec->{users}}) {
     if (defined $existing) {
         $u->{uid} = $existing->{uid} if !defined $u->{uid};
         if ($u->{uid} != $existing->{uid}) {
-            dry_print("warning: not applying", "warning: would not apply", "UID change of user ‘$name’ ($existing->{uid} -> $u->{uid})");
+            warn "warning: not applying UID change of user ‘$name’ ($existing->{uid} -> $u->{uid})\n";
             $u->{uid} = $existing->{uid};
         }
     } else {
@@ -224,7 +211,7 @@ foreach my $u (@{$spec->{users}}) {
 
     # Ensure home directory incl. ownership and permissions.
     if ($u->{createHome}) {
-        make_path($u->{home}, { mode => 0700 }) if ! -e $u->{home} and ! $is_dry;
+        make_path($u->{home}, { mode => 0700 }) if ! -e $u->{home};
         chown $u->{uid}, $u->{gid}, $u->{home};
         chmod 0700, $u->{home};
     }
@@ -263,7 +250,7 @@ foreach my $name (keys %usersCur) {
     my $u = $usersCur{$name};
     next if defined $usersOut{$name};
     if (!$spec->{mutableUsers} || defined $declUsers{$name}) {
-        dry_print("removing user", "would remove user", "‘$name’");
+        print STDERR "removing user ‘$name’\n";
     } else {
         $usersOut{$name} = $u;
     }
@@ -274,7 +261,7 @@ foreach my $name (keys %usersCur) {
     (sort { $a->{uid} <=> $b->{uid} } (values %usersOut));
 updateFile($uidMapFile, to_json($uidMap));
 updateFile("/etc/passwd", \@lines);
-nscdInvalidate("passwd");
+system("nscd --invalidate passwd");
 
 
 # Rewrite /etc/shadow to add new accounts or remove dead ones.
@@ -306,7 +293,7 @@ updateFile("/etc/shadow", \@shadowNew, 0640);
     my $uid = getpwnam "root";
     my $gid = getgrnam "shadow";
     my $path = "/etc/shadow";
-    (chown($uid, $gid, $path) || die "Failed to change ownership of $path: $!") unless $is_dry;
+    chown($uid, $gid, $path) || die "Failed to change ownership of $path: $!";
 }
 
 # Rewrite /etc/subuid & /etc/subgid to include default container mappings

@@ -83,18 +83,8 @@ in
     security.pam.services.polkit-1 = {};
 
     security.wrappers = {
-      pkexec =
-        { setuid = true;
-          owner = "root";
-          group = "root";
-          source = "${pkgs.polkit.bin}/bin/pkexec";
-        };
-      polkit-agent-helper-1 =
-        { setuid = true;
-          owner = "root";
-          group = "root";
-          source = "${pkgs.polkit.out}/lib/polkit-1/polkit-agent-helper-1";
-        };
+      pkexec.source = "${pkgs.polkit.bin}/bin/pkexec";
+      polkit-agent-helper-1.source = "${pkgs.polkit.out}/lib/polkit-1/polkit-agent-helper-1";
     };
 
     systemd.tmpfiles.rules = [
@@ -106,10 +96,8 @@ in
     users.users.polkituser = {
       description = "PolKit daemon";
       uid = config.ids.uids.polkituser;
-      group = "polkituser";
     };
 
-    users.groups.polkituser = {};
   };
 
 }

@@ -15,7 +15,7 @@ in {
 
       package = mkOption {
         default = pkgs.telegraf;
-        defaultText = literalExpression "pkgs.telegraf";
+        defaultText = "pkgs.telegraf";
         description = "Which telegraf derivation to use";
         type = types.package;
       };
@@ -23,11 +23,12 @@ in {
       environmentFiles = mkOption {
         type = types.listOf types.path;
         default = [];
-        example = [ "/run/keys/telegraf.env" ];
+        example = "/run/keys/telegraf.env";
         description = ''
-          File to load as environment file. Environment variables from this file
-          will be interpolated into the config file using envsubst with this
-          syntax: <literal>$ENVIRONMENT</literal> or <literal>''${VARIABLE}</literal>.
+          File to load as environment file. Environment variables
+          from this file will be interpolated into the config file
+          using envsubst with this syntax:
+          <literal>$ENVIRONMENT ''${VARIABLE}</literal>
           This is useful to avoid putting secrets into the nix store.
         '';
       };
@@ -72,7 +73,6 @@ in {
         ExecReload="${pkgs.coreutils}/bin/kill -HUP $MAINPID";
         RuntimeDirectory = "telegraf";
         User = "telegraf";
-        Group = "telegraf";
         Restart = "on-failure";
         # for ping probes
         AmbientCapabilities = [ "CAP_NET_RAW" ];
@@ -81,10 +81,7 @@ in {
 
     users.users.telegraf = {
       uid = config.ids.uids.telegraf;
-      group = "telegraf";
       description = "telegraf daemon user";
     };
-
-    users.groups.telegraf = {};
   };
 }

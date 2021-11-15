@@ -59,7 +59,7 @@ let
         phpPackage = mkOption {
           type = types.package;
           default = cfg.phpPackage;
-          defaultText = literalExpression "config.services.phpfpm.phpPackage";
+          defaultText = "config.services.phpfpm.phpPackage";
           description = ''
             The PHP package to use for running this PHP-FPM pool.
           '';
@@ -78,7 +78,7 @@ let
           description = ''
             Environment variables used for this PHP-FPM pool.
           '';
-          example = literalExpression ''
+          example = literalExample ''
             {
               HOSTNAME = "$HOSTNAME";
               TMP = "/tmp";
@@ -107,7 +107,7 @@ let
             for details. Note that settings names must be enclosed in quotes (e.g.
             <literal>"pm.max_children"</literal> instead of <literal>pm.max_children</literal>).
           '';
-          example = literalExpression ''
+          example = literalExample ''
             {
               "pm" = "dynamic";
               "pm.max_children" = 75;
@@ -179,7 +179,7 @@ in {
       phpPackage = mkOption {
         type = types.package;
         default = pkgs.php;
-        defaultText = literalExpression "pkgs.php";
+        defaultText = "pkgs.php";
         description = ''
           The PHP package to use for running the PHP-FPM service.
         '';
@@ -200,7 +200,7 @@ in {
       pools = mkOption {
         type = types.attrsOf (types.submodule poolOpts);
         default = {};
-        example = literalExpression ''
+        example = literalExample ''
          {
            mypool = {
              user = "php";

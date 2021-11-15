@@ -13,7 +13,7 @@ let
   # !!! fix this
   children = mapAttrs (childName: childConfig:
       (import ../../../lib/eval-config.nix {
-        inherit lib baseModules specialArgs;
+        inherit baseModules specialArgs;
         system = config.nixpkgs.initialSystem;
         modules =
            (optionals childConfig.inheritParentConfig modules)
@@ -56,13 +56,9 @@ let
       ''}
 
       echo "$activationScript" > $out/activate
-      echo "$dryActivationScript" > $out/dry-activate
       substituteInPlace $out/activate --subst-var out
-      substituteInPlace $out/dry-activate --subst-var out
-      chmod u+x $out/activate $out/dry-activate
-      unset activationScript dryActivationScript
-      ${pkgs.stdenv.shell} -n $out/activate
-      ${pkgs.stdenv.shell} -n $out/dry-activate
+      chmod u+x $out/activate
+      unset activationScript
 
       cp ${config.system.build.bootStage2} $out/init
       substituteInPlace $out/init --subst-var-by systemConfig $out
@@ -84,13 +80,6 @@ let
       export localeArchive="${config.i18n.glibcLocales}/lib/locale/locale-archive"
       substituteAll ${./switch-to-configuration.pl} $out/bin/switch-to-configuration
       chmod +x $out/bin/switch-to-configuration
-      ${optionalString (pkgs.stdenv.hostPlatform == pkgs.stdenv.buildPlatform) ''
-        if ! output=$($perl/bin/perl -c $out/bin/switch-to-configuration 2>&1); then
-          echo "switch-to-configuration syntax is not valid:"
-          echo "$output"
-          exit 1
-        fi
-      ''}
 
       echo -n "${toString config.system.extraDependencies}" > $out/extra-dependencies
 
@@ -119,7 +108,6 @@ let
       config.system.build.installBootLoader
       or "echo 'Warning: do not know how to make this configuration bootable; please enable a boot loader.' 1>&2; true";
     activationScript = config.system.activationScripts.script;
-    dryActivationScript = config.system.dryActivationScript;
     nixosLabel = config.system.nixos.label;
 
     configurationName = config.boot.loader.grub.configurationName;
@@ -137,7 +125,7 @@ let
     else showWarnings config.warnings baseSystem;
 
   # Replace runtime dependencies
-  system = foldr ({ oldDependency, newDependency }: drv:
+  system = fold ({ oldDependency, newDependency }: drv:
       pkgs.replaceDependency { inherit oldDependency newDependency drv; }
     ) baseSystemAssertWarn config.system.replaceRuntimeDependencies;
 
@@ -162,7 +150,7 @@ in
 
     specialisation = mkOption {
       default = {};
-      example = lib.literalExpression "{ fewJobsManyCores.configuration = { nix.buildCores = 0; nix.maxJobs = 1; }; }";
+      example = lib.literalExample "{ fewJobsManyCores.configuration = { nix.buildCores = 0; nix.maxJobs = 1; }; }";
       description = ''
         Additional configurations to build. If
         <literal>inheritParentConfig</literal> is true, the system
@@ -250,7 +238,7 @@ in
 
     system.replaceRuntimeDependencies = mkOption {
       default = [];
-      example = lib.literalExpression "[ ({ original = pkgs.openssl; replacement = pkgs.callPackage /path/to/openssl { }; }) ]";
+      example = lib.literalExample "[ ({ original = pkgs.openssl; replacement = pkgs.callPackage /path/to/openssl { }; }) ]";
       type = types.listOf (types.submodule (
         { ... }: {
           options.original = mkOption {
@@ -281,11 +269,7 @@ in
         if config.networking.hostName == ""
         then "unnamed"
         else config.networking.hostName;
-      defaultText = literalExpression ''
-        if config.networking.hostName == ""
-        then "unnamed"
-        else config.networking.hostName;
-      '';
+      defaultText = '''networking.hostName' if non empty else "unnamed"'';
       description = ''
         The name of the system used in the <option>system.build.toplevel</option> derivation.
         </para><para>

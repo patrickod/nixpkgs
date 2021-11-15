@@ -7,7 +7,7 @@ let
 
   uwsgi = pkgs.uwsgi.override { plugins = [ "python3" ]; };
   python = uwsgi.python3;
-  penv = python.withPackages (const [ pkgs.privacyidea ]);
+  penv = python.withPackages (ps: [ ps.privacyidea ]);
   logCfg = pkgs.writeText "privacyidea-log.cfg" ''
     [formatters]
     keys=detail
@@ -169,6 +169,7 @@ in
 
         configFile = mkOption {
           type = types.path;
+          default = "";
           description = ''
             Path to PrivacyIDEA LDAP Proxy configuration (proxy.ini).
           '';
@@ -193,7 +194,7 @@ in
 
     (mkIf cfg.enable {
 
-      environment.systemPackages = [ pkgs.privacyidea ];
+      environment.systemPackages = [ python.pkgs.privacyidea ];
 
       services.postgresql.enable = mkDefault true;
 
@@ -272,7 +273,7 @@ in
     (mkIf cfg.ldap-proxy.enable {
 
       systemd.services.privacyidea-ldap-proxy = let
-        ldap-proxy-env = pkgs.python3.withPackages (ps: [ ps.privacyidea-ldap-proxy ]);
+        ldap-proxy-env = pkgs.python2.withPackages (ps: [ ps.privacyidea-ldap-proxy ]);
       in {
         description = "privacyIDEA LDAP proxy";
         wantedBy = [ "multi-user.target" ];

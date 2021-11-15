@@ -10,7 +10,6 @@ import ./make-test-python.nix ({ pkgs, ... }: {
     ];
 
     services.xserver.enable = true;
-    sound.enable = true;
     environment.systemPackages = [ pkgs.shattered-pixel-dungeon ];
   };
 
@@ -19,7 +18,7 @@ import ./make-test-python.nix ({ pkgs, ... }: {
   testScript =
     ''
       machine.wait_for_x()
-      machine.execute("shattered-pixel-dungeon >&2 &")
+      machine.execute("shattered-pixel-dungeon &")
       machine.wait_for_window(r"Shattered Pixel Dungeon")
       machine.sleep(5)
       if "Enter" not in machine.get_screen_text():

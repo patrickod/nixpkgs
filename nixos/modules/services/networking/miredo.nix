@@ -25,7 +25,7 @@ in
       package = mkOption {
         type = types.package;
         default = pkgs.miredo;
-        defaultText = literalExpression "pkgs.miredo";
+        defaultText = "pkgs.miredo";
         description = ''
           The package to use for the miredo daemon's binary.
         '';

@@ -35,7 +35,7 @@ in
       powerUpCommands = mkOption {
         type = types.lines;
         default = "";
-        example = literalExpression ''
+        example = literalExample ''
           "''${pkgs.hdparm}/sbin/hdparm -B 255 /dev/sda"
         '';
         description =
@@ -49,7 +49,7 @@ in
       powerDownCommands = mkOption {
         type = types.lines;
         default = "";
-        example = literalExpression ''
+        example = literalExample ''
           "''${pkgs.hdparm}/sbin/hdparm -B 255 /dev/sda"
         '';
         description =

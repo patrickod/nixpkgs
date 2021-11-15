@@ -21,11 +21,6 @@ in
 
   config = mkIf cfg.enable {
     environment.systemPackages = [ pkgs.slock ];
-    security.wrappers.slock =
-      { setuid = true;
-        owner = "root";
-        group = "root";
-        source = "${pkgs.slock.out}/bin/slock";
-      };
+    security.wrappers.slock.source = "${pkgs.slock.out}/bin/slock";
   };
 }

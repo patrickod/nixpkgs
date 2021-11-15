@@ -212,11 +212,9 @@ in
 
     users = {
       users.dhcpd = {
-        isSystemUser = true;
-        group = "dhcpd";
+        uid = config.ids.uids.dhcpd;
         description = "DHCP daemon user";
       };
-      groups.dhcpd = {};
     };
 
     systemd.services = dhcpdService "4" cfg4 // dhcpdService "6" cfg6;

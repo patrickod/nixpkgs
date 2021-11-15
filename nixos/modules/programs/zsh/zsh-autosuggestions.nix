@@ -40,7 +40,7 @@ in
       type = with types; attrsOf str;
       default = {};
       description = "Attribute set with additional configuration values";
-      example = literalExpression ''
+      example = literalExample ''
         {
           "ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE" = "20";
         }

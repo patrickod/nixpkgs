@@ -72,7 +72,7 @@ in
         serverSettings = mkOption {
           type = settingsFmt.type;
           default = {};
-          example = literalExpression ''
+          example = literalExample ''
             {
               highWaterMark = 25165824;
               overflowTimeLimit = 30000;
@@ -89,7 +89,7 @@ in
         tunerSettings = mkOption {
           type = with types; nullOr settingsFmt.type;
           default = null;
-          example = literalExpression ''
+          example = literalExample ''
             [
               {
                 name = "tuner-name";
@@ -110,7 +110,7 @@ in
         channelSettings = mkOption {
           type = with types; nullOr settingsFmt.type;
           default = null;
-          example = literalExpression ''
+          example = literalExample ''
             [
               {
                 name = "channel";
@@ -173,7 +173,7 @@ in
         wantedBy = [ "multi-user.target" ];
         after = [ "network.target" ];
         serviceConfig = {
-          ExecStart = "${mirakurun}/bin/mirakurun-start";
+          ExecStart = "${mirakurun}/bin/mirakurun";
           User = username;
           Group = groupname;
           RuntimeDirectory="mirakurun";

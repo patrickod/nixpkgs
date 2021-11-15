@@ -54,7 +54,8 @@ stdenv.mkDerivation {
     ${addAllNetDev netDevices}
   '';
 
-  dontInstall = true;
+  installPhase = ":";
+
   dontStrip = true;
   dontPatchELF = true;
 

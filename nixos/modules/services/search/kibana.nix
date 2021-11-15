@@ -149,7 +149,8 @@ in {
     package = mkOption {
       description = "Kibana package to use";
       default = pkgs.kibana;
-      defaultText = literalExpression "pkgs.kibana";
+      defaultText = "pkgs.kibana";
+      example = "pkgs.kibana";
       type = types.package;
     };
 
@@ -198,12 +199,10 @@ in {
     environment.systemPackages = [ cfg.package ];
 
     users.users.kibana = {
-      isSystemUser = true;
+      uid = config.ids.uids.kibana;
       description = "Kibana service user";
       home = cfg.dataDir;
       createHome = true;
-      group = "kibana";
     };
-    users.groups.kibana = {};
   };
 }

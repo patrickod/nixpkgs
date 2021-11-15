@@ -78,6 +78,14 @@ let
         </edit>
       </match>
 
+      ${optionalString (cfg.dpi != 0) ''
+      <match target="pattern">
+        <edit name="dpi" mode="assign">
+          <double>${toString cfg.dpi}</double>
+        </edit>
+      </match>
+      ''}
+
     </fontconfig>
   '';
 
@@ -229,7 +237,6 @@ in
     (mkRemovedOptionModule [ "fonts" "fontconfig" "hinting" "style" ] "")
     (mkRemovedOptionModule [ "fonts" "fontconfig" "forceAutohint" ] "")
     (mkRemovedOptionModule [ "fonts" "fontconfig" "renderMonoTTFAsBitmap" ] "")
-    (mkRemovedOptionModule [ "fonts" "fontconfig" "dpi" ] "Use display server-specific options")
   ] ++ lib.forEach [ "enable" "substitutions" "preset" ]
      (opt: lib.mkRemovedOptionModule [ "fonts" "fontconfig" "ultimate" "${opt}" ] ''
        The fonts.fontconfig.ultimate module and configuration is obsolete.
@@ -272,6 +279,15 @@ in
             Enable font antialiasing. At high resolution (> 200 DPI),
             antialiasing has no visible effect; users of such displays may want
             to disable this option.
+          '';
+        };
+
+        dpi = mkOption {
+          type = types.int;
+          default = 0;
+          description = ''
+            Force DPI setting. Setting to <literal>0</literal> disables DPI
+            forcing; the DPI detected for the display will be used.
           '';
         };
 

@@ -35,14 +35,6 @@ in {
       '';
     };
 
-    hardware.wirelessRegulatoryDatabase = mkOption {
-      default = false;
-      type = types.bool;
-      description = ''
-        Load the wireless regulatory database at boot.
-      '';
-    };
-
   };
 
 
@@ -62,12 +54,11 @@ in {
         zd1211fw
         alsa-firmware
         sof-firmware
-        libreelec-dvb-firmware
+        openelec-dvb-firmware
       ] ++ optional (pkgs.stdenv.hostPlatform.isAarch32 || pkgs.stdenv.hostPlatform.isAarch64) raspberrypiWirelessFirmware
         ++ optionals (versionOlder config.boot.kernelPackages.kernel.version "4.13") [
         rtl8723bs-firmware
       ];
-      hardware.wirelessRegulatoryDatabase = true;
     })
     (mkIf cfg.enableAllFirmware {
       assertions = [{
@@ -84,9 +75,6 @@ in {
         b43Firmware_6_30_163_46
         b43FirmwareCutter
       ] ++ optional (pkgs.stdenv.hostPlatform.isi686 || pkgs.stdenv.hostPlatform.isx86_64) facetimehd-firmware;
-    })
-    (mkIf cfg.wirelessRegulatoryDatabase {
-      hardware.firmware = [ pkgs.wireless-regdb ];
     })
   ];
 }

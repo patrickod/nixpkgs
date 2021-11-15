@@ -1,6 +1,6 @@
 { config, lib, name, ... }:
 let
-  inherit (lib) literalExpression mkOption nameValuePair types;
+  inherit (lib) literalExample mkOption nameValuePair types;
 in
 {
   options = {
@@ -47,27 +47,10 @@ in
       ];
       description = ''
         Listen addresses and ports for this virtual host.
-        <note>
-        <para>
+        <note><para>
           This option overrides <literal>addSSL</literal>, <literal>forceSSL</literal> and <literal>onlySSL</literal>.
-        </para>
-        <para>
-          If you only want to set the addresses manually and not the ports, take a look at <literal>listenAddresses</literal>.
-        </para>
-        </note>
+        </para></note>
       '';
-    };
-
-    listenAddresses = mkOption {
-      type = with types; nonEmptyListOf str;
-
-      description = ''
-        Listen addresses for this virtual host.
-        Compared to <literal>listen</literal> this only sets the addreses
-        and the ports are chosen automatically.
-      '';
-      default = [ "*" ];
-      example = [ "127.0.0.1" ];
     };
 
     enableSSL = mkOption {
@@ -266,7 +249,7 @@ in
     locations = mkOption {
       type = with types; attrsOf (submodule (import ./location-options.nix));
       default = {};
-      example = literalExpression ''
+      example = literalExample ''
         {
           "/" = {
             proxyPass = "http://localhost:3000";

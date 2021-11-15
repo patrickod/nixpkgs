@@ -4,8 +4,7 @@ let
   inherit (lib)
     concatStringsSep
     flip
-    literalDocBook
-    literalExpression
+    literalExample
     optionalAttrs
     optionals
     recursiveUpdate
@@ -137,8 +136,8 @@ in
     package = mkOption {
       type = types.package;
       default = pkgs.cassandra;
-      defaultText = literalExpression "pkgs.cassandra";
-      example = literalExpression "pkgs.cassandra_3_11";
+      defaultText = "pkgs.cassandra";
+      example = literalExample "pkgs.cassandra_3_11";
       description = ''
         The Apache Cassandra package to use.
       '';
@@ -277,7 +276,7 @@ in
     extraEnvSh = mkOption {
       type = types.lines;
       default = "";
-      example = literalExpression ''"CLASSPATH=$CLASSPATH:''${extraJar}"'';
+      example = "CLASSPATH=$CLASSPATH:\${extraJar}";
       description = ''
         Extra shell lines to be appended onto cassandra-env.sh.
       '';
@@ -437,7 +436,6 @@ in
         if versionAtLeast cfg.package.version "3.11"
         then pkgs.writeText "jmx-roles-file" defaultJmxRolesFile
         else null;
-      defaultText = literalDocBook ''generated configuration file if version is at least 3.11, otherwise <literal>null</literal>'';
       example = "/var/lib/cassandra/jmx.password";
       description = ''
         Specify your own jmx roles file.

@@ -34,8 +34,9 @@ in
             };
             package = mkOption {
               default = pkgs.tahoelafs;
-              defaultText = literalExpression "pkgs.tahoelafs";
+              defaultText = "pkgs.tahoelafs";
               type = types.package;
+              example = literalExample "pkgs.tahoelafs";
               description = ''
                 The package to use for the Tahoe LAFS daemon.
               '';
@@ -178,8 +179,9 @@ in
             };
             package = mkOption {
               default = pkgs.tahoelafs;
-              defaultText = literalExpression "pkgs.tahoelafs";
+              defaultText = "pkgs.tahoelafs";
               type = types.package;
+              example = literalExample "pkgs.tahoelafs";
               description = ''
                 The package to use for the Tahoe LAFS daemon.
               '';

@@ -56,7 +56,7 @@ in {
 
       package = mkOption {
         default = pkgs.icecream;
-        defaultText = literalExpression "pkgs.icecream";
+        defaultText = "pkgs.icecream";
         type = types.package;
         description = "Icecream package to use.";
       };

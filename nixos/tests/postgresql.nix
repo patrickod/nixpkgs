@@ -43,7 +43,6 @@ let
     testScript = let
       backupName = if backup-all then "all" else "postgres";
       backupService = if backup-all then "postgresqlBackup" else "postgresqlBackup-postgres";
-      backupFileBase = "/var/backup/postgresql/${backupName}";
     in ''
       def check_count(statement, lines):
           return 'test $(sudo -u postgres psql postgres -tAc "{}"|wc -l) -eq {}'.format(
@@ -61,7 +60,6 @@ let
 
       with subtest("Postgresql survives restart (bug #1735)"):
           machine.shutdown()
-          import time
           time.sleep(2)
           machine.start()
           machine.wait_for_unit("postgresql")

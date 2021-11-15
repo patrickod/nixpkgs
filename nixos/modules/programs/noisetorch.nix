@@ -10,7 +10,6 @@ in {
     package = mkOption {
       type = types.package;
       default = pkgs.noisetorch;
-      defaultText = literalExpression "pkgs.noisetorch";
       description = ''
         The noisetorch package to use.
       '';
@@ -19,10 +18,8 @@ in {
 
   config = mkIf cfg.enable {
     security.wrappers.noisetorch = {
-      owner = "root";
-      group = "root";
-      capabilities = "cap_sys_resource=+ep";
       source = "${cfg.package}/bin/noisetorch";
+      capabilities = "cap_sys_resource=+ep";
     };
   };
 }

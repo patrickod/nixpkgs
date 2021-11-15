@@ -96,8 +96,9 @@ let
     };
   } cfg.extraConfig;
 
-  configFile = pkgs.runCommandLocal "config.toml" {
-    nativeBuildInputs = [ pkgs.remarshal ];
+  configFile = pkgs.runCommand "config.toml" {
+    buildInputs = [ pkgs.remarshal ];
+    preferLocalBuild = true;
   } ''
     remarshal -if json -of toml \
       < ${pkgs.writeText "config.json" (builtins.toJSON configOptions)} \
@@ -120,7 +121,7 @@ in
 
       package = mkOption {
         default = pkgs.influxdb;
-        defaultText = literalExpression "pkgs.influxdb";
+        defaultText = "pkgs.influxdb";
         description = "Which influxdb derivation to use";
         type = types.package;
       };
@@ -184,7 +185,6 @@ in
     users.users = optionalAttrs (cfg.user == "influxdb") {
       influxdb = {
         uid = config.ids.uids.influxdb;
-        group = "influxdb";
         description = "Influxdb daemon user";
       };
     };

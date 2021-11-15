@@ -18,7 +18,6 @@ in {
         '';
         type = types.package;
         default = pkgs.feedbackd;
-        defaultText = literalExpression "pkgs.feedbackd";
       };
     };
   };

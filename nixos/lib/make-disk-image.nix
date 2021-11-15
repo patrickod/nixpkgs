@@ -44,14 +44,11 @@
   #   most likely fails as GRUB will probably refuse to install.
   partitionTableType ? "legacy"
 
-, # Whether to invoke `switch-to-configuration boot` during image creation
-  installBootLoader ? true
-
 , # The root file system type.
   fsType ? "ext4"
 
 , # Filesystem label
-  label ? if onlyNixStore then "nix-store" else "nixos"
+  label ? "nixos"
 
 , # The initial NixOS configuration file to be copied to
   # /etc/nixos/configuration.nix.
@@ -60,24 +57,10 @@
 , # Shell code executed after the VM has finished.
   postVM ? ""
 
-, # Copy the contents of the Nix store to the root of the image and
-  # skip further setup. Incompatible with `contents`,
-  # `installBootLoader` and `configFile`.
-  onlyNixStore ? false
-
 , name ? "nixos-disk-image"
 
 , # Disk image format, one of qcow2, qcow2-compressed, vdi, vpc, raw.
   format ? "raw"
-
-, # Whether a nix channel based on the current source tree should be
-  # made available inside the image. Useful for interactive use of nix
-  # utils, but changes the hash of the image when the sources are
-  # updated.
-  copyChannel ? true
-
-, # Additional store paths to copy to the image's store.
-  additionalPaths ? []
 }:
 
 assert partitionTableType == "legacy" || partitionTableType == "legacy+gpt" || partitionTableType == "efi" || partitionTableType == "hybrid" || partitionTableType == "none";
@@ -88,7 +71,6 @@ assert lib.all
          (attrs: ((attrs.user  or null) == null)
               == ((attrs.group or null) == null))
          contents;
-assert onlyNixStore -> contents == [] && configFile == null && !installBootLoader;
 
 with lib;
 
@@ -181,14 +163,7 @@ let format' = format; in let
   users   = map (x: x.user  or "''") contents;
   groups  = map (x: x.group or "''") contents;
 
-  basePaths = [ config.system.build.toplevel ]
-    ++ lib.optional copyChannel channelSources;
-
-  additionalPaths' = subtractLists basePaths additionalPaths;
-
-  closureInfo = pkgs.closureInfo {
-    rootPaths = basePaths ++ additionalPaths';
-  };
+  closureInfo = pkgs.closureInfo { rootPaths = [ config.system.build.toplevel channelSources ]; };
 
   blockSize = toString (4 * 1024); # ext4fs block size (not block device sector size)
 
@@ -276,13 +251,7 @@ let format' = format; in let
     chmod 755 "$TMPDIR"
     echo "running nixos-install..."
     nixos-install --root $root --no-bootloader --no-root-passwd \
-      --system ${config.system.build.toplevel} \
-      ${if copyChannel then "--channel ${channelSources}" else "--no-channel-copy"} \
-      --substituters ""
-
-    ${optionalString (additionalPaths' != []) ''
-      nix copy --to $root --no-check-sigs ${concatStringsSep " " additionalPaths'}
-    ''}
+      --system ${config.system.build.toplevel} --channel ${channelSources} --substituters ""
 
     diskImage=nixos.raw
 
@@ -309,7 +278,7 @@ let format' = format; in let
       additionalSpace=$(( $(numfmt --from=iec '${additionalSpace}') + reservedSpace ))
 
       # Compute required space in filesystem blocks
-      diskUsage=$(find . ! -type d -print0 | du --files0-from=- --apparent-size --block-size "${blockSize}" | cut -f1 | sum_lines)
+      diskUsage=$(find . ! -type d -exec 'du' '--apparent-size' '--block-size' "${blockSize}" '{}' ';' | cut -f1 | sum_lines)
       # Each inode takes space!
       numInodes=$(find . | wc -l)
       # Convert to bytes, inodes take two blocks each!
@@ -351,29 +320,25 @@ let format' = format; in let
     ''}
 
     echo "copying staging root to image..."
-    cptofs -p ${optionalString (partitionTableType != "none") "-P ${rootPartition}"} \
-           -t ${fsType} \
-           -i $diskImage \
-           $root${optionalString onlyNixStore builtins.storeDir}/* / ||
+    cptofs -p ${optionalString (partitionTableType != "none") "-P ${rootPartition}"} -t ${fsType} -i $diskImage $root/* / ||
       (echo >&2 "ERROR: cptofs failed. diskSize might be too small for closure."; exit 1)
   '';
-
-  moveOrConvertImage = ''
-    ${if format == "raw" then ''
-      mv $diskImage $out/${filename}
-    '' else ''
-      ${pkgs.qemu}/bin/qemu-img convert -f raw -O ${format} ${compress} $diskImage $out/${filename}
-    ''}
-    diskImage=$out/${filename}
-  '';
-
-  buildImage = pkgs.vmTools.runInLinuxVM (
-    pkgs.runCommand name {
-      preVM = prepareImage;
+in pkgs.vmTools.runInLinuxVM (
+  pkgs.runCommand name
+    { preVM = prepareImage;
       buildInputs = with pkgs; [ util-linux e2fsprogs dosfstools ];
-      postVM = moveOrConvertImage + postVM;
+      postVM = ''
+        ${if format == "raw" then ''
+          mv $diskImage $out/${filename}
+        '' else ''
+          ${pkgs.qemu}/bin/qemu-img convert -f raw -O ${format} ${compress} $diskImage $out/${filename}
+        ''}
+        diskImage=$out/${filename}
+        ${postVM}
+      '';
       memSize = 1024;
-    } ''
+    }
+    ''
       export PATH=${binPath}:$PATH
 
       rootDisk=${if partitionTableType != "none" then "/dev/vda${rootPartition}" else "/dev/vda"}
@@ -403,13 +368,11 @@ let format' = format; in let
         cp ${configFile} /mnt/etc/nixos/configuration.nix
       ''}
 
-      ${lib.optionalString installBootLoader ''
-        # Set up core system link, GRUB, etc.
-        NIXOS_INSTALL_BOOTLOADER=1 nixos-enter --root $mountPoint -- /nix/var/nix/profiles/system/bin/switch-to-configuration boot
+      # Set up core system link, GRUB, etc.
+      NIXOS_INSTALL_BOOTLOADER=1 nixos-enter --root $mountPoint -- /nix/var/nix/profiles/system/bin/switch-to-configuration boot
 
-        # The above scripts will generate a random machine-id and we don't want to bake a single ID into all our images
-        rm -f $mountPoint/etc/machine-id
-      ''}
+      # The above scripts will generate a random machine-id and we don't want to bake a single ID into all our images
+      rm -f $mountPoint/etc/machine-id
 
       # Set the ownerships of the contents. The modes are set in preVM.
       # No globbing on targets, so no need to set -f
@@ -435,9 +398,4 @@ let format' = format; in let
         tune2fs -T now -c 0 -i 0 $rootDisk
       ''}
     ''
-  );
-in
-  if onlyNixStore then
-    pkgs.runCommand name {}
-      (prepareImage + moveOrConvertImage + postVM)
-  else buildImage
+)

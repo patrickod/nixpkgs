@@ -42,8 +42,6 @@ in
       }
     ];
 
-    environment.systemPackages = [ package ];
-
     services.dbus.packages = [ package ];
 
     services.udev.packages = [ package ];

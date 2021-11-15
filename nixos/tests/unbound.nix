@@ -33,7 +33,7 @@ import ./make-test-python.nix ({ pkgs, lib, ... }:
       };
     };
 
-    cert = pkgs.runCommand "selfSignedCerts" { buildInputs = [ pkgs.openssl ]; } ''
+    cert = pkgs.runCommandNoCC "selfSignedCerts" { buildInputs = [ pkgs.openssl ]; } ''
       openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -nodes -subj '/CN=dns.example.local'
       mkdir -p $out
       cp key.pem cert.pem $out
@@ -145,22 +145,13 @@ import ./make-test-python.nix ({ pkgs, lib, ... }:
           # user that is permitted to access the unix socket
           someuser = {
             isSystemUser = true;
-            group = "someuser";
             extraGroups = [
               config.users.users.unbound.group
             ];
           };
 
           # user that is not permitted to access the unix socket
-          unauthorizeduser = {
-            isSystemUser = true;
-            group = "unauthorizeduser";
-          };
-
-        };
-        users.groups = {
-          someuser = {};
-          unauthorizeduser = {};
+          unauthorizeduser = { isSystemUser = true; };
         };
 
         # Used for testing configuration reloading

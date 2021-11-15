@@ -6,10 +6,10 @@
 with pkgs.lib;
 
 let
-  testsForLinuxPackages = linuxPackages: (import ./make-test-python.nix ({ pkgs, ... }: {
-    name = "kernel-${linuxPackages.kernel.version}";
+  makeKernelTest = version: linuxPackages: (import ./make-test-python.nix ({ pkgs, ... }: {
+    name = "kernel-${version}";
     meta = with pkgs.lib.maintainers; {
-      maintainers = [ nequissimus atemu ];
+      maintainers = [ nequissimus ];
     };
 
     machine = { ... }:
@@ -34,11 +34,5 @@ with pkgs; {
   linux_5_14 = makeKernelTest "5.14" linuxPackages_5_14;
   linux_5_15 = makeKernelTest "5.15" linuxPackages_5_15;
 
-      linux_testing;
-  };
-
-in mapAttrs (_: lP: testsForLinuxPackages lP) kernels // {
-  inherit testsForLinuxPackages;
-
-  testsForKernel = kernel: testsForLinuxPackages (pkgs.linuxPackagesFor kernel);
+  linux_testing = makeKernelTest "testing" linuxPackages_testing;
 }

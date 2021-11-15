@@ -30,15 +30,6 @@ let
         vulnerabilities, while maintaining good performance.
       '';
     };
-
-    mimalloc = {
-      libPath = "${pkgs.mimalloc}/lib/libmimalloc.so";
-      description = ''
-        A compact and fast general purpose allocator, which may
-        optionally be built with mitigations against various heap
-        vulnerabilities.
-      '';
-    };
   };
 
   providerConf = providers.${cfg.provider};
@@ -100,10 +91,7 @@ in
       "abstractions/base" = ''
         r /etc/ld-nix.so.preload,
         r ${config.environment.etc."ld-nix.so.preload".source},
-        include "${pkgs.apparmorRulesFromClosure {
-            name = "mallocLib";
-            baseRules = ["mr $path/lib/**.so*"];
-          } [ mallocLib ] }"
+        mr ${providerLibPath},
       '';
     };
   };

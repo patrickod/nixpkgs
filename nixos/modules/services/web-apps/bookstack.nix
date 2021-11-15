@@ -91,7 +91,7 @@ in {
       user = mkOption {
         type = types.str;
         default = user;
-        defaultText = literalExpression "user";
+        defaultText = "\${user}";
         description = "Database username.";
       };
       passwordFile = mkOption {
@@ -187,16 +187,14 @@ in {
           (import ../web-servers/nginx/vhost-options.nix { inherit config lib; }) {}
       );
       default = {};
-      example = literalExpression ''
-        {
-          serverAliases = [
-            "bookstack.''${config.networking.domain}"
-          ];
-          # To enable encryption and let let's encrypt take care of certificate
-          forceSSL = true;
-          enableACME = true;
-        }
-      '';
+      example = {
+        serverAliases = [
+          "bookstack.\${config.networking.domain}"
+        ];
+        # To enable encryption and let let's encrypt take care of certificate
+        forceSSL = true;
+        enableACME = true;
+      };
       description = ''
         With this option, you can customize the nginx virtualHost settings.
       '';

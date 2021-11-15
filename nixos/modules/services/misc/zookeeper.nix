@@ -110,7 +110,7 @@ in {
     package = mkOption {
       description = "The zookeeper package to use";
       default = pkgs.zookeeper;
-      defaultText = literalExpression "pkgs.zookeeper";
+      defaultText = "pkgs.zookeeper";
       type = types.package;
     };
 
@@ -148,11 +148,9 @@ in {
     };
 
     users.users.zookeeper = {
-      isSystemUser = true;
-      group = "zookeeper";
+      uid = config.ids.uids.zookeeper;
       description = "Zookeeper daemon user";
       home = cfg.dataDir;
     };
-    users.groups.zookeeper = {};
   };
 }

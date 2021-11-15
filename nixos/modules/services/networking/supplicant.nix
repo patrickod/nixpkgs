@@ -73,7 +73,7 @@ in
             path = mkOption {
               type = types.nullOr types.path;
               default = null;
-              example = literalExpression "/etc/wpa_supplicant.conf";
+              example = literalExample "/etc/wpa_supplicant.conf";
               description = ''
                 External <literal>wpa_supplicant.conf</literal> configuration file.
                 The configuration options defined declaratively within <literal>networking.supplicant</literal> have
@@ -170,7 +170,7 @@ in
 
       default = { };
 
-      example = literalExpression ''
+      example = literalExample ''
         { "wlan0 wlan1" = {
             configFile.path = "/etc/wpa_supplicant.conf";
             userControlled.group = "network";

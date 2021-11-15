@@ -16,6 +16,7 @@ in
       user = mkOption {
         type = types.str;
         default = "nginx";
+        example = "nginx";
         description = ''
           User account under which both the service and the web-application run.
         '';
@@ -24,6 +25,7 @@ in
       group = mkOption {
         type = types.str;
         default = "nginx";
+        example = "nginx";
         description = ''
           Group under which the web-application run.
         '';
@@ -59,7 +61,7 @@ in
       whitelist = mkOption {
         type = types.listOf types.str;
         default = [];
-        example = options.literalExpression ''
+        example = options.literalExample ''
           [
             "Facebook"
             "Instagram"

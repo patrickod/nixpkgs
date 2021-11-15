@@ -69,7 +69,7 @@ in
       bindings = mkOption {
         type = types.listOf (types.submodule bindingCfg);
         default = [];
-        example = lib.literalExpression ''
+        example = lib.literalExample ''
           [ { keys = ["PLAYPAUSE"];  cmd = "''${pkgs.mpc_cli}/bin/mpc -q toggle"; } ]
         '';
         description = ''

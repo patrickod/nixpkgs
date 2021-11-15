@@ -19,6 +19,7 @@ in
 
   options.services.zerotierone.port = mkOption {
     default = 9993;
+    example = 9993;
     type = types.int;
     description = ''
       Network port used by ZeroTier.
@@ -27,7 +28,7 @@ in
 
   options.services.zerotierone.package = mkOption {
     default = pkgs.zerotierone;
-    defaultText = literalExpression "pkgs.zerotierone";
+    defaultText = "pkgs.zerotierone";
     type = types.package;
     description = ''
       ZeroTier One package to use.

@@ -16,7 +16,7 @@ in
 
       package = mkOption {
         default = pkgs.ppp;
-        defaultText = literalExpression "pkgs.ppp";
+        defaultText = "pkgs.ppp";
         type = types.package;
         description = "pppd package to use.";
       };
@@ -82,21 +82,13 @@ in
           LD_PRELOAD = "${pkgs.libredirect}/lib/libredirect.so";
           NIX_REDIRECTS = "/var/run=/run/pppd";
         };
-        serviceConfig = let
-          capabilities = [
-            "CAP_BPF"
-            "CAP_SYS_TTY_CONFIG"
-            "CAP_NET_ADMIN"
-            "CAP_NET_RAW"
-          ];
-        in
-        {
+        serviceConfig = {
           ExecStart = "${getBin cfg.package}/sbin/pppd call ${peerCfg.name} nodetach nolog";
           Restart = "always";
           RestartSec = 5;
 
-          AmbientCapabilities = capabilities;
-          CapabilityBoundingSet = capabilities;
+          AmbientCapabilities = "CAP_SYS_TTY_CONFIG CAP_NET_ADMIN CAP_NET_RAW CAP_SYS_ADMIN";
+          CapabilityBoundingSet = "CAP_SYS_TTY_CONFIG CAP_NET_ADMIN CAP_NET_RAW CAP_SYS_ADMIN";
           KeyringMode = "private";
           LockPersonality = true;
           MemoryDenyWriteExecute = true;
@@ -111,17 +103,7 @@ in
           ProtectKernelTunables = false;
           ProtectSystem = "strict";
           RemoveIPC = true;
-          RestrictAddressFamilies = [
-            "AF_ATMPVC"
-            "AF_ATMSVC"
-            "AF_INET"
-            "AF_INET6"
-            "AF_IPX"
-            "AF_NETLINK"
-            "AF_PACKET"
-            "AF_PPPOX"
-            "AF_UNIX"
-          ];
+          RestrictAddressFamilies = "AF_PACKET AF_UNIX AF_PPPOX AF_ATMPVC AF_ATMSVC AF_INET AF_INET6 AF_IPX";
           RestrictNamespaces = true;
           RestrictRealtime = true;
           RestrictSUIDSGID = true;

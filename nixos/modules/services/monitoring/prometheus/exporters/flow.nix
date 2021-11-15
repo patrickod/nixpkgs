@@ -9,7 +9,7 @@ in {
   extraOpts = {
     brokers = mkOption {
       type = types.listOf types.str;
-      example = literalExpression ''[ "kafka.example.org:19092" ]'';
+      example = literalExample ''[ "kafka.example.org:19092" ]'';
       description = "List of Kafka brokers to connect to.";
     };
 

@@ -37,9 +37,7 @@ in
     };
 
     nixAttribute = lib.mkOption {
-      type = with lib.types; nullOr str;
-
-      default = null;
+      type = lib.types.str;
 
       description = ''
         Attribute of `nixFile` that builds the current system.

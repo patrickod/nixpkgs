@@ -29,7 +29,7 @@ in
       configFiles = mkOption {
         type = types.attrsOf types.str;
         default = {};
-        example = literalExpression ''
+        example = literalExample ''
           {
             "config.txt" = '''
               "verbose_level" : 4,

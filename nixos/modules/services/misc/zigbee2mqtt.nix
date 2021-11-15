@@ -25,7 +25,7 @@ in
       default = pkgs.zigbee2mqtt.override {
         dataDir = cfg.dataDir;
       };
-      defaultText = literalExpression ''
+      defaultText = literalExample ''
         pkgs.zigbee2mqtt {
           dataDir = services.zigbee2mqtt.dataDir
         }
@@ -42,7 +42,7 @@ in
     settings = mkOption {
       type = format.type;
       default = {};
-      example = literalExpression ''
+      example = literalExample ''
         {
           homeassistant = config.services.home-assistant.enable;
           permit_join = true;

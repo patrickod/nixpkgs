@@ -60,7 +60,7 @@ in
           to = root@localhost
           from = smokeping@localhost
         '';
-        example = ''
+        example = literalExample ''
           to = alertee@address.somewhere
           from = smokealert@company.xy
 
@@ -75,7 +75,7 @@ in
       cgiUrl = mkOption {
         type = types.str;
         default = "http://${cfg.hostName}:${toString cfg.port}/smokeping.cgi";
-        defaultText = literalExpression ''"http://''${hostName}:''${toString port}/smokeping.cgi"'';
+        defaultText = "http://\${hostName}:\${toString port}/smokeping.cgi";
         example = "https://somewhere.example.com/smokeping.cgi";
         description = "URL to the smokeping cgi.";
       };
@@ -100,7 +100,7 @@ in
               MIN  0.5 144   720
 
         '';
-        example = ''
+        example = literalExample ''
           # near constant pings.
           step     = 30
           pings    = 20
@@ -125,21 +125,16 @@ in
       hostName = mkOption {
         type = types.str;
         default = config.networking.fqdn;
-        defaultText = literalExpression "config.networking.fqdn";
+        defaultText = "\${config.networking.fqdn}";
         example = "somewhere.example.com";
         description = "DNS name for the urls generated in the cgi.";
       };
       imgUrl = mkOption {
         type = types.str;
-        default = "cache";
-        defaultText = literalExpression ''"cache"'';
+        default = "http://${cfg.hostName}:${toString cfg.port}/cache";
+        defaultText = "http://\${hostName}:\${toString port}/cache";
         example = "https://somewhere.example.com/cache";
-        description = ''
-          Base url for images generated in the cgi.
-
-          The default is a relative URL to ensure it works also when e.g. forwarding
-          the GUI port via SSH.
-        '';
+        description = "Base url for images generated in the cgi.";
       };
       linkStyle = mkOption {
         type = types.enum ["original" "absolute" "relative"];
@@ -162,30 +157,20 @@ in
       ownerEmail = mkOption {
         type = types.str;
         default = "no-reply@${cfg.hostName}";
-        defaultText = literalExpression ''"no-reply@''${hostName}"'';
+        defaultText = "no-reply@\${hostName}";
         example = "no-reply@yourdomain.com";
         description = "Email contact for owner";
       };
       package = mkOption {
         type = types.package;
         default = pkgs.smokeping;
-        defaultText = literalExpression "pkgs.smokeping";
+        defaultText = "pkgs.smokeping";
         description = "Specify a custom smokeping package";
-      };
-      host = mkOption {
-        type = types.nullOr types.str;
-        default = "localhost";
-        example = "192.0.2.1"; # rfc5737 example IP for documentation
-        description = ''
-          Host/IP to bind to for the web server.
-
-          Setting it to <literal>null</literal> skips passing the -h option to thttpd,
-          which makes it bind to all interfaces.
-        '';
       };
       port = mkOption {
         type = types.int;
         default = 8081;
+        example = 8081;
         description = "TCP port to use for the web server.";
       };
       presentationConfig = mkOption {
@@ -232,7 +217,6 @@ in
       presentationTemplate = mkOption {
         type = types.str;
         default = "${pkgs.smokeping}/etc/basepage.html.dist";
-        defaultText = literalExpression ''"''${pkgs.smokeping}/etc/basepage.html.dist"'';
         description = "Default page layout for the web UI.";
       };
       probeConfig = mkOption {
@@ -252,7 +236,6 @@ in
       smokeMailTemplate = mkOption {
         type = types.str;
         default = "${cfg.package}/etc/smokemail.dist";
-        defaultText = literalExpression ''"''${package}/etc/smokemail.dist"'';
         description = "Specify the smokemail template for alerts.";
       };
       targetConfig = mkOption {
@@ -276,7 +259,7 @@ in
       user = mkOption {
         type = types.str;
         default = "smokeping";
-        description = "User that runs smokeping and (optionally) thttpd. A group of the same name will be created as well.";
+        description = "User that runs smokeping and (optionally) thttpd";
       };
       webService = mkOption {
         type = types.bool;
@@ -295,29 +278,23 @@ in
       }
     ];
     security.wrappers = {
-      fping =
-        { setuid = true;
-          owner = "root";
-          group = "root";
-          source = "${pkgs.fping}/bin/fping";
-        };
+      fping.source = "${pkgs.fping}/bin/fping";
+      fping6.source = "${pkgs.fping}/bin/fping6";
     };
     environment.systemPackages = [ pkgs.fping ];
     users.users.${cfg.user} = {
       isNormalUser = false;
       isSystemUser = true;
-      group = cfg.user;
+      uid = config.ids.uids.smokeping;
       description = "smokeping daemon user";
       home = smokepingHome;
       createHome = true;
     };
-    users.groups.${cfg.user} = {};
     systemd.services.smokeping = {
-      requiredBy = [ "multi-user.target"];
+      wantedBy = [ "multi-user.target"];
       serviceConfig = {
         User = cfg.user;
         Restart = "on-failure";
-        ExecStart = "${cfg.package}/bin/smokeping --config=${configPath} --nodaemon";
       };
       preStart = ''
         mkdir -m 0755 -p ${smokepingHome}/cache ${smokepingHome}/data
@@ -328,29 +305,18 @@ in
         ${cfg.package}/bin/smokeping --check --config=${configPath}
         ${cfg.package}/bin/smokeping --static --config=${configPath}
       '';
+      script = "${cfg.package}/bin/smokeping --config=${configPath} --nodaemon";
     };
     systemd.services.thttpd = mkIf cfg.webService {
-      requiredBy = [ "multi-user.target"];
+      wantedBy = [ "multi-user.target"];
       requires = [ "smokeping.service"];
+      partOf = [ "smokeping.service"];
       path = with pkgs; [ bash rrdtool smokeping thttpd ];
-      serviceConfig = {
-        Restart = "always";
-        ExecStart = lib.concatStringsSep " " (lib.concatLists [
-          [ "${pkgs.thttpd}/bin/thttpd" ]
-          [ "-u ${cfg.user}" ]
-          [ ''-c "**.fcgi"'' ]
-          [ "-d ${smokepingHome}" ]
-          (lib.optional (cfg.host != null) "-h ${cfg.host}")
-          [ "-p ${builtins.toString cfg.port}" ]
-          [ "-D -nos" ]
-        ]);
-      };
+      script = ''thttpd -u ${cfg.user} -c "**.fcgi" -d ${smokepingHome} -p ${builtins.toString cfg.port} -D -nos'';
+      serviceConfig.Restart = "always";
     };
   };
 
-  meta.maintainers = with lib.maintainers; [
-    erictapen
-    nh2
-  ];
+  meta.maintainers = with lib.maintainers; [ erictapen ];
 }
 

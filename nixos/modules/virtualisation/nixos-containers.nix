@@ -530,7 +530,7 @@ in
             nixpkgs = mkOption {
               type = types.path;
               default = pkgs.path;
-              defaultText = literalExpression "pkgs.path";
+              defaultText = "pkgs.path";
               description = ''
                 A path to the nixpkgs that provide the modules, pkgs and lib for evaluating the container.
 
@@ -636,7 +636,7 @@ in
             bindMounts = mkOption {
               type = with types; attrsOf (submodule bindMountOpts);
               default = {};
-              example = literalExpression ''
+              example = literalExample ''
                 { "/home" = { hostPath = "/home/alice";
                               isReadOnly = false; };
                 }
@@ -707,7 +707,7 @@ in
         }));
 
       default = {};
-      example = literalExpression
+      example = literalExample
         ''
           { webserver =
               { path = "/nix/var/nix/profiles/webserver";

@@ -14,7 +14,7 @@ let
     ''
       #! ${pkgs.runtimeShell} -e
       export DISPLAY="$(systemctl --user show-environment | ${pkgs.gnused}/bin/sed 's/^DISPLAY=\(.*\)/\1/; t; d')"
-      exec ${askPassword} "$@"
+      exec ${askPassword}
     '';
 
   knownHosts = map (h: getAttr h cfg.knownHosts) (attrNames cfg.knownHosts);
@@ -36,7 +36,6 @@ in
       askPassword = mkOption {
         type = types.str;
         default = "${pkgs.x11_ssh_askpass}/libexec/x11-ssh-askpass";
-        defaultText = literalExpression ''"''${pkgs.x11_ssh_askpass}/libexec/x11-ssh-askpass"'';
         description = "Program used by SSH to ask for passwords.";
       };
 
@@ -114,7 +113,7 @@ in
       agentPKCS11Whitelist = mkOption {
         type = types.nullOr types.str;
         default = null;
-        example = literalExpression ''"''${pkgs.opensc}/lib/opensc-pkcs11.so"'';
+        example = "\${pkgs.opensc}/lib/opensc-pkcs11.so";
         description = ''
           A pattern-list of acceptable paths for PKCS#11 shared libraries
           that may be used with the -s option to ssh-add.
@@ -124,7 +123,7 @@ in
       package = mkOption {
         type = types.package;
         default = pkgs.openssh;
-        defaultText = literalExpression "pkgs.openssh";
+        defaultText = "pkgs.openssh";
         description = ''
           The package used for the openssh client and daemon.
         '';
@@ -181,7 +180,7 @@ in
         description = ''
           The set of system-wide known SSH hosts.
         '';
-        example = literalExpression ''
+        example = literalExample ''
           {
             myhost = {
               hostNames = [ "myhost" "myhost.mydomain.com" "10.10.1.4" ];

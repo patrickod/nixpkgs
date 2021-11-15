@@ -96,7 +96,6 @@ in {
         ## limits.cpu ##
 
         machine.succeed("lxc config set test limits.cpu 1")
-        machine.succeed("lxc restart test")
 
         # Since Alpine doesn't have `nproc` pre-installed, we've gotta resort
         # to the primal methods
@@ -106,7 +105,6 @@ in {
         )
 
         machine.succeed("lxc config set test limits.cpu 2")
-        machine.succeed("lxc restart test")
 
         assert (
             "2"
@@ -117,7 +115,6 @@ in {
         ## limits.memory ##
 
         machine.succeed("lxc config set test limits.memory 64MB")
-        machine.succeed("lxc restart test")
 
         assert (
             "MemTotal:          62500 kB"
@@ -125,7 +122,6 @@ in {
         )
 
         machine.succeed("lxc config set test limits.memory 128MB")
-        machine.succeed("lxc restart test")
 
         assert (
             "MemTotal:         125000 kB"
@@ -133,5 +129,9 @@ in {
         )
 
         machine.succeed("lxc delete -f test")
+
+    with subtest("Unless explicitly changed, lxd leans on iptables"):
+        machine.succeed("lsmod | grep ip_tables")
+        machine.fail("lsmod | grep nf_tables")
   '';
 })

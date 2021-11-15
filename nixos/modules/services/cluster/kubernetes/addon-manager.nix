@@ -27,7 +27,7 @@ in
       '';
       default = { };
       type = attrsOf attrs;
-      example = literalExpression ''
+      example = literalExample ''
         {
           "my-service" = {
             "apiVersion" = "v1";
@@ -46,7 +46,7 @@ in
       description = "Kubernetes addons (any kind of Kubernetes resource can be an addon).";
       default = { };
       type = attrsOf (either attrs (listOf attrs));
-      example = literalExpression ''
+      example = literalExample ''
         {
           "my-service" = {
             "apiVersion" = "v1";
@@ -83,9 +83,6 @@ in
         Group = "kubernetes";
         Restart = "on-failure";
         RestartSec = 10;
-      };
-      unitConfig = {
-        StartLimitIntervalSec = 0;
       };
     };
 

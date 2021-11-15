@@ -36,7 +36,6 @@ in {
       groups._tuptime.members = [ "_tuptime" ];
       users._tuptime = {
         isSystemUser = true;
-        group = "_tuptime";
         description = "tuptime database owner";
       };
     };

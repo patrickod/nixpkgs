@@ -9,7 +9,6 @@ let
 
     # Disable automatically generating desktop icon
     noDesktopIcon=true
-    noBackup=${lib.boolToString cfg.noBackup}
 
     [Network]
     # host setting is relevant only for web deployments - set the host on which the server will listen
@@ -29,7 +28,7 @@ in
       type = types.str;
       default = "/var/lib/trilium";
       description = ''
-        The directory storing the notes database and the configuration.
+        The directory storing the nodes database and the configuration.
       '';
     };
 
@@ -38,14 +37,6 @@ in
       default = "Trilium";
       description = ''
         Instance name used to distinguish between different instances
-      '';
-    };
-
-    noBackup = mkOption {
-      type = types.bool;
-      default = false;
-      description = ''
-        Disable periodic database backups.
       '';
     };
 
@@ -94,7 +85,7 @@ in
 
   config = lib.mkIf cfg.enable (lib.mkMerge [
   {
-    meta.maintainers = with lib.maintainers; [ fliegendewurst ];
+    meta.maintainers = with lib.maintainers; [ ];
 
     users.groups.trilium = {};
     users.users.trilium = {

@@ -8,59 +8,21 @@ let
 
   etc' = filter (f: f.enable) (attrValues config.environment.etc);
 
-  etc = pkgs.runCommandLocal "etc" {
-    # This is needed for the systemd module
-    passthru.targets = map (x: x.target) etc';
-  } /* sh */ ''
-    set -euo pipefail
+  etc = pkgs.stdenvNoCC.mkDerivation {
+    name = "etc";
 
-    makeEtcEntry() {
-      src="$1"
-      target="$2"
-      mode="$3"
-      user="$4"
-      group="$5"
+    builder = ./make-etc.sh;
 
-      if [[ "$src" = *'*'* ]]; then
-        # If the source name contains '*', perform globbing.
-        mkdir -p "$out/etc/$target"
-        for fn in $src; do
-            ln -s "$fn" "$out/etc/$target/"
-        done
-      else
+    preferLocalBuild = true;
+    allowSubstitutes = false;
 
-        mkdir -p "$out/etc/$(dirname "$target")"
-        if ! [ -e "$out/etc/$target" ]; then
-          ln -s "$src" "$out/etc/$target"
-        else
-          echo "duplicate entry $target -> $src"
-          if [ "$(readlink "$out/etc/$target")" != "$src" ]; then
-            echo "mismatched duplicate entry $(readlink "$out/etc/$target") <-> $src"
-            ret=1
-
-            continue
-          fi
-        fi
-
-        if [ "$mode" != symlink ]; then
-          echo "$mode" > "$out/etc/$target.mode"
-          echo "$user" > "$out/etc/$target.uid"
-          echo "$group" > "$out/etc/$target.gid"
-        fi
-      fi
-    }
-
-    mkdir -p "$out/etc"
-    ${concatMapStringsSep "\n" (etcEntry: escapeShellArgs [
-      "makeEtcEntry"
-      # Force local source paths to be added to the store
-      "${etcEntry.source}"
-      etcEntry.target
-      etcEntry.mode
-      etcEntry.user
-      etcEntry.group
-    ]) etc'}
-  '';
+    /* !!! Use toXML. */
+    sources = map (x: x.source) etc';
+    targets = map (x: x.target) etc';
+    modes = map (x: x.mode) etc';
+    users  = map (x: x.user) etc';
+    groups  = map (x: x.group) etc';
+  };
 
 in
 
@@ -72,7 +34,7 @@ in
 
     environment.etc = mkOption {
       default = {};
-      example = literalExpression ''
+      example = literalExample ''
         { example-configuration-file =
             { source = "/nix/store/.../etc/dir/file.conf.example";
               mode = "0440";

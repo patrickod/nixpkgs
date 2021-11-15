@@ -38,6 +38,9 @@ in
           setuid wrapper to allow any user to start physlock as root, which
           is a minor security risk. Call the physlock binary to use this instead
           of using the systemd service.
+
+          Note that you might need to relog to have the correct binary in your
+          PATH upon changing this option.
         '';
       };
 
@@ -126,12 +129,7 @@ in
 
     (mkIf cfg.allowAnyUser {
 
-      security.wrappers.physlock =
-        { setuid = true;
-          owner = "root";
-          group = "root";
-          source = "${pkgs.physlock}/bin/physlock";
-        };
+      security.wrappers.physlock = { source = "${pkgs.physlock}/bin/physlock"; user = "root"; };
 
     })
   ]);

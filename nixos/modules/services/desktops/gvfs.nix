@@ -35,7 +35,6 @@ in
       package = mkOption {
         type = types.package;
         default = pkgs.gnome.gvfs;
-        defaultText = literalExpression "pkgs.gnome.gvfs";
         description = "Which GVfs package to use.";
       };
 

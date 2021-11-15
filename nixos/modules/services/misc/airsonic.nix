@@ -74,31 +74,12 @@ in {
       transcoders = mkOption {
         type = types.listOf types.path;
         default = [ "${pkgs.ffmpeg.bin}/bin/ffmpeg" ];
-        defaultText = literalExpression ''[ "''${pkgs.ffmpeg.bin}/bin/ffmpeg" ]'';
+        defaultText= [ "\${pkgs.ffmpeg.bin}/bin/ffmpeg" ];
         description = ''
           List of paths to transcoder executables that should be accessible
           from Airsonic. Symlinks will be created to each executable inside
           ${cfg.home}/transcoders.
         '';
-      };
-
-      jre = mkOption {
-        type = types.package;
-        default = pkgs.jre8;
-        defaultText = literalExpression "pkgs.jre8";
-        description = ''
-          JRE package to use.
-
-          Airsonic only supports Java 8, airsonic-advanced requires at least
-          Java 11.
-        '';
-      };
-
-      war = mkOption {
-        type = types.path;
-        default = "${pkgs.airsonic}/webapps/airsonic.war";
-        defaultText = literalExpression ''"''${pkgs.airsonic}/webapps/airsonic.war"'';
-        description = "Airsonic war file to use.";
       };
 
       jvmOptions = mkOption {
@@ -137,7 +118,7 @@ in {
       '';
       serviceConfig = {
         ExecStart = ''
-          ${cfg.jre}/bin/java -Xmx${toString cfg.maxMemory}m \
+          ${pkgs.jre8}/bin/java -Xmx${toString cfg.maxMemory}m \
           -Dairsonic.home=${cfg.home} \
           -Dserver.address=${cfg.listenAddress} \
           -Dserver.port=${toString cfg.port} \
@@ -147,7 +128,7 @@ in {
             "-Dserver.use-forward-headers=true"} \
           ${toString cfg.jvmOptions} \
           -verbose:gc \
-          -jar ${cfg.war}
+          -jar ${pkgs.airsonic}/webapps/airsonic.war
         '';
         Restart = "always";
         User = "airsonic";
@@ -165,12 +146,10 @@ in {
 
     users.users.airsonic = {
       description = "Airsonic service user";
-      group = "airsonic";
       name = cfg.user;
       home = cfg.home;
       createHome = true;
       isSystemUser = true;
     };
-    users.groups.airsonic = {};
   };
 }

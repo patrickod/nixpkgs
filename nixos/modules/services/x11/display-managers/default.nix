@@ -18,6 +18,7 @@ let
 
   fontconfig = config.fonts.fontconfig;
   xresourcesXft = pkgs.writeText "Xresources-Xft" ''
+    ${optionalString (fontconfig.dpi != 0) ''Xft.dpi: ${toString fontconfig.dpi}''}
     Xft.antialias: ${if fontconfig.antialias then "1" else "0"}
     Xft.rgba: ${fontconfig.subpixel.rgba}
     Xft.lcdfilter: lcd${fontconfig.subpixel.lcdfilter}
@@ -122,10 +123,10 @@ let
         done
 
         if test -d ${pkg}/share/xsessions; then
-          ${pkgs.buildPackages.xorg.lndir}/bin/lndir ${pkg}/share/xsessions $out/share/xsessions
+          ${xorg.lndir}/bin/lndir ${pkg}/share/xsessions $out/share/xsessions
         fi
         if test -d ${pkg}/share/wayland-sessions; then
-          ${pkgs.buildPackages.xorg.lndir}/bin/lndir ${pkg}/share/wayland-sessions $out/share/wayland-sessions
+          ${xorg.lndir}/bin/lndir ${pkg}/share/wayland-sessions $out/share/wayland-sessions
         fi
       '') cfg.displayManager.sessionPackages}
     '';
@@ -217,7 +218,7 @@ in
 
       session = mkOption {
         default = [];
-        example = literalExpression
+        example = literalExample
           ''
             [ { manage = "desktop";
                 name = "xterm";
@@ -280,7 +281,7 @@ in
             null;
         example = "gnome";
         description = ''
-          Graphical session to pre-select in the session chooser (only effective for GDM, LightDM and SDDM).
+          Graphical session to pre-select in the session chooser (only effective for GDM and LightDM).
 
           On GDM, LightDM and SDDM, it will also be used as a session for auto-login.
         '';
@@ -305,7 +306,9 @@ in
 
         execCmd = mkOption {
           type = types.str;
-          example = literalExpression ''"''${pkgs.lightdm}/bin/lightdm"'';
+          example = literalExample ''
+            "''${pkgs.lightdm}/bin/lightdm"
+          '';
           description = "Command to start the display manager.";
         };
 

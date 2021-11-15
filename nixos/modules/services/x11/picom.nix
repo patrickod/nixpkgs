@@ -254,7 +254,7 @@ in {
     in mkOption {
       type = topLevel;
       default = { };
-      example = literalExpression ''
+      example = literalExample ''
         blur =
           { method = "gaussian";
             size = 10;

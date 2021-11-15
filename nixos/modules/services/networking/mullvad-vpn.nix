@@ -9,7 +9,6 @@ with lib;
     default = false;
     description = ''
       This option enables Mullvad VPN daemon.
-      This sets <option>networking.firewall.checkReversePath</option> to "loose", which might be undesirable for security.
     '';
   };
 
@@ -18,9 +17,6 @@ with lib;
 
     # mullvad-daemon writes to /etc/iproute2/rt_tables
     networking.iproute2.enable = true;
-
-    # See https://github.com/NixOS/nixpkgs/issues/113589
-    networking.firewall.checkReversePath = "loose";
 
     systemd.services.mullvad-daemon = {
       description = "Mullvad VPN daemon";
@@ -46,5 +42,5 @@ with lib;
     };
   };
 
-  meta.maintainers = with maintainers; [ ymarkus ];
+  meta.maintainers = [ maintainers.xfix ];
 }

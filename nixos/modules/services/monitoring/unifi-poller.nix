@@ -6,7 +6,7 @@ let
   cfg = config.services.unifi-poller;
 
   configFile = pkgs.writeText "unifi-poller.json" (generators.toJSON {} {
-    inherit (cfg) poller influxdb loki prometheus unifi;
+    inherit (cfg) poller influxdb prometheus unifi;
   });
 
 in {
@@ -87,7 +87,7 @@ in {
       pass = mkOption {
         type = types.path;
         default = pkgs.writeText "unifi-poller-influxdb-default.password" "unifipoller";
-        defaultText = literalExpression "unifi-poller-influxdb-default.password";
+        defaultText = "unifi-poller-influxdb-default.password";
         description = ''
           Path of a file containing the password for influxdb.
           This file needs to be readable by the unifi-poller user.
@@ -118,61 +118,6 @@ in {
       };
     };
 
-    loki = {
-      url = mkOption {
-        type = types.str;
-        default = "";
-        description = ''
-          URL of the Loki host.
-        '';
-      };
-      user = mkOption {
-        type = types.str;
-        default = "";
-        description = ''
-          Username for Loki.
-        '';
-      };
-      pass = mkOption {
-        type = types.path;
-        default = pkgs.writeText "unifi-poller-loki-default.password" "";
-        defaultText = "unifi-poller-influxdb-default.password";
-        description = ''
-          Path of a file containing the password for Loki.
-          This file needs to be readable by the unifi-poller user.
-        '';
-        apply = v: "file://${v}";
-      };
-      verify_ssl = mkOption {
-        type = types.bool;
-        default = false;
-        description = ''
-          Verify Loki's certificate.
-        '';
-      };
-      tenant_id = mkOption {
-        type = types.str;
-        default = "";
-        description = ''
-          Tenant ID to use in Loki.
-        '';
-      };
-      interval = mkOption {
-        type = types.str;
-        default = "2m";
-        description = ''
-          How often the events are polled and pushed to Loki.
-        '';
-      };
-      timeout = mkOption {
-        type = types.str;
-        default = "10s";
-        description = ''
-          Should be increased in case of timeout errors.
-        '';
-      };
-    };
-
     unifi = let
       controllerOptions = {
         user = mkOption {
@@ -185,7 +130,7 @@ in {
         pass = mkOption {
           type = types.path;
           default = pkgs.writeText "unifi-poller-unifi-default.password" "unifi";
-          defaultText = literalExpression "unifi-poller-unifi-default.password";
+          defaultText = "unifi-poller-unifi-default.password";
           description = ''
             Path of a file containing the password for the unifi service user.
             This file needs to be readable by the unifi-poller user.
@@ -212,28 +157,7 @@ in {
           type = types.bool;
           default = false;
           description = ''
-            Collect and save data from the intrusion detection system to influxdb and Loki.
-          '';
-        };
-        save_events = mkOption {
-          type = types.bool;
-          default = false;
-          description = ''
-            Collect and save data from UniFi events to influxdb and Loki.
-          '';
-        };
-        save_alarms = mkOption {
-          type = types.bool;
-          default = false;
-          description = ''
-            Collect and save data from UniFi alarms to influxdb and Loki.
-          '';
-        };
-        save_anomalies = mkOption {
-          type = types.bool;
-          default = false;
-          description = ''
-            Collect and save data from UniFi anomalies to influxdb and Loki.
+            Collect and save data from the intrusion detection system to influxdb.
           '';
         };
         save_dpi = mkOption {

@@ -64,13 +64,11 @@ in
       extraGitoliteRc = mkOption {
         type = types.lines;
         default = "";
-        example = literalExpression ''
-          '''
-            $RC{UMASK} = 0027;
-            $RC{SITE_INFO} = 'This is our private repository host';
-            push( @{$RC{ENABLE}}, 'Kindergarten' ); # enable the command/feature
-            @{$RC{ENABLE}} = grep { $_ ne 'desc' } @{$RC{ENABLE}}; # disable the command/feature
-          '''
+        example = literalExample ''
+          $RC{UMASK} = 0027;
+          $RC{SITE_INFO} = 'This is our private repository host';
+          push( @{$RC{ENABLE}}, 'Kindergarten' ); # enable the command/feature
+          @{$RC{ENABLE}} = grep { $_ ne 'desc' } @{$RC{ENABLE}}; # disable the command/feature
         '';
         description = ''
           Extra configuration to append to the default <literal>~/.gitolite.rc</literal>.

@@ -30,8 +30,8 @@ in {
       package = mkOption {
         type = types.package;
         default = pkgs.spacecookie;
-        defaultText = literalExpression "pkgs.spacecookie";
-        example = literalExpression "pkgs.haskellPackages.spacecookie";
+        defaultText = literalExample "pkgs.spacecookie";
+        example = literalExample "pkgs.haskellPackages.spacecookie";
         description = ''
           The spacecookie derivation to use. This can be used to
           override the used package or to use another version.

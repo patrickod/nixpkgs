@@ -32,7 +32,7 @@ in {
       package = mkOption {
         type = types.package;
         default = pkgs.ejabberd;
-        defaultText = literalExpression "pkgs.ejabberd";
+        defaultText = "pkgs.ejabberd";
         description = "ejabberd server package to use";
       };
 
@@ -76,7 +76,7 @@ in {
         type = types.listOf types.path;
         default = [];
         description = "Configuration dumps that should be loaded on the first startup";
-        example = literalExpression "[ ./myejabberd.dump ]";
+        example = literalExample "[ ./myejabberd.dump ]";
       };
 
       imagemagick = mkOption {

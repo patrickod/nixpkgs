@@ -13,7 +13,7 @@ in
       enable = mkEnableOption "Serve NAR file contents via HTTP";
 
       port = mkOption {
-        type = types.port;
+        type = types.int;
         default = 8383;
         description = ''
           Port number where nar-serve will listen on.

@@ -32,7 +32,6 @@ in
     };
     networking.nftables.ruleset = mkOption {
       type = types.lines;
-      default = "";
       example = ''
         # Check out https://wiki.nftables.org/ for better documentation.
         # Table for both IPv4 and IPv6.
@@ -87,7 +86,6 @@ in
         name = "nftables-rules";
         text = cfg.ruleset;
       };
-      defaultText = literalDocBook ''a file with the contents of <option>networking.nftables.ruleset</option>'';
       description =
         ''
           The ruleset file to be used with nftables.  Should be in a format that
@@ -105,7 +103,6 @@ in
     }];
     boot.blacklistedKernelModules = [ "ip_tables" ];
     environment.systemPackages = [ pkgs.nftables ];
-    networking.networkmanager.firewallBackend = mkDefault "nftables";
     systemd.services.nftables = {
       description = "nftables firewall";
       before = [ "network-pre.target" ];

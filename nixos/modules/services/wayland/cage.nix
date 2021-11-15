@@ -18,7 +18,7 @@ in {
   options.services.cage.extraArguments = mkOption {
     type = types.listOf types.str;
     default = [];
-    defaultText = literalExpression "[]";
+    defaultText = "[]";
     description = "Additional command line arguments to pass to Cage.";
     example = ["-d"];
   };
@@ -26,7 +26,6 @@ in {
   options.services.cage.program = mkOption {
     type = types.path;
     default = "${pkgs.xterm}/bin/xterm";
-    defaultText = literalExpression ''"''${pkgs.xterm}/bin/xterm"'';
     description = ''
       Program to run in cage.
     '';
@@ -83,7 +82,7 @@ in {
       auth    required pam_unix.so nullok
       account required pam_unix.so
       session required pam_unix.so
-      session required pam_env.so conffile=/etc/pam/environment readenv=0
+      session required pam_env.so conffile=${config.system.build.pamEnvironment} readenv=0
       session required ${pkgs.systemd}/lib/security/pam_systemd.so
     '';
 

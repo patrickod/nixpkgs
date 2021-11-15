@@ -21,10 +21,11 @@ in
     };
     binary = mkOption {
       type = types.path;
-      description = "Binary to execute.";
+      description = "Binary to execute (by default \${weechat}/bin/weechat).";
+      example = literalExample ''
+        ''${pkgs.weechat}/bin/weechat-headless
+      '';
       default = "${pkgs.weechat}/bin/weechat";
-      defaultText = literalExpression ''"''${pkgs.weechat}/bin/weechat"'';
-      example = literalExpression ''"''${pkgs.weechat}/bin/weechat-headless"'';
     };
   };
 
@@ -51,12 +52,7 @@ in
       wants = [ "network.target" ];
     };
 
-    security.wrappers.screen =
-      { setuid = true;
-        owner = "root";
-        group = "root";
-        source = "${pkgs.screen}/bin/screen";
-      };
+    security.wrappers.screen.source = "${pkgs.screen}/bin/screen";
   };
 
   meta.doc = ./weechat.xml;

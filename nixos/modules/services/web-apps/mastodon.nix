@@ -38,7 +38,7 @@ let
   // (if cfg.smtp.authenticate then { SMTP_LOGIN  = cfg.smtp.user; } else {})
   // cfg.extraConfig;
 
-  systemCallsList = [ "@cpu-emulation" "@debug" "@keyring" "@ipc" "@mount" "@obsolete" "@privileged" "@setuid" ];
+  systemCallsList = [ "@clock" "@cpu-emulation" "@debug" "@keyring" "@module" "@mount" "@obsolete" "@raw-io" "@reboot" "@setuid" "@swap" ];
 
   cfgService = {
     # User and group
@@ -50,9 +50,6 @@ let
     # Logs directory and mode
     LogsDirectory = "mastodon";
     LogsDirectoryMode = "0750";
-    # Proc filesystem
-    ProcSubset = "pid";
-    ProtectProc = "invisible";
     # Access write directories
     UMask = "0027";
     # Capabilities
@@ -77,7 +74,6 @@ let
     MemoryDenyWriteExecute = false;
     RestrictRealtime = true;
     RestrictSUIDSGID = true;
-    RemoveIPC = true;
     PrivateMounts = true;
     # System Call Filtering
     SystemCallArchitectures = "native";
@@ -348,7 +344,7 @@ in {
         authenticate = lib.mkOption {
           description = "Authenticate with the SMTP server using username and password.";
           type = lib.types.bool;
-          default = false;
+          default = true;
         };
 
         host = lib.mkOption {
@@ -403,7 +399,7 @@ in {
       package = lib.mkOption {
         type = lib.types.package;
         default = pkgs.mastodon;
-        defaultText = lib.literalExpression "pkgs.mastodon";
+        defaultText = "pkgs.mastodon";
         description = "Mastodon package to use.";
       };
 
@@ -468,7 +464,7 @@ in {
         Type = "oneshot";
         WorkingDirectory = cfg.package;
         # System Call Filtering
-        SystemCallFilter = [ ("~" + lib.concatStringsSep " " (systemCallsList ++ [ "@resources" ])) "@chown" "pipe" "pipe2" ];
+        SystemCallFilter = "~" + lib.concatStringsSep " " (systemCallsList ++ [ "@resources" ]);
       } // cfgService;
 
       after = [ "network.target" ];
@@ -495,7 +491,7 @@ in {
         EnvironmentFile = "/var/lib/mastodon/.secrets_env";
         WorkingDirectory = cfg.package;
         # System Call Filtering
-        SystemCallFilter = [ ("~" + lib.concatStringsSep " " (systemCallsList ++ [ "@resources" ])) "@chown" "pipe" "pipe2" ];
+        SystemCallFilter = "~" + lib.concatStringsSep " " (systemCallsList ++ [ "@resources" ]);
       } // cfgService;
       after = [ "mastodon-init-dirs.service" "network.target" ] ++ (if databaseActuallyCreateLocally then [ "postgresql.service" ] else []);
       wantedBy = [ "multi-user.target" ];
@@ -521,7 +517,7 @@ in {
         RuntimeDirectory = "mastodon-streaming";
         RuntimeDirectoryMode = "0750";
         # System Call Filtering
-        SystemCallFilter = [ ("~" + lib.concatStringsSep " " (systemCallsList ++ [ "@memlock" "@resources" ])) "pipe" "pipe2" ];
+        SystemCallFilter = "~" + lib.concatStringsSep " " (systemCallsList ++ [ "@privileged" "@resources" ]);
       } // cfgService;
     };
 
@@ -545,7 +541,7 @@ in {
         RuntimeDirectory = "mastodon-web";
         RuntimeDirectoryMode = "0750";
         # System Call Filtering
-        SystemCallFilter = [ ("~" + lib.concatStringsSep " " systemCallsList) "@chown" "pipe" "pipe2" ];
+        SystemCallFilter = "~" + lib.concatStringsSep " " (systemCallsList ++ [ "@resources" ]);
       } // cfgService;
       path = with pkgs; [ file imagemagick ffmpeg ];
     };
@@ -567,7 +563,7 @@ in {
         EnvironmentFile = "/var/lib/mastodon/.secrets_env";
         WorkingDirectory = cfg.package;
         # System Call Filtering
-        SystemCallFilter = [ ("~" + lib.concatStringsSep " " systemCallsList) "@chown" "pipe" "pipe2" ];
+        SystemCallFilter = "~" + lib.concatStringsSep " " systemCallsList;
       } // cfgService;
       path = with pkgs; [ file imagemagick ffmpeg ];
     };
@@ -600,7 +596,6 @@ in {
 
     services.postfix = lib.mkIf (cfg.smtp.createLocally && cfg.smtp.host == "127.0.0.1") {
       enable = true;
-      hostname = lib.mkDefault "${cfg.localDomain}";
     };
     services.redis = lib.mkIf (cfg.redis.createLocally && cfg.redis.host == "127.0.0.1") {
       enable = true;

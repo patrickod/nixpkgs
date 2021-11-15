@@ -33,7 +33,7 @@ in
 
     configFile = mkOption {
       type = types.path;
-      example = literalExpression ''
+      example = literalExample ''
         pkgs.writeText "oxidized-config.yml" '''
           ---
           debug: true
@@ -69,7 +69,7 @@ in
 
     routerDB = mkOption {
       type = types.path;
-      example = literalExpression ''
+      example = literalExample ''
         pkgs.writeText "oxidized-router.db" '''
           hostname-sw1:powerconnect:username1:password2
           hostname-sw2:procurve:username2:password2

@@ -45,10 +45,8 @@ in
     environment.systemPackages = [ pkgs.mame ];
 
     security.wrappers."${mame}" = {
-      owner = "root";
-      group = "root";
-      capabilities = "cap_net_admin,cap_net_raw+eip";
       source = "${pkgs.mame}/bin/${mame}";
+      capabilities = "cap_net_admin,cap_net_raw+eip";
     };
 
     systemd.services.mame = {

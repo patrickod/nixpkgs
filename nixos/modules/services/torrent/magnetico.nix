@@ -111,7 +111,7 @@ in {
     web.credentials = mkOption {
       type = types.attrsOf types.str;
       default = {};
-      example = lib.literalExpression ''
+      example = lib.literalExample ''
         {
           myuser = "$2y$12$YE01LZ8jrbQbx6c0s2hdZO71dSjn2p/O9XsYJpz.5968yCysUgiaG";
         }
@@ -172,10 +172,8 @@ in {
 
     users.users.magnetico = {
       description = "Magnetico daemons user";
-      group = "magnetico";
       isSystemUser = true;
     };
-    users.groups.magnetico = {};
 
     systemd.services.magneticod = {
       description = "Magnetico DHT crawler";

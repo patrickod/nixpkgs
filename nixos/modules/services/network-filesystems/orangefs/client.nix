@@ -47,6 +47,7 @@ in {
 
             target = mkOption {
               type = types.str;
+              default = null;
               example = "tcp://server:3334/orangefs";
               description = "Target URL";
             };

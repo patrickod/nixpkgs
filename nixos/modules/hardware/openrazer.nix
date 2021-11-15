@@ -49,9 +49,7 @@ in
 {
   options = {
     hardware.openrazer = {
-      enable = mkEnableOption ''
-        OpenRazer drivers and userspace daemon.
-      '';
+      enable = mkEnableOption "OpenRazer drivers and userspace daemon";
 
       verboseLogging = mkOption {
         type = types.bool;
@@ -94,15 +92,6 @@ in
           generate a heatmap.
         '';
       };
-
-      users = mkOption {
-        type = with types; listOf str;
-        default = [];
-        description = ''
-          Usernames to be added to the "openrazer" group, so that they
-          can start and interact with the OpenRazer userspace daemon.
-        '';
-      };
     };
   };
 
@@ -117,12 +106,10 @@ in
     services.udev.packages = [ kernelPackages.openrazer ];
     services.dbus.packages = [ dbusServiceFile ];
 
-    # A user must be a member of the openrazer group in order to start
-    # the openrazer-daemon. Therefore we make sure that the group
-    # exists.
-    users.groups.openrazer = {
-      members = cfg.users;
-    };
+    # A user must be a member of the plugdev group in order to start
+    # the openrazer-daemon. Therefore we make sure that the plugdev
+    # group exists.
+    users.groups.plugdev = {};
 
     systemd.user.services.openrazer-daemon = {
       description = "Daemon to manage razer devices in userspace";

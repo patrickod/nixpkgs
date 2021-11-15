@@ -66,9 +66,7 @@ in {
   meta.maintainers = teams.home-assistant.members;
 
   options.services.home-assistant = {
-    # Running home-assistant on NixOS is considered an installation method that is unsupported by the upstream project.
-    # https://github.com/home-assistant/architecture/blob/master/adr/0012-define-supported-installation-method.md#decision
-    enable = mkEnableOption "Home Assistant. Please note that this installation method is unsupported upstream";
+    enable = mkEnableOption "Home Assistant";
 
     configDir = mkOption {
       default = "/var/lib/hass";
@@ -78,7 +76,7 @@ in {
 
     port = mkOption {
       default = 8123;
-      type = types.port;
+      type = types.int;
       description = "The port on which to listen.";
     };
 
@@ -112,7 +110,7 @@ in {
             emptyValue.value = {};
           };
         in valueType;
-      example = literalExpression ''
+      example = literalExample ''
         {
           homeassistant = {
             name = "Home";
@@ -152,7 +150,7 @@ in {
       default = null;
       type = with types; nullOr attrs;
       # from https://www.home-assistant.io/lovelace/yaml-mode/
-      example = literalExpression ''
+      example = literalExample ''
         {
           title = "My Awesome Home";
           views = [ {
@@ -188,13 +186,13 @@ in {
       default = pkgs.home-assistant.overrideAttrs (oldAttrs: {
         doInstallCheck = false;
       });
-      defaultText = literalExpression ''
+      defaultText = literalExample ''
         pkgs.home-assistant.overrideAttrs (oldAttrs: {
           doInstallCheck = false;
         })
       '';
       type = types.package;
-      example = literalExpression ''
+      example = literalExample ''
         pkgs.home-assistant.override {
           extraPackages = ps: with ps; [ colorlog ];
         }
@@ -268,56 +266,6 @@ in {
           "CAP_NET_BIND_SERVICE"
           "CAP_NET_RAW"
         ]));
-        componentsUsingBluetooth = [
-          # Components that require the AF_BLUETOOTH address family
-          "bluetooth_tracker"
-          "bluetooth_le_tracker"
-        ];
-        componentsUsingSerialDevices = [
-          # Components that require access to serial devices (/dev/tty*)
-          # List generated from home-assistant documentation:
-          #   git clone https://github.com/home-assistant/home-assistant.io/
-          #   cd source/_integrations
-          #   rg "/dev/tty" -l | cut -d'/' -f3 | cut -d'.' -f1 | sort
-          # And then extended by references found in the source code, these
-          # mostly the ones using config flows already.
-          "acer_projector"
-          "alarmdecoder"
-          "arduino"
-          "blackbird"
-          "deconz"
-          "dsmr"
-          "edl21"
-          "elkm1"
-          "elv"
-          "enocean"
-          "firmata"
-          "flexit"
-          "gpsd"
-          "insteon"
-          "kwb"
-          "lacrosse"
-          "mhz19"
-          "modbus"
-          "modem_callerid"
-          "mysensors"
-          "nad"
-          "numato"
-          "rflink"
-          "rfxtrx"
-          "scsgate"
-          "serial"
-          "serial_pm"
-          "sms"
-          "upb"
-          "usb"
-          "velbus"
-          "w800rf32"
-          "xbee"
-          "zha"
-          "zwave"
-          "zwave_js"
-        ];
       in {
         ExecStart = "${package}/bin/hass --runner --config '${cfg.configDir}'";
         ExecReload = "${pkgs.coreutils}/bin/kill -HUP $MAINPID";
@@ -331,11 +279,11 @@ in {
         # Hardening
         AmbientCapabilities = capabilities;
         CapabilityBoundingSet = capabilities;
-        DeviceAllow = (optionals (any useComponent componentsUsingSerialDevices) [
+        DeviceAllow = [
           "char-ttyACM rw"
           "char-ttyAMA rw"
           "char-ttyUSB rw"
-        ]);
+        ];
         DevicePolicy = "closed";
         LockPersonality = true;
         MemoryDenyWriteExecute = true;
@@ -364,15 +312,13 @@ in {
           "AF_INET6"
           "AF_NETLINK"
           "AF_UNIX"
-        ] ++ optionals (any useComponent componentsUsingBluetooth) [
+        ] ++ optionals (useComponent "bluetooth_tracker" || useComponent "bluetooth_le_tracker") [
           "AF_BLUETOOTH"
         ];
         RestrictNamespaces = true;
         RestrictRealtime = true;
         RestrictSUIDSGID = true;
-        SupplementaryGroups = optionals (any useComponent componentsUsingSerialDevices) [
-          "dialout"
-        ];
+        SupplementaryGroups = [ "dialout" ];
         SystemCallArchitectures = "native";
         SystemCallFilter = [
           "@system-service"

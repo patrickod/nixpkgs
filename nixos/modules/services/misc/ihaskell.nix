@@ -6,7 +6,7 @@ let
 
   cfg = config.services.ihaskell;
   ihaskell = pkgs.ihaskell.override {
-    packages = cfg.extraPackages;
+    packages = self: cfg.extraPackages self;
   };
 
 in
@@ -22,9 +22,8 @@ in
 
       extraPackages = mkOption {
         type = types.functionTo (types.listOf types.package);
-        default = haskellPackages: [];
-        defaultText = literalExpression "haskellPackages: []";
-        example = literalExpression ''
+        default = self: [];
+        example = literalExample ''
           haskellPackages: [
             haskellPackages.wreq
             haskellPackages.lens

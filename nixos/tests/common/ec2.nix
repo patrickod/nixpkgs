@@ -23,7 +23,6 @@ with pkgs.lib;
       testScript = ''
         import os
         import subprocess
-        import tempfile
 
         image_dir = os.path.join(
             os.environ.get("TMPDIR", tempfile.gettempdir()), "tmp", "vm-state-machine"

@@ -79,10 +79,6 @@ in
           --web.telemetry-path ${cfg.telemetryPath} \
           ${concatStringsSep " \\\n  " cfg.extraFlags}
       '';
-      RestrictAddressFamilies = [
-        # Need AF_UNIX to collect data
-        "AF_UNIX"
-      ];
     };
   };
 }

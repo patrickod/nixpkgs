@@ -29,7 +29,7 @@ in
 
       autoMaster = mkOption {
         type = types.str;
-        example = literalExpression ''
+        example = literalExample ''
           let
             mapConf = pkgs.writeText "auto" '''
              kernel    -ro,soft,intr       ftp.kernel.org:/pub/linux

@@ -5,33 +5,28 @@ with lib;
 let
   cfg = config.services.kubernetes;
 
-  defaultContainerdSettings = {
-    version = 2;
-    root = "/var/lib/containerd";
-    state = "/run/containerd";
-    oom_score = 0;
+  defaultContainerdConfigFile = pkgs.writeText "containerd.toml" ''
+    version = 2
+    root = "/var/lib/containerd"
+    state = "/run/containerd"
+    oom_score = 0
 
-    grpc = {
-      address = "/run/containerd/containerd.sock";
-    };
+    [grpc]
+      address = "/run/containerd/containerd.sock"
 
-    plugins."io.containerd.grpc.v1.cri" = {
-      sandbox_image = "pause:latest";
+    [plugins."io.containerd.grpc.v1.cri"]
+      sandbox_image = "pause:latest"
 
-      cni = {
-        bin_dir = "/opt/cni/bin";
-        max_conf_num = 0;
-      };
+    [plugins."io.containerd.grpc.v1.cri".cni]
+      bin_dir = "/opt/cni/bin"
+      max_conf_num = 0
 
-      containerd.runtimes.runc = {
-        runtime_type = "io.containerd.runc.v2";
-      };
+    [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
+      runtime_type = "io.containerd.runc.v2"
 
-      containerd.runtimes."io.containerd.runc.v2".options = {
-        SystemdCgroup = true;
-      };
-    };
-  };
+    [plugins."io.containerd.grpc.v1.cri".containerd.runtimes."io.containerd.runc.v2".options]
+      SystemdCgroup = true
+  '';
 
   mkKubeConfig = name: conf: pkgs.writeText "${name}-kubeconfig" (builtins.toJSON {
     apiVersion = "v1";
@@ -53,9 +48,8 @@ let
         cluster = "local";
         user = name;
       };
-      name = "local";
+      current-context = "local";
     }];
-    current-context = "local";
   });
 
   caCert = secret "ca";
@@ -126,7 +120,7 @@ in {
       description = "Kubernetes package to use.";
       type = types.package;
       default = pkgs.kubernetes;
-      defaultText = literalExpression "pkgs.kubernetes";
+      defaultText = "pkgs.kubernetes";
     };
 
     kubeconfig = mkKubeConfigOptions "Default kubeconfig";
@@ -253,7 +247,7 @@ in {
     (mkIf cfg.kubelet.enable {
       virtualisation.containerd = {
         enable = mkDefault true;
-        settings = mapAttrsRecursive (name: mkDefault) defaultContainerdSettings;
+        configFile = mkDefault defaultContainerdConfigFile;
       };
     })
 

@@ -4,7 +4,7 @@ with lib;
 
 {
   name = "xss-lock";
-  meta.maintainers = with pkgs.lib.maintainers; [ ];
+  meta.maintainers = with pkgs.lib.maintainers; [ ma27 ];
 
   nodes = {
     simple = {

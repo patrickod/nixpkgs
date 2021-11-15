@@ -21,7 +21,7 @@ let
           each .dtb file matching "compatible" of the overlay.
         '';
         default = null;
-        example = literalExpression "./dts/overlays.dts";
+        example = literalExample "./dts/overlays.dts";
       };
 
       dtsText = mkOption {
@@ -31,7 +31,7 @@ let
           Literal DTS contents, overlay is applied to
           each .dtb file matching "compatible" of the overlay.
         '';
-        example = ''
+        example = literalExample ''
           /dts-v1/;
           /plugin/;
           / {
@@ -125,8 +125,8 @@ in
 
         kernelPackage = mkOption {
           default = config.boot.kernelPackages.kernel;
-          defaultText = literalExpression "config.boot.kernelPackages.kernel";
-          example = literalExpression "pkgs.linux_latest";
+          defaultText = "config.boot.kernelPackages.kernel";
+          example = literalExample "pkgs.linux_latest";
           type = types.path;
           description = ''
             Kernel package containing the base device-tree (.dtb) to boot. Uses
@@ -156,7 +156,7 @@ in
 
         overlays = mkOption {
           default = [];
-          example = literalExpression ''
+          example = literalExample ''
             [
               { name = "pps"; dtsFile = ./dts/pps.dts; }
               { name = "spi";

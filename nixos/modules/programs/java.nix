@@ -34,7 +34,7 @@ in
 
       package = mkOption {
         default = pkgs.jdk;
-        defaultText = literalExpression "pkgs.jdk";
+        defaultText = "pkgs.jdk";
         description = ''
           Java package to install. Typical values are pkgs.jdk or pkgs.jre.
         '';

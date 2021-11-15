@@ -32,9 +32,9 @@ let
       description = "Bind address for ${name} endpoint.";
     };
     port = mkOption {
-      type = types.port;
+      type = types.int;
       default = port;
-      description = "Bind port for ${name} endpoint.";
+      description = "Bind port for ${name} endoint.";
     };
   };
 
@@ -481,7 +481,7 @@ in
       exploratory.inbound = i2cpOpts "exploratory";
       exploratory.outbound = i2cpOpts "exploratory";
 
-      ntcp2.enable = mkEnableTrueOption "NTCP2";
+      ntcp2.enable = mkEnableTrueOption "NTCP2.";
       ntcp2.published = mkEnableOption "NTCP2 publication";
       ntcp2.port = mkOption {
         type = types.int;

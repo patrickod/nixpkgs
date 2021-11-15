@@ -22,9 +22,7 @@ let
     } // (optionalAttrs (vhostConfig.enableACME || vhostConfig.useACMEHost != null) {
       sslCertificate = "${certs.${certName}.directory}/fullchain.pem";
       sslCertificateKey = "${certs.${certName}.directory}/key.pem";
-      sslTrustedCertificate = if vhostConfig.sslTrustedCertificate != null
-                              then vhostConfig.sslTrustedCertificate
-                              else "${certs.${certName}.directory}/chain.pem";
+      sslTrustedCertificate = "${certs.${certName}.directory}/chain.pem";
     })
   ) cfg.virtualHosts;
   enableIPv6 = config.networking.enableIPv6;
@@ -171,14 +169,6 @@ let
         map_hash_max_size ${toString cfg.mapHashMaxSize};
       ''}
 
-      ${optionalString (cfg.serverNamesHashBucketSize != null) ''
-        server_names_hash_bucket_size ${toString cfg.serverNamesHashBucketSize};
-      ''}
-
-      ${optionalString (cfg.serverNamesHashMaxSize != null) ''
-        server_names_hash_max_size ${toString cfg.serverNamesHashMaxSize};
-      ''}
-
       # $connection_upgrade is used for websocket proxying
       map $http_upgrade $connection_upgrade {
           default upgrade;
@@ -240,13 +230,13 @@ let
 
         defaultListen =
           if vhost.listen != [] then vhost.listen
-          else
-            let addrs = if vhost.listenAddresses != [] then vhost.listenAddresses else (
-              [ "0.0.0.0" ] ++ optional enableIPv6 "[::0]"
-            );
-            in
-          optionals (hasSSL || vhost.rejectSSL) (map (addr: { inherit addr; port = 443; ssl = true; }) addrs)
-          ++ optionals (!onlySSL) (map (addr: { inherit addr; port = 80; ssl = false; }) addrs);
+          else ((optionals hasSSL (
+            singleton                    { addr = "0.0.0.0"; port = 443; ssl = true; }
+            ++ optional enableIPv6 { addr = "[::]";    port = 443; ssl = true; }
+          )) ++ optionals (!onlySSL) (
+            singleton                    { addr = "0.0.0.0"; port = 80;  ssl = false; }
+            ++ optional enableIPv6 { addr = "[::]";    port = 80;  ssl = false; }
+          ));
 
         hostListen =
           if vhost.forceSSL
@@ -312,9 +302,6 @@ let
           ''}
           ${optionalString (hasSSL && vhost.sslTrustedCertificate != null) ''
             ssl_trusted_certificate ${vhost.sslTrustedCertificate};
-          ''}
-          ${optionalString vhost.rejectSSL ''
-            ssl_reject_handshake on;
           ''}
 
           ${mkBasicAuth vhostName vhost}
@@ -425,7 +412,7 @@ in
 
       package = mkOption {
         default = pkgs.nginxStable;
-        defaultText = literalExpression "pkgs.nginxStable";
+        defaultText = "pkgs.nginxStable";
         type = types.package;
         apply = p: p.override {
           modules = p.modules ++ cfg.additionalModules;
@@ -440,7 +427,7 @@ in
       additionalModules = mkOption {
         default = [];
         type = types.listOf (types.attrsOf types.anything);
-        example = literalExpression "[ pkgs.nginxModules.brotli ]";
+        example = literalExample "[ pkgs.nginxModules.brotli ]";
         description = ''
           Additional <link xlink:href="https://www.nginx.com/resources/wiki/modules/">third-party nginx modules</link>
           to install. Packaged modules are available in
@@ -651,30 +638,13 @@ in
           '';
       };
 
-      serverNamesHashBucketSize = mkOption {
-        type = types.nullOr types.ints.positive;
-        default = null;
-        description = ''
-            Sets the bucket size for the server names hash tables. Default
-            value depends on the processor’s cache line size.
-          '';
-      };
-
-      serverNamesHashMaxSize = mkOption {
-        type = types.nullOr types.ints.positive;
-        default = null;
-        description = ''
-            Sets the maximum size of the server names hash tables.
-          '';
-      };
-
       resolver = mkOption {
         type = types.submodule {
           options = {
             addresses = mkOption {
               type = types.listOf types.str;
               default = [];
-              example = literalExpression ''[ "[::1]" "127.0.0.1:5353" ]'';
+              example = literalExample ''[ "[::1]" "127.0.0.1:5353" ]'';
               description = "List of resolvers to use";
             };
             valid = mkOption {
@@ -738,7 +708,7 @@ in
           Defines a group of servers to use as proxy target.
         '';
         default = {};
-        example = literalExpression ''
+        example = literalExample ''
           "backend_server" = {
             servers = { "127.0.0.1:8000" = {}; };
             extraConfig = ''''
@@ -755,7 +725,7 @@ in
         default = {
           localhost = {};
         };
-        example = literalExpression ''
+        example = literalExample ''
           {
             "hydra.example.com" = {
               forceSSL = true;
@@ -801,27 +771,20 @@ in
       }
 
       {
-        assertion = all (host: with host;
-          count id [ addSSL (onlySSL || enableSSL) forceSSL rejectSSL ] <= 1
+        assertion = all (conf: with conf;
+          !(addSSL && (onlySSL || enableSSL)) &&
+          !(forceSSL && (onlySSL || enableSSL)) &&
+          !(addSSL && forceSSL)
         ) (attrValues virtualHosts);
         message = ''
           Options services.nginx.service.virtualHosts.<name>.addSSL,
-          services.nginx.virtualHosts.<name>.onlySSL,
-          services.nginx.virtualHosts.<name>.forceSSL and
-          services.nginx.virtualHosts.<name>.rejectSSL are mutually exclusive.
+          services.nginx.virtualHosts.<name>.onlySSL and services.nginx.virtualHosts.<name>.forceSSL
+          are mutually exclusive.
         '';
       }
 
       {
-        assertion = any (host: host.rejectSSL) (attrValues virtualHosts) -> versionAtLeast cfg.package.version "1.19.4";
-        message = ''
-          services.nginx.virtualHosts.<name>.rejectSSL requires nginx version
-          1.19.4 or above; see the documentation for services.nginx.package.
-        '';
-      }
-
-      {
-        assertion = all (host: !(host.enableACME && host.useACMEHost != null)) (attrValues virtualHosts);
+        assertion = all (conf: !(conf.enableACME && conf.useACMEHost != null)) (attrValues virtualHosts);
         message = ''
           Options services.nginx.service.virtualHosts.<name>.enableACME and
           services.nginx.virtualHosts.<name>.useACMEHost are mutually exclusive.
@@ -889,7 +852,7 @@ in
         RestrictAddressFamilies = [ "AF_UNIX" "AF_INET" "AF_INET6" ];
         RestrictNamespaces = true;
         LockPersonality = true;
-        MemoryDenyWriteExecute = !((builtins.any (mod: (mod.allowMemoryWriteExecute or false)) cfg.package.modules) || (cfg.package == pkgs.openresty));
+        MemoryDenyWriteExecute = !(builtins.any (mod: (mod.allowMemoryWriteExecute or false)) cfg.package.modules);
         RestrictRealtime = true;
         RestrictSUIDSGID = true;
         RemoveIPC = true;

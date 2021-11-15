@@ -56,12 +56,6 @@ let
     '';
 
   flashbackEnabled = cfg.flashback.enableMetacity || length cfg.flashback.customSessions > 0;
-  flashbackWms = optional cfg.flashback.enableMetacity {
-    wmName = "metacity";
-    wmLabel = "Metacity";
-    wmCommand = "${pkgs.gnome.metacity}/bin/metacity";
-    enableGnomePanel = true;
-  } ++ cfg.flashback.customSessions;
 
   notExcluded = pkg: mkDefault (!(lib.elem pkg config.environment.gnome.excludePackages));
 
@@ -186,7 +180,7 @@ in
       sessionPath = mkOption {
         default = [];
         type = types.listOf types.package;
-        example = literalExpression "[ pkgs.gnome.gpaste ]";
+        example = literalExample "[ pkgs.gnome.gpaste ]";
         description = ''
           Additional list of packages to be added to the session search path.
           Useful for GNOME Shell extensions or GSettings-conditional autostart.
@@ -200,11 +194,9 @@ in
         internal = true; # this is messy
         default = defaultFavoriteAppsOverride;
         type = types.lines;
-        example = literalExpression ''
-          '''
-            [org.gnome.shell]
-            favorite-apps=[ 'firefox.desktop', 'org.gnome.Calendar.desktop' ]
-          '''
+        example = literalExample ''
+          [org.gnome.shell]
+          favorite-apps=[ 'firefox.desktop', 'org.gnome.Calendar.desktop' ]
         '';
         description = "List of desktop files to put as favorite apps into gnome-shell. These need to be installed somehow globally.";
       };
@@ -230,51 +222,33 @@ in
           type = types.listOf (types.submodule {
             options = {
               wmName = mkOption {
-                type = types.strMatching "[a-zA-Z0-9_-]+";
-                description = "A unique identifier for the window manager.";
+                type = types.str;
+                description = "The filename-compatible name of the window manager to use.";
                 example = "xmonad";
               };
 
               wmLabel = mkOption {
                 type = types.str;
-                description = "The name of the window manager to show in the session chooser.";
+                description = "The pretty name of the window manager to use.";
                 example = "XMonad";
               };
 
               wmCommand = mkOption {
                 type = types.str;
                 description = "The executable of the window manager to use.";
-                example = literalExpression ''"''${pkgs.haskellPackages.xmonad}/bin/xmonad"'';
-              };
-
-              enableGnomePanel = mkOption {
-                type = types.bool;
-                default = true;
-                example = false;
-                description = "Whether to enable the GNOME panel in this session.";
+                example = "\${pkgs.haskellPackages.xmonad}/bin/xmonad";
               };
             };
           });
           default = [];
           description = "Other GNOME Flashback sessions to enable.";
         };
-
-        panelModulePackages = mkOption {
-          default = [ pkgs.gnome.gnome-applets ];
-          defaultText = literalExpression "[ pkgs.gnome.gnome-applets ]";
-          type = types.listOf types.path;
-          description = ''
-            Packages containing modules that should be made available to <literal>gnome-panel</literal> (usually for applets).
-
-            If you're packaging something to use here, please install the modules in <literal>$out/lib/gnome-panel/modules</literal>.
-          '';
-        };
       };
     };
 
     environment.gnome.excludePackages = mkOption {
       default = [];
-      example = literalExpression "[ pkgs.gnome.totem ]";
+      example = literalExample "[ pkgs.gnome.totem ]";
       type = types.listOf types.package;
       description = "Which packages gnome should exclude from the default environment";
     };
@@ -321,19 +295,14 @@ in
     })
 
     (mkIf flashbackEnabled {
-      services.xserver.displayManager.sessionPackages =
-        let
-          wmNames = map (wm: wm.wmName) flashbackWms;
-          namesAreUnique = lib.unique wmNames == wmNames;
-        in
-          assert (assertMsg namesAreUnique "Flashback WM names must be unique.");
-          map
-            (wm:
-              pkgs.gnome.gnome-flashback.mkSessionForWm {
-                inherit (wm) wmName wmLabel wmCommand enableGnomePanel;
-                inherit (cfg.flashback) panelModulePackages;
-              }
-            ) flashbackWms;
+      services.xserver.displayManager.sessionPackages =  map
+        (wm: pkgs.gnome.gnome-flashback.mkSessionForWm {
+          inherit (wm) wmName wmLabel wmCommand;
+        }) (optional cfg.flashback.enableMetacity {
+              wmName = "metacity";
+              wmLabel = "Metacity";
+              wmCommand = "${pkgs.gnome.metacity}/bin/metacity";
+            } ++ cfg.flashback.customSessions);
 
       security.pam.services.gnome-flashback = {
         enableGnomeKeyring = true;
@@ -341,12 +310,15 @@ in
 
       systemd.packages = with pkgs.gnome; [
         gnome-flashback
-      ] ++ map gnome-flashback.mkSystemdTargetForWm flashbackWms;
+      ] ++ (map
+        (wm: gnome-flashback.mkSystemdTargetForWm {
+          inherit (wm) wmName;
+        }) cfg.flashback.customSessions);
 
-      # gnome-panel needs these for menu applet
-      environment.sessionVariables.XDG_DATA_DIRS = [ "${pkgs.gnome.gnome-flashback}/share" ];
-      # TODO: switch to sessionVariables (resolve conflict)
-      environment.variables.XDG_CONFIG_DIRS = [ "${pkgs.gnome.gnome-flashback}/etc/xdg" ];
+        # gnome-panel needs these for menu applet
+        environment.sessionVariables.XDG_DATA_DIRS = [ "${pkgs.gnome.gnome-flashback}/share" ];
+        # TODO: switch to sessionVariables (resolve conflict)
+        environment.variables.XDG_CONFIG_DIRS = [ "${pkgs.gnome.gnome-flashback}/etc/xdg" ];
     })
 
     (mkIf serviceCfg.core-os-services.enable {
@@ -372,20 +344,7 @@ in
       services.xserver.libinput.enable = mkDefault true; # for controlling touchpad settings via gnome control center
 
       xdg.portal.enable = true;
-      xdg.portal.extraPortals = [
-        pkgs.xdg-desktop-portal-gnome
-        (pkgs.xdg-desktop-portal-gtk.override {
-          # Do not build portals that we already have.
-          buildPortalsInGnome = false;
-        })
-      ];
-
-      # Harmonize Qt5 application style and also make them use the portal for file chooser dialog.
-      qt5 = {
-        enable = mkDefault true;
-        platformTheme = mkDefault "gnome";
-        style = mkDefault "adwaita";
-      };
+      xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
 
       networking.networkmanager.enable = mkDefault true;
 
@@ -453,7 +412,7 @@ in
         cantarell-fonts
         dejavu_fonts
         source-code-pro # Default monospace font in 3.32
-        source-sans
+        source-sans-pro
       ];
 
       # Adapt from https://gitlab.gnome.org/GNOME/gnome-build-meta/blob/gnome-3-38/elements/core/meta-gnome-core-shell.bst
@@ -484,8 +443,6 @@ in
     (mkIf serviceCfg.experimental-features.realtime-scheduling {
       security.wrappers.".gnome-shell-wrapped" = {
         source = "${pkgs.gnome.gnome-shell}/bin/.gnome-shell-wrapped";
-        owner = "root";
-        group = "root";
         capabilities = "cap_sys_nice=ep";
       };
 

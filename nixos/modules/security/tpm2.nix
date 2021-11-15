@@ -26,7 +26,8 @@ in {
       '';
       type = lib.types.nullOr lib.types.str;
       default = if cfg.abrmd.enable then "tss" else "root";
-      defaultText = lib.literalExpression ''if config.security.tpm2.abrmd.enable then "tss" else "root"'';
+      defaultText = ''"tss" when using the userspace resource manager,'' +
+                    ''"root" otherwise'';
     };
 
     tssGroup = lib.mkOption {
@@ -56,7 +57,7 @@ in {
         description = "tpm2-abrmd package to use";
         type = lib.types.package;
         default = pkgs.tpm2-abrmd;
-        defaultText = lib.literalExpression "pkgs.tpm2-abrmd";
+        defaultText = "pkgs.tpm2-abrmd";
       };
     };
 
@@ -70,7 +71,7 @@ in {
         description = "tpm2-pkcs11 package to use";
         type = lib.types.package;
         default = pkgs.tpm2-pkcs11;
-        defaultText = lib.literalExpression "pkgs.tpm2-pkcs11";
+        defaultText = "pkgs.tpm2-pkcs11";
       };
     };
 
@@ -145,7 +146,6 @@ in {
       # Create the tss user and group only if the default value is used
       users.users.${cfg.tssUser} = lib.mkIf (cfg.tssUser == "tss") {
         isSystemUser = true;
-        group = "tss";
       };
       users.groups.${cfg.tssGroup} = lib.mkIf (cfg.tssGroup == "tss") {};
 
@@ -172,7 +172,7 @@ in {
           BusName = "com.intel.tss2.Tabrmd";
           ExecStart = "${cfg.abrmd.package}/bin/tpm2-abrmd";
           User = "tss";
-          Group = "tss";
+          Group = "nogroup";
         };
       };
 

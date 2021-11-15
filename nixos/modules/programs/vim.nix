@@ -18,8 +18,8 @@ in {
     package = mkOption {
       type = types.package;
       default = pkgs.vim;
-      defaultText = literalExpression "pkgs.vim";
-      example = literalExpression "pkgs.vimHugeX";
+      defaultText = "pkgs.vim";
+      example = "pkgs.vimHugeX";
       description = ''
         vim package to use.
       '';

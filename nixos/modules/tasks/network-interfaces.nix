@@ -10,8 +10,6 @@ let
   hasVirtuals = any (i: i.virtual) interfaces;
   hasSits = cfg.sits != { };
   hasBonds = cfg.bonds != { };
-  hasFous = cfg.fooOverUDP != { }
-    || filterAttrs (_: s: s.encapsulation != null) cfg.sits != { };
 
   slaves = concatMap (i: i.interfaces) (attrValues cfg.bonds)
     ++ concatMap (i: i.interfaces) (attrValues cfg.bridges)
@@ -148,7 +146,7 @@ let
       tempAddress = mkOption {
         type = types.enum (lib.attrNames tempaddrValues);
         default = cfg.tempAddresses;
-        defaultText = literalExpression ''config.networking.tempAddresses'';
+        defaultText = literalExample ''config.networking.tempAddresses'';
         description = ''
           When IPv6 is enabled with SLAAC, this option controls the use of
           temporary address (aka privacy extensions) on this
@@ -259,7 +257,7 @@ let
 
       virtualType = mkOption {
         default = if hasPrefix "tun" name then "tun" else "tap";
-        defaultText = literalExpression ''if hasPrefix "tun" name then "tun" else "tap"'';
+        defaultText = literalExample ''if hasPrefix "tun" name then "tun" else "tap"'';
         type = with types; enum [ "tun" "tap" ];
         description = ''
           The type of interface to create.
@@ -286,13 +284,6 @@ let
         '';
       };
 
-      wakeOnLan = {
-        enable = mkOption {
-          type = types.bool;
-          default = false;
-          description = "Wether to enable wol on this interface.";
-        };
-      };
     };
 
     config = {
@@ -429,7 +420,7 @@ in
           The FQDN is required but cannot be determined. Please make sure that
           both networking.hostName and networking.domain are set properly.
         '';
-      defaultText = literalExpression ''"''${networking.hostName}.''${networking.domain}"'';
+      defaultText = literalExample ''''${networking.hostName}.''${networking.domain}'';
       description = ''
         The fully qualified domain name (FQDN) of this host. It is the result
         of combining networking.hostName and networking.domain. Using this
@@ -587,6 +578,7 @@ in
         options = {
 
           interfaces = mkOption {
+            example = [ "eth0" "eth1" ];
             description = "The physical network interfaces connected by the vSwitch.";
             type = with types; attrsOf (submodule vswitchInterfaceOpts);
           };
@@ -699,7 +691,7 @@ in
         '';
       in mkOption {
         default = { };
-        example = literalExpression ''
+        example = literalExample ''
           {
             bond0 = {
               interfaces = [ "eth0" "wlan0" ];
@@ -728,7 +720,7 @@ in
             driverOptions = mkOption {
               type = types.attrsOf types.str;
               default = {};
-              example = literalExpression driverOptionsExample;
+              example = literalExample driverOptionsExample;
               description = ''
                 Options for the bonding driver.
                 Documentation can be found in
@@ -792,7 +784,7 @@ in
 
     networking.macvlans = mkOption {
       default = { };
-      example = literalExpression ''
+      example = literalExample ''
         {
           wan = {
             interface = "enp2s0";
@@ -825,74 +817,9 @@ in
       });
     };
 
-    networking.fooOverUDP = mkOption {
-      default = { };
-      example =
-        {
-          primary = { port = 9001; local = { address = "192.0.2.1"; dev = "eth0"; }; };
-          backup =  { port = 9002; };
-        };
-      description = ''
-        This option allows you to configure Foo Over UDP and Generic UDP Encapsulation
-        endpoints. See <citerefentry><refentrytitle>ip-fou</refentrytitle>
-        <manvolnum>8</manvolnum></citerefentry> for details.
-      '';
-      type = with types; attrsOf (submodule {
-        options = {
-          port = mkOption {
-            type = port;
-            description = ''
-              Local port of the encapsulation UDP socket.
-            '';
-          };
-
-          protocol = mkOption {
-            type = nullOr (ints.between 1 255);
-            default = null;
-            description = ''
-              Protocol number of the encapsulated packets. Specifying <literal>null</literal>
-              (the default) creates a GUE endpoint, specifying a protocol number will create
-              a FOU endpoint.
-            '';
-          };
-
-          local = mkOption {
-            type = nullOr (submodule {
-              options = {
-                address = mkOption {
-                  type = types.str;
-                  description = ''
-                    Local address to bind to. The address must be available when the FOU
-                    endpoint is created, using the scripted network setup this can be achieved
-                    either by setting <literal>dev</literal> or adding dependency information to
-                    <literal>systemd.services.&lt;name&gt;-fou-encap</literal>; it isn't supported
-                    when using networkd.
-                  '';
-                };
-
-                dev = mkOption {
-                  type = nullOr str;
-                  default = null;
-                  example = "eth0";
-                  description = ''
-                    Network device to bind to.
-                  '';
-                };
-              };
-            });
-            default = null;
-            example = { address = "203.0.113.22"; };
-            description = ''
-              Local address (and optionally device) to bind to using the given port.
-            '';
-          };
-        };
-      });
-    };
-
     networking.sits = mkOption {
       default = { };
-      example = literalExpression ''
+      example = literalExample ''
         {
           hurricane = {
             remote = "10.0.0.1";
@@ -949,44 +876,6 @@ in
             '';
           };
 
-          encapsulation = with types; mkOption {
-            type = nullOr (submodule {
-              options = {
-                type = mkOption {
-                  type = enum [ "fou" "gue" ];
-                  description = ''
-                    Selects encapsulation type. See
-                    <citerefentry><refentrytitle>ip-link</refentrytitle>
-                    <manvolnum>8</manvolnum></citerefentry> for details.
-                  '';
-                };
-
-                port = mkOption {
-                  type = port;
-                  example = 9001;
-                  description = ''
-                    Destination port for encapsulated packets.
-                  '';
-                };
-
-                sourcePort = mkOption {
-                  type = nullOr types.port;
-                  default = null;
-                  example = 9002;
-                  description = ''
-                    Source port for encapsulated packets. Will be chosen automatically by
-                    the kernel if unset.
-                  '';
-                };
-              };
-            });
-            default = null;
-            example = { type = "fou"; port = 9001; };
-            description = ''
-              Configures encapsulation in UDP packets.
-            '';
-          };
-
         };
 
       });
@@ -994,7 +883,7 @@ in
 
     networking.vlans = mkOption {
       default = { };
-      example = literalExpression ''
+      example = literalExample ''
         {
           vlan0 = {
             id = 3;
@@ -1038,7 +927,7 @@ in
 
     networking.wlanInterfaces = mkOption {
       default = { };
-      example = literalExpression ''
+      example = literalExample ''
         {
           wlan-station0 = {
               device = "wlp6s0";
@@ -1221,8 +1110,7 @@ in
     boot.kernelModules = [ ]
       ++ optional hasVirtuals "tun"
       ++ optional hasSits "sit"
-      ++ optional hasBonds "bonding"
-      ++ optional hasFous "fou";
+      ++ optional hasBonds "bonding";
 
     boot.extraModprobeConfig =
       # This setting is intentional as it prevents default bond devices
@@ -1245,18 +1133,11 @@ in
     # kernel because we need the ambient capability
     security.wrappers = if (versionAtLeast (getVersion config.boot.kernelPackages.kernel) "4.3") then {
       ping = {
-        owner = "root";
-        group = "root";
+        source  = "${pkgs.iputils.out}/bin/ping";
         capabilities = "cap_net_raw+p";
-        source = "${pkgs.iputils.out}/bin/ping";
       };
     } else {
-      ping = {
-        setuid = true;
-        owner = "root";
-        group = "root";
-        source = "${pkgs.iputils.out}/bin/ping";
-      };
+      ping.source = "${pkgs.iputils.out}/bin/ping";
     };
     security.apparmor.policies."bin.ping".profile = lib.mkIf config.security.apparmor.policies."bin.ping".enable (lib.mkAfter ''
       /run/wrappers/bin/ping {
@@ -1415,14 +1296,14 @@ in
             '';
 
             # Udev script to execute for a new WLAN interface. The script configures the new WLAN interface.
-            newInterfaceScript = new: pkgs.writeScript "udev-run-script-wlan-interfaces-${new._iName}.sh" ''
+            newInterfaceScript = device: new: pkgs.writeScript "udev-run-script-wlan-interfaces-${new._iName}.sh" ''
               #!${pkgs.runtimeShell}
               # Configure the new interface
               ${pkgs.iw}/bin/iw dev ${new._iName} set type ${new.type}
-              ${optionalString (new.type == "mesh" && new.meshID!=null) "${pkgs.iw}/bin/iw dev ${new._iName} set meshid ${new.meshID}"}
-              ${optionalString (new.type == "monitor" && new.flags!=null) "${pkgs.iw}/bin/iw dev ${new._iName} set monitor ${new.flags}"}
-              ${optionalString (new.type == "managed" && new.fourAddr!=null) "${pkgs.iw}/bin/iw dev ${new._iName} set 4addr ${if new.fourAddr then "on" else "off"}"}
-              ${optionalString (new.mac != null) "${pkgs.iproute2}/bin/ip link set dev ${new._iName} address ${new.mac}"}
+              ${optionalString (new.type == "mesh" && new.meshID!=null) "${pkgs.iw}/bin/iw dev ${device} set meshid ${new.meshID}"}
+              ${optionalString (new.type == "monitor" && new.flags!=null) "${pkgs.iw}/bin/iw dev ${device} set monitor ${new.flags}"}
+              ${optionalString (new.type == "managed" && new.fourAddr!=null) "${pkgs.iw}/bin/iw dev ${device} set 4addr ${if new.fourAddr then "on" else "off"}"}
+              ${optionalString (new.mac != null) "${pkgs.iproute2}/bin/ip link set dev ${device} address ${new.mac}"}
             '';
 
             # Udev attributes for systemd to name the device and to create a .device target.
@@ -1437,7 +1318,7 @@ in
             # It is important to have that rule first as overwriting the NAME attribute also prevents the
             # next rules from matching.
             ${flip (concatMapStringsSep "\n") (wlanListDeviceFirst device wlanDeviceInterfaces.${device}) (interface:
-            ''ACTION=="add", SUBSYSTEM=="net", ENV{DEVTYPE}=="wlan", ENV{INTERFACE}=="${interface._iName}", ${systemdAttrs interface._iName}, RUN+="${newInterfaceScript interface}"'')}
+            ''ACTION=="add", SUBSYSTEM=="net", ENV{DEVTYPE}=="wlan", ENV{INTERFACE}=="${interface._iName}", ${systemdAttrs interface._iName}, RUN+="${newInterfaceScript device interface}"'')}
 
             # Add the required, new WLAN interfaces to the default WLAN interface with the
             # persistent, default name as assigned by udev.

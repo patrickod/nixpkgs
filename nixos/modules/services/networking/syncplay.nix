@@ -21,7 +21,7 @@ in
       };
 
       port = mkOption {
-        type = types.port;
+        type = types.int;
         default = 8999;
         description = ''
           TCP port to bind to.

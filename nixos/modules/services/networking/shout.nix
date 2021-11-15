@@ -41,7 +41,7 @@ in {
     };
 
     port = mkOption {
-      type = types.port;
+      type = types.int;
       default = 9000;
       description = "TCP port to listen on for http connections.";
     };
@@ -83,13 +83,11 @@ in {
 
   config = mkIf cfg.enable {
     users.users.shout = {
-      isSystemUser = true;
-      group = "shout";
+      uid = config.ids.uids.shout;
       description = "Shout daemon user";
       home = shoutHome;
       createHome = true;
     };
-    users.groups.shout = {};
 
     systemd.services.shout = {
       description = "Shout web IRC client";

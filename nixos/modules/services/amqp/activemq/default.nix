@@ -33,7 +33,6 @@ in {
       };
       configurationDir = mkOption {
         default = "${activemq}/conf";
-        defaultText = literalExpression ''"''${pkgs.activemq}/conf"'';
         type = types.str;
         description = ''
           The base directory for ActiveMQ's configuration.
@@ -65,7 +64,7 @@ in {
       javaProperties = mkOption {
         type = types.attrs;
         default = { };
-        example = literalExpression ''
+        example = literalExample ''
           {
             "java.net.preferIPv4Stack" = "true";
           }

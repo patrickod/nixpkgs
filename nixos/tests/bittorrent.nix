@@ -26,7 +26,7 @@ let
       enable = true;
       settings = {
         dht-enabled = false;
-        message-level = 2;
+        message-level = 3;
         inherit download-dir;
       };
     };

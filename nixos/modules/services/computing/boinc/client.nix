@@ -30,7 +30,7 @@ in
       package = mkOption {
         type = types.package;
         default = pkgs.boinc;
-        defaultText = literalExpression "pkgs.boinc";
+        defaultText = "pkgs.boinc";
         description = ''
           Which BOINC package to use.
         '';
@@ -60,7 +60,7 @@ in
       extraEnvPackages = mkOption {
         type = types.listOf types.package;
         default = [];
-        example = literalExpression "[ pkgs.virtualbox ]";
+        example = "[ pkgs.virtualbox ]";
         description = ''
           Additional packages to make available in the environment in which
           BOINC will run. Common choices are:

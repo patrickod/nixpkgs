@@ -1,4 +1,5 @@
-import ./make-test-python.nix ({ pkgs, ... }: {
+{ pkgs, ... }: import ./make-test-python.nix {
+
   nodes = {
     backend = { pkgs, ... }: {
       services.nginx.enable = true;
@@ -100,4 +101,4 @@ import ./make-test-python.nix ({ pkgs, ... }: {
   meta.maintainers = with pkgs.lib.maintainers; [
     roberth
   ];
-})
+}

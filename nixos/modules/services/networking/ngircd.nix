@@ -34,7 +34,7 @@ in {
         type = types.package;
 
         default = pkgs.ngircd;
-        defaultText = literalExpression "pkgs.ngircd";
+        defaultText = "pkgs.ngircd";
       };
     };
   };
@@ -52,11 +52,8 @@ in {
     };
 
     users.users.ngircd = {
-      isSystemUser = true;
-      group = "ngircd";
+      uid = config.ids.uids.ngircd;
       description = "ngircd user.";
     };
-    users.groups.ngircd = {};
-
   };
 }

@@ -17,8 +17,8 @@ in {
       package = lib.mkOption {
         type = lib.types.package;
         default = pkgs.inspircd;
-        defaultText = lib.literalExpression "pkgs.inspircd";
-        example = lib.literalExpression "pkgs.inspircdMinimal";
+        defaultText = lib.literalExample "pkgs.inspircd";
+        example = lib.literalExample "pkgs.inspircdMinimal";
         description = ''
           The InspIRCd package to use. This is mainly useful
           to specify an overridden version of the

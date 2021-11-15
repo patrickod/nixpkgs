@@ -100,7 +100,7 @@ in
 
     settings = mkOption {
       type = types.attrsOf kernelItem;
-      example = literalExpression '' with lib.kernel; {
+      example = literalExample '' with lib.kernel; {
         "9P_NET" = yes;
         USB = option yes;
         MMC_BLOCK_MINORS = freeform "32";

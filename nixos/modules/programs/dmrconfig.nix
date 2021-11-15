@@ -24,7 +24,7 @@ in {
       package = mkOption {
         default = pkgs.dmrconfig;
         type = types.package;
-        defaultText = literalExpression "pkgs.dmrconfig";
+        defaultText = "pkgs.dmrconfig";
         description = "dmrconfig derivation to use";
       };
     };

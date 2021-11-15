@@ -27,7 +27,7 @@ in
       package = mkOption {
         type = types.package;
         default = pkgs.lambdabot;
-        defaultText = literalExpression "pkgs.lambdabot";
+        defaultText = "pkgs.lambdabot";
         description = "Used lambdabot package";
       };
 

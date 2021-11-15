@@ -45,7 +45,7 @@ in
                     config.networking.fqdn
                   else
                     config.networking.hostName;
-        defaultText = lib.literalExpression "config.networking.fqdn";
+        defaultText = "config.networking.fqdn";
         example = "discourse.example.com";
         description = ''
           The hostname to serve Discourse on.
@@ -99,10 +99,7 @@ in
       enableACME = lib.mkOption {
         type = lib.types.bool;
         default = cfg.sslCertificate == null && cfg.sslCertificateKey == null;
-        defaultText = lib.literalDocBook ''
-          <literal>true</literal>, unless <option>services.discourse.sslCertificate</option>
-          and <option>services.discourse.sslCertificateKey</option> are set.
-        '';
+        defaultText = "true, unless services.discourse.sslCertificate and services.discourse.sslCertificateKey are set.";
         description = ''
           Whether an ACME certificate should be used to secure
           connections to the server.
@@ -112,7 +109,7 @@ in
       backendSettings = lib.mkOption {
         type = with lib.types; attrsOf (nullOr (oneOf [ str int bool float ]));
         default = {};
-        example = lib.literalExpression ''
+        example = lib.literalExample ''
           {
             max_reqs_per_ip_per_minute = 300;
             max_reqs_per_ip_per_10_seconds = 60;
@@ -137,7 +134,7 @@ in
       siteSettings = lib.mkOption {
         type = json.type;
         default = {};
-        example = lib.literalExpression ''
+        example = lib.literalExample ''
           {
             required = {
               title = "My Cats";
@@ -337,8 +334,10 @@ in
         notificationEmailAddress = lib.mkOption {
           type = lib.types.str;
           default = "${if cfg.mail.incoming.enable then "notifications" else "noreply"}@${cfg.hostname}";
-          defaultText = lib.literalExpression ''
-            "''${if config.services.discourse.mail.incoming.enable then "notifications" else "noreply"}@''${config.services.discourse.hostname}"
+          defaultText = ''
+            "notifications@`config.services.discourse.hostname`" if
+            config.services.discourse.mail.incoming.enable is "true",
+            otherwise "noreply`config.services.discourse.hostname`"
           '';
           description = ''
             The <literal>from:</literal> email address used when
@@ -449,7 +448,7 @@ in
           replyEmailAddress = lib.mkOption {
             type = lib.types.str;
             default = "%{reply_key}@${cfg.hostname}";
-            defaultText = lib.literalExpression ''"%{reply_key}@''${config.services.discourse.hostname}"'';
+            defaultText = "%{reply_key}@`config.services.discourse.hostname`";
             description = ''
               Template for reply by email incoming email address, for
               example: %{reply_key}@reply.example.com or
@@ -460,7 +459,7 @@ in
           mailReceiverPackage = lib.mkOption {
             type = lib.types.package;
             default = pkgs.discourse-mail-receiver;
-            defaultText = lib.literalExpression "pkgs.discourse-mail-receiver";
+            defaultText = "pkgs.discourse-mail-receiver";
             description = ''
               The discourse-mail-receiver package to use.
             '';

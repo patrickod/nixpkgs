@@ -61,7 +61,7 @@ in {
           Table of {hostname: server} pairs to use as authoritative servers for hosts (and subhosts).
           If entry for @ is not specified predefined list of root servers is used.
         '';
-        example = literalExpression ''
+        example = literalExample ''
           {
             "@" = ["8.8.8.8" "8.8.4.4"];
             "example.com" = ["192.168.100.100"];

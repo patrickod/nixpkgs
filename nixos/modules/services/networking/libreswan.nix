@@ -66,7 +66,7 @@ in
       connections = mkOption {
         type = types.attrsOf types.lines;
         default = {};
-        example = literalExpression ''
+        example = literalExample ''
           { myconnection = '''
               auto=add
               left=%defaultroute
@@ -85,7 +85,7 @@ in
       policies = mkOption {
         type = types.attrsOf types.lines;
         default = {};
-        example = literalExpression ''
+        example = literalExample ''
           { private-or-clear = '''
               # Attempt opportunistic IPsec for the entire Internet
               0.0.0.0/0

@@ -43,12 +43,12 @@ in
       bind = mkOption {
         type = types.nullOr types.str;
         default = null;
-        example = "0.0.0.0";
+        example = literalExample "0.0.0.0";
         description = "Address to bind to. The default is to bind to all addresses.";
       };
 
       port = mkOption {
-        type = types.port;
+        type = types.int;
         default = 3306;
         description = "Port of MySQL.";
       };
@@ -74,12 +74,12 @@ in
       configFile = mkOption {
         type = types.path;
         default = settingsFile;
-        defaultText = literalExpression "settingsFile";
+        defaultText = "settingsFile";
         description = ''
           Override the configuration file used by MySQL. By default,
           NixOS generates one automatically from <option>services.mysql.settings</option>.
         '';
-        example = literalExpression ''
+        example = literalExample ''
           pkgs.writeText "my.cnf" '''
             [mysqld]
             datadir = /var/lib/mysql
@@ -109,7 +109,7 @@ in
             </para>
           </note>
         '';
-        example = literalExpression ''
+        example = literalExample ''
           {
             mysqld = {
               key_buffer_size = "6G";
@@ -167,7 +167,7 @@ in
           of MySQL. The schema attribute is optional: If not specified, an empty database is created.
         '';
         example = [
-          { name = "foodatabase"; schema = literalExpression "./foodatabase.sql"; }
+          { name = "foodatabase"; schema = literalExample "./foodatabase.sql"; }
           { name = "bardatabase"; }
         ];
       };
@@ -217,7 +217,7 @@ in
                 <link xlink:href="https://mariadb.com/kb/en/library/grant/">GRANT syntax</link>.
                 The attributes are used as <code>GRANT ''${attrName} ON ''${attrValue}</code>.
               '';
-              example = literalExpression ''
+              example = literalExample ''
                 {
                   "database.*" = "ALL PRIVILEGES";
                   "*.*" = "SELECT, LOCK TABLES";
@@ -235,7 +235,7 @@ in
           option is changed. This means that users created and permissions assigned once through this option or
           otherwise have to be removed manually.
         '';
-        example = literalExpression ''
+        example = literalExample ''
           [
             {
               name = "nextcloud";

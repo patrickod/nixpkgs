@@ -32,7 +32,7 @@ in {
     extraConfig = mkOption {
       default = {};
       type = types.attrs;
-      example = literalExpression ''{
+      example = literalExample ''{
         reverseProxy = true;
         defaults = {
           name = "Your Network";

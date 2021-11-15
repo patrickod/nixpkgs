@@ -45,7 +45,7 @@ in {
     package = mkOption {
       type = types.package;
       default = pkgs.rtorrent;
-      defaultText = literalExpression "pkgs.rtorrent";
+      defaultText = "pkgs.rtorrent";
       description = ''
         The rtorrent package to use.
       '';

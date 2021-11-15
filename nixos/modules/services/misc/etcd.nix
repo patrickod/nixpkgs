@@ -123,7 +123,7 @@ in {
       '';
       type = types.attrsOf types.str;
       default = {};
-      example = literalExpression ''
+      example = literalExample ''
         {
           "CORS" = "*";
           "NAME" = "default-name";
@@ -187,11 +187,9 @@ in {
     environment.systemPackages = [ pkgs.etcd ];
 
     users.users.etcd = {
-      isSystemUser = true;
-      group = "etcd";
+      uid = config.ids.uids.etcd;
       description = "Etcd daemon user";
       home = cfg.dataDir;
     };
-    users.groups.etcd = {};
   };
 }

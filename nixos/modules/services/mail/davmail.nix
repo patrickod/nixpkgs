@@ -42,7 +42,7 @@ in
           and <link xlink:href="http://davmail.sourceforge.net/advanced.html"/>
           for details on supported values.
         '';
-        example = literalExpression ''
+        example = literalExample ''
           {
             davmail.allowRemote = true;
             davmail.imapPort = 55555;

@@ -7,26 +7,7 @@ let
   cfg = config.services.postgresqlBackup;
 
   postgresqlBackupService = db: dumpCmd:
-    let
-      compressSuffixes = {
-        "none" = "";
-        "gzip" = ".gz";
-        "zstd" = ".zstd";
-      };
-      compressSuffix = getAttr cfg.compression compressSuffixes;
-
-      compressCmd = getAttr cfg.compression {
-        "none" = "cat";
-        "gzip" = "${pkgs.gzip}/bin/gzip -c";
-        "zstd" = "${pkgs.zstd}/bin/zstd -c";
-      };
-
-      mkSqlPath = prefix: suffix: "${cfg.location}/${db}${prefix}.sql${suffix}";
-      curFile = mkSqlPath "" compressSuffix;
-      prevFile = mkSqlPath ".prev" compressSuffix;
-      prevFiles = map (mkSqlPath ".prev") (attrValues compressSuffixes);
-      inProgressFile = mkSqlPath ".in-progress" compressSuffix;
-    in {
+    {
       enable = true;
 
       description = "Backup of ${db} database(s)";
@@ -83,7 +64,7 @@ in {
 
       backupAll = mkOption {
         default = cfg.databases == [];
-        defaultText = literalExpression "services.postgresqlBackup.databases == []";
+        defaultText = "services.postgresqlBackup.databases == []";
         type = lib.types.bool;
         description = ''
           Backup all databases using pg_dumpall.
@@ -106,7 +87,7 @@ in {
         default = "/var/backup/postgresql";
         type = types.path;
         description = ''
-          Path of directory where the PostgreSQL database dumps will be placed.
+          Location to put the gzipped PostgreSQL database dumps.
         '';
       };
 
@@ -118,14 +99,6 @@ in {
           if <literal>config.services.postgresqlBackup.backupAll</literal> is enabled.
           Note that config.services.postgresqlBackup.backupAll is also active,
           when no databases where specified.
-        '';
-      };
-
-      compression = mkOption {
-        type = types.enum ["none" "gzip" "zstd"];
-        default = "gzip";
-        description = ''
-          The type of compression to use on the generated database dump.
         '';
       };
     };

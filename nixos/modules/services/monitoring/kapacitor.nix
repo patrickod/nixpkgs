@@ -61,6 +61,7 @@ in
 
     dataDir = mkOption {
       type = types.path;
+      example = "/var/lib/kapacitor";
       default = "/var/lib/kapacitor";
       description = "Location where Kapacitor stores its state";
     };
@@ -74,7 +75,7 @@ in
     bind = mkOption {
       type = types.str;
       default = "";
-      example = "0.0.0.0";
+      example = literalExample "0.0.0.0";
       description = "Address to bind to. The default is to bind to all addresses";
     };
 
@@ -100,6 +101,7 @@ in
       type = types.str;
       description = "Specifies how often to snapshot the task state  (in InfluxDB time units)";
       default = "1m0s";
+      example = "1m0s";
     };
 
     loadDirectory = mkOption {
@@ -134,6 +136,7 @@ in
       url = mkOption {
         description = "The URL to the Alerta REST API";
         default = "http://localhost:5000";
+        example = "http://localhost:5000";
         type = types.str;
       };
 

@@ -35,6 +35,7 @@ in
         user = mkOption {
           type = types.str;
           default = "nginx";
+          example = "nginx";
           description = ''
             User account under which both the service and the web-application run.
           '';

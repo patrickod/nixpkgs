@@ -7,7 +7,7 @@ let
 in
 {
   name = "bazarr";
-  meta.maintainers = with maintainers; [ d-xo ];
+  meta.maintainers = with maintainers; [ xwvvvvwx ];
 
   nodes.machine =
     { pkgs, ... }:

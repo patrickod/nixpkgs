@@ -105,9 +105,9 @@ in import ./make-test-python.nix ({ lib, ... }: {
         security.acme.certs."a.example.test".keyType = "ec384";
         security.acme.certs."a.example.test".postRun = ''
           set -euo pipefail
-          touch /home/test
-          chown root:root /home/test
-          echo testing > /home/test
+          touch test
+          chown root:root test
+          echo testing > test
         '';
       };
 

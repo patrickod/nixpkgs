@@ -77,11 +77,10 @@ in {
       };
 
       package = mkOption {
-        type = types.package;
+        type = types.path;
         description = "The connman package / build flavor";
         default = connman;
-        defaultText = literalExpression "pkgs.connman";
-        example = literalExpression "pkgs.connmanFull";
+        example = literalExample "pkgs.connmanFull";
       };
 
     };
@@ -151,7 +150,6 @@ in {
       useDHCP = false;
       wireless = {
         enable = mkIf (!enableIwd) true;
-        dbusControlled = true;
         iwd = mkIf enableIwd {
           enable = true;
         };

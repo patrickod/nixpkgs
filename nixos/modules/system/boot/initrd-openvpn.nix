@@ -35,7 +35,7 @@ in
           </para>
         </warning>
       '';
-      example = literalExpression "./configuration.ovpn";
+      example = "./configuration.ovpn";
     };
 
   };

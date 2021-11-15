@@ -397,6 +397,8 @@ let
               "auth required pam_faillock.so"}
           ${optionalString (config.security.pam.enableSSHAgentAuth && cfg.sshAgentAuth)
               "auth sufficient ${pkgs.pam_ssh_agent_auth}/libexec/pam_ssh_agent_auth.so file=${lib.concatStringsSep ":" config.services.openssh.authorizedKeysFiles}"}
+          ${optionalString cfg.fprintAuth
+              "auth sufficient ${pkgs.fprintd}/lib/security/pam_fprintd.so"}
           ${let p11 = config.security.pam.p11; in optionalString cfg.p11Auth
               "auth ${p11.control} ${pkgs.pam_p11}/lib/security/pam_p11.so ${pkgs.opensc}/lib/opensc-pkcs11.so"}
           ${let u2f = config.security.pam.u2f; in optionalString cfg.u2fAuth
@@ -406,9 +408,7 @@ let
           ${let oath = config.security.pam.oath; in optionalString cfg.oathAuth
               "auth requisite ${pkgs.oathToolkit}/lib/security/pam_oath.so window=${toString oath.window} usersfile=${toString oath.usersFile} digits=${toString oath.digits}"}
           ${let yubi = config.security.pam.yubico; in optionalString cfg.yubicoAuth
-              "auth ${yubi.control} ${pkgs.yubico-pam}/lib/security/pam_yubico.so mode=${toString yubi.mode} ${optionalString (yubi.challengeResponsePath != null) "chalresp_path=${yubi.challengeResponsePath}"} ${optionalString (yubi.mode == "client") "id=${toString yubi.id}"} ${optionalString yubi.debug "debug"}"}
-          ${optionalString cfg.fprintAuth
-              "auth sufficient ${pkgs.fprintd}/lib/security/pam_fprintd.so"}
+              "auth ${yubi.control} ${pkgs.yubico-pam}/lib/security/pam_yubico.so mode=${toString yubi.mode} ${optionalString (yubi.mode == "client") "id=${toString yubi.id}"} ${optionalString yubi.debug "debug"}"}
         '' +
           # Modules in this block require having the password set in PAM_AUTHTOK.
           # pam_unix is marked as 'sufficient' on NixOS which means nothing will run
@@ -428,7 +428,7 @@ let
               ${optionalString config.security.pam.enableEcryptfs
                 "auth optional ${pkgs.ecryptfs}/lib/security/pam_ecryptfs.so unwrap"}
               ${optionalString cfg.pamMount
-                "auth optional ${pkgs.pam_mount}/lib/security/pam_mount.so disable_interactive"}
+                "auth optional ${pkgs.pam_mount}/lib/security/pam_mount.so"}
               ${optionalString cfg.enableKwallet
                 ("auth optional ${pkgs.plasma5Packages.kwallet-pam}/lib/security/pam_kwallet5.so" +
                  " kwalletd=${pkgs.plasma5Packages.kwallet.bin}/bin/kwalletd5")}
@@ -475,7 +475,7 @@ let
 
           # Session management.
           ${optionalString cfg.setEnvironment ''
-            session required pam_env.so conffile=/etc/pam/environment readenv=0
+            session required pam_env.so conffile=${config.system.build.pamEnvironment} readenv=0
           ''}
           session required pam_unix.so
           ${optionalString cfg.setLoginUid
@@ -483,13 +483,13 @@ let
                 if config.boot.isContainer then "optional" else "required"
               } pam_loginuid.so"}
           ${optionalString cfg.makeHomeDir
-              "session required ${pkgs.pam}/lib/security/pam_mkhomedir.so silent skel=${config.security.pam.makeHomeDir.skelDirectory} umask=0077"}
+              "session required ${pkgs.pam}/lib/security/pam_mkhomedir.so silent skel=${config.security.pam.makeHomeDir.skelDirectory} umask=0022"}
           ${optionalString cfg.updateWtmp
               "session required ${pkgs.pam}/lib/security/pam_lastlog.so silent"}
           ${optionalString config.security.pam.enableEcryptfs
               "session optional ${pkgs.ecryptfs}/lib/security/pam_ecryptfs.so"}
           ${optionalString cfg.pamMount
-              "session optional ${pkgs.pam_mount}/lib/security/pam_mount.so disable_interactive"}
+              "session optional ${pkgs.pam_mount}/lib/security/pam_mount.so"}
           ${optionalString use_ldap
               "session optional ${pam_ldap}/lib/security/pam_ldap.so"}
           ${optionalString config.services.sssd.enable
@@ -586,7 +586,7 @@ in
     };
 
     security.pam.services = mkOption {
-      default = {};
+      default = [];
       type = with types; attrsOf (submodule pamOpts);
       description =
         ''
@@ -826,16 +826,6 @@ in
           xlink:href="https://developers.yubico.com/yubico-pam/Authentication_Using_Challenge-Response.html">here</link>.
         '';
       };
-      challengeResponsePath = mkOption {
-        default = null;
-        type = types.nullOr types.path;
-        description = ''
-          If not null, set the path used by yubico pam module where the challenge expected response is stored.
-
-          More information can be found <link
-          xlink:href="https://developers.yubico.com/yubico-pam/Authentication_Using_Challenge-Response.html">here</link>.
-        '';
-      };
     };
 
     security.pam.enableEcryptfs = mkEnableOption "eCryptfs PAM module (mounting ecryptfs home directory on login)";
@@ -869,10 +859,9 @@ in
 
     security.wrappers = {
       unix_chkpwd = {
-        setuid = true;
-        owner = "root";
-        group = "root";
         source = "${pkgs.pam}/sbin/unix_chkpwd.orig";
+        owner = "root";
+        setuid = true;
       };
     };
 

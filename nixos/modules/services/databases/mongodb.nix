@@ -33,7 +33,7 @@ in
 
       package = mkOption {
         default = pkgs.mongodb;
-        defaultText = literalExpression "pkgs.mongodb";
+        defaultText = "pkgs.mongodb";
         type = types.package;
         description = "
           Which MongoDB derivation to use.
@@ -123,11 +123,9 @@ in
 
     users.users.mongodb = mkIf (cfg.user == "mongodb")
       { name = "mongodb";
-        isSystemUser = true;
-        group = "mongodb";
+        uid = config.ids.uids.mongodb;
         description = "MongoDB server user";
       };
-    users.groups.mongodb = mkIf (cfg.user == "mongodb") {};
 
     environment.systemPackages = [ mongodb ];
 

@@ -13,7 +13,7 @@ in  {
     package = mkOption {
       type = types.package;
       default = pkgs.strongswan;
-      defaultText = literalExpression "pkgs.strongswan";
+      defaultText = "pkgs.strongswan";
       description = ''
         The strongswan derivation to use.
       '';

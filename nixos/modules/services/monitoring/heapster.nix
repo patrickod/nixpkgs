@@ -33,7 +33,7 @@ in {
     package = mkOption {
       description = "Package to use by heapster";
       default = pkgs.heapster;
-      defaultText = literalExpression "pkgs.heapster";
+      defaultText = "pkgs.heapster";
       type = types.package;
     };
   };
@@ -50,10 +50,8 @@ in {
     };
 
     users.users.heapster = {
-      isSystemUser = true;
-      group = "heapster";
+      uid = config.ids.uids.heapster;
       description = "Heapster user";
     };
-    users.groups.heapster = {};
   };
 }

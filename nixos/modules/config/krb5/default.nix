@@ -83,8 +83,8 @@ in {
       kerberos = mkOption {
         type = types.package;
         default = pkgs.krb5Full;
-        defaultText = literalExpression "pkgs.krb5Full";
-        example = literalExpression "pkgs.heimdal";
+        defaultText = "pkgs.krb5Full";
+        example = literalExample "pkgs.heimdalFull";
         description = ''
           The Kerberos implementation that will be present in
           <literal>environment.systemPackages</literal> after enabling this
@@ -96,7 +96,7 @@ in {
         type = with types; either attrs lines;
         default = {};
         apply = attrs: filterEmbeddedMetadata attrs;
-        example = literalExpression ''
+        example = literalExample ''
           {
             default_realm = "ATHENA.MIT.EDU";
           };
@@ -109,7 +109,7 @@ in {
       realms = mkOption {
         type = with types; either attrs lines;
         default = {};
-        example = literalExpression ''
+        example = literalExample ''
           {
             "ATHENA.MIT.EDU" = {
               admin_server = "athena.mit.edu";
@@ -127,7 +127,7 @@ in {
       domain_realm = mkOption {
         type = with types; either attrs lines;
         default = {};
-        example = literalExpression ''
+        example = literalExample ''
           {
             "example.com" = "EXAMPLE.COM";
             ".example.com" = "EXAMPLE.COM";
@@ -142,7 +142,7 @@ in {
       capaths = mkOption {
         type = with types; either attrs lines;
         default = {};
-        example = literalExpression ''
+        example = literalExample ''
           {
             "ATHENA.MIT.EDU" = {
               "EXAMPLE.COM" = ".";
@@ -161,7 +161,7 @@ in {
       appdefaults = mkOption {
         type = with types; either attrs lines;
         default = {};
-        example = literalExpression ''
+        example = literalExample ''
           {
             pam = {
               debug = false;
@@ -182,7 +182,7 @@ in {
       plugins = mkOption {
         type = with types; either attrs lines;
         default = {};
-        example = literalExpression ''
+        example = literalExample ''
           {
             ccselect = {
               disable = "k5identity";

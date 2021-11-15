@@ -6,9 +6,6 @@ let
 
   crioPackage = (pkgs.cri-o.override { inherit (cfg) extraPackages; });
 
-  format = pkgs.formats.toml { };
-
-  cfgFile = format.generate "00-default.conf" cfg.settings;
 in
 {
   imports = [
@@ -16,7 +13,7 @@ in
   ];
 
   meta = {
-    maintainers = teams.podman.members;
+    maintainers = lib.teams.podman.members;
   };
 
   options.virtualisation.cri-o = {
@@ -38,27 +35,27 @@ in
       type = types.nullOr types.str;
       default = null;
       description = "Override the default pause image for pod sandboxes";
-      example = "k8s.gcr.io/pause:3.2";
+      example = [ "k8s.gcr.io/pause:3.2" ];
     };
 
     pauseCommand = mkOption {
       type = types.nullOr types.str;
       default = null;
       description = "Override the default pause command";
-      example = "/pause";
+      example = [ "/pause" ];
     };
 
     runtime = mkOption {
       type = types.nullOr types.str;
       default = null;
       description = "Override the default runtime";
-      example = "crun";
+      example = [ "crun" ];
     };
 
     extraPackages = mkOption {
       type = with types; listOf package;
       default = [ ];
-      example = literalExpression ''
+      example = lib.literalExample ''
         [
           pkgs.gvisor
         ]
@@ -68,7 +65,7 @@ in
       '';
     };
 
-    package = mkOption {
+    package = lib.mkOption {
       type = types.package;
       default = crioPackage;
       internal = true;
@@ -83,15 +80,6 @@ in
       description = "Override the network_dir option.";
       internal = true;
     };
-
-    settings = mkOption {
-      type = format.type;
-      default = { };
-      description = ''
-        Configuration for cri-o, see
-        <link xlink:href="https://github.com/cri-o/cri-o/blob/master/docs/crio.conf.5.md"/>.
-      '';
-    };
   };
 
   config = mkIf cfg.enable {
@@ -99,38 +87,36 @@ in
 
     environment.etc."crictl.yaml".source = utils.copyFile "${pkgs.cri-o-unwrapped.src}/crictl.yaml";
 
-    virtualisation.cri-o.settings.crio = {
-      storage_driver = cfg.storageDriver;
+    environment.etc."crio/crio.conf.d/00-default.conf".text = ''
+      [crio]
+      storage_driver = "${cfg.storageDriver}"
 
-      image = {
-        pause_image = mkIf (cfg.pauseImage != null) cfg.pauseImage;
-        pause_command = mkIf (cfg.pauseCommand != null) cfg.pauseCommand;
-      };
+      [crio.image]
+      ${optionalString (cfg.pauseImage != null) ''pause_image = "${cfg.pauseImage}"''}
+      ${optionalString (cfg.pauseCommand != null) ''pause_command = "${cfg.pauseCommand}"''}
 
-      network = {
-        plugin_dirs = [ "${pkgs.cni-plugins}/bin" ];
-        network_dir = mkIf (cfg.networkDir != null) cfg.networkDir;
-      };
+      [crio.network]
+      plugin_dirs = ["${pkgs.cni-plugins}/bin/"]
+      ${optionalString (cfg.networkDir != null) ''network_dir = "${cfg.networkDir}"''}
 
-      runtime = {
-        cgroup_manager = "systemd";
-        log_level = cfg.logLevel;
-        manage_ns_lifecycle = true;
-        pinns_path = "${cfg.package}/bin/pinns";
-        hooks_dir =
-          optional (config.virtualisation.containers.ociSeccompBpfHook.enable)
-            config.boot.kernelPackages.oci-seccomp-bpf-hook;
+      [crio.runtime]
+      cgroup_manager = "systemd"
+      log_level = "${cfg.logLevel}"
+      pinns_path = "${cfg.package}/bin/pinns"
+      hooks_dir = [
+      ${lib.optionalString config.virtualisation.containers.ociSeccompBpfHook.enable
+        ''"${config.boot.kernelPackages.oci-seccomp-bpf-hook}",''}
+      ]
 
-        default_runtime = mkIf (cfg.runtime != null) cfg.runtime;
-        runtimes = mkIf (cfg.runtime != null) {
-          "${cfg.runtime}" = { };
-        };
-      };
-    };
+      ${optionalString (cfg.runtime != null) ''
+      default_runtime = "${cfg.runtime}"
+      [crio.runtime.runtimes]
+      [crio.runtime.runtimes.${cfg.runtime}]
+      ''}
+    '';
 
     environment.etc."cni/net.d/10-crio-bridge.conf".source = utils.copyFile "${pkgs.cri-o-unwrapped.src}/contrib/cni/10-crio-bridge.conf";
     environment.etc."cni/net.d/99-loopback.conf".source = utils.copyFile "${pkgs.cri-o-unwrapped.src}/contrib/cni/99-loopback.conf";
-    environment.etc."crio/crio.conf.d/00-default.conf".source = cfgFile;
 
     # Enable common /etc/containers configuration
     virtualisation.containers.enable = true;
@@ -153,7 +139,6 @@ in
         TimeoutStartSec = "0";
         Restart = "on-abnormal";
       };
-      restartTriggers = [ cfgFile ];
     };
   };
 }

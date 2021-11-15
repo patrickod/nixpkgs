@@ -125,7 +125,7 @@ in
       config = mkOption {
         type = semanticTypes.zncConf;
         default = {};
-        example = literalExpression ''
+        example = literalExample ''
           {
             LoadModule = [ "webadmin" "adminlog" ];
             User.paul = {
@@ -133,8 +133,8 @@ in
               Nick = "paul";
               AltNick = "paul1";
               LoadModule = [ "chansaver" "controlpanel" ];
-              Network.libera = {
-                Server = "irc.libera.chat +6697";
+              Network.freenode = {
+                Server = "chat.freenode.net +6697";
                 LoadModule = [ "simple_away" ];
                 Chan = {
                   "#nixos" = { Detached = false; };
@@ -180,7 +180,7 @@ in
 
       configFile = mkOption {
         type = types.path;
-        example = literalExpression "~/.znc/configs/znc.conf";
+        example = "~/.znc/configs/znc.conf";
         description = ''
           Configuration file for ZNC. It is recommended to use the
           <option>config</option> option instead.
@@ -195,7 +195,7 @@ in
       modulePackages = mkOption {
         type = types.listOf types.package;
         default = [ ];
-        example = literalExpression "[ pkgs.zncModules.fish pkgs.zncModules.push ]";
+        example = literalExample "[ pkgs.zncModules.fish pkgs.zncModules.push ]";
         description = ''
           A list of global znc module packages to add to znc.
         '';

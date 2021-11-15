@@ -14,11 +14,10 @@ in
       enable = mkEnableOption "<command>npm</command> global config";
 
       package = mkOption {
-        type = types.package;
+        type = types.path;
         description = "The npm package version / flavor to use";
         default = pkgs.nodePackages.npm;
-        defaultText = literalExpression "pkgs.nodePackages.npm";
-        example = literalExpression "pkgs.nodePackages_13_x.npm";
+        example = literalExample "pkgs.nodePackages_13_x.npm";
       };
 
       npmrc = mkOption {

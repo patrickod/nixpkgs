@@ -2,7 +2,7 @@
 
 let
   inherit (lib) mkBefore mkDefault mkEnableOption mkIf mkOption mkRemovedOptionModule types;
-  inherit (lib) concatStringsSep literalExpression mapAttrsToList;
+  inherit (lib) concatStringsSep literalExample mapAttrsToList;
   inherit (lib) optional optionalAttrs optionalString;
 
   cfg = config.services.redmine;
@@ -54,9 +54,8 @@ in
       package = mkOption {
         type = types.package;
         default = pkgs.redmine;
-        defaultText = literalExpression "pkgs.redmine";
         description = "Which Redmine package to use.";
-        example = literalExpression "pkgs.redmine.override { ruby = pkgs.ruby_2_7; }";
+        example = "pkgs.redmine.override { ruby = pkgs.ruby_2_7; }";
       };
 
       user = mkOption {
@@ -72,7 +71,7 @@ in
       };
 
       port = mkOption {
-        type = types.port;
+        type = types.int;
         default = 3000;
         description = "Port on which Redmine is ran.";
       };
@@ -91,7 +90,7 @@ in
           <link xlink:href="https://guides.rubyonrails.org/action_mailer_basics.html#action-mailer-configuration"/>
           for details.
         '';
-        example = literalExpression ''
+        example = literalExample ''
           {
             email_delivery = {
               delivery_method = "smtp";
@@ -113,7 +112,7 @@ in
           See <link xlink:href="https://svn.redmine.org/redmine/trunk/config/additional_environment.rb.example"/>
           for details.
         '';
-        example = ''
+        example = literalExample ''
           config.logger.level = Logger::DEBUG
         '';
       };
@@ -122,7 +121,7 @@ in
         type = types.attrsOf types.path;
         default = {};
         description = "Set of themes.";
-        example = literalExpression ''
+        example = literalExample ''
           {
             dkuk-redmine_alex_skin = builtins.fetchurl {
               url = "https://bitbucket.org/dkuk/redmine_alex_skin/get/1842ef675ef3.zip";
@@ -136,7 +135,7 @@ in
         type = types.attrsOf types.path;
         default = {};
         description = "Set of plugins.";
-        example = literalExpression ''
+        example = literalExample ''
           {
             redmine_env_auth = builtins.fetchurl {
               url = "https://github.com/Intera/redmine_env_auth/archive/0.6.zip";
@@ -163,7 +162,7 @@ in
         port = mkOption {
           type = types.int;
           default = if cfg.database.type == "postgresql" then 5432 else 3306;
-          defaultText = literalExpression "3306";
+          defaultText = "3306";
           description = "Database host port.";
         };
 
@@ -195,7 +194,7 @@ in
             if mysqlLocal then "/run/mysqld/mysqld.sock"
             else if pgsqlLocal then "/run/postgresql"
             else null;
-          defaultText = literalExpression "/run/mysqld/mysqld.sock";
+          defaultText = "/run/mysqld/mysqld.sock";
           example = "/run/mysqld/mysqld.sock";
           description = "Path to the unix socket file to use for authentication.";
         };

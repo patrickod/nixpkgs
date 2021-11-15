@@ -15,7 +15,6 @@ in {
     plugins = mkOption {
       type = types.listOf types.package;
       default = [ pkgs.interception-tools-plugins.caps2esc ];
-      defaultText = literalExpression "[ pkgs.interception-tools-plugins.caps2esc ]";
       description = ''
         A list of interception tools plugins that will be made available to use
         inside the udevmon configuration.

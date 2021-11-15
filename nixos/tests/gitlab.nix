@@ -14,8 +14,6 @@ import ./make-test-python.nix ({ pkgs, lib, ...} : with lib; {
       imports = [ common/user-account.nix ];
 
       virtualisation.memorySize = if pkgs.stdenv.is64bit then 4096 else 2047;
-      virtualisation.cores = 4;
-      virtualisation.useNixStoreImage = true;
       systemd.services.gitlab.serviceConfig.Restart = mkForce "no";
       systemd.services.gitlab-workhorse.serviceConfig.Restart = mkForce "no";
       systemd.services.gitaly.serviceConfig.Restart = mkForce "no";
@@ -108,7 +106,7 @@ import ./make-test-python.nix ({ pkgs, lib, ...} : with lib; {
       # `doSetup` is is true.
       test = doSetup: ''
         gitlab.succeed(
-            "curl -isSf http://gitlab | grep -i location | grep http://gitlab/users/sign_in"
+            "curl -isSf http://gitlab | grep -i location | grep -q http://gitlab/users/sign_in"
         )
         gitlab.succeed(
             "${pkgs.sudo}/bin/sudo -u gitlab -H gitlab-rake gitlab:check 1>&2"

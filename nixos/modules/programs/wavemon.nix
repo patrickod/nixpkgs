@@ -21,10 +21,8 @@ in {
   config = mkIf cfg.enable {
     environment.systemPackages = with pkgs; [ wavemon ];
     security.wrappers.wavemon = {
-      owner = "root";
-      group = "root";
-      capabilities = "cap_net_admin+ep";
       source = "${pkgs.wavemon}/bin/wavemon";
+      capabilities = "cap_net_admin+ep";
     };
   };
 }

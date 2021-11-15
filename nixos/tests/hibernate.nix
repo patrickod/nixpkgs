@@ -68,7 +68,7 @@ in makeTest {
   testScript =
     ''
       def create_named_machine(name):
-          machine = create_machine(
+          return create_machine(
               {
                   "qemuFlags": "-cpu max ${
                     if system == "x86_64-linux" then "-m 1024"
@@ -78,8 +78,6 @@ in makeTest {
                   "name": name,
               }
           )
-          driver.machines.append(machine)
-          return machine
 
 
       # Install NixOS
@@ -95,7 +93,7 @@ in makeTest {
           "mkswap /dev/vda1 -L swap",
           # Install onto /mnt
           "nix-store --load-db < ${pkgs.closureInfo {rootPaths = [installedSystem];}}/registration",
-          "nixos-install --root /mnt --system ${installedSystem} --no-root-passwd --no-channel-copy >&2",
+          "nixos-install --root /mnt --system ${installedSystem} --no-root-passwd",
       )
       machine.shutdown()
 
@@ -110,7 +108,7 @@ in makeTest {
       )
 
       # Hibernate machine
-      hibernate.execute("systemctl hibernate >&2 &", check_return=False)
+      hibernate.succeed("systemctl hibernate &")
       hibernate.wait_for_shutdown()
 
       # Restore machine from hibernation, validate our ramfs file is there.

@@ -25,7 +25,7 @@ import ./make-test-python.nix ({ pkgs, ... }:
                 "bind_address" = "";
                 "port" = 8448;
                 "resources" = [
-                  { "compress" = true; "names" = [ "client" ]; }
+                  { "compress" = true; "names" = [ "client" "webclient" ]; }
                   { "compress" = false; "names" = [ "federation" ]; }
                 ];
                 "tls" = false;
@@ -85,108 +85,52 @@ import ./make-test-python.nix ({ pkgs, ... }:
       client = { pkgs, ... }: {
         environment.systemPackages = [
           (pkgs.writers.writePython3Bin "do_test"
-          {
-            libraries = [ pkgs.python3Packages.matrix-nio ];
-            flakeIgnore = [
-              # We don't live in the dark ages anymore.
-              # Languages like Python that are whitespace heavy will overrun
-              # 79 characters..
-              "E501"
-            ];
-          } ''
-              import sys
-              import socket
-              import functools
-              from time import sleep
-              import asyncio
+            { libraries = [ pkgs.python3Packages.matrix-client ]; } ''
+            import socket
+            from matrix_client.client import MatrixClient
+            from time import sleep
 
-              from nio import AsyncClient, RoomMessageText, JoinResponse
+            matrix = MatrixClient("${homeserverUrl}")
+            matrix.register_with_password(username="alice", password="foobar")
 
+            irc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            irc.connect(("ircd", 6667))
+            irc.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
+            irc.send(b"USER bob bob bob :bob\n")
+            irc.send(b"NICK bob\n")
 
-              async def matrix_room_message_text_callback(matrix: AsyncClient, msg: str, _r, e):
-                  print("Received matrix text message: ", e)
-                  if msg in e.body:
-                      print("Received hi from IRC")
-                      await matrix.close()
-                      exit(0)  # Actual exit point
+            m_room = matrix.join_room("#irc_#test:homeserver")
+            irc.send(b"JOIN #test\n")
 
+            # plenty of time for the joins to happen
+            sleep(10)
 
-              class IRC:
-                  def __init__(self):
-                      sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                      sock.connect(("ircd", 6667))
-                      sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
-                      sock.send(b"USER bob bob bob :bob\n")
-                      sock.send(b"NICK bob\n")
-                      self.sock = sock
+            m_room.send_text("hi from matrix")
+            irc.send(b"PRIVMSG #test :hi from irc \r\n")
 
-                  def join(self, room: str):
-                      self.sock.send(f"JOIN {room}\n".encode())
+            print("Waiting for irc message...")
+            while True:
+                buf = irc.recv(10000)
+                if b"hi from matrix" in buf:
+                    break
 
-                  def privmsg(self, room: str, msg: str):
-                      self.sock.send(f"PRIVMSG {room} :{msg}\n".encode())
-
-                  def expect_msg(self, body: str):
-                      buffer = ""
-                      while True:
-                          buf = self.sock.recv(1024).decode()
-                          buffer += buf
-                          if body in buffer:
-                              return
+            print("Waiting for matrix message...")
 
 
-              async def run(homeserver: str):
-                  irc = IRC()
-
-                  matrix = AsyncClient(homeserver)
-                  response = await matrix.register("alice", "foobar")
-                  print("Matrix register response: ", response)
-
-                  response = await matrix.join("#irc_#test:homeserver")
-                  print("Matrix join room response:", response)
-                  assert isinstance(response, JoinResponse)
-                  room_id = response.room_id
-
-                  irc.join("#test")
-                  # FIXME: what are we waiting on here? Matrix? IRC? Both?
-                  # 10s seem bad for busy hydra machines.
-                  sleep(10)
-
-                  # Exchange messages
-                  print("Sending text message to matrix room")
-                  response = await matrix.room_send(
-                      room_id=room_id,
-                      message_type="m.room.message",
-                      content={"msgtype": "m.text", "body": "hi from matrix"},
-                  )
-                  print("Matrix room send response: ", response)
-                  irc.privmsg("#test", "hi from irc")
-
-                  print("Waiting for the matrix message to appear on the IRC side...")
-                  irc.expect_msg("hi from matrix")
-
-                  callback = functools.partial(
-                      matrix_room_message_text_callback, matrix, "hi from irc"
-                  )
-                  matrix.add_event_callback(callback, RoomMessageText)
-
-                  print("Waiting for matrix message...")
-                  await matrix.sync_forever()
-
-                  exit(1)  # Unreachable
+            def callback(room, e):
+                if "hi from irc" in e['content']['body']:
+                    exit(0)
 
 
-              if __name__ == "__main__":
-                  asyncio.run(run(sys.argv[1]))
-            ''
+            m_room.add_listener(callback, "m.room.message")
+            matrix.listen_forever()
+          ''
           )
         ];
       };
     };
 
     testScript = ''
-      import pathlib
-
       start_all()
 
       ircd.wait_for_unit("ngircd.service")
@@ -212,6 +156,7 @@ import ./make-test-python.nix ({ pkgs, ... }:
           homeserver.wait_for_open_port(8448)
 
       with subtest("ensure messages can be exchanged"):
-          client.succeed("do_test ${homeserverUrl} >&2")
+          client.succeed("do_test")
     '';
+
   })

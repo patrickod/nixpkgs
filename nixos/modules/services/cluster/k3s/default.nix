@@ -12,7 +12,8 @@ in
     package = mkOption {
       type = types.package;
       default = pkgs.k3s;
-      defaultText = literalExpression "pkgs.k3s";
+      defaultText = "pkgs.k3s";
+      example = literalExample "pkgs.k3s";
       description = "Package that should be used for k3s";
     };
 
@@ -66,12 +67,6 @@ in
       default = false;
       description = "Only run the server. This option only makes sense for a server.";
     };
-
-    configPath = mkOption {
-      type = types.nullOr types.path;
-      default = null;
-      description = "File path containing the k3s YAML config. This is useful when the config is generated (for example on boot).";
-    };
   };
 
   # implementation
@@ -79,8 +74,8 @@ in
   config = mkIf cfg.enable {
     assertions = [
       {
-        assertion = cfg.role == "agent" -> (cfg.configPath != null || cfg.serverAddr != "");
-        message = "serverAddr or configPath (with 'server' key) should be set if role is 'agent'";
+        assertion = cfg.role == "agent" -> cfg.serverAddr != "";
+        message = "serverAddr should be set if role is 'agent'";
       }
       {
         assertion = cfg.role == "agent" -> cfg.token != "" || cfg.tokenFile != null;
@@ -103,7 +98,6 @@ in
       after = [ "network.service" "firewall.service" ] ++ (optional cfg.docker "docker.service");
       wants = [ "network.service" "firewall.service" ];
       wantedBy = [ "multi-user.target" ];
-      path = optional config.boot.zfs.enabled config.boot.zfs.package;
       serviceConfig = {
         # See: https://github.com/rancher/k3s/blob/dddbd16305284ae4bd14c0aade892412310d7edc/install.sh#L197
         Type = if cfg.role == "agent" then "exec" else "notify";

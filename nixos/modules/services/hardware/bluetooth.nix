@@ -6,7 +6,7 @@ let
   inherit (lib)
     mkDefault mkEnableOption mkIf mkOption
     mkRenamedOptionModule mkRemovedOptionModule
-    concatStringsSep escapeShellArgs literalExpression
+    concatStringsSep escapeShellArgs
     optional optionals optionalAttrs recursiveUpdate types;
 
   cfgFmt = pkgs.formats.ini { };
@@ -53,8 +53,8 @@ in
       package = mkOption {
         type = types.package;
         default = pkgs.bluez;
-        defaultText = literalExpression "pkgs.bluez";
-        example = literalExpression "pkgs.bluezFull";
+        defaultText = "pkgs.bluez";
+        example = "pkgs.bluezFull";
         description = ''
           Which BlueZ package to use.
 

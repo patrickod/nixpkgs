@@ -21,6 +21,7 @@ let
 
       isAllowed = mkOption {
         type = types.bool;
+        default = null;
         description = ''
           Whether the application will be allowed access to location information.
         '';
@@ -28,6 +29,7 @@ let
 
       isSystem = mkOption {
         type = types.bool;
+        default = null;
         description = ''
           Whether the application is a system component or not.
         '';
@@ -160,7 +162,7 @@ in
       appConfig = mkOption {
         type = types.attrsOf appConfigModule;
         default = {};
-        example = literalExpression ''
+        example = literalExample ''
           "com.github.app" = {
             isAllowed = true;
             isSystem = true;
@@ -264,7 +266,5 @@ in
       } // mapAttrs' appConfigToINICompatible cfg.appConfig);
   };
 
-  meta = with lib; {
-    maintainers = with maintainers; [ ] ++ teams.pantheon.members;
-  };
+  meta.maintainers = with lib.maintainers; [ ];
 }

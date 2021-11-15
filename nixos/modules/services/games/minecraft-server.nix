@@ -109,7 +109,7 @@ in {
           You can use <link xlink:href="https://mcuuid.net/"/> to get a
           Minecraft UUID for a username.
         '';
-        example = literalExpression ''
+        example = literalExample ''
           {
             username1 = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
             username2 = "yyyyyyyy-yyyy-yyyy-yyyy-yyyyyyyyyyyy";
@@ -120,7 +120,7 @@ in {
       serverProperties = mkOption {
         type = with types; attrsOf (oneOf [ bool int str ]);
         default = {};
-        example = literalExpression ''
+        example = literalExample ''
           {
             server-port = 43000;
             difficulty = 3;
@@ -144,8 +144,8 @@ in {
       package = mkOption {
         type = types.package;
         default = pkgs.minecraft-server;
-        defaultText = literalExpression "pkgs.minecraft-server";
-        example = literalExpression "pkgs.minecraft-server_1_12_2";
+        defaultText = "pkgs.minecraft-server";
+        example = literalExample "pkgs.minecraft-server_1_12_2";
         description = "Version of minecraft-server to run.";
       };
 
@@ -167,10 +167,8 @@ in {
       description     = "Minecraft server service user";
       home            = cfg.dataDir;
       createHome      = true;
-      isSystemUser    = true;
-      group           = "minecraft";
+      uid             = config.ids.uids.minecraft;
     };
-    users.groups.minecraft = {};
 
     systemd.services.minecraft-server = {
       description   = "Minecraft Server Service";

@@ -4,9 +4,7 @@
 
 with lib;
 
-let cfg = config.programs.file-roller;
-
-in {
+{
 
   # Added 2019-08-09
   imports = [
@@ -23,13 +21,6 @@ in {
 
       enable = mkEnableOption "File Roller, an archive manager for GNOME";
 
-      package = mkOption {
-        type = types.package;
-        default = pkgs.gnome.file-roller;
-        defaultText = literalExpression "pkgs.gnome.file-roller";
-        description = "File Roller derivation to use.";
-      };
-
     };
 
   };
@@ -37,11 +28,11 @@ in {
 
   ###### implementation
 
-  config = mkIf cfg.enable {
+  config = mkIf config.programs.file-roller.enable {
 
-    environment.systemPackages = [ cfg.package ];
+    environment.systemPackages = [ pkgs.gnome.file-roller ];
 
-    services.dbus.packages = [ cfg.package ];
+    services.dbus.packages = [ pkgs.gnome.file-roller ];
 
   };
 
