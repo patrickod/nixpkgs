@@ -151,6 +151,15 @@ let
     (lib.optionalString enableNativeBignum "-native-bignum")
   ];
 
+  runtimeDeps = [
+    targetPackages.stdenv.cc.bintools
+    coreutils
+  ]
+  # On darwin, we need unwrapped bintools as well (for otool)
+  ++ lib.optionals (stdenv.targetPlatform.linker == "cctools") [
+    targetPackages.stdenv.cc.bintools.bintools
+  ];
+
 in
 stdenv.mkDerivation (rec {
   inherit version;

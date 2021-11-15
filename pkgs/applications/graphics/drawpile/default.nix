@@ -68,13 +68,13 @@ let
 
 in mkDerivation rec {
   pname = "drawpile";
-  version = "2.1.20";
+  version = "2.1.19";
 
   src = fetchFromGitHub {
     owner = "drawpile";
     repo = "drawpile";
     rev = version;
-    sha256 = "sha256-HjGsaa2BYRNxaQP9e8Z7BkVlIKByC/ta92boGbYHRWQ=";
+    sha256 = "sha256-MNmzcqTHfMms6q3ZilrChE5WoGzGxnAOkB0a75udA1I=";
   };
 
   nativeBuildInputs = [ extra-cmake-modules ];

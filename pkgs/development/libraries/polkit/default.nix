@@ -27,7 +27,21 @@ stdenv.mkDerivation rec {
     sha256 = "0p0zzmr0kh3mpmqya4q27y4h9b920zp5ya0i8909ahp9hvdrymy8";
   };
 
-  patches = lib.optionals stdenv.hostPlatform.isMusl [
+  patches = [
+    # Don't use etc/dbus-1/system.d
+    # Upstream MR: https://gitlab.freedesktop.org/polkit/polkit/merge_requests/11
+    (fetchpatch {
+      url = "https://gitlab.freedesktop.org/polkit/polkit/commit/5dd4e22efd05d55833c4634b56e473812b5acbf2.patch";
+      sha256 = "17lv7xj5ksa27iv4zpm4zwd4iy8zbwjj4ximslfq3sasiz9kxhlp";
+    })
+    (fetchpatch {
+      # https://www.openwall.com/lists/oss-security/2021/06/03/1
+      # https://gitlab.freedesktop.org/polkit/polkit/-/merge_requests/79
+      name = "CVE-2021-3560.patch";
+      url = "https://gitlab.freedesktop.org/polkit/polkit/-/commit/a04d13affe0fa53ff618e07aa8f57f4c0e3b9b81.patch";
+      sha256 = "157ddsizgr290jsb8fpafrc37gc1qw5pdvl351vnn3pzhqs7n6f4";
+    })
+  ] ++ lib.optionals stdenv.hostPlatform.isMusl [
     # Make netgroup support optional (musl does not have it)
     # Upstream MR: https://gitlab.freedesktop.org/polkit/polkit/merge_requests/10
     # We use the version of the patch that Alpine uses successfully.

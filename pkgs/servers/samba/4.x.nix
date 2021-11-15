@@ -1,7 +1,6 @@
 { lib, stdenv
 , buildPackages
 , fetchurl
-, wafHook
 , pkg-config
 , bison
 , flex
@@ -45,11 +44,11 @@ with lib;
 
 stdenv.mkDerivation rec {
   pname = "samba";
-  version = "4.15.0";
+  version = "4.14.4";
 
   src = fetchurl {
     url = "mirror://samba/pub/samba/stable/${pname}-${version}.tar.gz";
-    sha256 = "0h26s9lfdl8mccs9rfv1gr5f8snd95gjkrik6wl5ccb27044gwxi";
+    sha256 = "1fc9ix91hb1f35j69sk7rsi9pky2p0vsmw47s973bx801cm0kbw9";
   };
 
   outputs = [ "out" "dev" "man" ];
@@ -59,12 +58,10 @@ stdenv.mkDerivation rec {
     ./patch-source3__libads__kerberos_keytab.c.patch
     ./4.x-no-persistent-install-dynconfig.patch
     ./4.x-fix-makeflags-parsing.patch
-    ./build-find-pre-built-heimdal-build-tools-in-case-of-.patch
   ];
 
   nativeBuildInputs = [
     python3Packages.python
-    wafHook
     pkg-config
     bison
     flex
@@ -151,6 +148,8 @@ stdenv.mkDerivation rec {
 
   pythonPath = [ python3Packages.dnspython tdb ];
 
+  pythonPath = [ python3Packages.dnspython tdb ];
+
   preBuild = ''
     export MAKEFLAGS="-j $NIX_BUILD_CORES"
   '';
@@ -168,11 +167,7 @@ stdenv.mkDerivation rec {
     patchelf --set-rpath "\$ALL_LIBS" "\$BIN" 2>/dev/null || exit $?;
     patchelf --shrink-rpath "\$BIN";
     EOF
-    find $out -type f -regex '.*\.so\(\..*\)?' -exec $SHELL -c "$SCRIPT" \;
-
-    # Samba does its own shebang patching, but uses build Python
-    find "$out/bin" -type f -executable -exec \
-      sed -i '1 s^#!${python3Packages.python.pythonForBuild}/bin/python.*^#!${python3Packages.python.interpreter}^' {} \;
+    find $out -type f -name \*.so -exec $SHELL -c "$SCRIPT" \;
 
     # Fix PYTHONPATH for some tools
     wrapPythonPrograms

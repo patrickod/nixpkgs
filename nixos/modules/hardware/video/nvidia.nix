@@ -169,7 +169,7 @@ in
       description = ''
         The NVIDIA X11 derivation to use.
       '';
-      example = literalExpression "config.boot.kernelPackages.nvidiaPackages.legacy_340";
+      example = "config.boot.kernelPackages.nvidiaPackages.legacy_340";
     };
   };
 

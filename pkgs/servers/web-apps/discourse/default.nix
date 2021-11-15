@@ -1,4 +1,4 @@
-{ stdenv, pkgs, makeWrapper, runCommand, lib, writeShellScript
+{ stdenv, pkgs, makeWrapper, runCommandNoCC, lib, writeShellScript
 , fetchFromGitHub, bundlerEnv, callPackage
 
 , ruby, replace, gzip, gnutar, git, cacert, util-linux, gawk
@@ -90,7 +90,7 @@ let
         '');
       });
 
-  rake = runCommand "discourse-rake" {
+  rake = runCommandNoCC "discourse-rake" {
     nativeBuildInputs = [ makeWrapper ];
   } ''
     mkdir -p $out/bin
@@ -164,6 +164,17 @@ let
       procps
       nodePackages.uglify-js
       nodePackages.terser
+    ];
+
+    patches = [
+      # Use the Ruby API version in the plugin gem path, to match the
+      # one constructed by bundlerEnv
+      ./plugin_gem_api_version.patch
+
+      # Change the path to the auto generated plugin assets, which
+      # defaults to the plugin's directory and isn't writable at the
+      # time of asset generation
+      ./auto_generated_path.patch
     ];
 
     patches = [

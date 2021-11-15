@@ -216,25 +216,19 @@ in {
   zfsStable = common {
     # check the release notes for compatible kernels
     kernelCompatible = kernel.kernelAtLeast "3.10" && kernel.kernelOlder "5.15";
-    latestCompatibleLinuxPackages = linuxPackages_5_14;
 
     # this package should point to the latest release.
-    version = "2.1.1";
+    version = "2.0.6";
 
-    sha256 = "sha256-UUuJa5w/GsEvsgH/BnXFsP/dsOt9wwmPqKzDxLPrhiY=";
+    sha256 = "sha256-A9NX3S57aFScU/apBJBRx4OieK8JlhBveXy+9JjWD/c=";
   };
 
   zfsUnstable = common {
     # check the release notes for compatible kernels
     kernelCompatible = kernel.kernelAtLeast "3.10" && kernel.kernelOlder "5.15";
-    latestCompatibleLinuxPackages = linuxPackages_5_14;
 
     # this package should point to a version / git revision compatible with the latest kernel release
-    # IMPORTANT: Always use a tagged release candidate or commits from the
-    # zfs-<version>-staging branch, because this is tested by the OpenZFS
-    # maintainers.
     version = "2.1.1";
-    # rev = "0000000000000000000000000000000000000000";
 
     sha256 = "sha256-UUuJa5w/GsEvsgH/BnXFsP/dsOt9wwmPqKzDxLPrhiY=";
 

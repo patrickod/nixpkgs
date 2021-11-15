@@ -11,18 +11,16 @@
 
 buildGoModule rec {
   pname = "step-ca";
-  version = "0.17.4";
+  version = "0.15.15";
 
   src = fetchFromGitHub {
     owner = "smallstep";
     repo = "certificates";
     rev = "v${version}";
-    sha256 = "sha256-X4dOrd/wxtYLw3C4Lj88RV/J6CEkmsOeqtiVX/6VFHg=";
+    sha256 = "sha256-YYYpMHEis/zoRsdwW70X8zn0FMsW+2vMYdlWxr3qqzY==";
   };
 
-  vendorSha256 = "sha256-/8Glo+U8MS8Y8mKECgTAB7JWmp/rjMQhG4nZkNs+Zgs=";
-
-  ldflags = [ "-buildid=" ];
+  vendorSha256 = "sha256-mjj+70/ioqcchB3X5vZPb0Oa7lA/qKh5zEpidT0jrEs=";
 
   nativeBuildInputs = lib.optionals hsmSupport [ pkg-config ];
 

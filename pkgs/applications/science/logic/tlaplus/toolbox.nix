@@ -1,13 +1,5 @@
-{ lib
-, fetchzip
-, makeWrapper
-, makeDesktopItem
-, stdenv
-, gtk3
-, libXtst
-, glib
-, zlib
-, wrapGAppsHook
+{ lib, fetchzip, makeWrapper, makeDesktopItem, stdenv
+, gtk3, libXtst, glib, zlib, wrapGAppsHook
 }:
 
 let
@@ -35,6 +27,10 @@ stdenv.mkDerivation rec {
   };
 
   buildInputs = [ gtk3 ];
+
+  nativeBuildInputs = [ makeWrapper wrapGAppsHook ];
+
+  dontWrapGApps = true;
 
   nativeBuildInputs = [ makeWrapper wrapGAppsHook ];
 

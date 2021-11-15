@@ -14,7 +14,7 @@
 , libgcrypt
 , libotr
 , html-tidy
-, libgpg-error
+, libgpgerror
 , libsignal-protocol-c
 , usrsctp
 
@@ -40,7 +40,7 @@ assert builtins.elem (lib.toLower chatType) [
 
 assert enablePsiMedia -> enablePlugins;
 
-mkDerivation {
+mkDerivation rec {
   pname = "psi-plus";
 
   # Version mask is “X.X.XXXX-R” where “X.X.XXXX” is a mandatory version of Psi
@@ -104,7 +104,7 @@ mkDerivation {
     libgcrypt
     libotr
     html-tidy
-    libgpg-error
+    libgpgerror
     libsignal-protocol-c
     usrsctp
   ] ++ lib.optionals voiceMessagesSupport [

@@ -1,53 +1,13 @@
-{ mkDerivation
-, lib
-, fetchFromGitHub
-, callPackage
-, pkg-config
-, cmake
-, ninja
-, python3
-, wrapGAppsHook
-, wrapQtAppsHook
-, extra-cmake-modules
-, qtbase
-, qtimageformats
-, gtk3
-, kwayland
-, libdbusmenu
-, lz4
-, xxHash
-, ffmpeg
-, openalSoft
-, minizip
-, libopus
-, alsa-lib
-, libpulseaudio
-, range-v3
-, tl-expected
-, hunspell
-, glibmm
-, webkitgtk
-, jemalloc
-, rnnoise
-, abseil-cpp
-  # Transitive dependencies:
-, util-linuxMinimal
-, pcre
-, libpthreadstubs
-, libXdmcp
-, libselinux
-, libsepol
-, epoxy
-, at-spi2-core
-, libXtst
-, libthai
-, libdatrie
-, xdg-utils
-, libsysprof-capture
-, libpsl
-, brotli
-, microsoft_gsl
-, rlottie
+{ mkDerivation, lib, fetchFromGitHub, callPackage, fetchpatch
+, pkg-config, cmake, ninja, python3, wrapGAppsHook, wrapQtAppsHook, removeReferencesTo
+, qtbase, qtimageformats, gtk3, libsForQt5, lz4, xxHash
+, ffmpeg, openalSoft, minizip, libopus, alsaLib, libpulseaudio, range-v3
+, tl-expected, hunspell, glibmm, webkitgtk, jemalloc
+, rnnoise, abseil-cpp, extra-cmake-modules
+# Transitive dependencies:
+, pcre, xorg, util-linux, libselinux, libsepol, epoxy
+, at-spi2-core, libXtst, libthai, libdatrie
+, xdg-utils, libsysprof-capture, libpsl, brotli
 }:
 
 # Main reference:
@@ -58,15 +18,10 @@
 # - https://github.com/void-linux/void-packages/blob/master/srcpkgs/telegram-desktop/template
 
 let
-  tg_owt = callPackage ./tg_owt.nix {
-    abseil-cpp = abseil-cpp.override {
-      cxxStandard = "17";
-    };
-  };
-in
-mkDerivation rec {
+  tg_owt = callPackage ./tg_owt.nix {};
+in mkDerivation rec {
   pname = "telegram-desktop";
-  version = "3.1.11";
+  version = "2.8.11";
   # Note: Update via pkgs/applications/networking/instant-messengers/telegram/tdesktop/update.py
 
   # Telegram-Desktop with submodules
@@ -75,21 +30,27 @@ mkDerivation rec {
     repo = "tdesktop";
     rev = "v${version}";
     fetchSubmodules = true;
-    sha256 = "0hpcsraw3gx37wk3r88q51qf68ny0kb3kd6slnklwf22d1jqr3fn";
+    sha256 = "020ycgb77vx7rza590i3csrvq1zgm15rvpxqqcp0xkb4yh71i3hb";
   };
+
+  patches = [(fetchpatch {
+    # ref: https://github.com/desktop-app/lib_webview/pull/9
+    url = "https://github.com/desktop-app/lib_webview/commit/75e924934eee8624020befbef1f3cb5b865d3b86.patch";
+    sha256 = "sha256-rN4FVK4KT+xNf9IVdcpbxMqT0+t3SINJPRRQPyMiDP0=";
+    stripLen = 1;
+    extraPrefix = "Telegram/lib_webview/";
+  })];
 
   postPatch = ''
     substituteInPlace Telegram/CMakeLists.txt \
       --replace '"''${TDESKTOP_LAUNCHER_BASENAME}.appdata.xml"' '"''${TDESKTOP_LAUNCHER_BASENAME}.metainfo.xml"'
 
     substituteInPlace Telegram/ThirdParty/libtgvoip/os/linux/AudioInputALSA.cpp \
-      --replace '"libasound.so.2"' '"${alsa-lib}/lib/libasound.so.2"'
+      --replace '"libasound.so.2"' '"${alsaLib}/lib/libasound.so.2"'
     substituteInPlace Telegram/ThirdParty/libtgvoip/os/linux/AudioOutputALSA.cpp \
-      --replace '"libasound.so.2"' '"${alsa-lib}/lib/libasound.so.2"'
+      --replace '"libasound.so.2"' '"${alsaLib}/lib/libasound.so.2"'
     substituteInPlace Telegram/ThirdParty/libtgvoip/os/linux/AudioPulse.cpp \
       --replace '"libpulse.so.0"' '"${libpulseaudio}/lib/libpulse.so.0"'
-    substituteInPlace Telegram/lib_webview/webview/platform/linux/webview_linux_webkit_gtk.cpp \
-      --replace '"libwebkit2gtk-4.0.so.37"' '"${webkitgtk}/lib/libwebkit2gtk-4.0.so.37"'
   '';
 
   # We want to run wrapProgram manually (with additional parameters)
@@ -107,44 +68,14 @@ mkDerivation rec {
   ];
 
   buildInputs = [
-    qtbase
-    qtimageformats
-    gtk3
-    kwayland
-    libdbusmenu
-    lz4
-    xxHash
-    ffmpeg
-    openalSoft
-    minizip
-    libopus
-    alsa-lib
-    libpulseaudio
-    range-v3
-    tl-expected
-    hunspell
-    glibmm
-    webkitgtk
-    jemalloc
-    rnnoise
+    qtbase qtimageformats gtk3 libsForQt5.kwayland libsForQt5.libdbusmenu lz4 xxHash
+    ffmpeg openalSoft minizip libopus alsaLib libpulseaudio range-v3
+    tl-expected hunspell glibmm webkitgtk jemalloc
+    rnnoise abseil-cpp extra-cmake-modules
     tg_owt
     # Transitive dependencies:
-    util-linuxMinimal # Required for libmount thus not nativeBuildInputs.
-    pcre
-    libpthreadstubs
-    libXdmcp
-    libselinux
-    libsepol
-    epoxy
-    at-spi2-core
-    libXtst
-    libthai
-    libdatrie
-    libsysprof-capture
-    libpsl
-    brotli
-    microsoft_gsl
-    rlottie
+    pcre xorg.libpthreadstubs xorg.libXdmcp util-linux libselinux libsepol epoxy
+    at-spi2-core libXtst libthai libdatrie libsysprof-capture libpsl brotli
   ];
 
   cmakeFlags = [
@@ -152,6 +83,7 @@ mkDerivation rec {
     # We're allowed to used the API ID of the Snap package:
     "-DTDESKTOP_API_ID=611335"
     "-DTDESKTOP_API_HASH=d524b414d21f4d37f08684c1df41ac9c"
+    "-DTDESKTOP_LAUNCHER_BASENAME=telegramdesktop" # Note: This is the default
     # See: https://github.com/NixOS/nixpkgs/pull/130827#issuecomment-885212649
     "-DDESKTOP_APP_USE_PACKAGED_FONTS=OFF"
   ];
@@ -183,6 +115,6 @@ mkDerivation rec {
     platforms = platforms.linux;
     homepage = "https://desktop.telegram.org/";
     changelog = "https://github.com/telegramdesktop/tdesktop/releases/tag/v${version}";
-    maintainers = with maintainers; [ oxalica primeos vanilla ];
+    maintainers = with maintainers; [ primeos abbradar oxalica ];
   };
 }

@@ -742,7 +742,6 @@
   angustrau = {
     name = "Angus Trau";
     email = "nix@angus.ws";
-    matrix = "@angustrau:matrix.org";
     github = "angustrau";
     githubId = 13267947;
   };
@@ -3048,7 +3047,6 @@
   drupol = {
     name = "Pol Dellaiera";
     email = "pol.dellaiera@protonmail.com";
-    matrix = "@drupol:matrix.org";
     github = "drupol";
     githubId = 252042;
     keys = [{

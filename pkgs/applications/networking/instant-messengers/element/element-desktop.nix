@@ -4,7 +4,6 @@
 , makeWrapper
 , makeDesktopItem
 , mkYarnPackage
-, fetchYarnDeps
 , electron
 , element-web
 , callPackage
@@ -18,17 +17,12 @@
 let
   pinData = lib.importJSON ./pin.json;
   executableName = "element-desktop";
-  electron_exec = if stdenv.isDarwin then "${electron}/Applications/Electron.app/Contents/MacOS/Electron" else "${electron}/bin/electron";
-in
-mkYarnPackage rec {
-  pname = "element-desktop";
-  inherit (pinData) version;
-  name = "${pname}-${version}";
+  version = "1.9.2";
   src = fetchFromGitHub {
     owner = "vector-im";
     repo = "element-desktop";
     rev = "v${version}";
-    sha256 = pinData.desktopSrcHash;
+    sha256 = "sha256-F1uyyBbs+U7tQzRtn+p923Z/BY8Nwxr/JTMYwsak8W8=";
   };
 
   packageJSON = ./element-desktop-package.json;
@@ -39,9 +33,6 @@ mkYarnPackage rec {
 
   nativeBuildInputs = [ makeWrapper ];
 
-  seshat = callPackage ./seshat { inherit CoreServices; };
-  keytar = callPackage ./keytar { inherit Security AppKit; };
-
   buildPhase = ''
     runHook preBuild
     export HOME=$(mktemp -d)
@@ -50,9 +41,6 @@ mkYarnPackage rec {
     yarn run i18n
     node ./scripts/copy-res.js
     popd
-    rm -rf node_modules/matrix-seshat node_modules/keytar
-    ln -s $keytar node_modules/keytar
-    ln -s $seshat node_modules/matrix-seshat
     runHook postBuild
   '';
 
@@ -65,7 +53,6 @@ mkYarnPackage rec {
     rm "$out/share/element/electron/node_modules"
     cp -r './node_modules' "$out/share/element/electron"
     cp $out/share/element/electron/lib/i18n/strings/en_EN.json $out/share/element/electron/lib/i18n/strings/en-us.json
-    ln -s $out/share/element/electron/lib/i18n/strings/en{-us,}.json
 
     # icons
     for icon in $out/share/element/electron/build/icons/*.png; do
@@ -78,8 +65,8 @@ mkYarnPackage rec {
     ln -s "${desktopItem}/share/applications" "$out/share/applications"
 
     # executable wrapper
-    makeWrapper '${electron_exec}' "$out/bin/${executableName}" \
-      --add-flags "$out/share/element/electron${lib.optionalString useWayland " --enable-features=UseOzonePlatform --ozone-platform=wayland"}"
+    makeWrapper '${electron}/bin/electron' "$out/bin/${executableName}" \
+      --add-flags "$out/share/element/electron"
   '';
 
   # Do not attempt generating a tarball for element-web again.

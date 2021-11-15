@@ -76,12 +76,7 @@ stdenv.mkDerivation rec {
     libmnl
     gnutls
     readline
-  ] ++ optionals (enableOpenconnect) [ openconnect ]
-    ++ optionals (firewallType == "iptables") [ iptables ]
-    ++ optionals (firewallType == "nftables") [ libnftnl ]
-    ++ optionals (enablePolkit) [ polkit ]
-    ++ optionals (enablePptp) [ pptp ppp ]
-  ;
+  ] ++ optionals (enableOpenconnect) [ openconnect ];
 
   nativeBuildInputs = [
     pkg-config

@@ -9,13 +9,13 @@
 
 buildGoModule rec {
   pname = "cni-plugin-dnsname";
-  version = "1.3.1";
+  version = "1.1.1";
 
   src = fetchFromGitHub {
     owner = "containers";
     repo = "dnsname";
     rev = "v${version}";
-    sha256 = "sha256-kebN1OLMOrBKBz4aBV0VYm+LmLm6S0mKnVgG2u5I+d4=";
+    sha256 = "090kpq2ppan9ayajdk5vwbvww30nphylgajn2p3441d4jg2nvsm3";
   };
 
   nativeBuildInputs = [ makeWrapper ];

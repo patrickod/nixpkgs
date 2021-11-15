@@ -17816,9 +17816,8 @@ let
     };
   };
 
-  PerlMagick = ImageMagick; # added 2021-08-02
-  ImageMagick = buildPerlPackage rec {
-    pname = "Image-Magick";
+  PerlMagick = buildPerlPackage rec {
+    pname = "PerlMagick";
     version = "7.0.11-1";
     src = fetchurl {
       url = "mirror://cpan/authors/id/J/JC/JCRISTY/Image-Magick-${version}.tar.gz";

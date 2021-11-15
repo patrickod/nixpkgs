@@ -4,18 +4,14 @@ with lib;
 
 stdenv.mkDerivation rec {
   pname = "navidrome";
-  version = "0.45.1";
+  version = "0.43.0";
 
 
   src = fetchurl (if stdenv.hostPlatform.system == "x86_64-linux"
   then {
     url = "https://github.com/deluan/navidrome/releases/download/v${version}/navidrome_${version}_Linux_x86_64.tar.gz";
-    sha256 = "sha256-TZcXq51sKoeLPmcRpv4VILDmS6dsS7lxlJzTDH0tEWM=";
-  }
-  else {
-    url = "https://github.com/deluan/navidrome/releases/download/v${version}/navidrome_${version}_Linux_arm64.tar.gz";
-    sha256 = "sha256-Va0DSmemj8hsaywoP6WKo/x+QQzSNwHCpU4VWs5lpbI=";
-  });
+    sha256 = "0y7a5n8phffxga1bjkaf7x5ijripqg1nfjljkrrj26778550vqb5";
+  };
 
   nativeBuildInputs = [ makeWrapper ];
 

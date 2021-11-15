@@ -1,7 +1,7 @@
 { stdenv, lib, fetchurl, fetchpatch, fetchFromGitLab, bundlerEnv
 , ruby, tzdata, git, nettools, nixosTests, nodejs, openssl
 , gitlabEnterprise ? false, callPackage, yarn
-, fixup_yarn_lock, replace, file, cacert, fetchYarnDeps
+, fixup_yarn_lock, replace, file, cacert
 }:
 
 let

@@ -13,8 +13,11 @@ in
       sha256 = "1s8z6f7mi1pwsl79cqai8cr350m5lf2ifcxff57wx6mvm478k425";
     };
 
-    extraPatches = [ ./ssh-keysign-8.5.patch ];
-    extraMeta.maintainers = with lib.maintainers; [ das_j ];
+    extraPatches = [
+      ./ssh-keysign-8.5.patch
+      ./CVE-2021-41617-1.patch
+      ./CVE-2021-41617-2.patch
+    ];
   };
 
   openssh_hpn = common rec {

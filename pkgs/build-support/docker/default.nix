@@ -36,31 +36,28 @@
 let
 
   inherit (lib)
-    escapeShellArgs
-    toList
+    optionals
     ;
 
-  mkDbExtraCommand = contents:
-    let
-      contentsList = if builtins.isList contents then contents else [ contents ];
-    in
-    ''
-      echo "Generating the nix database..."
-      echo "Warning: only the database of the deepest Nix layer is loaded."
-      echo "         If you want to use nix commands in the container, it would"
-      echo "         be better to only have one layer that contains a nix store."
+  mkDbExtraCommand = contents: let
+    contentsList = if builtins.isList contents then contents else [ contents ];
+  in ''
+    echo "Generating the nix database..."
+    echo "Warning: only the database of the deepest Nix layer is loaded."
+    echo "         If you want to use nix commands in the container, it would"
+    echo "         be better to only have one layer that contains a nix store."
 
-      export NIX_REMOTE=local?root=$PWD
-      # A user is required by nix
-      # https://github.com/NixOS/nix/blob/9348f9291e5d9e4ba3c4347ea1b235640f54fd79/src/libutil/util.cc#L478
-      export USER=nobody
-      ${buildPackages.nix}/bin/nix-store --load-db < ${closureInfo {rootPaths = contentsList;}}/registration
+    export NIX_REMOTE=local?root=$PWD
+    # A user is required by nix
+    # https://github.com/NixOS/nix/blob/9348f9291e5d9e4ba3c4347ea1b235640f54fd79/src/libutil/util.cc#L478
+    export USER=nobody
+    ${buildPackages.nix}/bin/nix-store --load-db < ${closureInfo {rootPaths = contentsList;}}/registration
 
-      mkdir -p nix/var/nix/gcroots/docker/
-      for i in ${lib.concatStringsSep " " contentsList}; do
-      ln -s $i nix/var/nix/gcroots/docker/$(basename $i)
-      done;
-    '';
+    mkdir -p nix/var/nix/gcroots/docker/
+    for i in ${lib.concatStringsSep " " contentsList}; do
+    ln -s $i nix/var/nix/gcroots/docker/$(basename $i)
+    done;
+  '';
 
   # The OCI Image specification recommends that configurations use values listed
   # in the Go Language document for GOARCH.
@@ -526,30 +523,26 @@ rec {
 
       layer =
         if runAsRoot == null
-        then
-          mkPureLayer
-            {
-              name = baseName;
-              inherit baseJson contents keepContentsDirlinks extraCommands uid gid;
-            } else
-          mkRootLayer {
-            name = baseName;
-            inherit baseJson fromImage fromImageName fromImageTag
-              contents keepContentsDirlinks runAsRoot diskSize
-              extraCommands;
-          };
-      result = runCommand "docker-image-${baseName}.tar.gz"
-        {
-          nativeBuildInputs = [ jshon pigz coreutils findutils jq moreutils ];
-          # Image name must be lowercase
-          imageName = lib.toLower name;
-          imageTag = if tag == null then "" else tag;
-          inherit fromImage baseJson;
-          layerClosure = writeReferencesToFile layer;
-          passthru.buildArgs = args;
-          passthru.layer = layer;
-          passthru.imageTag =
-            if tag != null
+        then mkPureLayer {
+          name = baseName;
+          inherit baseJson contents keepContentsDirlinks extraCommands uid gid;
+        } else mkRootLayer {
+          name = baseName;
+          inherit baseJson fromImage fromImageName fromImageTag
+                  contents keepContentsDirlinks runAsRoot diskSize
+                  extraCommands;
+        };
+      result = runCommand "docker-image-${baseName}.tar.gz" {
+        nativeBuildInputs = [ jshon pigz coreutils findutils jq moreutils ];
+        # Image name must be lowercase
+        imageName = lib.toLower name;
+        imageTag = if tag == null then "" else tag;
+        inherit fromImage baseJson;
+        layerClosure = writeReferencesToFile layer;
+        passthru.buildArgs = args;
+        passthru.layer = layer;
+        passthru.imageTag =
+          if tag != null
             then tag
             else
               lib.head (lib.strings.splitString "-" (baseNameOf result.outPath));
@@ -791,80 +784,107 @@ rec {
     })
   );
 
-  streamLayeredImage =
-    {
-      # Image Name
-      name
-    , # Image tag, the Nix's output hash will be used if null
-      tag ? null
-    , # Parent image, to append to.
-      fromImage ? null
-    , # Files to put on the image (a nix store path or list of paths).
-      contents ? [ ]
-    , # Docker config; e.g. what command to run on the container.
-      config ? { }
-    , # Time of creation of the image. Passing "now" will make the
-      # created date be the time of building.
-      created ? "1970-01-01T00:00:01Z"
-    , # Optional bash script to run on the files prior to fixturizing the layer.
-      extraCommands ? ""
-    , # Optional bash script to run inside fakeroot environment.
-      # Could be used for changing ownership of files in customisation layer.
-      fakeRootCommands ? ""
-    , # We pick 100 to ensure there is plenty of room for extension. I
-      # believe the actual maximum is 128.
-      maxLayers ? 100
-    , # Whether to include store paths in the image. You generally want to leave
-      # this on, but tooling may disable this to insert the store paths more
-      # efficiently via other means, such as bind mounting the host store.
-      includeStorePaths ? true
-    ,
-    }:
-      assert
+  streamLayeredImage = {
+    # Image Name
+    name,
+    # Image tag, the Nix's output hash will be used if null
+    tag ? null,
+    # Parent image, to append to.
+    fromImage ? null,
+    # Files to put on the image (a nix store path or list of paths).
+    contents ? [],
+    # Docker config; e.g. what command to run on the container.
+    config ? {},
+    # Time of creation of the image. Passing "now" will make the
+    # created date be the time of building.
+    created ? "1970-01-01T00:00:01Z",
+    # Optional bash script to run on the files prior to fixturizing the layer.
+    extraCommands ? "",
+    # Optional bash script to run inside fakeroot environment.
+    # Could be used for changing ownership of files in customisation layer.
+    fakeRootCommands ? "",
+    # We pick 100 to ensure there is plenty of room for extension. I
+    # believe the actual maximum is 128.
+    maxLayers ? 100,
+    # Whether to include store paths in the image. You generally want to leave
+    # this on, but tooling may disable this to insert the store paths more
+    # efficiently via other means, such as bind mounting the host store.
+    includeStorePaths ? true,
+  }:
+    assert
       (lib.assertMsg (maxLayers > 1)
-        "the maxLayers argument of dockerTools.buildLayeredImage function must be greather than 1 (current value: ${toString maxLayers})");
-      let
-        baseName = baseNameOf name;
+      "the maxLayers argument of dockerTools.buildLayeredImage function must be greather than 1 (current value: ${toString maxLayers})");
+    let
+      baseName = baseNameOf name;
 
-        streamScript = writePython3 "stream" { } ./stream_layered_image.py;
-        baseJson = writeText "${baseName}-base.json" (builtins.toJSON {
-          inherit config;
-          architecture = defaultArch;
-          os = "linux";
-        });
+      streamScript = writePython3 "stream" {} ./stream_layered_image.py;
+      baseJson = writeText "${baseName}-base.json" (builtins.toJSON {
+         inherit config;
+         architecture = defaultArch;
+         os = "linux";
+      });
 
-        contentsList = if builtins.isList contents then contents else [ contents ];
+      contentsList = if builtins.isList contents then contents else [ contents ];
 
-        # We store the customisation layer as a tarball, to make sure that
-        # things like permissions set on 'extraCommands' are not overriden
-        # by Nix. Then we precompute the sha256 for performance.
-        customisationLayer = symlinkJoin {
-          name = "${baseName}-customisation-layer";
-          paths = contentsList;
-          inherit extraCommands fakeRootCommands;
-          nativeBuildInputs = [ fakeroot ];
-          postBuild = ''
-            mv $out old_out
-            (cd old_out; eval "$extraCommands" )
+      # We store the customisation layer as a tarball, to make sure that
+      # things like permissions set on 'extraCommands' are not overriden
+      # by Nix. Then we precompute the sha256 for performance.
+      customisationLayer = symlinkJoin {
+        name = "${baseName}-customisation-layer";
+        paths = contentsList;
+        inherit extraCommands fakeRootCommands;
+        nativeBuildInputs = [ fakeroot ];
+        postBuild = ''
+          mv $out old_out
+          (cd old_out; eval "$extraCommands" )
 
-            mkdir $out
+          mkdir $out
 
-            fakeroot bash -c '
-              source $stdenv/setup
-              cd old_out
-              eval "$fakeRootCommands"
-              tar \
-                --sort name \
-                --numeric-owner --mtime "@$SOURCE_DATE_EPOCH" \
-                --hard-dereference \
-                -cf $out/layer.tar .
-            '
+          fakeroot bash -c '
+            source $stdenv/setup
+            cd old_out
+            eval "$fakeRootCommands"
+            tar \
+              --sort name \
+              --numeric-owner --mtime "@$SOURCE_DATE_EPOCH" \
+              --hard-dereference \
+              -cf $out/layer.tar .
+          '
 
-            sha256sum $out/layer.tar \
-              | cut -f 1 -d ' ' \
-              > $out/checksum
-          '';
-        };
+          sha256sum $out/layer.tar \
+            | cut -f 1 -d ' ' \
+            > $out/checksum
+        '';
+      };
+
+      closureRoots = optionals includeStorePaths /* normally true */ (
+        [ baseJson ] ++ contentsList
+      );
+      overallClosure = writeText "closure" (lib.concatStringsSep " " closureRoots);
+
+      # These derivations are only created as implementation details of docker-tools,
+      # so they'll be excluded from the created images.
+      unnecessaryDrvs = [ baseJson overallClosure ];
+
+      conf = runCommand "${baseName}-conf.json" {
+        inherit fromImage maxLayers created;
+        imageName = lib.toLower name;
+        passthru.imageTag =
+          if tag != null
+            then tag
+            else
+              lib.head (lib.strings.splitString "-" (baseNameOf conf.outPath));
+        paths = buildPackages.referencesByPopularity overallClosure;
+        nativeBuildInputs = [ jq ];
+      } ''
+        ${if (tag == null) then ''
+          outName="$(basename "$out")"
+          outHash=$(echo "$outName" | cut -d - -f 1)
+
+          imageTag=$outHash
+        '' else ''
+          imageTag="${tag}"
+        ''}
 
         closureRoots = lib.optionals includeStorePaths /* normally true */ (
           [ baseJson ] ++ contentsList

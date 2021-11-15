@@ -31,12 +31,7 @@
 let
 
   mkElpaPackages = { pkgs, lib }: import ../applications/editors/emacs/elisp-packages/elpa-packages.nix {
-    inherit (pkgs) stdenv texinfo writeText gcc pkgs buildPackages;
-    inherit lib;
-  };
-
-  mkNongnuPackages = { pkgs, lib }: import ../applications/editors/emacs/elisp-packages/nongnu-packages.nix {
-    inherit (pkgs) buildPackages;
+    inherit (pkgs) stdenv texinfo writeText buildPackages;
     inherit lib;
   };
 

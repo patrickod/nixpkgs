@@ -2,12 +2,12 @@
 
 stdenv.mkDerivation rec {
   pname = "nixos-generators";
-  version = "1.5.0";
+  version = "1.4.0";
   src = fetchFromGitHub {
     owner = "nix-community";
     repo = "nixos-generators";
     rev = version;
-    sha256 = "sha256-Icz/2Jl3eO4JnatU1iAFiMzVAQR9IDrsiqhOIvMkCS4=";
+    sha256 = "1kn2anp8abpi0n3p7j0yczbpy7mdhk8rv84ywyghqdvf2wjmnlnp";
   };
   nativeBuildInputs = [ makeWrapper ];
   installFlags = [ "PREFIX=$(out)" ];

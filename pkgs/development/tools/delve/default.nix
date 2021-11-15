@@ -22,10 +22,6 @@ buildGoPackage rec {
     # fortify source breaks build since delve compiles with -O0
     wrapProgram $out/bin/dlv \
       --prefix disableHardening " " fortify
-
-    # add symlink for vscode golang extension
-    # https://github.com/golang/vscode-go/blob/master/docs/debugging.md#manually-installing-dlv-dap
-    ln $out/bin/dlv $out/bin/dlv-dap
   '';
 
   meta = with lib; {

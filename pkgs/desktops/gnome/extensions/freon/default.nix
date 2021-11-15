@@ -2,7 +2,7 @@
 
 stdenv.mkDerivation rec {
   pname = "gnome-shell-extension-freon";
-  version = "44";
+  version = "40";
 
   passthru = {
     extensionUuid = "freon@UshakovVasilii_Github.yahoo.com";

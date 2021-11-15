@@ -17,8 +17,7 @@
 }:
 
 let
-  blocklist = writeText "cacert-blocklist.txt" (lib.concatStringsSep "\n" blacklist);
-  extraCertificatesBundle = writeText "cacert-extra-certificates-bundle.crt" (lib.concatStringsSep "\n\n" extraCertificateStrings);
+  version = "3.66";
 
   srcVersion = "3.71";
   version = if nssOverride != null then nssOverride.version else srcVersion;
@@ -38,7 +37,10 @@ let
       sha256 = "0ly2l3dv6z5hlxs72h5x6796ni3x1bq60saavaf42ddgv4ax7b4r";
     };
 
-    dontBuild = true;
+  src = fetchurl {
+    url = "mirror://mozilla/security/nss/releases/NSS_${underscoreVersion}_RTM/src/nss-${version}.tar.gz";
+    sha256 = "1jfdnh5l4k57r2vb07s06hqi7m2qzk0d9x25lsdsrw3cflx9x9w9";
+  };
 
     installPhase = ''
       runHook preInstall

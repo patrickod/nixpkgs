@@ -205,17 +205,12 @@ in
           #-- muc_room_cache_size = 1000
         }
       ];
-      extraModules = [ "pubsub" "smacks" ];
+      extraModules = [ "pubsub" ];
       extraPluginPaths = [ "${pkgs.jitsi-meet-prosody}/share/prosody-plugins" ];
-      extraConfig = lib.mkMerge [ (mkAfter ''
+      extraConfig = mkAfter ''
         Component "focus.${cfg.hostName}" "client_proxy"
           target_address = "focus@auth.${cfg.hostName}"
-        '')
-        (mkBefore ''
-          cross_domain_websocket = true;
-          consider_websocket_secure = true;
-        '')
-      ];
+      '';
       virtualHosts.${cfg.hostName} = {
         enabled = true;
         domain = cfg.hostName;
@@ -291,11 +286,9 @@ in
         chmod 640 secrets-env
       ''
       + optionalString cfg.prosody.enable ''
-        prosodyctl register focus auth.${cfg.hostName} "$(cat /var/lib/jitsi-meet/jicofo-user-secret)"
-        prosodyctl register jvb auth.${cfg.hostName} "$(cat ${videobridgeSecret})"
-        prosodyctl mod_roster_command subscribe focus.${cfg.hostName} focus@auth.${cfg.hostName}
-        prosodyctl register jibri auth.${cfg.hostName} "$(cat /var/lib/jitsi-meet/jibri-auth-secret)"
-        prosodyctl register recorder recorder.${cfg.hostName} "$(cat /var/lib/jitsi-meet/jibri-recorder-secret)"
+        ${config.services.prosody.package}/bin/prosodyctl register focus auth.${cfg.hostName} "$(cat /var/lib/jitsi-meet/jicofo-user-secret)"
+        ${config.services.prosody.package}/bin/prosodyctl register jvb auth.${cfg.hostName} "$(cat ${videobridgeSecret})"
+        ${config.services.prosody.package}/bin/prosodyctl mod_roster_command subscribe focus.${cfg.hostName} focus@auth.${cfg.hostName}
 
         # generate self-signed certificates
         if [ ! -f /var/lib/jitsi-meet.crt ]; then

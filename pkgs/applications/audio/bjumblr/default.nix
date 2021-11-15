@@ -1,14 +1,14 @@
 { lib, stdenv, fetchFromGitHub, libX11, cairo, lv2, pkg-config, libsndfile }:
 
 stdenv.mkDerivation rec {
-  pname = "bjumblr";
-  version = "1.6.8";
+  pname = "BJumblr";
+  version = "1.6.6";
 
   src = fetchFromGitHub {
     owner = "sjaehn";
     repo = "BJumblr";
     rev = version;
-    sha256 = "sha256-qSoGmWUGaMjx/bkiCJ/qb4LBbuFPXXlJ0e9hrFBXzwE=";
+    sha256 = "1nbxi54023vck3qgmr385cjzinmdnvz62ywb6bcksmc3shl080mg";
   };
 
   nativeBuildInputs = [ pkg-config ];

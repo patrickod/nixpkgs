@@ -114,34 +114,4 @@ rec {
     aarch64-darwin = "256daa25a8375c565b32c3c2f0e12fbac8d5039a13a9edbb3673a863149b750a";
     headers = "1fvqkw08pync38ixi5cq4f8a108k2ajxpm1w2f8sn2hjph9kpbsd";
   };
-
-  electron_13 = mkElectron "13.6.1" {
-    armv7l-linux = "c8bba8da0baf5cde3eb4823c801c228abfa7943c69131b3701c74e2b342e1813";
-    aarch64-linux = "09a1ff29c33a23f19cc702e0147dee03cfe2acedcff6bfb63c7911184b871a1a";
-    x86_64-linux = "bfc09dd2d591ad614c8d598dad6e13b76c3baf4f48773e7819c493b524a0bb1a";
-    i686-linux = "1ea7c7d19759fa0ee0ddef68c09bcc1c57265436d3f5dab37dad3567f117f317";
-    x86_64-darwin = "ce45f17f875d72e791999eaf30a1af39b6e9143e57a653e7f06cfa0bee9b985d";
-    aarch64-darwin = "e2f82720acae3a03d7d4b3e7dcc7697b84d5bb69a63d087a7420ace2412e7a28";
-    headers = "1bd87c74863w0sjs8gfxl62kjjscc56dmmw85vhwz01s4niksr02";
-  };
-
-  electron_14 = mkElectron "14.2.0" {
-    armv7l-linux = "a1357716ebda8d7856f233c86a8cbaeccad1c83f1d725d260b0a6510c47042a2";
-    aarch64-linux = "b1f4885c3ad816d89446f64a87b78d5139a27fecbf6317808479bede6fd94ae1";
-    x86_64-linux = "b2faec4744edb20e889c3c85af685c2a6aef90bfff58f55b90038a991cd7691f";
-    i686-linux = "9207af6e3a24dfcc76fded20f26512bcb20f6b652295a4ad3458dc10fd2d7d6e";
-    x86_64-darwin = "d647d658c8c2ec4a69c071e791cf7e823320860f987121bd7390978aecacb073";
-    aarch64-darwin = "f5a7e52b639b94cf9b2ec53969c8014c6d299437c65d98c33d8e5ca812fbfd48";
-    headers = "1y289vr8bws3z6gmhaj3avz95rdhc8gd3rc7bi40jv9j1pnlsd3m";
-  };
-
-  electron_15 = mkElectron "15.3.0" {
-    armv7l-linux = "dfe2851ef94c17eb905cd8cf00b585be072e20a79a02c0c42585a0f51b8cdb20";
-    aarch64-linux = "e0bb8d663dfbe8b65b9e38d4af992a919adc639acfb8748d95ca5b9bbcd7a83c";
-    x86_64-linux = "7cb9c6c9c61848f7d82aaac47ca97bb78c6061e73b176fd3a323652c07335087";
-    i686-linux = "289ef7d53c440a576839a4ee092284009235d740404ea07e6bf82f33254ae8df";
-    x86_64-darwin = "667da0d56bab968d28c41c1f53b901fb685e56d1f56faf33912a240a0397bab5";
-    aarch64-darwin = "9cf5caafc7cbf0e91483e24d5a696b81618d293a5eccd4d122c57baaab88724c";
-    headers = "0jicbplni608cjxwhlrzxkxc9w9b4h6zqssilc9b0yr73jq1fyrd";
-  };
 }

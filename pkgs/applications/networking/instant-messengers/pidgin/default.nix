@@ -1,8 +1,15 @@
-{ callPackage, stdenv, fetchurl, makeWrapper, pkg-config, gtk2, gtk2-x11, gtkspell2, aspell
-, gst_all_1, libstartup_notification, gettext, perlPackages, libxml2, nss
-, nspr, farstream, libXScrnSaver, avahi, dbus, dbus-glib, intltool, libidn
-, lib, python3, libICE, libXext, libSM, libgnt, ncurses, cyrus_sasl, openssl
-, gnutls, libgcrypt, symlinkJoin, cacert, plugins, withOpenssl, withGnutls, withCyrus_sasl ? true
+{ stdenv, fetchurl, makeWrapper, pkg-config, gtk2, gtk2-x11
+, gtkspell2, aspell
+, gst_all_1, startupnotification, gettext
+, perlPackages, libxml2, nss, nspr, farstream
+, libXScrnSaver, ncurses, avahi, dbus, dbus-glib, intltool, libidn
+, lib, python, libICE, libXext, libSM
+, cyrus_sasl ? null
+, openssl ? null
+, gnutls ? null
+, libgcrypt ? null
+, plugins, symlinkJoin
+, cacert
 }:
 
 # FIXME: clean the mess around choosing the SSL library (nss by default)

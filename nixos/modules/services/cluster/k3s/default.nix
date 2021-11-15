@@ -83,8 +83,8 @@ in
         message = "serverAddr or configPath (with 'server' key) should be set if role is 'agent'";
       }
       {
-        assertion = cfg.role == "agent" -> cfg.configPath != null || cfg.tokenFile != null || cfg.token != "";
-        message = "token or tokenFile or configPath (with 'token' or 'token-file' keys) should be set if role is 'agent'";
+        assertion = cfg.role == "agent" -> cfg.token != "" || cfg.tokenFile != null;
+        message = "token or tokenFile should be set if role is 'agent'";
       }
     ];
 
@@ -120,10 +120,12 @@ in
             "${cfg.package}/bin/k3s ${cfg.role}"
           ] ++ (optional cfg.docker "--docker")
           ++ (optional cfg.disableAgent "--disable-agent")
-          ++ (optional (cfg.serverAddr != "") "--server ${cfg.serverAddr}")
-          ++ (optional (cfg.token != "") "--token ${cfg.token}")
-          ++ (optional (cfg.tokenFile != null) "--token-file ${cfg.tokenFile}")
-          ++ (optional (cfg.configPath != null) "--config ${cfg.configPath}")
+          ++ (optional (cfg.role == "agent") "--server ${cfg.serverAddr} ${
+            if cfg.tokenFile != null then
+              "--token-file ${cfg.tokenFile}"
+            else
+              "--token ${cfg.token}"
+          }")
           ++ [ cfg.extraFlags ]
         );
       };

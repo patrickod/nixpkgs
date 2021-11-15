@@ -2,7 +2,7 @@
 , stdenv
 , fetchFromGitHub
 , autoreconfHook
-, alsa-lib
+, alsaLib
 , python
 , SDL
 }:

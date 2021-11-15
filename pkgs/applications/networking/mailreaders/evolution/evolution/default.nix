@@ -42,11 +42,11 @@
 
 stdenv.mkDerivation rec {
   pname = "evolution";
-  version = "3.42.1";
+  version = "3.40.3";
 
   src = fetchurl {
     url = "mirror://gnome/sources/evolution/${lib.versions.majorMinor version}/${pname}-${version}.tar.xz";
-    sha256 = "RlMq46E6aIV3GtEiNLlBQRZ67HRyOn7tE9293a767kU=";
+    sha256 = "/SkjomENe/6212+FMLpAJkBOIf0nOrKKLFtQCJIeDVw=";
   };
 
   nativeBuildInputs = [

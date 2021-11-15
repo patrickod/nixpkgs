@@ -1,6 +1,7 @@
 { lib
 , buildPythonPackage
 , fetchPypi
+, fetchpatch
 , click
 , cloudpickle
 , dask
@@ -27,6 +28,16 @@ buildPythonPackage rec {
     inherit pname version;
     sha256 = "0kfq7lwv2n2wiws4v2rj36wx56jvkp2fl6zxg04p2lc3vcgha9za";
   };
+
+  patches = [
+    (fetchpatch {
+      name = "CVE-2021-42343.patch";
+      url = "https://github.com/dask/distributed/commit/afce4be8e05fb180e50a9d9e38465f1a82295e1b.patch";
+      sha256 = "1rww36948lrffbg0r94lav0ki1v5vvqi7jfdflhlnb5dz0rnw686";
+      # conflicts and we don't run the tests at the moment anyway
+      excludes = [ "distributed/deploy/tests/*" ];
+    })
+  ];
 
   propagatedBuildInputs = [
     bokeh

@@ -97,7 +97,7 @@ let
       "externals_cache/pjproject-2.10.tar.bz2" = pjproject_2_10;
       "addons/mp3" = mp3-202;
     };
-  }) (lib.importJSON ./versions.json);
+  }) (builtins.fromJSON (builtins.readFile ./versions.json));
 
 in {
   # Supported releases (as of 2020-10-26).

@@ -8,11 +8,11 @@
 
 stdenv.mkDerivation rec {
   pname = "jitsi-meet-electron";
-  version = "2.8.11";
+  version = "2.8.6";
 
   src = fetchurl {
     url = "https://github.com/jitsi/jitsi-meet-electron/releases/download/v${version}/jitsi-meet-x86_64.AppImage";
-    sha256 = "sha256-DznbSwA1UISw3EkIfM5hGgmIToeXsH1b1HB7UOgDTKU=";
+    sha256 = "sha256-kLX8SZERlyNVSvszkV/fkQh/Z/Z20PAPJ9eug2oKlqI=";
     name = "${pname}-${version}.AppImage";
   };
 

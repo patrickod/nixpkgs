@@ -2,15 +2,20 @@
 
 stdenv.mkDerivation rec {
   pname = "taskwarrior";
-  version = "2.6.1";
+  version = "2.5.3";
 
-  src = fetchFromGitHub {
-    owner = "GothenburgBitFactory";
-    repo = "taskwarrior";
-    rev = "v${version}";
-    sha256 = "sha256-jMZzo2cegoapEHTvfD6ThU1IsXru3iOcpyDbZxkSXzQ=";
-    fetchSubmodules = true;
-  };
+  srcs = [
+    (fetchurl {
+      url = "https://github.com/GothenburgBitFactory/taskwarrior/releases/download/v${version}/${sourceRoot}.tar.gz";
+      sha256 = "0fwnxshhlha21hlgg5z1ad01w13zm1hlmncs274y5n8i15gdfhvj";
+    })
+    (fetchurl {
+      url = "https://github.com/GothenburgBitFactory/taskwarrior/releases/download/v${version}/tests-${version}.tar.gz";
+      sha256 = "165xmf9h6rb7l6l9nlyygj0mx9bi1zyd78z0lrl3nadhmgzggv0b";
+    })
+  ];
+
+  sourceRoot = "task-${version}";
 
   postPatch = ''
     substituteInPlace src/commands/CmdNews.cpp \

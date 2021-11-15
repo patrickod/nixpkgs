@@ -19,15 +19,17 @@ buildGoModule rec {
 
   excludedPackages = [ "docs/node-mixin" ];
 
-  ldflags = [
-    "-s"
-    "-w"
-    "-X github.com/prometheus/common/version.Version=${version}"
-    "-X github.com/prometheus/common/version.Revision=${rev}"
-    "-X github.com/prometheus/common/version.Branch=unknown"
-    "-X github.com/prometheus/common/version.BuildUser=nix@nixpkgs"
-    "-X github.com/prometheus/common/version.BuildDate=unknown"
-  ];
+  buildFlagsArray = let
+    goPackagePath = "github.com/prometheus/node_exporter";
+  in ''
+    -ldflags=
+        -s -w
+        -X github.com/prometheus/common/version.Version=${version}
+        -X github.com/prometheus/common/version.Revision=${rev}
+        -X github.com/prometheus/common/version.Branch=unknown
+        -X github.com/prometheus/common/version.BuildUser=nix@nixpkgs
+        -X github.com/prometheus/common/version.BuildDate=unknown
+  '';
 
   passthru.tests = { inherit (nixosTests.prometheus-exporters) node; };
 

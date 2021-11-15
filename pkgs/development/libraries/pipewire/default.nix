@@ -1,6 +1,7 @@
 { stdenv
 , lib
 , fetchFromGitLab
+, fetchpatch
 , removeReferencesTo
 , python3
 , meson
@@ -29,9 +30,6 @@
 , callPackage
 , nixosTests
 , withMediaSession ? true
-, libcameraSupport ? true
-, libcamera
-, libdrm
 , gstreamerSupport ? true
 , gst_all_1 ? null
 , ffmpegSupport ? true
@@ -62,7 +60,7 @@ let
 
   self = stdenv.mkDerivation rec {
     pname = "pipewire";
-    version = "0.3.40";
+    version = "0.3.39";
 
     outputs = [
       "out"
@@ -80,7 +78,7 @@ let
       owner = "pipewire";
       repo = "pipewire";
       rev = version;
-      sha256 = "sha256-eY6uQa4+sC6yUWhF4IpAgRoppwhHO4s5fIMXOkS0z7A=";
+      sha256 = "sha256-peTS1+NuQxZg1rrv8DrnJW5BR9yReleqooIwhZWHLjM=";
     };
 
     patches = [
@@ -96,6 +94,12 @@ let
       ./0090-pipewire-config-template-paths.patch
       # Place SPA data files in lib output to avoid dependency cycles
       ./0095-spa-data-dir.patch
+      # Fix compilation on some architectures
+      # XXX: REMOVE ON NEXT RELEASE
+      (fetchpatch {
+        url = "https://gitlab.freedesktop.org/pipewire/pipewire/-/commit/651f0decea5f83730c271e9bed03cdd0048fcd49.diff";
+        sha256 = "1bmpi5qn750mcspaw7m57ww0503sl9781jswqby4gr0f7c5wmqvj";
+      })
     ];
 
     nativeBuildInputs = [
@@ -138,7 +142,7 @@ let
       "-Dinstalled_test_prefix=${placeholder "installedTests"}"
       "-Dpipewire_pulse_prefix=${placeholder "pulse"}"
       "-Dlibjack-path=${placeholder "jack"}/lib"
-      "-Dlibcamera=${mesonEnable libcameraSupport}"
+      "-Dlibcamera=disabled"
       "-Droc=disabled"
       "-Dlibpulse=${mesonEnable pulseTunnelSupport}"
       "-Davahi=${mesonEnable zeroconfSupport}"

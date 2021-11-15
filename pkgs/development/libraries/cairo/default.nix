@@ -36,13 +36,6 @@ in stdenv.mkDerivation rec {
       sha256 = "112hgrrsmcwxh1r52brhi5lksq4pvrz4xhkzcf2iqp55jl2pb7n1";
     })
 
-    # Fix PDF output.
-    # https://gitlab.freedesktop.org/cairo/cairo/issues/342
-    (fetchpatch {
-      url = "https://gitlab.freedesktop.org/cairo/cairo/commit/5e34c5a9640e49dcc29e6b954c4187cfc838dbd1.patch";
-      sha256 = "yCwsDUY7efVvOZkA6a0bPS+RrVc8Yk9bfPwWHeOjq5o=";
-    })
-
     # Fixes CVE-2020-35492; see https://github.com/NixOS/nixpkgs/issues/120364.
     # CVE information: https://nvd.nist.gov/vuln/detail/CVE-2020-35492
     # Upstream PR: https://gitlab.freedesktop.org/cairo/cairo/merge_requests/85

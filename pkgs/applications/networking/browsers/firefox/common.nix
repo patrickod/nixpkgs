@@ -1,22 +1,27 @@
-{ pname, version, meta, updateScript ? null
-, binaryName ? "firefox", application ? "browser"
+{ pname, ffversion, meta, updateScript ? null, binaryName ? "firefox", application ? "browser"
 , src, unpackPhase ? null, patches ? []
 , extraNativeBuildInputs ? [], extraConfigureFlags ? [], extraMakeFlags ? [], tests ? [] }:
 
 { lib, stdenv, pkg-config, pango, perl, python3, zip
 , libjpeg, zlib, dbus, dbus-glib, bzip2, xorg
-, freetype, fontconfig, file, nspr, nss
+, freetype, fontconfig, file, nspr, nss_3_53
 , yasm, libGLU, libGL, sqlite, unzip, makeWrapper
 , hunspell, libevent, libstartup_notification
 , libvpx_1_8
-, icu69, libpng, glib, pciutils
-, autoconf213, which, gnused, rustPackages
+, icu69, libpng, jemalloc, glib, pciutils
+, autoconf213, which, gnused, rustPackages_1_45, rustPackages_1_55
 , rust-cbindgen, nodejs, nasm, fetchpatch
 , gnum4
-, gtk3, wrapGAppsHook
+, gtk2, gtk3, wrapGAppsHook
 , debugBuild ? false
 
 ### optionals
+
+## backported libraries
+
+, nspr_latest
+, nss_latest
+, rust-cbindgen_latest
 
 ## optional libraries
 
@@ -91,16 +96,23 @@ let
             then "/Applications/${binaryNameCapitalized}.app/Contents/MacOS"
             else "/bin";
 
-  inherit (rustPackages) rustc cargo;
+  nspr_pkg = if lib.versionAtLeast ffversion "91" then nspr_latest else nspr;
+  rust-cbindgen_pkg = if lib.versionAtLeast ffversion "89" then rust-cbindgen_latest else rust-cbindgen;
+
+  # 78 ESR won't build with rustc 1.47
+  inherit (if lib.versionAtLeast ffversion "91" then rustPackages_1_55 else rustPackages_1_45)
+    rustc cargo;
 
   # Darwin's stdenv provides the default llvmPackages version, match that since
   # clang LTO on Darwin is broken so the stdenv is not being changed.
   # Target the LLVM version that rustc -Vv reports it is built with for LTO.
+  # rustPackages_1_45 -> LLVM 10, rustPackages_1_55 -> LLVM 12
   llvmPackages0 =
     if stdenv.isDarwin
       then buildPackages.llvmPackages
-    else rustc.llvmPackages;
-
+    else if lib.versionAtLeast rustc.llvm.version "12"
+      then buildPackages.llvmPackages_12
+    else buildPackages.llvmPackages_10;
   # Force the use of lld and other llvm tools for LTO
   llvmPackages = llvmPackages0.override {
     bootBintoolsNoLibc = null;
@@ -112,6 +124,10 @@ let
   buildStdenv = if ltoSupport
                 then overrideCC stdenv llvmPackages.clangUseLLVM
                 else stdenv;
+
+  # Disable p11-kit support in nss until our cacert packages has caught up exposing CKA_NSS_MOZILLA_CA_POLICY
+  # https://github.com/NixOS/nixpkgs/issues/126065
+  nss_pkg = if lib.versionOlder ffversion "83" then nss_3_53 else nss_latest.override { useP11kit = false; };
 
   # --enable-release adds -ffunction-sections & LTO that require a big amount of
   # RAM and the 32-bit memory space cannot handle that linking
@@ -129,9 +145,27 @@ buildStdenv.mkDerivation ({
 
   patches = [
   ] ++
-  lib.optional (lib.versionAtLeast version "86") ./env_var_for_system_dir-ff86.patch ++
-  lib.optional (lib.versionAtLeast version "90") ./no-buildconfig-ffx90.patch ++
-  patches;
+  lib.optional (lib.versionOlder ffversion "86") ./env_var_for_system_dir-ff85.patch ++
+  lib.optional (lib.versionAtLeast ffversion "86") ./env_var_for_system_dir-ff86.patch ++
+  lib.optional (lib.versionOlder ffversion "83") ./no-buildconfig-ffx76.patch ++
+  lib.optional (lib.versionAtLeast ffversion "90") ./no-buildconfig-ffx90.patch ++
+  lib.optional (ltoSupport && lib.versionOlder ffversion "84") ./lto-dependentlibs-generation-ffx83.patch ++
+  lib.optional (ltoSupport && lib.versionAtLeast ffversion "84" && lib.versionOlder ffversion "86")
+    (fetchpatch {
+      url = "https://hg.mozilla.org/mozilla-central/raw-rev/fdff20c37be3";
+      sha256 = "135n9brliqy42lj3nqgb9d9if7x6x9nvvn0z4anbyf89bikixw48";
+    })
+
+  # This patch adds pipewire support for the ESR release
+  ++ lib.optional (pipewireSupport && lib.versionOlder ffversion "83")
+    (fetchpatch {
+      # https://src.fedoraproject.org/rpms/firefox/blob/master/f/firefox-pipewire-0-3.patch
+      url = "https://src.fedoraproject.org/rpms/firefox/raw/e99b683a352cf5b2c9ff198756859bae408b5d9d/f/firefox-pipewire-0-3.patch";
+      sha256 = "0qc62di5823r7ly2lxkclzj9rhg2z7ms81igz44nv0fzv3dszdab";
+    })
+
+  ++ patches;
+
 
   # Ignore trivial whitespace changes in patches, this fixes compatibility of
   # ./env_var_for_system_dir.patch with Firefox >=65 without having to track
@@ -139,7 +173,7 @@ buildStdenv.mkDerivation ({
   patchFlags = [ "-p1" "-l" ];
 
   buildInputs = [
-    gnum4 gtk3 perl zip libjpeg zlib bzip2
+    gtk3 perl zip libjpeg zlib bzip2
     dbus dbus-glib pango freetype fontconfig xorg.libXi xorg.libXcursor
     xorg.libX11 xorg.libXrender xorg.libXft xorg.libXt file
     xorg.pixman yasm libGLU libGL
@@ -147,13 +181,13 @@ buildStdenv.mkDerivation ({
     xorg.libXdamage
     xorg.libXext
     libevent libstartup_notification /* cairo */
-    libpng glib
+    libpng jemalloc glib
     nasm icu69 libvpx_1_8
     # >= 66 requires nasm for the AV1 lib dav1d
     # yasm can potentially be removed in future versions
     # https://bugzilla.mozilla.org/show_bug.cgi?id=1501796
     # https://groups.google.com/forum/#!msg/mozilla.dev.platform/o-8levmLU80/SM_zQvfzCQAJ
-    nspr nss
+    nspr_pkg nss_pkg
   ]
   ++ lib.optional  alsaSupport alsa-lib
   ++ lib.optional  pulseaudioSupport libpulseaudio # only headers are needed
@@ -163,7 +197,8 @@ buildStdenv.mkDerivation ({
   ++ lib.optional  jemallocSupport jemalloc
   ++ lib.optionals buildStdenv.isDarwin [ CoreMedia ExceptionHandling Kerberos
                                           AVFoundation MediaToolbox CoreLocation
-                                          Foundation libobjc AddressBook cups ];
+                                          Foundation libobjc AddressBook cups ]
+  ++ lib.optional  (lib.versionOlder ffversion "90") gtk2;
 
   NIX_LDFLAGS = lib.optionalString ltoSupport ''
     -rpath ${llvmPackages.libunwind.out}/lib
@@ -188,7 +223,7 @@ buildStdenv.mkDerivation ({
       perl
       pkg-config
       python3
-      rust-cbindgen
+      rust-cbindgen_pkg
       rustc
       which
       unzip
@@ -321,10 +356,10 @@ buildStdenv.mkDerivation ({
 
   passthru = {
     inherit updateScript;
-    inherit version;
+    version = ffversion;
     inherit alsaSupport;
     inherit pipewireSupport;
-    inherit nspr;
+    inherit nspr_pkg;
     inherit ffmpegSupport;
     inherit gssSupport;
     inherit execdir;

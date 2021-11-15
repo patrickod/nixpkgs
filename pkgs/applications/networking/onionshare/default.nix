@@ -54,6 +54,8 @@ let
 
     license = licenses.gpl3Plus;
     maintainers = with maintainers; [ lourkeur ];
+
+    knownVulnerabilities = [ "CVE-2021-41867" "CVE-2021-41868" ];
   };
   stem' = stem.overridePythonAttrs (_: rec {
     version = "1.8.1";

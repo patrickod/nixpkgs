@@ -5,11 +5,18 @@
 let
   python = python3.override {
     packageOverrides = self: super: {
-      sqlalchemy = super.sqlalchemy.overridePythonAttrs (oldAttrs: rec {
-        version = "1.3.24";
+      mautrix = super.mautrix.overridePythonAttrs (oldAttrs: rec {
+        version = "0.10.4";
         src = oldAttrs.src.override {
           inherit version;
-          sha256 = "ebbb777cbf9312359b897bf81ba00dae0f5cb69fba2a18265dcc18a6f5ef7519";
+          sha256 = "ffbc4e29eb56089539b408f8e4c12a5d5a5d11d7fe7d40f8c6279784c618b869";
+        };
+      });
+      telethon = super.telethon.overridePythonAttrs (oldAttrs: rec {
+        version = "1.21.1";
+        src = oldAttrs.src.override {
+          inherit version;
+          sha256 = "sha256-mTyDfvdFrd+XKifXv7oM5Riihj0aUOBzclW3ZNI+DvI=";
         };
       });
     };
@@ -21,7 +28,7 @@ let
     # sqlite driver is already shipped with python by default
   ];
 
-in python.pkgs.buildPythonPackage rec {
+in with python.pkgs; buildPythonPackage rec {
   pname = "mautrix-telegram";
   version = "0.10.1";
   disabled = python.pythonOlder "3.7";
@@ -54,13 +61,13 @@ in python.pkgs.buildPythonPackage rec {
     pillow
     lxml
     setuptools
-    prometheus-client
+    prometheus_client
   ] ++ lib.optionals withE2BE [
     asyncpg
     python-olm
     pycryptodome
     unpaddedbase64
-  ]) ++ dbDrivers;
+  ] ++ dbDrivers;
 
   # `alembic` (a database migration tool) is only needed for the initial setup,
   # and not needed during the actual runtime. However `alembic` requires `mautrix-telegram`

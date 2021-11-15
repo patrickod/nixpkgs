@@ -2,7 +2,7 @@
 , wrapGAppsHook, pkg-config, desktop-file-utils
 , appstream-glib, pythonPackages, glib, gobject-introspection
 , gtk3, webkitgtk, glib-networking, gnome, gspell, texlive
-, shared-mime-info, libhandy, fira, sassc
+, shared-mime-info, libhandy, fira
 }:
 
 let

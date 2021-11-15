@@ -1,6 +1,7 @@
 { stdenv
 , lib
 , fetchurl
+, fetchpatch
 , meson
 , ninja
 , pkg-config
@@ -30,8 +31,11 @@ stdenv.mkDerivation rec {
   };
 
   patches = [
-    # Bring .pc file in line with our patched pkg-config.
-    ./0001-pkg-config-Declare-header-dependencies-as-public.patch
+    (fetchpatch {
+      name = "CVE-2021-33516.patch";
+      url = "https://gitlab.gnome.org/GNOME/gupnp/-/commit/ca6ec9dcb26fd7a2a630eb6a68118659b589afac.patch";
+      sha256 = "sha256-G7e/xNQB7Kp2fPzqVeD/cH3h1co9hZXh55QOUBnAnvU=";
+    })
   ];
 
   nativeBuildInputs = [

@@ -33,13 +33,13 @@ let
     ''}
   '';
 in
-buildVscodeMarketplaceExtension {
-  mktplcRef = {
-    name = "remote-ssh";
-    publisher = "ms-vscode-remote";
-    version = "0.66.1";
-    sha256 = "sha256-+v4UnGRG5xOc8k0IzvHUBHa128fhgd3jcmEuciiMQmI=";
-  };
+  buildVscodeMarketplaceExtension {
+    mktplcRef = {
+      name = "remote-ssh";
+      publisher = "ms-vscode-remote";
+      version = "0.65.7";
+      sha256 = "ae86c4be79fc5af747bb1f1aa5841221af80ee7476cc2f1c9ac277fa2fa1d683";
+    };
 
   postPatch = ''
     substituteInPlace "out/extension.js" \

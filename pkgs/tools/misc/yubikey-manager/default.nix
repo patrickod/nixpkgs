@@ -1,4 +1,5 @@
-{ python3Packages, fetchFromGitHub, lib, yubikey-personalization, libu2f-host, libusb1, procps }:
+{ python3Packages, fetchurl, lib,
+  yubikey-personalization, libu2f-host, libusb1, procps }:
 
 python3Packages.buildPythonPackage rec {
   pname = "yubikey-manager";
@@ -15,10 +16,6 @@ python3Packages.buildPythonPackage rec {
     substituteInPlace "ykman/pcsc/__init__.py" \
       --replace '/usr/bin/pkill' '${procps}/bin/pkill'
   '';
-
-  format = "pyproject";
-
-  nativeBuildInputs = with python3Packages; [ poetry-core ];
 
   propagatedBuildInputs =
     with python3Packages; [

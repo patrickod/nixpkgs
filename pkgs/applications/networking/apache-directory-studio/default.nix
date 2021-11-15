@@ -1,5 +1,18 @@
 { lib, stdenv, fetchurl, jdk, makeWrapper, autoPatchelfHook, makeDesktopItem, glib, libsecret }:
 
+let
+  desktopItem = makeDesktopItem {
+    name = "apache-directory-studio";
+    exec = "ApacheDirectoryStudio";
+    icon = "apache-directory-studio";
+    comment = "Eclipse-based LDAP browser and directory client";
+    desktopName = "Apache Directory Studio";
+    genericName = "Apache Directory Studio";
+    categories = "Java;Network";
+  };
+  version = "2.0.0-M17";
+  versionWithDate = "2.0.0.v20210717-M17";
+in
 stdenv.mkDerivation rec {
   pname = "apache-directory-studio";
   version = "2.0.0-M17";

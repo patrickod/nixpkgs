@@ -57,7 +57,6 @@ stdenv.mkDerivation rec {
     ./CVE-2021-22897.patch
     ./CVE-2021-22898.patch
     ./CVE-2021-22901.patch
-    ./CVE-2021-22945.patch
   ];
 
   outputs = [ "bin" "dev" "out" "man" "devdoc" ];

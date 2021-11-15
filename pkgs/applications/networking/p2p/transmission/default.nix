@@ -109,6 +109,8 @@ in stdenv.mkDerivation {
 
       r $out/share/transmission/web/**,
 
+      r $out/share/transmission/web/**,
+
       include <local/bin.transmission-daemon>
     }
     EOF

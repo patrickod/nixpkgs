@@ -140,6 +140,15 @@ let
     (lib.optionalString enableIntegerSimple "-integer-simple")
   ];
 
+  runtimeDeps = [
+    targetPackages.stdenv.cc.bintools
+    coreutils
+  ]
+  # On darwin, we need unwrapped bintools as well (for otool)
+  ++ lib.optionals (stdenv.targetPlatform.linker == "cctools") [
+    targetPackages.stdenv.cc.bintools.bintools
+  ];
+
 in
 stdenv.mkDerivation (rec {
   version = "9.2.1";

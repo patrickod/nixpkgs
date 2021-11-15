@@ -1160,6 +1160,23 @@ self: super: {
   # 2021-10-04: too strict upper bound on Hakyll
   hakyll-filestore = doJailbreak super.hakyll-filestore;
 
+  # Jailbreak due to bounds on multiple dependencies,
+  # bound on pandoc needs to be patched since it is conditional
+  hakyll = doJailbreak (overrideCabal super.hakyll (drv: {
+    patches = [
+      # Remove when Hakyll > 4.14.0.0
+      (pkgs.fetchpatch {
+        url = "https://github.com/jaspervdj/hakyll/commit/0dc6127d81ff688e27c36ce469230320eee60246.patch";
+        sha256 = "sha256-YyRz3bAmIBODTEeS5kGl2J2x31SjiPoLzUZUlo3nHvQ=";
+      })
+      # Remove when Hakyll > 4.14.0.0
+      (pkgs.fetchpatch {
+        url = "https://github.com/jaspervdj/hakyll/commit/af9e29b5456c105dc948bc46c93e989a650b5ed1.patch";
+        sha256 = "sha256-ghc0V5L9OybNHWKmM0vhjRBN2rIvDlp+ClcK/aQst44=";
+      })
+    ];
+  }));
+
   # 2020-06-22: NOTE: > 0.4.0 => rm Jailbreak: https://github.com/serokell/nixfmt/issues/71
   nixfmt = doJailbreak super.nixfmt;
 
@@ -1168,8 +1185,18 @@ self: super: {
   cabal-install-parsers = dontCheck super.cabal-install-parsers;
   cabal-install-parsers_0_4_2 = dontCheck super.cabal-install-parsers_0_4_2;
 
-  # 2021-08-18: Erroneously  claims that it needs a newer HStringTemplate (>= 0.8.8) than stackage.
-  gitit = doJailbreak super.gitit;
+  # Update to 0.15.0.0 which fixes a security vulnerability
+  # by removing a fundamentally insecure feature. Backporting
+  # a “breaking” release for this seems necessary.
+  # See https://nvd.nist.gov/vuln/detail/CVE-2021-38711
+  #     https://github.com/jgm/gitit/blob/0.15.0.0/CHANGES
+  gitit = overrideCabal super.gitit (old: {
+    jailbreak = true;
+    version = "0.15.0.0";
+    sha256 = "05kz7dxmiabp0gkivn5ngmn3xah3h7a14a421qw6nx2ld1cr9vgf";
+    revision = null;
+    editedCabalFile = null;
+  });
 
   # Test suite requires database
   persistent-mysql = dontCheck super.persistent-mysql;
@@ -1508,12 +1535,12 @@ self: super: {
 
   # Readline uses Distribution.Simple from Cabal 2, in a way that is not
   # compatible with Cabal 3. No upstream repository found so far
-  readline = appendPatch ./patches/readline-fix-for-cabal-3.patch super.readline;
+  readline =  appendPatch super.readline ./patches/readline-fix-for-cabal-3.patch;
 
-  # 2020-12-05: this package requires a newer version of http-client,
-  # but it still compiles with older version:
-  # https://github.com/turion/essence-of-live-coding/pull/86
-  essence-of-live-coding-warp = doJailbreak super.essence-of-live-coding-warp;
+  # 2020-12-05: http-client is fixed on too old version
+  essence-of-live-coding-warp = doJailbreak (super.essence-of-live-coding-warp.override {
+    http-client = self.http-client_0_7_8;
+  });
 
   # 2020-12-06: Restrictive upper bounds w.r.t. pandoc-types (https://github.com/owickstrom/pandoc-include-code/issues/27)
   pandoc-include-code = doJailbreak super.pandoc-include-code;

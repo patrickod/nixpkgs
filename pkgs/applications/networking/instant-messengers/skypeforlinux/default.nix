@@ -56,6 +56,7 @@ let
     xorg.libXi
     xorg.libXrandr
     xorg.libXrender
+    xorg.libxshmfence
     xorg.libXtst
     xorg.libXScrnSaver
     xorg.libxcb

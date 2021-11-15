@@ -1,5 +1,6 @@
 { stdenv
 , tree-sitter
+, libcxx
 , lib
 }:
 
@@ -22,6 +23,7 @@ stdenv.mkDerivation rec {
 
   src = if location == null then source else "${source}/${location}";
 
+  NIX_CFLAGS_COMPILE = lib.optionalString stdenv.isDarwin "-I${lib.getDev libcxx}/include/c++/v1";
   buildInputs = [ tree-sitter ];
 
   dontUnpack = true;

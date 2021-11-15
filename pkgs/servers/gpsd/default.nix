@@ -15,28 +15,28 @@
 
 # optional deps for GUI packages
 , guiSupport ? true
-, dbus-glib
-, libX11
-, libXt
-, libXpm
-, libXaw
-, libXext
-, gobject-introspection
-, pango
-, gdk-pixbuf
-, atk
-, wrapGAppsHook
+, dbus-glib ? null
+, libX11 ? null
+, libXt ? null
+, libXpm ? null
+, libXaw ? null
+, libXext ? null
+, gobject-introspection ? null
+, pango ? null
+, gdk-pixbuf ? null
+, atk ? null
+, wrapGAppsHook ? null
 
 , gpsdUser ? "gpsd", gpsdGroup ? "dialout"
 }:
 
 stdenv.mkDerivation rec {
   pname = "gpsd";
-  version = "3.23.1";
+  version = "3.23";
 
   src = fetchurl {
     url = "mirror://savannah/${pname}/${pname}-${version}.tar.gz";
-    sha256 = "sha256-C5kc6aRlOMTqRQ96juQo/0T7T41mX93y/+QP4K6abAk=";
+    sha256 = "sha256-UiwjYqfrLXrDfqoVBPEq3tHDc0eah7oGzGeVl0tWe7w=";
   };
 
   # TODO: render & install HTML documentation using asciidoctor

@@ -2,7 +2,7 @@
 
 stdenv.mkDerivation rec {
   pname = "gnome-shell-extension-emoji-selector";
-  version = "20";
+  version = "19";
 
   src = fetchFromGitHub {
     owner = "maoschanz";

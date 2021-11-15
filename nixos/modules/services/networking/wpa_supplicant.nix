@@ -141,10 +141,11 @@ in {
         description = ''
           The interfaces <command>wpa_supplicant</command> will use. If empty, it will
           automatically use all wireless interfaces.
-
-          <note><para>
-            A separate wpa_supplicant instance will be started for each interface.
-          </para></note>
+          <warning><para>
+            The automatic discovery of interfaces does not work reliably on boot:
+            it may fail and leave the system without network. When possible, specify
+            a known interface name.
+          </para></warning>
         '';
       };
 
@@ -450,23 +451,27 @@ in {
     assertions = flip mapAttrsToList cfg.networks (name: cfg: {
       assertion = with cfg; count (x: x != null) [ psk pskRaw auth ] <= 1;
       message = ''options networking.wireless."${name}".{psk,pskRaw,auth} are mutually exclusive'';
-    }) ++ [
-      {
-        assertion = length cfg.interfaces > 1 -> !cfg.dbusControlled;
-        message =
-          let daemon = if config.networking.networkmanager.enable then "NetworkManager" else
-                       if config.services.connman.enable then "connman" else null;
-              n = toString (length cfg.interfaces);
-          in ''
-            It's not possible to run multiple wpa_supplicant instances with DBus support.
-            Note: you're seeing this error because `networking.wireless.interfaces` has
-            ${n} entries, implying an equal number of wpa_supplicant instances.
-          '' + optionalString (daemon != null) ''
-            You don't need to change `networking.wireless.interfaces` when using ${daemon}:
-            in this case the interfaces will be configured automatically for you.
-          '';
-      }
-    ];
+    });
+
+    warnings =
+      optional (cfg.interfaces == [] && config.systemd.services.wpa_supplicant.wantedBy != [])
+      ''
+        No network interfaces for wpa_supplicant have been configured: the service
+        may randomly fail to start at boot. You should specify at least one using the option
+        networking.wireless.interfaces.
+      '';
+
+    environment.systemPackages = [ package ];
+
+    services.dbus.packages = [ package ];
+    services.udev.packages = [ pkgs.crda ];
+
+    # FIXME: start a separate wpa_supplicant instance per interface.
+    systemd.services.wpa_supplicant = let
+      ifaces = cfg.interfaces;
+      deviceUnit = interface: [ "sys-subsystem-net-devices-${utils.escapeSystemdPath interface}.device" ];
+    in {
+      description = "WPA Supplicant";
 
     hardware.wirelessRegulatoryDatabase = true;
 

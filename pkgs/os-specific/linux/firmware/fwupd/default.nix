@@ -112,7 +112,7 @@ let
 
   self = stdenv.mkDerivation rec {
     pname = "fwupd";
-    version = "1.7.1";
+    version = "1.5.12";
 
     # libfwupd goes to lib
     # daemon, plug-ins and libfwupdplugin go to out
@@ -121,7 +121,7 @@ let
 
     src = fetchurl {
       url = "https://people.freedesktop.org/~hughsient/releases/fwupd-${version}.tar.xz";
-      sha256 = "sha256-rlbOtEt4byH1TRM6xwvF2cuM1L2gFnM5xmmiKNpn+jw=";
+      sha256 = "sha256-BluwLlm6s/2H/USARQpAvDR0+X8WP/q0h8VvxA6Qftc=";
     };
 
     patches = [

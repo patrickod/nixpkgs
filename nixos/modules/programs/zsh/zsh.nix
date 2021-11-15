@@ -278,10 +278,7 @@ in
         fi
       '';
 
-    # Bug in nix flakes:
-    # If we use `.source` here the path is garbage collected also we point to it with a symlink
-    # see https://github.com/NixOS/nixpkgs/issues/132732
-    environment.etc.zinputrc.text = builtins.readFile ./zinputrc;
+    environment.etc.zinputrc.source = ./zinputrc;
 
     environment.systemPackages =
       let

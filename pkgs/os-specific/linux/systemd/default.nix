@@ -158,26 +158,18 @@ stdenv.mkDerivation {
     ./0018-logind-seat-debus-show-CanMultiSession-again.patch
     ./0019-pkg-config-derive-prefix-from-prefix.patch
 
-    # In v249 a bunch of meson files had been touched as part of the migration to
-    # jinja2 for templating. Unfortunately some of those files lost the `install_sysconfdir_samples` check.
-    # The following two patches are part of a PR that was filed to fix those cases.
-    # https://github.com/systemd/systemd/pull/20303
-    ./0020-core-respect-install_sysconfdir_samples-in-meson-fil.patch
-    ./0021-login-respect-install_sysconfdir_samples-in-meson-fi.patch
+    # Fix -Werror=format.
+    (fetchpatch {
+      url = "https://github.com/systemd/systemd/commit/ab1aa6368a883bce88e3162fee2bea14aacedf23.patch";
+      sha256 = "1b280l5jrjsg8qhsang199mpqjhkpix4c8bm3blknjnq9iv43add";
+    })
 
-    # In v248 or v249 we started to get in trouble due to our /etc/systemd/sytem being
-    # a symlink and thus being treated differently by systemd. With the below
-    # patch we mitigate that effect by special casing all our root unit dirs
-    # if they are symlinks. This does exactly what we need (AFAICT).
-    ./0022-core-Handle-lookup-paths-being-symlinks.patch
-
-    # The way files are being tested for being executable changed in v248/v249
-    # which caused our confinement setup to fail as we do not mount /proc by
-    # default.
-    # The issue has been reported upstream and this patch carries the upstream
-    # fix for the same. Upstream now has a test for this scenario.
-    # https://github.com/systemd/systemd/issues/20514
-    ./0023-path-util-make-find_executable-work-without-proc-mounted.patch
+    # Fix CVE-2021-33910, disclosed 2021-07-20
+    (fetchpatch {
+      name = "CVE-2021-33910.patch";
+      url = "https://github.com/systemd/systemd/commit/441e0115646d54f080e5c3bb0ba477c892861ab9.patch";
+      sha256 = "1g1lk95igaadg67kah9bpi4zsc01rg398sd1247ghjsvl5hxn4v4";
+    })
   ];
 
   postPatch = ''

@@ -67,12 +67,12 @@ let
 in
 stdenv.mkDerivation rec {
   pname = "arrow-cpp";
-  version = "6.0.0";
+  version = "4.0.1";
 
   src = fetchurl {
     url =
       "mirror://apache/arrow/arrow-${version}/apache-arrow-${version}.tar.gz";
-    hash = "sha256-adJo+egtPr71la0b3IPUywKyDBgZRqaGMfZkXXwfepA=";
+    sha256 = "0vl926i6jvsvj5vigdgqzp9v1i1h5zzj1abqr6qwc9drfsibzk3m";
   };
   sourceRoot = "apache-arrow-${version}/cpp";
 
@@ -230,10 +230,10 @@ stdenv.mkDerivation rec {
     '';
 
   meta = with lib; {
-    description = "A cross-language development platform for in-memory data";
+    description = "A  cross-language development platform for in-memory data";
     homepage = "https://arrow.apache.org/";
     license = licenses.asl20;
     platforms = platforms.unix;
-    maintainers = with maintainers; [ tobim veprbl cpcloud ];
+    maintainers = with maintainers; [ tobim veprbl ];
   };
 }

@@ -81,7 +81,7 @@ let
     installPhase = ''
       runHook preInstall
     '' + (if stdenv.isDarwin then ''
-      mkdir -p "$out/Applications/${longName}.app" "$out/bin"
+      mkdir -p "$out/Applications/${longName}.app" $out/bin
       cp -r ./* "$out/Applications/${longName}.app"
       ln -s "$out/Applications/${longName}.app/Contents/Resources/app/bin/${sourceExecutableName}" "$out/bin/${executableName}"
     '' else ''
@@ -109,22 +109,6 @@ let
         # Add gio to PATH so that moving files to the trash works when not using a desktop environment
         --prefix PATH : ${glib.bin}/bin
       )
-    '';
-
-    # See https://github.com/NixOS/nixpkgs/issues/49643#issuecomment-873853897
-    # linux only because of https://github.com/NixOS/nixpkgs/issues/138729
-    postPatch = lib.optionalString stdenv.isLinux ''
-      # this is a fix for "save as root" functionality
-      packed="resources/app/node_modules.asar"
-      unpacked="resources/app/node_modules"
-      ${nodePackages.asar}/bin/asar extract "$packed" "$unpacked"
-      substituteInPlace $unpacked/sudo-prompt/index.js \
-        --replace "/usr/bin/pkexec" "/run/wrappers/bin/pkexec" \
-        --replace "/bin/bash" "${bash}/bin/bash"
-      rm -rf "$packed"
-
-      # this fixes bundled ripgrep
-      chmod +x resources/app/node_modules/vscode-ripgrep/bin/rg
     '';
 
     inherit meta;

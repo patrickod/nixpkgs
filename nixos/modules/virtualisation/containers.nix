@@ -50,12 +50,12 @@ in
 
     containersConf.cniPlugins = mkOption {
       type = types.listOf types.package;
-      defaultText = literalExpression ''
+      defaultText = ''
         [
           pkgs.cni-plugins
         ]
       '';
-      example = literalExpression ''
+      example = lib.literalExample ''
         [
           pkgs.cniPlugins.dnsname
         ]
@@ -63,18 +63,6 @@ in
       description = ''
         CNI plugins to install on the system.
       '';
-    };
-
-    storage.settings = mkOption {
-      type = toml.type;
-      default = {
-        storage = {
-          driver = "overlay";
-          graphroot = "/var/lib/containers/storage";
-          runroot = "/run/containers/storage";
-        };
-      };
-      description = "storage.conf configuration";
     };
 
     registries = {

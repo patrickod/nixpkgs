@@ -50,6 +50,7 @@ let
   # list of all compilers to test specific packages on
   released = with compilerNames; [
     ghc884
+    ghc8104
     ghc8107
     ghc901
   ];
@@ -304,19 +305,18 @@ let
       # and to confirm that critical packages for the
       # package sets (like Cabal, jailbreak-cabal) are
       # working as expected.
-      cabal-install = released ++ [ compilerNames.ghc921 ];
-      Cabal_3_6_2_0 = released ++ [ compilerNames.ghc921 ];
-      cabal2nix = released ++ [ compilerNames.ghc921 ];
-      cabal2nix-unstable = released ++ [ compilerNames.ghc921 ];
-      funcmp = released ++ [ compilerNames.ghc921 ];
-      haskell-language-server = released;
-      hoogle = released;
-      hsdns = released ++ [ compilerNames.ghc921 ];
-      jailbreak-cabal = released ++ [ compilerNames.ghc921 ];
-      language-nix = released ++ [ compilerNames.ghc921 ];
-      nix-paths = released ++ [ compilerNames.ghc921 ];
-      titlecase = released ++ [ compilerNames.ghc921 ];
-      ghc-api-compat = released;
+      cabal-install = all;
+      Cabal_3_4_0_0 = with compilerNames; [ ghc884 ghc8104 ghc8107 ];
+      funcmp = all;
+      # Doesn't currently work on ghc-9.0:
+      # https://github.com/haskell/haskell-language-server/issues/297
+      haskell-language-server = with compilerNames; [ ghc884 ghc8104 ghc8107 ];
+      hoogle = all;
+      hsdns = all;
+      jailbreak-cabal = all;
+      language-nix = all;
+      nix-paths = all;
+      titlecase = all;
     })
     {
       mergeable = pkgs.releaseTools.aggregate {

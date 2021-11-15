@@ -4,18 +4,13 @@
 
 with python3Packages; buildPythonApplication rec {
   pname = "synadm";
-  version = "0.31";
+  version = "0.29";
   format = "setuptools";
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "1098a5248a1e2de53ced3c699b3b78ced3327c5f4e0ff092a95ef4940e4f9c6e";
+    sha256 = "1vy30nwsns4jnv0s5i9jpyplxpclgwyw0gldpywv4z3fljs0lzik";
   };
-
-  postPatch = ''
-    substituteInPlace setup.py \
-      --replace "Click>=7.0,<8.0" "Click"
-  '';
 
   propagatedBuildInputs = [
     click

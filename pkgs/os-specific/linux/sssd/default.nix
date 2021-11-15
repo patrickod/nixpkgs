@@ -1,4 +1,4 @@
-{ lib, stdenv, fetchFromGitHub, autoreconfHook, glibc, augeas, dnsutils, c-ares, curl,
+{ lib, stdenv, fetchFromGitHub, autoreconfHook, fetchpatch, glibc, augeas, dnsutils, c-ares, curl,
   cyrus_sasl, ding-libs, libnl, libunistring, nss, samba, nfs-utils, doxygen,
   python, python3, pam, popt, talloc, tdb, tevent, pkg-config, ldb, openldap,
   pcre2, libkrb5, cifs-utils, glib, keyutils, dbus, fakeroot, libxslt, libxml2,
@@ -12,13 +12,13 @@ let
 in
 stdenv.mkDerivation rec {
   pname = "sssd";
-  version = "2.6.0";
+  version = "1.16.5";
 
   src = fetchFromGitHub {
     owner = "SSSD";
     repo = pname;
-    rev = version;
-    sha256 = "1ik0x0b7s38d7n0aqhl31r0asxw6qcdb31hx9qydk87yg3n6rziv";
+    rev = "${pname}-${lib.replaceStrings ["."] ["_"] version}";
+    sha256 = "0zbs04lkjbp7y92anmafl7gzamcnq1f147p13hc4byyvjk9rg6f7";
   };
 
   postPatch = ''
@@ -56,8 +56,8 @@ stdenv.mkDerivation rec {
   enableParallelBuilding = true;
   nativeBuildInputs = [ autoreconfHook pkg-config doxygen ];
   buildInputs = [ augeas dnsutils c-ares curl cyrus_sasl ding-libs libnl libunistring nss
-                  samba nfs-utils p11-kit python python3 popt
-                  talloc tdb tevent ldb pam openldap pcre2 libkrb5
+                  samba nfs-utils python python3 popt
+                  talloc tdb tevent ldb pam openldap pcre libkrb5
                   cifs-utils glib keyutils dbus fakeroot libxslt libxml2
                   libuuid ldap systemd nspr check cmocka uid_wrapper
                   nss_wrapper ncurses Po4a http-parser jansson ];

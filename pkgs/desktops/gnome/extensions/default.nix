@@ -61,16 +61,10 @@ in rec {
   gnome40Extensions = mapUuidNames (produceExtensionsList "40");
   gnome41Extensions = mapUuidNames (produceExtensionsList "41");
 
-  gnomeExtensions = lib.trivial.pipe (gnome40Extensions // gnome41Extensions) [
-    # Apply some custom patches for automatically packaged extensions
-    (callPackage ./extensionOverrides.nix {})
-    # Add all manually packaged extensions
-    (extensions: extensions // (callPackages ./manuallyPackaged.nix {}))
-    # Map the extension UUIDs to readable names
-    (lib.attrValues)
-    (mapReadableNames)
-    # Add some aliases
-    (extensions: extensions // lib.optionalAttrs (config.allowAliases or true) {
+  gnomeExtensions = lib.recurseIntoAttrs (
+    (mapReadableNames (produceExtensionsList "40"))
+    // (callPackage ./manuallyPackaged.nix {})
+    // lib.optionalAttrs (config.allowAliases or true) {
       unite-shell = gnomeExtensions.unite; # added 2021-01-19
       arc-menu = gnomeExtensions.arcmenu; # added 2021-02-14
 

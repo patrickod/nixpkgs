@@ -6,7 +6,6 @@
 , cmake
 , qttools
 , qtsvg
-, nix-update-script
 }:
 
 mkDerivation rec {
@@ -34,12 +33,6 @@ mkDerivation rec {
       sha256 = "sha256-wWa9Y+4flBiggOMuX7KQyL+q3f2cALGeQBGusX2x6sk=";
     })
   ];
-
-  passthru = {
-    updateScript = nix-update-script {
-      attrPath = pname;
-    };
-  };
 
   nativeBuildInputs = [ cmake qttools qtsvg ];
   buildInputs = [ qtbase ];

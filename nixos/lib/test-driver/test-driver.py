@@ -20,6 +20,7 @@ import shutil
 import socket
 import subprocess
 import sys
+import telnetlib
 import tempfile
 import time
 import unicodedata
@@ -628,6 +629,16 @@ class Machine:
             ["socat", "READLINE", f"FD:{self.shell.fileno()}"],
             pass_fds=[self.shell.fileno()],
         )
+
+    def shell_interact(self) -> None:
+        """Allows you to interact with the guest shell
+
+        Should only be used during test development, not in the production test."""
+        self.connect()
+        self.log("Terminal is ready (there is no prompt):")
+        telnet = telnetlib.Telnet()
+        telnet.sock = self.shell  # type: ignore
+        telnet.interact()
 
     def succeed(self, *commands: str) -> str:
         """Execute each command and check that it succeeds."""

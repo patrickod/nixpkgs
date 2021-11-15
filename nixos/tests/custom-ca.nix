@@ -109,9 +109,11 @@ in
 
       environment.systemPackages = with pkgs; [
         xdotool
-        firefox
+        # Firefox was disabled here, because we needed to disable p11-kit support in nss,
+        # which is why it will not use the system certificate store for the time being.
+        # firefox
         chromium
-        qutebrowser
+        falkon
         midori
       ];
     };
@@ -150,12 +152,15 @@ in
     with subtest("Unknown CA is untrusted in curl"):
         machine.fail("curl -fv https://bad.example.com")
 
-    browsers = {
-      "firefox": "Security Risk",
-      "chromium": "not private",
-      "qutebrowser -T": "Certificate error",
-      "midori": "Security"
-    }
+    browsers = [
+      # Firefox was disabled here, because we needed to disable p11-kit support in nss,
+      # which is why it will not use the system certificate store for the time being.
+      # "firefox",
+      "chromium",
+      "falkon",
+      "midori"
+    ]
+    errors = ["Security Risk", "not private", "Certificate Error", "Security"]
 
     machine.wait_for_x()
     for command, error in browsers.items():

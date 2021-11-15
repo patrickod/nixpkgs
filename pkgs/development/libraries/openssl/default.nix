@@ -198,8 +198,8 @@ in {
       ./1.1/nix-ssl-cert-file.patch
 
       (if stdenv.hostPlatform.isDarwin
-       then ./use-etc-ssl-certs-darwin.patch
-       else ./use-etc-ssl-certs.patch)
+       then ./1.1/use-etc-ssl-certs-darwin.patch
+       else ./1.1/use-etc-ssl-certs.patch)
     ] ++ lib.optionals (stdenv.isDarwin) [
       ./1.1/macos-yosemite-compat.patch
     ];

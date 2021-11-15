@@ -33,7 +33,7 @@ in
         apply = p: p.override {
           plugins = lib.unique (p.enabledPlugins ++ cfg.plugins);
         };
-        defaultText = lib.literalExpression "pkgs.discourse";
+        defaultText = "pkgs.discourse";
         description = ''
           The discourse package to use.
         '';
@@ -485,7 +485,7 @@ in
       plugins = lib.mkOption {
         type = lib.types.listOf lib.types.package;
         default = [];
-        example = lib.literalExpression ''
+        example = lib.literalExample ''
           with config.services.discourse.package.plugins; [
             discourse-canned-replies
             discourse-github

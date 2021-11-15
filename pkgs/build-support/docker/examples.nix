@@ -550,19 +550,4 @@ rec {
     config.Cmd = [ "hello" ];
     includeStorePaths = false;
   };
-
-  # Example export of the bash image
-  exportBash = pkgs.dockerTools.exportImage { fromImage = bash; };
-
-  build-image-with-path = buildImage {
-    name = "build-image-with-path";
-    tag = "latest";
-    contents = [ pkgs.bashInteractive ./test-dummy ];
-  };
-
-  layered-image-with-path = pkgs.dockerTools.streamLayeredImage {
-    name = "layered-image-with-path";
-    tag = "latest";
-    contents = [ pkgs.bashInteractive ./test-dummy ];
-  };
 }

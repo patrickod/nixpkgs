@@ -14,11 +14,11 @@
 
 in stdenv.mkDerivation rec {
   pname = "odp-dpdk";
-  version = "1.30.1.0_DPDK_19.11";
+  version = "1.27.0.0_DPDK_19.11";
 
   src = fetchurl {
     url = "https://git.linaro.org/lng/odp-dpdk.git/snapshot/${pname}-${version}.tar.gz";
-    sha256 = "sha256-R3PsqQiHlHPzIYYWTVEC7Ikg3KR5I0jWGgftDA9Jj1o=";
+    sha256 = "sha256-/4m2NqnEXyenNUrCq3c2ozJzPWFFs/Qp7MAVm9B2biA=";
   };
 
   nativeBuildInputs = [

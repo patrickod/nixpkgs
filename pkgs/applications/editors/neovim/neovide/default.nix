@@ -61,9 +61,9 @@ rustPlatform.buildRustPackage rec {
   SKIA_GN_COMMAND = "${gn}/bin/gn";
   LIBCLANG_PATH = "${llvmPackages.libclang.lib}/lib";
 
-  preConfigure = ''
-    unset CC CXX
-  '';
+  SKIA_OFFLINE_NINJA_COMMAND = "${ninja}/bin/ninja";
+  SKIA_OFFLINE_GN_COMMAND = "${gn}/bin/gn";
+  LIBCLANG_PATH = "${llvmPackages.libclang.lib}/lib";
 
   # test needs a valid fontconfig file
   FONTCONFIG_FILE = makeFontsConf { fontDirectories = [ ]; };

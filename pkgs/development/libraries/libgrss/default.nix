@@ -1,6 +1,4 @@
-{ lib, stdenv, fetchurl, fetchpatch, pkg-config, vala, gobject-introspection, gtk-doc
-, docbook_xsl, docbook_xml_dtd_412, glib, libxml2, libsoup, gnome, buildPackages
-}:
+{ lib, stdenv, fetchurl, fetchpatch, pkg-config, vala, gobject-introspection, gtk-doc, docbook_xsl, docbook_xml_dtd_412, glib, libxml2, libsoup, gnome }:
 
 stdenv.mkDerivation rec {
   pname = "libgrss";
@@ -22,20 +20,8 @@ stdenv.mkDerivation rec {
     })
   ];
 
-  nativeBuildInputs = [
-    pkg-config
-    vala
-    gobject-introspection
-    gtk-doc
-    docbook_xsl
-    docbook_xml_dtd_412
-  ];
-
-  buildInputs = [
-    glib
-    libxml2
-    libsoup
-  ];
+  nativeBuildInputs = [ pkg-config vala gobject-introspection gtk-doc docbook_xsl docbook_xml_dtd_412 ];
+  buildInputs = [ glib libxml2 libsoup ];
 
   configureFlags = [
     "PKG_CONFIG=${buildPackages.pkg-config}/bin/${buildPackages.pkg-config.targetPrefix}pkg-config"

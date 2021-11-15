@@ -6,8 +6,6 @@ let
     "ghc865Binary"
     "ghc8102Binary"
     "ghc8102BinaryMinimal"
-    "ghc8107Binary"
-    "ghc8107BinaryMinimal"
     "ghcjs"
     "ghcjs810"
     "integer-simple"
@@ -96,6 +94,20 @@ in {
       # https://github.com/xattr/xattr/issues/44 and
       # https://github.com/xattr/xattr/issues/55 are solved.
       inherit (buildPackages.darwin) xattr autoSignDarwinBinariesHook;
+      buildLlvmPackages = buildPackages.llvmPackages_9;
+      llvmPackages = pkgs.llvmPackages_9;
+    };
+    ghc8107 = callPackage ../development/compilers/ghc/8.10.7.nix {
+      # aarch64 ghc865Binary gets SEGVs due to haskell#15449 or similar
+      bootPkgs = if stdenv.isAarch64 || stdenv.isAarch32 then
+          packages.ghc8102BinaryMinimal
+        else
+          packages.ghc865Binary;
+      inherit (buildPackages.python3Packages) sphinx;
+      # Need to use apple's patched xattr until
+      # https://github.com/xattr/xattr/issues/44 and
+      # https://github.com/xattr/xattr/issues/55 are solved.
+      inherit (buildPackages.darwin) xattr;
       buildLlvmPackages = buildPackages.llvmPackages_9;
       llvmPackages = pkgs.llvmPackages_9;
     };
@@ -206,6 +218,11 @@ in {
       buildHaskellPackages = bh.packages.ghc884;
       ghc = bh.compiler.ghc884;
       compilerConfig = callPackage ../development/haskell-modules/configuration-ghc-8.8.x.nix { };
+    };
+    ghc8107 = callPackage ../development/haskell-modules {
+      buildHaskellPackages = bh.packages.ghc8107;
+      ghc = bh.compiler.ghc8107;
+      compilerConfig = callPackage ../development/haskell-modules/configuration-ghc-8.10.x.nix { };
     };
     ghc8107 = callPackage ../development/haskell-modules {
       buildHaskellPackages = bh.packages.ghc8107;

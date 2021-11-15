@@ -383,7 +383,7 @@ in import ./make-test-python.nix ({ lib, ... }: {
           switch_to(webserver, "cert-change")
           webserver.wait_for_unit("acme-finished-a.example.test.target")
           check_connection_key_bits(client, "a.example.test", "384")
-          webserver.succeed("grep testing /home/test")
+          webserver.succeed("grep testing /var/lib/acme/a.example.test/test")
           # Clean to remove the testing file (and anything else messy we did)
           webserver.succeed("systemctl clean acme-a.example.test.service --what=state")
 

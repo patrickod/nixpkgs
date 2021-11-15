@@ -24,7 +24,7 @@ self: super:
 
   # GHCJS does not ship with the same core packages as GHC.
   # https://github.com/ghcjs/ghcjs/issues/676
-  stm = doJailbreak self.stm_2_5_0_1;
+  stm = doJailbreak self.stm_2_5_0_0;
   exceptions = dontCheck self.exceptions_0_10_4;
 
 ## OTHER PACKAGES
@@ -38,17 +38,17 @@ self: super:
   # doctest doesn't work on ghcjs, but sometimes dontCheck doesn't seem to get rid of the dependency
   doctest = pkgs.lib.warn "ignoring dependency on doctest" null;
 
-  ghcjs-dom = overrideCabal (drv: {
+  ghcjs-dom = overrideCabal super.ghcjs-dom (drv: {
     libraryHaskellDepends = with self; [
       ghcjs-base ghcjs-dom-jsffi text transformers
     ];
     configureFlags = [ "-fjsffi" "-f-webkit" ];
-  }) super.ghcjs-dom;
+  });
 
-  ghcjs-dom-jsffi = overrideCabal (drv: {
+  ghcjs-dom-jsffi = overrideCabal super.ghcjs-dom-jsffi (drv: {
     libraryHaskellDepends = (drv.libraryHaskellDepends or []) ++ [ self.ghcjs-base self.text ];
     broken = false;
-  }) super.ghcjs-dom-jsffi;
+  });
 
   # https://github.com/Deewiant/glob/issues/39
   Glob = dontCheck super.Glob;
@@ -59,9 +59,9 @@ self: super:
   # uses doctest
   http-types = dontCheck super.http-types;
 
-  jsaddle = overrideCabal (drv: {
+  jsaddle = overrideCabal super.jsaddle (drv: {
     libraryHaskellDepends = (drv.libraryHaskellDepends or []) ++ [ self.ghcjs-base ];
-  }) super.jsaddle;
+  });
 
   # Tests hang, possibly some issue with tasty and race(async) usage in the nonTerminating tests
   logict = dontCheck super.logict;
@@ -74,13 +74,13 @@ self: super:
   # Terminal test not supported on ghcjs
   QuickCheck = dontCheck super.QuickCheck;
 
-  reflex = overrideCabal (drv: {
+  reflex = overrideCabal super.reflex (drv: {
     libraryHaskellDepends = (drv.libraryHaskellDepends or []) ++ [ self.ghcjs-base ];
-  }) super.reflex;
+  });
 
-  reflex-dom = overrideCabal (drv: {
+  reflex-dom = overrideCabal super.reflex-dom (drv: {
     libraryHaskellDepends = removeLibraryHaskellDepends ["jsaddle-webkit2gtk"] (drv.libraryHaskellDepends or []);
-  }) super.reflex-dom;
+  });
 
   # https://github.com/dreixel/syb/issues/21
   syb = dontCheck super.syb;
@@ -102,7 +102,7 @@ self: super:
   th-abstraction = dontCheck super.th-abstraction;
 
   # https://github.com/haskell/vector/issues/410
-  vector = appendPatch super.vector (../compilers/ghcjs/patches/vector-ghcjs-storable-set.patch);
+  vector = appendPatch super.vector (../compilers/ghcjs/patches/vector-ghcjs-storable-set.patch) ;
 
   # Need hedgehog for tests, which fails to compile due to dep on concurrent-output
   zenc = dontCheck super.zenc;

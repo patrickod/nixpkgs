@@ -11,7 +11,7 @@
 
 stdenv.mkDerivation rec {
   pname = "dovecot";
-  version = "2.3.17";
+  version = "2.3.16";
 
   nativeBuildInputs = [ perl pkg-config ];
   buildInputs =
@@ -24,7 +24,7 @@ stdenv.mkDerivation rec {
 
   src = fetchurl {
     url = "https://dovecot.org/releases/${lib.versions.majorMinor version}/${pname}-${version}.tar.gz";
-    sha256 = "1y9dpn4jgzrfjibp5zrc11bdk0q843d998kxhpxkyfm2fz6i4i12";
+    sha256 = "04ngqv5mml5z0i4p7fkchp4xw2awy7x7mq2mim9frnav0m9iv9q3";
   };
 
   enableParallelBuilding = true;
@@ -40,9 +40,7 @@ stdenv.mkDerivation rec {
     sed -i -s -E 's!\bcat\b!${coreutils}/bin/cat!g' src/lib-smtp/test-bin/*.sh
 
     patchShebangs src/config/settings-get.pl
-  '' + lib.optionalString stdenv.isLinux ''
-    export systemdsystemunitdir=$out/etc/systemd/system
-  '';
+  '' + lib.optionalString (stdenv.isLinux) "export systemdsystemunitdir=$out/etc/systemd/system";
 
   # We need this for sysconfdir, see remark below.
   installFlags = [ "DESTDIR=$(out)" ];
@@ -101,7 +99,7 @@ stdenv.mkDerivation rec {
     homepage = "https://dovecot.org/";
     description = "Open source IMAP and POP3 email server written with security primarily in mind";
     license = with licenses; [ mit publicDomain lgpl21Only bsd3 bsdOriginal ];
-    maintainers = with maintainers; [ fpletz globin ajs124 ];
+    maintainers = with maintainers; [ peti fpletz globin ajs124 ];
     platforms = platforms.unix;
   };
   passthru.tests = {

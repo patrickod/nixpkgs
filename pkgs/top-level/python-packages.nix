@@ -8982,8 +8982,6 @@ in {
 
   subliminal = callPackage ../development/python-modules/subliminal { };
 
-  subprocess-tee = callPackage ../development/python-modules/subprocess-tee { };
-
   subunit = callPackage ../development/python-modules/subunit {
     inherit (pkgs) subunit cppunit check;
   };
@@ -10111,12 +10109,6 @@ in {
     ffmpegSupport = false;
     phantomjsSupport = false;
   };
-
-  youtube-search = callPackage ../development/python-modules/youtube-search { };
-
-  youtube-search-python = callPackage ../development/python-modules/youtube-search-python { };
-
-  youtube-transcript-api = callPackage ../development/python-modules/youtube-transcript-api { };
 
   yowsup = callPackage ../development/python-modules/yowsup { };
 

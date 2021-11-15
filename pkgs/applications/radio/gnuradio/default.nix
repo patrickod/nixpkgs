@@ -46,13 +46,13 @@
 , pname ? "gnuradio"
 , versionAttr ? {
   major = "3.9";
-  minor = "3";
+  minor = "2";
   patch = "0";
 }
 }:
 
 let
-  sourceSha256 = "sha256-jVfExv1CcnlOaaj/XtnfhWAHnQsshZJ1l/zXo0uovdo=";
+  sourceSha256 = "01wyqazrpphmb0fl69j93k0w4vm4d1l4177m1fyg7qx8hzia0aaq";
   featuresInfo = {
     # Needed always
     basic = {
@@ -286,7 +286,7 @@ stdenv.mkDerivation rec {
 
   postInstall = shared.postInstall
     # This is the only python reference worth removing, if needed.
-    + lib.optionalString (!hasFeature "python-support") ''
+    + lib.optionalString (!hasFeature "python-support" features) ''
       ${removeReferencesTo}/bin/remove-references-to -t ${python} $out/lib/cmake/gnuradio/GnuradioConfig.cmake
       ${removeReferencesTo}/bin/remove-references-to -t ${python} $(readlink -f $out/lib/libgnuradio-runtime.so)
       ${removeReferencesTo}/bin/remove-references-to -t ${python.pkgs.pybind11} $out/lib/cmake/gnuradio/gnuradio-runtimeTargets.cmake

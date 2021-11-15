@@ -249,12 +249,10 @@ in
 
     environment = {
       # this file is expected in /etc/qemu and not sysconfdir (/var/lib)
-      etc."qemu/bridge.conf".text = lib.concatMapStringsSep "\n"
-        (e:
-          "allow ${e}")
-        cfg.allowedBridges;
-      systemPackages = with pkgs; [ libressl.nc iptables cfg.package cfg.qemu.package ];
-      etc.ethertypes.source = "${pkgs.iptables}/etc/ethertypes";
+      etc."qemu/bridge.conf".text = lib.concatMapStringsSep "\n" (e:
+        "allow ${e}") cfg.allowedBridges;
+      systemPackages = with pkgs; [ libressl.nc iptables cfg.package cfg.qemuPackage ];
+      etc.ethertypes.source = "${pkgs.ebtables}/etc/ethertypes";
     };
 
     boot.kernelModules = [ "tun" ];

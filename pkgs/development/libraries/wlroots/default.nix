@@ -1,9 +1,7 @@
 { lib, stdenv, fetchFromGitHub, meson, ninja, pkg-config, wayland-scanner
 , libGL, wayland, wayland-protocols, libinput, libxkbcommon, pixman
 , xcbutilwm, libX11, libcap, xcbutilimage, xcbutilerrors, mesa
-, libpng, ffmpeg, xcbutilrenderutil, seatd
-
-, enableXWayland ? true, xwayland ? null
+, libpng, ffmpeg, xcbutilrenderutil, xwayland, libseat
 }:
 
 stdenv.mkDerivation rec {
@@ -27,14 +25,8 @@ stdenv.mkDerivation rec {
   buildInputs = [
     libGL wayland wayland-protocols libinput libxkbcommon pixman
     xcbutilwm libX11 libcap xcbutilimage xcbutilerrors mesa
-    libpng ffmpeg xcbutilrenderutil seatd
-  ]
-    ++ lib.optional enableXWayland xwayland
-  ;
-
-  mesonFlags =
-    lib.optional (!enableXWayland) "-Dxwayland=disabled"
-  ;
+    libpng ffmpeg xcbutilrenderutil xwayland libseat
+  ];
 
   postFixup = ''
     # Install ALL example programs to $examples:

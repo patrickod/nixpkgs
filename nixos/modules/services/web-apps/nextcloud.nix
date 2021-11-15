@@ -6,8 +6,6 @@ let
   cfg = config.services.nextcloud;
   fpm = config.services.phpfpm.pools.nextcloud;
 
-  inherit (cfg) datadir;
-
   phpPackage = cfg.phpPackage.buildEnv {
     extensions = { enabled, all }:
       (with all;
@@ -153,7 +151,7 @@ in {
     package = mkOption {
       type = types.package;
       description = "Which package to use for the Nextcloud instance.";
-      relatedPackages = [ "nextcloud21" "nextcloud22" ];
+      relatedPackages = [ "nextcloud19" "nextcloud20" "nextcloud21" "nextcloud22" ];
     };
     phpPackage = mkOption {
       type = types.package;
@@ -507,7 +505,20 @@ in {
   };
 
   config = mkIf cfg.enable (mkMerge [
-    { warnings = let
+    { assertions = let acfg = cfg.config; in [
+        { assertion = !(acfg.dbpass != null && acfg.dbpassFile != null);
+          message = "Please specify no more than one of dbpass or dbpassFile";
+        }
+        { assertion = ((acfg.adminpass != null || acfg.adminpassFile != null)
+            && !(acfg.adminpass != null && acfg.adminpassFile != null));
+          message = "Please specify exactly one of adminpass or adminpassFile";
+        }
+        { assertion = versionOlder cfg.package.version "21" -> cfg.config.defaultPhoneRegion == null;
+          message = "The `defaultPhoneRegion'-setting is only supported for Nextcloud >=21!";
+        }
+      ];
+
+      warnings = let
         latest = 22;
         upgradeWarning = major: nixos:
           ''
@@ -575,8 +586,6 @@ in {
           else if versionOlder stateVersion "21.11" then nextcloud21
           else nextcloud22
         );
-
-      services.nextcloud.datadir = mkOptionDefault config.services.nextcloud.home;
 
       services.nextcloud.phpPackage =
         if versionOlder cfg.package.version "21" then pkgs.php74
@@ -673,11 +682,15 @@ in {
               arg = "DBPASS";
               value = if c.dbpassFile != null
                 then ''"$(<"${toString c.dbpassFile}")"''
+                else if c.dbpass != null
+                then ''"${toString c.dbpass}"''
                 else ''""'';
             };
             adminpass = {
               arg = "ADMINPASS";
-              value = ''"$(<"${toString c.adminpassFile}")"'';
+              value = if c.adminpassFile != null
+                then ''"$(<"${toString c.adminpassFile}")"''
+                else ''"${toString c.adminpass}"'';
             };
             installFlags = concatStringsSep " \\\n    "
               (mapAttrsToList (k: v: "${k} ${toString v}") {
@@ -692,7 +705,7 @@ in {
               "--database-pass" = "\$${dbpass.arg}";
               "--admin-user" = ''"${c.adminuser}"'';
               "--admin-pass" = "\$${adminpass.arg}";
-              "--data-dir" = ''"${datadir}/data"'';
+              "--data-dir" = ''"${cfg.home}/data"'';
             });
           in ''
             ${mkExport dbpass}

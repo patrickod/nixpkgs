@@ -806,8 +806,7 @@ lib.makeScope newScope (self: with self; {
 
   # THIS IS A GENERATED FILE.  DO NOT EDIT!
   libX11 = callPackage ({ stdenv, pkg-config, fetchurl, xorgproto, libxcb, xtrans }: stdenv.mkDerivation {
-    pname = "libX11";
-    version = "1.7.2";
+    name = "libX11-1.7.2";
     builder = ./builder.sh;
     src = fetchurl {
       url = "mirror://xorg/individual/lib/libX11-1.7.2.tar.bz2";

@@ -784,23 +784,6 @@ in with py.pkgs; buildPythonApplication rec {
     "--deselect tests/components/shelly/test_config_flow.py::test_zeroconf_require_auth"
     # prometheus/test_init.py: Spurious AssertionError regarding humidifier_target_humidity_percent metric
     "--deselect tests/components/prometheus/test_init.py::test_view"
-    # smhi/test_init.py: Tries to fetch data from the network: socket.gaierror: [Errno -2] Name or service not known
-    "--deselect tests/components/smhi/test_init.py::test_remove_entry"
-    # wallbox/test_config_flow.py: Tries to connect to api.wall-box.cim: Failed to establish a new connection: [Errno -2] Name or service not known
-    "--deselect tests/components/wallbox/test_config_flow.py::test_form_invalid_auth"
-    "--deselect tests/components/wallbox/test_config_flow.py::test_form_cannot_connect"
-    # default_config/test_init.py: Tries to check for updates and fails ungracefully without network access
-    "--deselect tests/components/default_config/test_init.py::test_setup"
-    # local_ip/test_{init,config_flow}.py: tries to lookup a route towards a multicast address and fails
-    "--deselect tests/components/local_ip/test_init.py::test_basic_setup"
-    "--deselect tests/components/local_ip/test_config_flow.py::test_config_flow"
-    # netatmo/test_select.py: NoneType object has no attribute state
-    "--deselect tests/components/netatmo/test_select.py::test_select_schedule_thermostats"
-    # wemo/test_sensor.py: KeyError for various power attributes
-    "--deselect tests/components/wemo/test_sensor.py::TestInsightTodayEnergy::test_state_unavailable"
-    "--deselect tests/components/wemo/test_sensor.py::TestInsightCurrentPower::test_state_unavailable"
-    # helpers/test_system_info.py: AssertionError: assert 'Unknown' == 'Home Assistant Container'
-    "--deselect tests/helpers/test_system_info.py::test_container_installationtype"
     # tests are located in tests/
     "tests"
     # dynamically add packages required for component tests

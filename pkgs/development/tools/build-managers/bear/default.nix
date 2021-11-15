@@ -60,6 +60,8 @@ stdenv.mkDerivation rec {
     homepage = "https://github.com/rizsotto/Bear";
     license = licenses.gpl3Plus;
     platforms = platforms.unix;
-    maintainers = with maintainers; [ babariviere qyliss ];
+    maintainers = [ maintainers.babariviere ];
+    # ld: symbol(s) not found for architecture x86_64
+    broken = stdenv.isDarwin && stdenv.isx86_64;
   };
 }

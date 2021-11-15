@@ -1,8 +1,4 @@
-{ lib, stdenv, SDL, SDL2, fetchurl, gzip, libvorbis, libmad
-, Cocoa, CoreAudio, CoreFoundation, IOKit, OpenGL
-, copyDesktopItems, makeDesktopItem
-, useSDL2 ? stdenv.isDarwin # TODO: CoreAudio fails to initialize with SDL 1.x for some reason.
-}:
+{ lib, stdenv, SDL, fetchurl, gzip, libvorbis, libmad, copyDesktopItems, makeDesktopItem }:
 
 stdenv.mkDerivation rec {
   pname = "quakespasm";
@@ -14,11 +10,6 @@ stdenv.mkDerivation rec {
   };
 
   sourceRoot = "${pname}-${version}/Quake";
-
-  patches = lib.optionals stdenv.isDarwin [
-    # Makes Darwin Makefile use system libraries instead of ones from app bundle
-    ./quakespasm-darwin-makefile-improvements.patch
-  ];
 
   nativeBuildInputs = [ copyDesktopItems ];
   buildInputs = [

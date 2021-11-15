@@ -1,9 +1,8 @@
-{ lib
-, rustPlatform
-, fetchCrate
-, nodejs
-, pkg-config
+{ rustPlatform
+, fetchFromGitHub
+, lib
 , openssl
+, pkg-config
 , stdenv
 , curl
 , Security
@@ -12,23 +11,28 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "wasm-bindgen-cli";
-  version = "0.2.78";
+  version = "0.2.74";
 
-  src = fetchCrate {
-    inherit pname version;
-    sha256 = "sha256-5s+HidnVfDV0AXA+/YcXNGVjv/E9JeK0Ttng4mCVX8M=";
-  };
+  src =
+    let
+      tarball = fetchFromGitHub {
+        owner = "rustwasm";
+        repo = "wasm-bindgen";
+        rev = version;
+        hash = "sha256-GsraYfWzUZjFpPpufTyXF0i2llBzjh04iTKio6m4NRA=";
+      };
+    in
+    runCommand "source" { } ''
+      cp -R ${tarball} $out
+      chmod -R +w $out
+      cp ${./Cargo.lock} $out/Cargo.lock
+    '';
 
-  cargoSha256 = "sha256-CbtjUFwowP/QqyAMCzmUiSib4EpRhQAmO4ekX00xYGE=";
-
+  buildInputs = [ openssl ] ++ lib.optionals stdenv.isDarwin [ Security curl ];
   nativeBuildInputs = [ pkg-config ];
 
-  buildInputs = [ openssl ] ++ lib.optionals stdenv.isDarwin [ curl Security ];
-
-  checkInputs = [ nodejs ];
-
-  # other tests require it to be ran in the wasm-bindgen monorepo
-  cargoTestFlags = [ "--test=interface-types" ];
+  cargoHash = "sha256-djeI7kSGRHMpXnsbVlM2CDek02u5tFAsyAdHwbKC0y8=";
+  cargoBuildFlags = [ "-p" pname ];
 
   meta = with lib; {
     homepage = "https://rustwasm.github.io/docs/wasm-bindgen/";

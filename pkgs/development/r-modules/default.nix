@@ -319,8 +319,7 @@ let
     jqr = [ pkgs.jq.dev ];
     KFKSDS = [ pkgs.gsl ];
     kza = [ pkgs.fftw.dev ];
-    lpsymphony = with pkgs; [ pkg-config gfortran gettext ];
-    lwgeom = with pkgs; [ proj geos gdal ];
+    lwgeom = [ pkgs.gdal pkgs.geos pkgs.proj ];
     magick = [ pkgs.imagemagick.dev ];
     ModelMetrics = lib.optional stdenv.isDarwin pkgs.llvmPackages.openmp;
     mvabund = [ pkgs.gsl ];
@@ -486,7 +485,7 @@ let
     gdtools = [ pkgs.pkg-config ];
     jqr = [ pkgs.jq.lib ];
     kza = [ pkgs.pkg-config ];
-    lwgeom = with pkgs; [ pkg-config proj.dev sqlite.dev ];
+    lwgeom = [ pkgs.pkg-config pkgs.proj.dev pkgs.sqlite.dev ];
     magick = [ pkgs.pkg-config ];
     mwaved = [ pkgs.pkg-config ];
     odbc = [ pkgs.pkg-config ];

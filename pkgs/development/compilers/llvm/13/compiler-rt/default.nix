@@ -1,11 +1,11 @@
-{ lib, stdenv, llvm_meta, version, src, cmake, python3, libllvm, libcxxabi }:
+{ lib, stdenv, llvm_meta, version, src, cmake, python3, llvm, libcxxabi }:
 
 let
 
   useLLVM = stdenv.hostPlatform.useLLVM or false;
   bareMetal = stdenv.hostPlatform.parsed.kernel.name == "none";
   haveLibc = stdenv.cc.libc != null;
-  inherit (stdenv.hostPlatform) isMusl isAarch64;
+  inherit (stdenv.hostPlatform) isMusl;
 
 in
 
@@ -16,7 +16,7 @@ stdenv.mkDerivation {
   inherit src;
   sourceRoot = "source/compiler-rt";
 
-  nativeBuildInputs = [ cmake python3 libllvm.dev ];
+  nativeBuildInputs = [ cmake python3 llvm.dev ];
   buildInputs = lib.optional stdenv.hostPlatform.isDarwin libcxxabi;
 
   NIX_CFLAGS_COMPILE = [
@@ -27,11 +27,10 @@ stdenv.mkDerivation {
     "-DCOMPILER_RT_DEFAULT_TARGET_ONLY=ON"
     "-DCMAKE_C_COMPILER_TARGET=${stdenv.hostPlatform.config}"
     "-DCMAKE_ASM_COMPILER_TARGET=${stdenv.hostPlatform.config}"
-  ] ++ lib.optionals (useLLVM || bareMetal || isMusl || isAarch64) [
-    "-DCOMPILER_RT_BUILD_LIBFUZZER=OFF"
   ] ++ lib.optionals (useLLVM || bareMetal || isMusl) [
     "-DCOMPILER_RT_BUILD_SANITIZERS=OFF"
     "-DCOMPILER_RT_BUILD_XRAY=OFF"
+    "-DCOMPILER_RT_BUILD_LIBFUZZER=OFF"
     "-DCOMPILER_RT_BUILD_PROFILE=OFF"
   ] ++ lib.optionals ((useLLVM || bareMetal) && !haveLibc) [
     "-DCMAKE_C_COMPILER_WORKS=ON"
@@ -60,7 +59,8 @@ stdenv.mkDerivation {
     # ld-wrapper dislikes `-rpath-link //nix/store`, so we normalize away the
     # extra `/`.
     ./normalize-var.patch
-  ] # Prevent a compilation error on darwin
+  ]# ++ lib.optional stdenv.hostPlatform.isMusl ./sanitizers-nongnu.patch
+    # Prevent a compilation error on darwin
     ++ lib.optional stdenv.hostPlatform.isDarwin ./darwin-targetconditionals.patch
     ++ lib.optional stdenv.hostPlatform.isAarch32 ./armv7l.patch;
 
@@ -110,5 +110,7 @@ stdenv.mkDerivation {
     # "All of the code in the compiler-rt project is dual licensed under the MIT
     # license and the UIUC License (a BSD-like license)":
     license = with lib.licenses; [ mit ncsa ];
+    # TODO/FIXME: Build fails on Hydra:
+    broken = stdenv.isAarch64;
   };
 }

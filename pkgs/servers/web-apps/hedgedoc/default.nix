@@ -33,22 +33,19 @@ in
 
 mkYarnPackage rec {
   pname = "hedgedoc";
-  inherit (pinData) version;
+  version = "1.9.0";
 
   src = fetchFromGitHub {
     owner  = "hedgedoc";
     repo   = "hedgedoc";
     rev    = version;
-    sha256 = pinData.srcHash;
+    sha256 = "sha256-hSKQGkI1+68Zf05RhgRKZo47buyobzjhURSZ30/h0PA=";
   };
 
   nativeBuildInputs = [ which makeWrapper ];
   extraBuildInputs = [ python2 esbuild-hedgedoc ];
 
-  offlineCache = fetchYarnDeps {
-    inherit yarnLock;
-    sha256 = pinData.yarnHash;
-  };
+  yarnNix = ./yarn.nix;
 
   # FIXME(@Ma27) on the bump to 1.9.0 I had to patch this file manually:
   # I replaced `midi "https://github.com/paulrosen/MIDI.js.git#abcjs"` with

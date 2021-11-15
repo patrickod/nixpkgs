@@ -7,16 +7,8 @@ let
   };
   version = builtins.replaceStrings [ "\n" ] [ "" ] (builtins.readFile ./REVISION);
 in
-ourNodePackages.package.override {
+ourNodePackages."${packageName}".override {
   pname = "matrix-appservice-irc";
-  inherit version;
-
-  src = fetchFromGitHub {
-    owner = "matrix-org";
-    repo = "matrix-appservice-irc";
-    rev = version;
-    sha256 = "sha256-EncodJKptrLC54B5XipkiHXFgJ5cD+crcT3SOPOc+7M=";
-  };
 
   nativeBuildInputs = [ makeWrapper nodePackages.node-gyp-build ];
 

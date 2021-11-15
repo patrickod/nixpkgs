@@ -21,22 +21,10 @@ buildPythonPackage rec {
     sha256 = "a162625e5e70ed830fab8fab0ddcfe35333cb390cd24b0a827bcefc5bbcae97d";
   };
 
-  propagatedBuildInputs = [
-    matplotlib
-    numpy
-    pandas
-    scipy
-    tabulate
-  ];
-
-  checkInputs = [
-    pytestCheckHook
-  ];
-
-  preCheck = ''
-    export HOME=$TMPDIR
-    mkdir -p $HOME/.matplotlib
-    echo "backend: ps" > $HOME/.matplotlib/matplotlibrc
+  checkPhase = ''
+    pushd tests
+    py.test -Wignore::DeprecationWarning ./.
+    popd
   '';
 
   pytestFlagsArray = [

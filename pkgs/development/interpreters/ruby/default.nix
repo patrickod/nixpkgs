@@ -251,6 +251,14 @@ let
     ) args; in self;
 
 in {
+  ruby_2_6 = generic {
+    version = rubyVersion "2" "6" "8" "";
+    sha256 = {
+      src = "0vfam28ifl6h2wxi6p70j0hm3f1pvsp432hf75m5j25wfy2vf1qq";
+      git = "0rc3n6sk8632r0libpv8jwslc7852hgk64rvbdrspc9razjwx21c";
+    };
+  };
+
   ruby_2_7 = generic {
     version = rubyVersion "2" "7" "4" "";
     sha256 = {

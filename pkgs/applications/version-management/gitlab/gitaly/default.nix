@@ -20,8 +20,7 @@ let
         };
       };
   };
-
-  version = "14.4.2";
+  version = "14.4.1";
   gitaly_package = "gitlab.com/gitlab-org/gitaly/v${lib.versions.major version}";
 in
 
@@ -33,7 +32,7 @@ buildGoModule {
     owner = "gitlab-org";
     repo = "gitaly";
     rev = "v${version}";
-    sha256 = "sha256-MzYUSoG+HjW9o2zn6Q9Pd5NfI7hZkw1xFXOXHbbxJvo=";
+    sha256 = "sha256-bATqaB7q3MlyacEiBXdcEDs+xsJUbULVnYTSpEznxFg=";
   };
 
   vendorSha256 = "sha256-9RhPQosen70E9t1iAoc2SeKs9pYMMpMqgXLekWfKNf8=";
@@ -42,9 +41,11 @@ buildGoModule {
     inherit rubyEnv;
   };
 
-  ldflags = "-X ${gitaly_package}/internal/version.version=${version} -X ${gitaly_package}/internal/version.moduleVersion=${version}";
+  buildFlagsArray = [
+    "-ldflags= -X ${gitaly_package}/internal/version.version=${version} -X ${gitaly_package}/internal/version.moduleVersion=${version}"
+  ];
 
-  tags = [ "static,system_libgit2" ];
+  buildFlags = [ "-tags=static,system_libgit2" ];
   nativeBuildInputs = [ pkg-config ];
   buildInputs = [ rubyEnv.wrappedRuby libgit2 openssl zlib pcre http-parser ];
   doCheck = false;
