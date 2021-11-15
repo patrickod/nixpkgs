@@ -16,10 +16,6 @@ let
       email = lib.mkOption {
         type = types.str;
       };
-      matrix = lib.mkOption {
-        type = types.nullOr types.str;
-        default = null;
-      };
       github = lib.mkOption {
         type = types.nullOr types.str;
         default = null;
@@ -65,9 +61,9 @@ let
 
   missingGithubIds = lib.concatLists (lib.mapAttrsToList checkMaintainer lib.maintainers);
 
-  success = pkgs.runCommand "checked-maintainers-success" {} ">$out";
+  success = pkgs.runCommandNoCC "checked-maintainers-success" {} ">$out";
 
-  failure = pkgs.runCommand "checked-maintainers-failure" {
+  failure = pkgs.runCommandNoCC "checked-maintainers-failure" {
     nativeBuildInputs = [ pkgs.curl pkgs.jq ];
     outputHash = "sha256:${lib.fakeSha256}";
     outputHAlgo = "sha256";

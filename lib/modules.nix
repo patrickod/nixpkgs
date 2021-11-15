@@ -52,39 +52,15 @@ in
 
 rec {
 
-  /*
-    Evaluate a set of modules.  The result is a set with the attributes:
-
-      ‘options’: The nested set of all option declarations,
-
-      ‘config’: The nested set of all option values.
-
-      ‘type’: A module system type representing the module set as a submodule,
-            to be extended by configuration from the containing module set.
-
-      ‘extendModules’: A function similar to ‘evalModules’ but building on top
-            of the module set. Its arguments, ‘modules’ and ‘specialArgs’ are
-            added to the existing values.
-
-            Using ‘extendModules’ a few times has no performance impact as long
-            as you only reference the final ‘options’ and ‘config’.
-            If you do reference multiple ‘config’ (or ‘options’) from before and
-            after ‘extendModules’, performance is the same as with multiple
-            ‘evalModules’ invocations, because the new modules' ability to
-            override existing configuration fundamentally requires a new
-            fixpoint to be constructed.
-
-      ‘_module’: A portion of the configuration tree which is elided from
-            ‘config’. It contains some values that are mostly internal to the
-            module system implementation.
-
+  /* Evaluate a set of modules.  The result is a set of two
+     attributes: ‘options’: the nested set of all option declarations,
+     and ‘config’: the nested set of all option values.
      !!! Please think twice before adding to this argument list! The more
      that is specified here instead of in the modules themselves the harder
      it is to transparently move a set of modules to be a submodule of another
      config (as the proper arguments need to be replicated at each call to
      evalModules) and the less declarative the module set is. */
-  evalModules = evalModulesArgs@
-                { modules
+  evalModules = { modules
                 , prefix ? []
                 , # This should only be used for special arguments that need to be evaluated
                   # when resolving module structure (like in imports). For everything else,
@@ -144,9 +120,7 @@ rec {
         };
 
         config = {
-          _module.args = {
-            inherit extendModules;
-          } // args;
+          _module.args = args;
         };
       };
 
@@ -188,49 +162,20 @@ rec {
             baseMsg = "The option `${showOption (prefix ++ firstDef.prefix)}' does not exist. Definition values:${showDefs [ firstDef ]}";
           in
             if attrNames options == [ "_module" ]
-              then
-                let
-                  optionName = showOption prefix;
-                in
-                  if optionName == ""
-                    then throw ''
-                      ${baseMsg}
+              then throw ''
+                ${baseMsg}
 
-                      It seems as if you're trying to declare an option by placing it into `config' rather than `options'!
-                    ''
-                  else
-                    throw ''
-                      ${baseMsg}
-
-                      However there are no options defined in `${showOption prefix}'. Are you sure you've
-                      declared your options properly? This can happen if you e.g. declared your options in `types.submodule'
-                      under `config' rather than `options'.
-                    ''
+                However there are no options defined in `${showOption prefix}'. Are you sure you've
+                declared your options properly? This can happen if you e.g. declared your options in `types.submodule'
+                under `config' rather than `options'.
+              ''
             else throw baseMsg
         else null;
 
-      checked = builtins.seq checkUnmatched;
-
-      extendModules = extendArgs@{
-        modules ? [],
-        specialArgs ? {},
-        prefix ? [],
-        }:
-          evalModules (evalModulesArgs // {
-            modules = evalModulesArgs.modules ++ modules;
-            specialArgs = evalModulesArgs.specialArgs or {} // specialArgs;
-            prefix = extendArgs.prefix or evalModulesArgs.prefix;
-          });
-
-      type = lib.types.submoduleWith {
-        inherit modules specialArgs;
-      };
-
-      result = {
-        options = checked options;
-        config = checked (removeAttrs config [ "_module" ]);
-        _module = checked (config._module);
-        inherit extendModules type;
+      result = builtins.seq checkUnmatched {
+        inherit options;
+        config = removeAttrs config [ "_module" ];
+        inherit (config) _module;
       };
     in result;
 
@@ -765,11 +710,12 @@ rec {
 
   mkOptionDefault = mkOverride 1500; # priority of option defaults
   mkDefault = mkOverride 1000; # used in config sections of non-user modules to set a default
-  mkImageMediaOverride = mkOverride 60; # image media profiles can be derived by inclusion into host config, hence needing to override host config, but do allow user to mkForce
   mkForce = mkOverride 50;
   mkVMOverride = mkOverride 10; # used by ‘nixos-rebuild build-vm’
 
-  mkFixStrictness = lib.warn "lib.mkFixStrictness has no effect and will be removed. It returns its argument unmodified, so you can just remove any calls." id;
+  mkStrict = builtins.trace "`mkStrict' is obsolete; use `mkOverride 0' instead." (mkOverride 0);
+
+  mkFixStrictness = id; # obsolete, no-op
 
   mkOrder = priority: content:
     { _type = "order";

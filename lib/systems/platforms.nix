@@ -20,17 +20,15 @@ rec {
       name = "PowerNV";
 
       baseConfig = "powernv_defconfig";
-      target = "vmlinux";
+      target = "zImage";
+      installTarget = "install";
+      file = "vmlinux";
       autoModules = true;
       # avoid driver/FS trouble arising from unusual page size
       extraConfig = ''
         PPC_64K_PAGES n
         PPC_4K_PAGES y
         IPV6 y
-
-        ATA_BMDMA y
-        ATA_SFF y
-        VIRTIO_MENU y
       '';
     };
   };
@@ -235,7 +233,7 @@ rec {
     };
   };
 
-  scaleway-c1 = armv7l-hf-multiplatform // {
+  scaleway-c1 = lib.recursiveUpdate armv7l-hf-multiplatform {
     gcc = {
       cpu = "cortex-a9";
       fpu = "vfpv3";
@@ -317,12 +315,6 @@ rec {
         # Disable OABI to have seccomp_filter (required for systemd)
         # https://github.com/raspberrypi/firmware/issues/651
         OABI_COMPAT n
-
-        # >=5.12 fails with:
-        # drivers/net/ethernet/micrel/ks8851_common.o: in function `ks8851_probe_common':
-        # ks8851_common.c:(.text+0x179c): undefined reference to `__this_module'
-        # See: https://lore.kernel.org/netdev/20210116164828.40545-1-marex@denx.de/T/
-        KS8851_MLL y
       '';
     };
     gcc = {
@@ -489,11 +481,11 @@ rec {
   riscv-multiplatform = {
     linux-kernel = {
       name = "riscv-multiplatform";
-      target = "Image";
+      target = "vmlinux";
       autoModules = true;
       baseConfig = "defconfig";
-      DTB = true;
       extraConfig = ''
+        FTRACE n
         SERIAL_OF_PLATFORM y
       '';
     };

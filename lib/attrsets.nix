@@ -5,7 +5,7 @@ let
   inherit (builtins) head tail length;
   inherit (lib.trivial) and;
   inherit (lib.strings) concatStringsSep sanitizeDerivationName;
-  inherit (lib.lists) foldr foldl' concatMap concatLists elemAt;
+  inherit (lib.lists) fold concatMap concatLists;
 in
 
 rec {
@@ -55,13 +55,10 @@ rec {
        => { a = { b = 3; }; }
   */
   setAttrByPath = attrPath: value:
-    let
-      len = length attrPath;
-      atDepth = n:
-        if n == len
-        then value
-        else { ${elemAt attrPath n} = atDepth (n + 1); };
-    in atDepth 0;
+    if attrPath == [] then value
+    else listToAttrs
+      [ { name = head attrPath; value = setAttrByPath (tail attrPath) value; } ];
+
 
   /* Like `attrByPath' without a default value. If it doesn't find the
      path it will throw.
@@ -155,8 +152,8 @@ rec {
        => { a = [ 2 3 ]; }
   */
   foldAttrs = op: nul: list_of_attrs:
-    foldr (n: a:
-        foldr (name: o:
+    fold (n: a:
+        fold (name: o:
           o // { ${name} = op n.${name} (a.${name} or nul); }
         ) a (attrNames n)
     ) {} list_of_attrs;
@@ -198,7 +195,7 @@ rec {
          ]
   */
   cartesianProductOfSets = attrsOfLists:
-    foldl' (listOfAttrs: attrName:
+    lib.foldl' (listOfAttrs: attrName:
       concatMap (attrs:
         map (listValue: attrs // { ${attrName} = listValue; }) attrsOfLists.${attrName}
       ) listOfAttrs
@@ -458,7 +455,7 @@ rec {
        => true
    */
   matchAttrs = pattern: attrs: assert isAttrs pattern;
-    foldr and true (attrValues (zipAttrsWithNames (attrNames pattern) (n: values:
+    fold and true (attrValues (zipAttrsWithNames (attrNames pattern) (n: values:
       let pat = head values; val = head (tail values); in
       if length values == 1 then false
       else if isAttrs pat then isAttrs val && matchAttrs pat val
@@ -487,7 +484,7 @@ rec {
        => "/nix/store/9rz8gxhzf8sw4kf2j2f1grr49w8zx5vj-openssl-1.0.1r-dev"
   */
   getOutput = output: pkg:
-    if ! pkg ? outputSpecified || ! pkg.outputSpecified
+    if pkg.outputUnspecified or false
       then pkg.${output} or pkg.out or pkg
       else pkg;
 

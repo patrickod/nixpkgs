@@ -8,7 +8,6 @@ rec {
   platforms = import ./platforms.nix { inherit lib; };
   examples = import ./examples.nix { inherit lib; };
   architectures = import ./architectures.nix { inherit lib; };
-  supported = import ./supported.nix { inherit lib; };
 
   # Elaborate a `localSystem` or `crossSystem` so that it contains everything
   # necessary.
@@ -108,7 +107,6 @@ rec {
         else if final.isMips then "mips"
         else if final.isPower then "powerpc"
         else if final.isRiscV then "riscv"
-        else if final.isS390 then "s390"
         else final.parsed.cpu.name;
 
       qemuArch =

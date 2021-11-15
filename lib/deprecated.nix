@@ -77,11 +77,11 @@ rec {
   # Output : are reqs satisfied? It's asserted.
   checkReqs = attrSet: argList: condList:
   (
-    foldr lib.and true
+    fold lib.and true
       (map (x: let name = (head x); in
 
         ((checkFlag attrSet name) ->
-        (foldr lib.and true
+        (fold lib.and true
         (map (y: let val=(getValue attrSet argList y); in
                 (val!=null) && (val!=false))
         (tail x))))) condList));
@@ -177,7 +177,7 @@ rec {
   # merge attributes with custom function handling the case that the attribute
   # exists in both sets
   mergeAttrsWithFunc = f: set1: set2:
-    foldr (n: set: if set ? ${n}
+    fold (n: set: if set ? ${n}
                         then setAttr set n (f set.${n} set2.${n})
                         else set )
            (set2 // set1) (attrNames set2);
@@ -196,7 +196,7 @@ rec {
   mergeAttrsNoOverride = { mergeLists ? ["buildInputs" "propagatedBuildInputs"],
                            overrideSnd ? [ "buildPhase" ]
                          }: attrs1: attrs2:
-    foldr (n: set:
+    fold (n: set:
         setAttr set n ( if set ? ${n}
             then # merge
               if elem n mergeLists # attribute contains list, merge them by concatenating
@@ -224,7 +224,7 @@ rec {
           mergeAttrBy2 = { mergeAttrBy = lib.mergeAttrs; }
                       // (maybeAttr "mergeAttrBy" {} x)
                       // (maybeAttr "mergeAttrBy" {} y); in
-    foldr lib.mergeAttrs {} [
+    fold lib.mergeAttrs {} [
       x y
       (mapAttrs ( a: v: # merge special names using given functions
           if x ? ${a}

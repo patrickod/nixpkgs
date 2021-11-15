@@ -144,18 +144,6 @@ rec {
     libc = "newlib";
   };
 
-  m68k = {
-    config = "m68k-unknown-linux-gnu";
-  };
-
-  s390 = {
-    config = "s390-unknown-linux-gnu";
-  };
-
-  s390x = {
-    config = "s390x-unknown-linux-gnu";
-  };
-
   arm-embedded = {
     config = "arm-none-eabi";
     libc = "newlib";
@@ -254,12 +242,6 @@ rec {
 
   aarch64-darwin = {
     config = "aarch64-apple-darwin";
-    xcodePlatform = "MacOSX";
-    platform = {};
-  };
-
-  x86_64-darwin = {
-    config = "x86_64-apple-darwin";
     xcodePlatform = "MacOSX";
     platform = {};
   };
