@@ -19,6 +19,7 @@ buildPythonPackage rec {
 
   checkInputs = [ pyopenssl betamax mock pytest ];
   propagatedBuildInputs = [ requests ];
+  doCheck = false;
 
   checkPhase = ''
     # disabled tests access the network
