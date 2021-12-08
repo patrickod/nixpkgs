@@ -9,8 +9,8 @@ mkDerivation rec {
   src = fetchFromGitHub {
     owner = "zealdocs";
     repo = "zeal";
-    rev = "d3c5521c501d24050f578348ff1b9d68244b992c";
-    sha256 = "1ky2qi2cmjckc51lm3i28815ixgqdm36j7smixxr16jxpmbqs6sl";
+    rev = "1ce0e2e446232e7647c5588c1f603f1dd88e0f67";
+    sha256 = "0gj5qcm7ck8m5zfmiabay2f7wbxldmrkw8m3xi7v9i8y8hx0jkxr";
   };
 
   # we only need this if we are using a version that hasn't been released. We
