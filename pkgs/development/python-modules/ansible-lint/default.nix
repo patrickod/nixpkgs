@@ -18,13 +18,13 @@
 
 buildPythonPackage rec {
   pname = "ansible-lint";
-  version = "5.2.1";
+  version = "5.3.1";
   disabled = isPy27;
   format = "pyproject";
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "sha256-1krKWcjYllQdN5uSBbISa4UQiKqwosLKsZ/3SxhM3xw=";
+    sha256 = "sha256-fXvHS5uQxZgr5cJ0wq/LpbgHPsiMznk/q0Y/5kGKJfY=";
   };
 
   nativeBuildInputs = [

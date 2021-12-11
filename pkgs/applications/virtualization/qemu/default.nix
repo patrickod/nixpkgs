@@ -1,7 +1,7 @@
 { lib, stdenv, fetchurl, fetchpatch, python, zlib, pkg-config, glib
 , perl, pixman, vde2, alsa-lib, texinfo, flex
 , bison, lzo, snappy, libaio, libtasn1, gnutls, nettle, curl, ninja, meson, sigtool
-, makeWrapper, autoPatchelfHook
+, makeWrapper, autoPatchelfHook, runtimeShell
 , attr, libcap, libcap_ng
 , CoreServices, Cocoa, Hypervisor, rez, setfile
 , numaSupport ? stdenv.isLinux && !stdenv.isAarch32, numactl
@@ -119,6 +119,12 @@ stdenv.mkDerivation rec {
       url = "https://gitlab.com/qemu-project/qemu/-/commit/eb94846280df3f1e2a91b6179fc05f9890b7e384.patch";
       sha256 = "sha256-p31fd47RTSw928DOMrubQQybnzDAGm23z4Yhe+hGJQ8=";
     })
+    # Fixes socket_sockaddr_to_address_unix assertion errors in some setups. Remove with next release.
+    (fetchpatch {
+      name = "fix-unix-socket-path-copy-again.patch";
+      url = "https://gitlab.com/qemu-project/qemu/-/commit/118d527f2e4baec5fe8060b22a6212468b8e4d3f.patch";
+      sha256 = "sha256-ox+JSpc0pqd3bMi5Ot7ljQyk70SX8g+BLufR06mZPps=";
+    })
   ] ++ lib.optional nixosTestRunner ./force-uid0-on-9p.patch
     ++ lib.optionals stdenv.hostPlatform.isMusl [
     ./sigrtminmax.patch
@@ -228,10 +234,12 @@ stdenv.mkDerivation rec {
 
   # Add a ‘qemu-kvm’ wrapper for compatibility/convenience.
   postInstall = ''
+    install -m755 -D $emitKvmWarningsPath $out/libexec/emit-kvm-warnings
     if [ -x $out/bin/qemu-system-${stdenv.hostPlatform.qemuArch} ]; then
       makeWrapper $out/bin/qemu-system-${stdenv.hostPlatform.qemuArch} \
                   $out/bin/qemu-kvm \
-                  --add-flags "\$([ -e /dev/kvm ] && echo -enable-kvm)"
+                  --run $out/libexec/emit-kvm-warnings \
+                  --add-flags "\$([ -r /dev/kvm -a -w /dev/kvm ] && echo -enable-kvm)"
     fi
   '';
 
@@ -241,6 +249,26 @@ stdenv.mkDerivation rec {
 
   # Builds in ~3h with 2 cores, and ~20m with a big-parallel builder.
   requiredSystemFeatures = [ "big-parallel" ];
+
+  emitKvmWarnings = ''
+    #!${runtimeShell}
+    WARNCOL='\033[1;35m'
+    NEUTRALCOL='\033[0m'
+    WARNING="''${WARNCOL}warning:''${NEUTRALCOL}"
+    if [ ! -e /dev/kvm ]; then
+      echo -e "''${WARNING} KVM is not available - execution will be slow" >&2
+      echo "Consider installing KVM for hardware-accelerated execution." >&2
+      echo "If KVM is already installed make sure the kernel module is loaded." >&2
+    elif [ ! -r /dev/kvm -o ! -w /dev/kvm ]; then
+      echo -e "''${WARNING} /dev/kvm is not read-/writable - execution will be slow" >&2
+      echo "/dev/kvm needs to be read-/writable by the user executing QEMU." >&2
+      echo "" >&2
+      echo "For hardware-acceleration inside the nix build sandbox /dev/kvm" >&2
+      echo "must be world-read-/writable (rw-rw-rw-)." >&2
+    fi
+  '';
+
+  passAsFile = [ "emitKvmWarnings" ];
 
   meta = with lib; {
     homepage = "http://www.qemu.org/";
