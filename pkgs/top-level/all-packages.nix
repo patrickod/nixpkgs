@@ -373,6 +373,8 @@ with pkgs;
 
   onesixtyone = callPackage ../tools/security/onesixtyone {};
 
+  oletools = with python3.pkgs; toPythonApplication oletools;
+
   creddump = callPackage ../tools/security/creddump {};
 
   credential-detector = callPackage ../tools/security/credential-detector { };
@@ -5795,8 +5797,6 @@ with pkgs;
 
   github-runner = callPackage ../development/tools/continuous-integration/github-runner { };
 
-  gitin = callPackage ../applications/version-management/git-and-tools/gitin { };
-
   gitinspector = callPackage ../applications/version-management/gitinspector { };
 
   gitkraken = callPackage ../applications/version-management/gitkraken { };
@@ -7462,6 +7462,8 @@ with pkgs;
   liquidctl = with python3Packages; toPythonApplication liquidctl;
 
   localtime = callPackage ../tools/system/localtime { };
+
+  log4j-scan = callPackage ../tools/security/log4j-scan { };
 
   logcheck = callPackage ../tools/system/logcheck { };
 
@@ -9894,6 +9896,8 @@ with pkgs;
 
   subfinder = callPackage ../tools/networking/subfinder { };
 
+  subzerod = with python3Packages; toPythonApplication subzerod;
+
   suckit = callPackage ../tools/networking/suckit {
     inherit (darwin.apple_sdk.frameworks) Security;
   };
@@ -10452,6 +10456,8 @@ with pkgs;
 
   v2ray-domain-list-community = callPackage ../data/misc/v2ray-domain-list-community { };
 
+  v2ray-geoip = callPackage ../data/misc/v2ray-geoip { };
+
   vacuum = callPackage ../applications/networking/instant-messengers/vacuum {};
 
   vampire = callPackage ../applications/science/logic/vampire {};
@@ -10594,7 +10600,6 @@ with pkgs;
 
   sssd = callPackage ../os-specific/linux/sssd {
     inherit (perlPackages) Po4a;
-    inherit (python27Packages) ldap;
   };
 
   sentry-cli = callPackage ../development/tools/sentry-cli {
@@ -13601,7 +13606,7 @@ with pkgs;
   python3Packages = python3.pkgs;
 
   pythonInterpreters = callPackage ./../development/interpreters/python { };
-  inherit (pythonInterpreters) python27 python37 python38 python39 python310 python3Minimal pypy27 pypy38;
+  inherit (pythonInterpreters) python27 python37 python38 python39 python310 python3Minimal pypy27 pypy38 rustpython;
 
   # Python package sets.
   python27Packages = python27.pkgs;
@@ -15691,6 +15696,8 @@ with pkgs;
   } // lib.optionalAttrs (stdenv.hostPlatform.isi686 && stdenv.cc.isGNU) {
     stdenv = overrideCC stdenv buildPackages.gcc6; # hidden symbol `__divmoddi4'
   });
+
+  arsenal = callPackage ../tools/security/arsenal { };
 
   assimp = callPackage ../development/libraries/assimp { };
 
@@ -18764,6 +18771,8 @@ with pkgs;
 
   msgpack = callPackage ../development/libraries/msgpack { };
 
+  msoffcrypto-tool = with python3.pkgs; toPythonApplication msoffcrypto-tool;
+
   msilbc = callPackage ../development/libraries/msilbc { };
 
   mp4v2 = callPackage ../development/libraries/mp4v2 { };
@@ -19201,6 +19210,8 @@ with pkgs;
   present = callPackage ../misc/present { };
 
   prime-server = callPackage ../development/libraries/prime-server { };
+
+  primecount = callPackage ../development/libraries/science/math/primecount { };
 
   primesieve = callPackage ../development/libraries/science/math/primesieve { };
 
@@ -22729,7 +22740,9 @@ with pkgs;
 
   seturgent = callPackage ../os-specific/linux/seturgent { };
 
-  sgx-sdk = callPackage ../os-specific/linux/sgx-sdk { };
+  sgx-sdk = callPackage ../os-specific/linux/sgx/sdk { };
+
+  sgx-psw = callPackage ../os-specific/linux/sgx/psw { };
 
   shadow = callPackage ../os-specific/linux/shadow { };
 
@@ -29161,6 +29174,8 @@ with pkgs;
 
   wafw00f = python3Packages.callPackage ../tools/security/wafw00f { };
 
+  whispers = callPackage ../tools/security/whispers { };
+
   waon = callPackage ../applications/audio/waon { };
 
   w3m = callPackage ../applications/networking/browsers/w3m { };
@@ -30232,7 +30247,7 @@ with pkgs;
 
   fishfight = callPackage ../games/fishfight {
     inherit (xorg) libX11 libXi;
-    inherit (darwin.apple_sdk.frameworks) AudioToolbox Cocoa CoreAudio CoreFoundation IOKit OpenGL;
+    inherit (darwin.apple_sdk.frameworks) AudioToolbox Cocoa CoreAudio OpenGL;
   };
 
   flightgear = libsForQt5.callPackage ../games/flightgear { };
@@ -33181,11 +33196,11 @@ with pkgs;
     terraform_0_13
     terraform_0_14
     terraform_0_15
-    terraform_1_0
+    terraform_1
     terraform_plugins_test
     ;
 
-  terraform = terraform_1_0;
+  terraform = terraform_1;
   # deprecated
   terraform-full = terraform.full;
 
