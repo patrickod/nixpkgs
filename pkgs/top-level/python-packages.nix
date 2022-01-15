@@ -2520,6 +2520,8 @@ in {
 
   elasticsearchdsl = self.elasticsearch-dsl;
 
+  elegy = callPackage ../development/python-modules/elegy { };
+
   elementpath = callPackage ../development/python-modules/elementpath { };
 
   elevate = callPackage ../development/python-modules/elevate { };
@@ -9555,6 +9557,8 @@ in {
     lmdb-core = pkgs.lmdb;
   };
 
+  tensorflow-datasets = callPackage ../development/python-modules/tensorflow-datasets { };
+
   tensorflow-estimator = callPackage ../development/python-modules/tensorflow-estimator { };
 
   tensorflow-metadata = callPackage ../development/python-modules/tensorflow-metadata { };
@@ -10229,6 +10233,8 @@ in {
 
   Wand = callPackage ../development/python-modules/Wand { };
 
+  wandb = callPackage ../development/python-modules/wandb { };
+
   warlock = callPackage ../development/python-modules/warlock { };
 
   warrant = callPackage ../development/python-modules/warrant { };
@@ -10542,6 +10548,8 @@ in {
   yarg = callPackage ../development/python-modules/yarg { };
 
   yarl = callPackage ../development/python-modules/yarl { };
+
+  yaspin = callPackage ../development/python-modules/yaspin { };
 
   yaswfp = callPackage ../development/python-modules/yaswfp { };
 
