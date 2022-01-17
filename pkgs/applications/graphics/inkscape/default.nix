@@ -9,7 +9,6 @@
 , gettext
 , ghostscript
 , glib
-, glib-networking
 , glibmm
 , gsl
 , gspell
@@ -121,7 +120,6 @@ stdenv.mkDerivation rec {
     boost
     gettext
     glib
-    glib-networking
     glibmm
     gsl
     gtkmm3
