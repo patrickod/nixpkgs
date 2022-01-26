@@ -110,6 +110,14 @@
       </listitem>
       <listitem>
         <para>
+          <link xlink:href="https://invoiceplane.com">InvoicePlane</link>,
+          web application for managing and creating invoices. Available
+          at
+          <link xlink:href="options.html#opt-services.invoiceplane.enable">services.invoiceplane</link>.
+        </para>
+      </listitem>
+      <listitem>
+        <para>
           <link xlink:href="https://maddy.email">maddy</link>, a
           composable all-in-one mail server. Available as
           <link xlink:href="options.html#opt-services.maddy.enable">services.maddy</link>.
@@ -274,6 +282,14 @@
       <listitem>
         <para>
           The backward compatibility in
+          <literal>services.wordpress</literal> to configure sites with
+          the old interface has been removed. Please use
+          <literal>services.wordpress.sites</literal> instead.
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          The backward compatibility in
           <literal>services.dokuwiki</literal> to configure sites with
           the old interface has been removed. Please use
           <literal>services.dokuwiki.sites</literal> instead.
@@ -355,6 +371,18 @@
       </listitem>
       <listitem>
         <para>
+          The options
+          <literal>networking.interfaces.&lt;name&gt;.ipv4.routes</literal>
+          and
+          <literal>networking.interfaces.&lt;name&gt;.ipv6.routes</literal>
+          are no longer ignored when using networkd instead of the
+          default scripted network backend by setting
+          <literal>networking.useNetworkd</literal> to
+          <literal>true</literal>.
+        </para>
+      </listitem>
+      <listitem>
+        <para>
           MultiMC has been replaced with the fork PolyMC due to upstream
           developers being hostile to 3rd party package maintainers.
           PolyMC removes all MultiMC branding and is aimed at providing
@@ -367,6 +395,24 @@
           file’s path has also moved from
           <literal>~/.local/share/multimc/multimc.cfg</literal> to
           <literal>~/.local/share/polymc/polymc.cfg</literal>.
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          The terraform 0.12 compatibility has been removed and the
+          <literal>terraform.withPlugins</literal> and
+          <literal>terraform-providers.mkProvider</literal>
+          implementations simplified. Providers now need to be stored
+          under
+          <literal>$out/libexec/terraform-providers/&lt;registry&gt;/&lt;owner&gt;/&lt;name&gt;/&lt;version&gt;/&lt;os&gt;_&lt;arch&gt;/terraform-provider-&lt;name&gt;_v&lt;version&gt;</literal>
+          (which mkProvider does).
+        </para>
+        <para>
+          This breaks back-compat so it’s not possible to mix-and-match
+          with previous versions of nixpkgs. In exchange, it now becomes
+          possible to use the providers from
+          <link xlink:href="https://github.com/numtide/nixpkgs-terraform-providers-bin">nixpkgs-terraform-providers-bin</link>
+          directly.
         </para>
       </listitem>
       <listitem>
@@ -516,12 +562,34 @@
       </listitem>
       <listitem>
         <para>
+          MariaDB is now offered in several versions, not just the
+          newest one. So if you have a need for running MariaDB 10.4 for
+          example, you can now just set
+          <literal>services.mysql.package = pkgs.mariadb_104;</literal>.
+          In general, it is recommended to run the newest version, to
+          get the newest features, while sticking with an LTS version
+          will most likely provide a more stable experience. Sometimes
+          software is also incompatible with the newest version of
+          MariaDB.
+        </para>
+      </listitem>
+      <listitem>
+        <para>
           The option
           <link linkend="opt-programs.ssh.enableAskPassword">programs.ssh.enableAskPassword</link>
           was added, decoupling the setting of
           <literal>SSH_ASKPASS</literal> from
           <literal>services.xserver.enable</literal>. This allows easy
           usage in non-X11 environments, e.g. Wayland.
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <link linkend="opt-programs.ssh.knownHosts">programs.ssh.knownHosts</link>
+          has gained an <literal>extraHostNames</literal> option to
+          replace <literal>hostNames</literal>.
+          <literal>hostNames</literal> is deprecated, but still
+          available for now.
         </para>
       </listitem>
       <listitem>
@@ -537,6 +605,14 @@
           The option <literal>services.duplicati.dataDir</literal> has
           been added to allow changing the location of duplicati’s
           files.
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          A new option
+          <literal>boot.initrd.extraModprobeConfig</literal> has been
+          added which can be used to configure kernel modules that are
+          loaded in the initrd.
         </para>
       </listitem>
       <listitem>
