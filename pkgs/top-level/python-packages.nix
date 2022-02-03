@@ -568,6 +568,8 @@ in {
 
   apptools = callPackage ../development/python-modules/apptools { };
 
+  appthreat-vulnerability-db = callPackage ../development/python-modules/appthreat-vulnerability-db { };
+
   aprslib = callPackage ../development/python-modules/aprslib { };
 
   APScheduler = callPackage ../development/python-modules/APScheduler { };
@@ -1993,6 +1995,8 @@ in {
   datadiff = callPackage ../development/python-modules/datadiff { };
 
   datadog = callPackage ../development/python-modules/datadog { };
+
+  datafusion = callPackage ../development/python-modules/datafusion { };
 
   datamodeldict = callPackage ../development/python-modules/datamodeldict { };
 
@@ -3923,6 +3927,8 @@ in {
 
   impacket = callPackage ../development/python-modules/impacket { };
 
+  importlab = callPackage ../development/python-modules/importlab { };
+
   importlib-metadata = callPackage ../development/python-modules/importlib-metadata { };
 
   importlib-resources = callPackage ../development/python-modules/importlib-resources { };
@@ -4122,6 +4128,14 @@ in {
   };
 
   jaxlib = self.jaxlib-build;
+
+  jaxlibWithCuda = self.jaxlib-build.override {
+    cudaSupport = true;
+  };
+
+  jaxlibWithoutCuda = self.jaxlib-build.override {
+    cudaSupport = false;
+  };
 
   JayDeBeApi = callPackage ../development/python-modules/JayDeBeApi { };
 
@@ -5039,6 +5053,8 @@ in {
 
   mizani = callPackage ../development/python-modules/mizani { };
 
+  mkdocs = callPackage ../development/python-modules/mkdocs { };
+
   mkl-service = callPackage ../development/python-modules/mkl-service { };
 
   ml-collections = callPackage ../development/python-modules/ml-collections { };
@@ -5400,6 +5416,8 @@ in {
   nixpkgs-pytools = callPackage ../development/python-modules/nixpkgs-pytools { };
 
   nix-prefetch-github = callPackage ../development/python-modules/nix-prefetch-github { };
+
+  nkdfu = callPackage ../development/python-modules/nkdfu { };
 
   nltk = callPackage ../development/python-modules/nltk { };
 
@@ -6570,6 +6588,8 @@ in {
     inherit (pkgs) graphviz;
   };
 
+  pycfmodel = callPackage ../development/python-modules/pycfmodel { };
+
   pychannels = callPackage ../development/python-modules/pychannels { };
 
   pychart = callPackage ../development/python-modules/pychart { };
@@ -6623,6 +6643,8 @@ in {
   pycrypto = callPackage ../development/python-modules/pycrypto { };
 
   pycryptodome = callPackage ../development/python-modules/pycryptodome { };
+
+  pycryptodome-test-vectors = callPackage ../development/python-modules/pycryptodome-test-vectors { };
 
   pycryptodomex = callPackage ../development/python-modules/pycryptodomex { };
 
@@ -6820,6 +6842,8 @@ in {
   pygdbmi = callPackage ../development/python-modules/pygdbmi { };
 
   pygeoip = callPackage ../development/python-modules/pygeoip { };
+
+  pygeos = callPackage ../development/python-modules/pygeos { };
 
   pygetwindow = callPackage ../development/python-modules/pygetwindow { };
 
@@ -7909,7 +7933,7 @@ in {
   python-http-client = callPackage ../development/python-modules/python-http-client { };
 
   pythonix = callPackage ../development/python-modules/pythonix {
-    nix = pkgs.nix_2_3;
+    nix = pkgs.nixVersions.nix_2_3;
     meson = pkgs.meson.override { python3 = self.python; };
   };
 
@@ -8270,9 +8294,7 @@ in {
 
   pywizlight = callPackage ../development/python-modules/pywizlight { };
 
-  pywlroots = callPackage ../development/python-modules/pywlroots {
-    wlroots = pkgs.wlroots_0_14;
-  };
+  pywlroots = callPackage ../development/python-modules/pywlroots { };
 
   pyxattr = callPackage ../development/python-modules/pyxattr { };
 
@@ -10298,6 +10320,8 @@ in {
 
   wandb = callPackage ../development/python-modules/wandb { };
 
+  warcio = callPackage ../development/python-modules/warcio { };
+
   warlock = callPackage ../development/python-modules/warlock { };
 
   warrant = callPackage ../development/python-modules/warrant { };
@@ -10572,6 +10596,8 @@ in {
   xvfbwrapper = callPackage ../development/python-modules/xvfbwrapper {
     inherit (pkgs.xorg) xorgserver;
   };
+
+  xxh = callPackage ../tools/networking/xxh { };
 
   xxhash = callPackage ../development/python-modules/xxhash { };
 
