@@ -60,6 +60,9 @@ with lib;
     (mkRemovedOptionModule [ "services" "moinmoin" ] "The corresponding package was removed from nixpkgs.")
     (mkRemovedOptionModule [ "services" "mwlib" ] "The corresponding package was removed from nixpkgs.")
     (mkRemovedOptionModule [ "services" "osquery" ] "The osquery module has been removed")
+    (mkRemovedOptionModule [ "services" "pantheon" "files" ] ''
+      This module was removed, please add pkgs.pantheon.elementary-files to environment.systemPackages directly.
+    '')
     (mkRemovedOptionModule [ "services" "prey" ] ''
       prey-bash-client is deprecated upstream
     '')
@@ -84,6 +87,8 @@ with lib;
     (mkRemovedOptionModule [ "services" "racoon" ] ''
       The racoon module has been removed, because the software project was abandoned upstream.
     '')
+
+    (mkRemovedOptionModule [ "services" "shellinabox" ] "The corresponding package was removed from nixpkgs.")
 
     # Do NOT add any option renames here, see top of the file
   ];
