@@ -14,6 +14,7 @@
 , moreutils
 , racket-minimal
 , clojure-lsp
+, alejandra
 }:
 
 let
@@ -795,7 +796,7 @@ let
           downloadPage = "https://marketplace.visualstudio.com/items?itemName=faustinoaq.lex-flex-yacc-bison";
           homepage = "https://github.com/faustinoaq/vscode-lex-flex-yacc-bison";
           license = licenses.mit;
-          maintainers = with maintainers; [ angustrau ];
+          maintainers = with maintainers; [ emilytrau ];
         };
       };
 
@@ -1231,6 +1232,34 @@ let
         };
       };
 
+      kamadorueda.alejandra = buildVscodeMarketplaceExtension {
+        mktplcRef = {
+          name = "alejandra";
+          publisher = "kamadorueda";
+          version = "1.0.0";
+          sha256 = "sha256-COlEjKhm8tK5XfOjrpVUDQ7x3JaOLiYoZ4MdwTL8ktk=";
+        };
+        nativeBuildInputs = [ jq moreutils ];
+        postInstall = ''
+          cd "$out/$installPrefix"
+
+          jq -e '
+            .contributes.configuration.properties."alejandra.program".default =
+              "${alejandra}/bin/alejandra" |
+            .contributes.configurationDefaults."alejandra.program" =
+              "${alejandra}/bin/alejandra"
+          ' \
+          < package.json \
+          | sponge package.json
+        '';
+        meta = with lib; {
+          description = "The Uncompromising Nix Code Formatter";
+          homepage = "https://github.com/kamadorueda/alejandra";
+          license = licenses.unlicense;
+          maintainers = with maintainers; [ kamadorueda ];
+        };
+      };
+
       kubukoz.nickel-syntax = buildVscodeMarketplaceExtension {
         mktplcRef = {
           name = "nickel-syntax";
@@ -1371,6 +1400,22 @@ let
       ms-vscode.cpptools = callPackage ./cpptools { };
 
       ms-vscode-remote.remote-ssh = callPackage ./remote-ssh { };
+
+      ms-vscode.theme-tomorrowkit = buildVscodeMarketplaceExtension {
+        mktplcRef = {
+          name = "Theme-TomorrowKit";
+          publisher = "ms-vscode";
+          version = "0.1.4";
+          sha256 = "sha256-qakwJWak+IrIeeVcMDWV/fLPx5M8LQGCyhVt4TS/Lmc=";
+        };
+        meta = with lib; {
+          description = "Additional Tomorrow and Tomorrow Night themes for VS Code. Based on the TextMate themes.";
+          downloadPage = "https://marketplace.visualstudio.com/items?itemName=ms-vscode.Theme-TomorrowKit";
+          homepage = "https://github.com/microsoft/vscode-themes";
+          license = licenses.mit;
+          maintainers = with maintainers; [ ratsclub ];
+        };
+      };
 
       ms-python.python = callPackage ./python {
         extractNuGet = callPackage ./python/extract-nuget.nix { };

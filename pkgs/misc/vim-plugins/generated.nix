@@ -3645,6 +3645,18 @@ final: prev:
     meta.homepage = "https://github.com/shaunsingh/moonlight.nvim/";
   };
 
+  mru = buildVimPluginFrom2Nix {
+    pname = "mru";
+    version = "2022-01-22";
+    src = fetchFromGitHub {
+      owner = "yegappan";
+      repo = "mru";
+      rev = "30315ad4c07f0045c203a443291ad0c8d2fe7279";
+      sha256 = "1k3x8v9c9c3mn2nakcsr5f9wqckxlx3b86smml4d985q90372fqn";
+    };
+    meta.homepage = "https://github.com/yegappan/mru/";
+  };
+
   Navigator-nvim = buildVimPluginFrom2Nix {
     pname = "Navigator.nvim";
     version = "2021-11-18";
@@ -5613,6 +5625,18 @@ final: prev:
       sha256 = "0mb0sx85j1k59b1zz95r4vkq4kxlb4krhncq70mq7fxrs5bnhq8g";
     };
     meta.homepage = "https://github.com/vim-scripts/ReplaceWithRegister/";
+  };
+
+  rest-nvim = buildVimPluginFrom2Nix {
+    pname = "rest.nvim";
+    version = "2022-01-26";
+    src = fetchFromGitHub {
+      owner = "NTBBloodbath";
+      repo = "rest.nvim";
+      rev = "2826f6960fbd9adb1da9ff0d008aa2819d2d06b3";
+      sha256 = "0lb3rcc41rb9yhylmkpsj141yfk1kki1xkd4q2i9y0ld0mlwjjv8";
+    };
+    meta.homepage = "https://github.com/NTBBloodbath/rest.nvim/";
   };
 
   riv-vim = buildVimPluginFrom2Nix {

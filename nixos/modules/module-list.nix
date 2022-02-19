@@ -450,6 +450,7 @@
   ./services/hardware/undervolt.nix
   ./services/hardware/vdr.nix
   ./services/hardware/xow.nix
+  ./services/home-automation/home-assistant.nix
   ./services/logging/SystemdJournal2Gelf.nix
   ./services/logging/awstats.nix
   ./services/logging/filebeat.nix
@@ -545,8 +546,8 @@
   ./services/misc/headphones.nix
   ./services/misc/heisenbridge.nix
   ./services/misc/greenclip.nix
-  ./services/misc/home-assistant.nix
   ./services/misc/ihaskell.nix
+  ./services/misc/input-remapper.nix
   ./services/misc/irkerd.nix
   ./services/misc/jackett.nix
   ./services/misc/jellyfin.nix
@@ -595,6 +596,7 @@
   ./services/misc/redmine.nix
   ./services/misc/rippled.nix
   ./services/misc/ripple-data-api.nix
+  ./services/misc/rmfakecloud.nix
   ./services/misc/serviio.nix
   ./services/misc/safeeyes.nix
   ./services/misc/sdrplay.nix
@@ -759,7 +761,6 @@
   ./services/networking/go-neb.nix
   ./services/networking/go-shadowsocks2.nix
   ./services/networking/gobgpd.nix
-  ./services/networking/gogoclient.nix
   ./services/networking/gvpe.nix
   ./services/networking/hans.nix
   ./services/networking/haproxy.nix
@@ -1056,6 +1057,7 @@
   ./services/web-apps/wordpress.nix
   ./services/web-apps/youtrack.nix
   ./services/web-apps/zabbix.nix
+  ./services/web-servers/agate.nix
   ./services/web-servers/apache-httpd/default.nix
   ./services/web-servers/caddy/default.nix
   ./services/web-servers/darkhttpd.nix

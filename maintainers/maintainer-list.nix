@@ -145,6 +145,12 @@
     githubId = 16829510;
     name = "Aaron Janse";
   };
+  aaronjheng = {
+    email = "wentworth@outlook.com";
+    github = "aaronjheng";
+    githubId = 806876;
+    name = "Aaron Jheng";
+  };
   aaronschif = {
     email = "aaronschif@gmail.com";
     github = "aaronschif";
@@ -759,13 +765,6 @@
     githubId = 11699655;
     name = "Stanislas Lange";
   };
-  angustrau = {
-    name = "Angus Trau";
-    email = "nix@angus.ws";
-    matrix = "@angustrau:matrix.org";
-    github = "angustrau";
-    githubId = 13267947;
-  };
   anhdle14 = {
     name = "Le Anh Duc";
     email = "anhdle14@icloud.com";
@@ -1076,6 +1075,12 @@
     github = "athas";
     githubId = 55833;
     name = "Troels Henriksen";
+  };
+  atila = {
+    name = "Átila Saraiva";
+    email = "atilasaraiva@gmail.com";
+    github = "AtilaSaraiva";
+    githubId = 29521461;
   };
   atkinschang = {
     email = "atkinschang+nixpkgs@gmail.com";
@@ -3388,6 +3393,12 @@
     githubId = 18535642;
     name = "Emily";
   };
+  emilytrau = {
+    name = "Emily Trau";
+    email = "nix@angus.ws";
+    github = "emilytrau";
+    githubId = 13267947;
+  };
   enderger = {
     email = "endergeryt@gmail.com";
     github = "enderger";
@@ -3931,6 +3942,12 @@
     githubId = 1276854;
     name = "Florian Peter";
   };
+  fbeffa = {
+    email = "beffa@fbengineering.ch";
+    github = "fedeinthemix";
+    githubId = 7670450;
+    name = "Federico Beffa";
+  };
   fbrs = {
     email = "yuuki@protonmail.com";
     github = "cideM";
@@ -4022,6 +4039,12 @@
     email = "fitzgibbon.niall@gmail.com";
     github = "fitzgibbon";
     githubId = 617048;
+  };
+  fkautz = {
+    name = "Frederick F. Kautz IV";
+    email = "fkautz@alumni.cmu.edu";
+    github = "fkautz";
+    githubId = 135706;
   };
   Flakebi = {
     email = "flakebi@t-online.de";
@@ -6056,6 +6079,12 @@
     githubId = 810075;
     name = "Juan Rodal";
   };
+  juboba = {
+    email = "juboba@gmail.com";
+    github = "juboba";
+    githubId = 1189739;
+    name = "Julio Borja Barra";
+  };
   juliendehos = {
     email = "dehos@lisic.univ-littoral.fr";
     github = "juliendehos";
@@ -7086,6 +7115,12 @@
     github = "Lunarequest";
     githubId = 30698906;
     name = "Luna D Dragon";
+  };
+  LunNova = {
+    email = "nixpkgs-maintainer@lunnova.dev";
+    github = "LunNova";
+    githubId = 782440;
+    name = "Luna Nova";
   };
   lionello = {
     email = "lio@lunesu.com";
@@ -8893,9 +8928,9 @@
     githubId = 2946283;
     name = "Brian Cohen";
   };
-  novoxudonoser = {
+  novoxd = {
     email = "radnovox@gmail.com";
-    github = "novoxudonoser";
+    github = "novoxd";
     githubId = 6052922;
     name = "Kirill Struokov";
   };

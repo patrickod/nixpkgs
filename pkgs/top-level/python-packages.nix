@@ -308,6 +308,8 @@ in {
 
   aiohttp = callPackage ../development/python-modules/aiohttp { };
 
+  aiohttp-apispec = callPackage ../development/python-modules/aiohttp-apispec { };
+
   aiohttp-cors = callPackage ../development/python-modules/aiohttp-cors { };
 
   aiohttp-jinja2 = callPackage ../development/python-modules/aiohttp-jinja2 { };
@@ -377,6 +379,8 @@ in {
   aiopvapi = callPackage ../development/python-modules/aiopvapi { };
 
   aiopvpc = callPackage ../development/python-modules/aiopvpc { };
+
+  aiopyarr = callPackage ../development/python-modules/aiopyarr { };
 
   aiopylgtv = callPackage ../development/python-modules/aiopylgtv { };
 
@@ -757,6 +761,8 @@ in {
   auroranoaa = callPackage ../development/python-modules/auroranoaa { };
 
   aurorapy = callPackage ../development/python-modules/aurorapy { };
+
+  autarco = callPackage ../development/python-modules/autarco { };
 
   auth0-python = callPackage ../development/python-modules/auth0-python { };
 
@@ -2531,6 +2537,8 @@ in {
 
   einops = callPackage ../development/python-modules/einops { };
 
+  eiswarnung = callPackage ../development/python-modules/eiswarnung { };
+
   elgato = callPackage ../development/python-modules/elgato { };
 
   elkm1-lib = callPackage ../development/python-modules/elkm1-lib { };
@@ -2836,6 +2844,8 @@ in {
   filterpy = callPackage ../development/python-modules/filterpy { };
 
   finalfusion = callPackage ../development/python-modules/finalfusion { };
+
+  findimports = callPackage ../development/python-modules/findimports { };
 
   fingerprints = callPackage ../development/python-modules/fingerprints { };
 
@@ -4680,6 +4690,8 @@ in {
 
   lightparam = callPackage ../development/python-modules/lightparam { };
 
+  lightwave = callPackage ../development/python-modules/lightwave { };
+
   lightwave2 = callPackage ../development/python-modules/lightwave2 { };
 
   lima = callPackage ../development/python-modules/lima { };
@@ -4897,7 +4909,7 @@ in {
 
   markupsafe = callPackage ../development/python-modules/markupsafe { };
 
-  Markups = callPackage ../development/python-modules/Markups { };
+  markups = callPackage ../development/python-modules/markups { };
 
   marshmallow = callPackage ../development/python-modules/marshmallow { };
 
@@ -5378,6 +5390,8 @@ in {
 
   nestedtext = callPackage ../development/python-modules/nestedtext { };
 
+  net2grid = callPackage ../development/python-modules/net2grid { };
+
   netaddr = callPackage ../development/python-modules/netaddr { };
 
   netcdf4 = callPackage ../development/python-modules/netcdf4 { };
@@ -5387,6 +5401,8 @@ in {
   netdisco = callPackage ../development/python-modules/netdisco { };
 
   netifaces = callPackage ../development/python-modules/netifaces { };
+
+  netio = callPackage ../development/python-modules/netio { };
 
   nettigo-air-monitor = callPackage ../development/python-modules/nettigo-air-monitor { };
 
@@ -5656,6 +5672,8 @@ in {
   });
 
   openerz-api = callPackage ../development/python-modules/openerz-api { };
+
+  openevsewifi = callPackage ../development/python-modules/openevsewifi { };
 
   openhomedevice = callPackage ../development/python-modules/openhomedevice { };
 
@@ -6018,6 +6036,8 @@ in {
 
   phx-class-registry = callPackage ../development/python-modules/phx-class-registry { };
 
+  pi1wire = callPackage ../development/python-modules/pi1wire { };
+
   piccata = callPackage ../development/python-modules/piccata { };
 
   pickleshare = callPackage ../development/python-modules/pickleshare { };
@@ -6128,6 +6148,8 @@ in {
   pynws = callPackage ../development/python-modules/pynws { };
 
   pynx584 = callPackage ../development/python-modules/pynx584 { };
+
+  pyownet = callPackage ../development/python-modules/pyownet { };
 
   pypoint = callPackage ../development/python-modules/pypoint { };
 
@@ -6544,6 +6566,8 @@ in {
   pyarrow = callPackage ../development/python-modules/pyarrow {
     inherit (pkgs) arrow-cpp cmake;
   };
+
+  pyasn = callPackage ../development/python-modules/pyasn { };
 
   pyasn1 = callPackage ../development/python-modules/pyasn1 { };
 
@@ -7200,6 +7224,8 @@ in {
 
   pynetdicom = callPackage ../development/python-modules/pynetdicom { };
 
+  pynetgear = callPackage ../development/python-modules/pynetgear { };
+
   pynina = callPackage ../development/python-modules/pynina { };
 
   pynisher = callPackage ../development/python-modules/pynisher { };
@@ -7340,6 +7366,8 @@ in {
   pyqt4 = callPackage ../development/python-modules/pyqt/4.x.nix { };
 
   pyqt5 = callPackage ../development/python-modules/pyqt/5.x.nix { };
+
+  pyqt5_sip = callPackage ../development/python-modules/pyqt/sip.nix { };
 
   pyqt5_with_qtmultimedia = self.pyqt5.override {
     withMultimedia = true;
@@ -8389,8 +8417,6 @@ in {
   qiskit = callPackage ../development/python-modules/qiskit { };
 
   qiskit-aer = callPackage ../development/python-modules/qiskit-aer { };
-
-  qiskit-aqua = callPackage ../development/python-modules/qiskit-aqua { };
 
   qiskit-finance = callPackage ../development/python-modules/qiskit-finance { };
 
@@ -9490,6 +9516,8 @@ in {
 
   streamz = callPackage ../development/python-modules/streamz { };
 
+  strenum =  callPackage ../development/python-modules/strenum { };
+
   strict-rfc3339 = callPackage ../development/python-modules/strict-rfc3339 { };
 
   strictyaml = callPackage ../development/python-modules/strictyaml { };
@@ -9652,6 +9680,8 @@ in {
 
   telfhash = callPackage ../development/python-modules/telfhash { };
 
+  temescal = callPackage ../development/python-modules/temescal { };
+
   tempest = callPackage ../development/python-modules/tempest { };
 
   tempita = callPackage ../development/python-modules/tempita { };
@@ -9735,6 +9765,8 @@ in {
   testfixtures = callPackage ../development/python-modules/testfixtures { };
 
   textfsm = callPackage ../development/python-modules/textfsm { };
+
+  textile = callPackage ../development/python-modules/textile { };
 
   testing-common-database = callPackage ../development/python-modules/testing-common-database { };
 
@@ -10058,6 +10090,8 @@ in {
   typeguard = callPackage ../development/python-modules/typeguard { };
 
   typer = callPackage ../development/python-modules/typer { };
+
+  types-dateutil = callPackage ../development/python-modules/types-dateutil { };
 
   types-decorator = callPackage ../development/python-modules/types-decorator { };
 

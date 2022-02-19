@@ -273,10 +273,12 @@ mapAliases ({
   elasticsearch7-oss = throw "elasticsearch7-oss has been removed, as the distribution is no longer provided by upstream. https://github.com/NixOS/nixpkgs/pull/114456"; # Added 2021-06-09
 
   # Electron
-  electron_3 = throw "electron_3 has been removed in favor of newer versions"; # Added 2021-01-06
-  electron_4 = throw "electron_4 has been removed in favor of newer versions"; # Added 2021-01-06
-  electron_5 = throw "electron_5 has been removed in favor of newer versions"; # Added 2021-01-06
-  electron_6 = throw "electron_6 has been removed in favor of newer versions"; # Added 2021-01-06
+  electron_3 = throw "electron_3 has been removed in favor of newer versions"; # added 2022-01-06
+  electron_4 = throw "electron_4 has been removed in favor of newer versions"; # added 2022-01-06
+  electron_5 = throw "electron_5 has been removed in favor of newer versions"; # added 2022-01-06
+  electron_6 = throw "electron_6 has been removed in favor of newer versions"; # added 2022-01-06
+  electron_7 = throw "electron_7 has been removed in favor of newer versions"; # added 2022-02-08
+  electron_8 = throw "electron_8 has been removed in favor of newer versions"; # added 2022-02-08
 
   electrum-dash = throw "electrum-dash has been removed from nixpkgs as the project is abandoned."; # Added 2022-01-01
 
@@ -413,7 +415,6 @@ mapAliases ({
   gnuradio-rds = gnuradio3_7.pkgs.rds; # Added 2019-05-27, changed 2020-10-16
   gnustep-make = gnustep.make; # Added 2016-7-6
   gnuvd = throw "gnuvd was removed because the backend service is missing"; # Added 2020-01-14
-  go_1_12 = throw "go_1_12 has been removed"; # Added 2020-04-26
   gobby5 = gobby; # Added 2021-02-01
   gobjectIntrospection = gobject-introspection; # Added 2018-12-02
   gogoclient = throw "gogoclient has been removed, because it was unmaintained"; # Added 2021-12-15
@@ -474,6 +475,7 @@ mapAliases ({
 
   iana_etc = iana-etc; # Added 2017-03-08
   iasl = throw "iasl has been removed, use acpica-tools instead"; # Added 2021-08-08
+  icecat-bin = throw "icecat-bin has been removed, the binary builds are not maintained upstream."; # Added 2022-02-15
   icedtea8_web = adoptopenjdk-icedtea-web; # Added 2019-08-21
   icedtea_web = adoptopenjdk-icedtea-web; # Added 2019-08-21
   idea = jetbrains; # Added 2017-04-03
@@ -983,6 +985,7 @@ mapAliases ({
   QmidiNet = qmidinet; # Added 2016-05-22
   qca-qt5 = libsForQt5.qca-qt5; # Added 2015-12-19
   qcsxcad = libsForQt5.qcsxcad; # Added 2020-11-05
+  qflipper = qFlipper; # Added 2022-02-11
   qmk_firmware = throw "qmk_firmware has been removed because it was broken"; # Added 2021-04-02
   qr-filetransfer = throw ''"qr-filetransfer" has been renamed to "qrcp"''; # Added 2020-12-02
   qt-3 = throw "qt-3 has been removed from nixpkgs, as it's unmaintained and insecure"; # Added 2021-02-15
@@ -1186,6 +1189,7 @@ mapAliases ({
   torch-repl = throw "torch-repl has been removed, as the upstream project has been abandoned"; # Added 2020-03-28
   torchPackages = throw "torchPackages has been removed, as the upstream project has been abandoned"; # Added 2020-03-28
   trang = jing-trang; # Added 2018-04-25
+  transfig = fig2dev; # Added 2022-02-15
   transmission-remote-cli = "transmission-remote-cli has been removed, as the upstream project has been abandoned. Please use tremc instead"; # Added 2020-10-14
   transmission_gtk = transmission-gtk; # Added 2018-01-06
   transmission_remote_gtk = transmission-remote-gtk; # Added 2018-01-06
@@ -1249,6 +1253,7 @@ mapAliases ({
   webkitgtk24x-gtk2 = throw "webkitgtk24x-gtk2 has been removed because it's insecure. Please use webkitgtk."; # Added 2019-12-05
   webkitgtk24x-gtk3 = throw "webkitgtk24x-gtk3 has been removed because it's insecure. Please use webkitgtk."; # Added 2019-12-05
   weechat-matrix-bridge = weechatScripts.weechat-matrix-bridge; # Added 2018-09-06
+  whirlpool-gui = throw "whirlpool-gui has been removed as it depended on an insecure version of Electron."; # added 2022-02-08
   wicd = throw "wicd has been removed as it is abandoned."; # Added 2021-09-11
   wineFull = winePackages.full; # Added 2017-05-27
   wineMinimal = winePackages.minimal; # Added 2017-05-27

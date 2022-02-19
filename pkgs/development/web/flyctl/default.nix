@@ -2,13 +2,13 @@
 
 buildGoModule rec {
   pname = "flyctl";
-  version = "0.0.285";
+  version = "0.0.297";
 
   src = fetchFromGitHub {
     owner = "superfly";
     repo = "flyctl";
     rev = "v${version}";
-    sha256 = "sha256-0MXIZbD/Vj2dGcepzPk7mMLZQQwDQHQS3WVjd+b4flY=";
+    sha256 = "sha256-Ug/dGHj3prgmiIr6tkEYveTwGPUI0ivy6UtuU5QoJ2U=";
   };
 
   preBuild = ''
@@ -17,7 +17,7 @@ buildGoModule rec {
 
   subPackages = [ "." ];
 
-  vendorSha256 = "sha256-OJGfYXiI1K63N9DkPkp7rawg8f8dgnJQNHfp6nDU4LM=";
+  vendorSha256 = "sha256-EwMPPZOZ0xE1DKvaU7+PrUH+Ty6ut3UYJZSY4EqXFWo=";
 
   doCheck = false;
 
