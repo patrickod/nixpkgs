@@ -238,6 +238,13 @@
           <link xlink:href="options.html#opt-services.headscale.enable">services.headscale</link>
         </para>
       </listitem>
+      <listitem>
+        <para>
+          <link xlink:href="https://0xerr0r.github.io/blocky/">blocky</link>,
+          fast and lightweight DNS proxy as ad-blocker for local network
+          with many features.
+        </para>
+      </listitem>
     </itemizedlist>
   </section>
   <section xml:id="sec-release-22.05-incompatibilities">
@@ -408,6 +415,15 @@
       </listitem>
       <listitem>
         <para>
+          Ntopng (<literal>services.ntopng</literal>) is updated to
+          5.2.1 and uses a separate Redis instance if
+          <literal>system.stateVersion</literal> is at least
+          <literal>22.05</literal>. Existing setups shouldn’t be
+          affected.
+        </para>
+      </listitem>
+      <listitem>
+        <para>
           The backward compatibility in
           <literal>services.wordpress</literal> to configure sites with
           the old interface has been removed. Please use
@@ -426,6 +442,13 @@
         <para>
           opensmtpd-extras is no longer build with python2 scripting
           support due to python2 deprecation in nixpkgs
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <literal>services.miniflux.adminCredentialFiles</literal> is
+          now required, instead of defaulting to
+          <literal>admin</literal> and <literal>password</literal>.
         </para>
       </listitem>
       <listitem>
@@ -540,6 +563,15 @@
           file’s path has also moved from
           <literal>~/.local/share/multimc/multimc.cfg</literal> to
           <literal>~/.local/share/polymc/polymc.cfg</literal>.
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <literal>systemd-nspawn@.service</literal> settings have been
+          reverted to the default systemd behaviour. User namespaces are
+          now activated by default. If you want to keep running nspawn
+          containers without user namespaces you need to set
+          <literal>systemd.nspawn.&lt;name&gt;.execConfig.PrivateUsers = false</literal>
         </para>
       </listitem>
       <listitem>
@@ -668,6 +700,12 @@
           message less cluttered). This will not impact the behaviour of
           code using these functions as intended, namely as top-level
           wrapper for <literal>assert</literal> conditions.
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          The <literal>vpnc</literal> package has been changed to use
+          GnuTLS instead of OpenSSL by default for licensing reasons.
         </para>
       </listitem>
       <listitem>
@@ -917,6 +955,12 @@
           prompt, providing the options
           <literal>programs.starship.enable</literal> and
           <literal>programs.starship.settings</literal>.
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          The <link xlink:href="https://dino.im">Dino</link> XMPP client
+          was updated to 0.3, adding support for audio and video calls.
         </para>
       </listitem>
       <listitem>
