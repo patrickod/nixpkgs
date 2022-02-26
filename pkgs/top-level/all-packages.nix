@@ -1752,6 +1752,8 @@ with pkgs;
 
   doona = callPackage ../tools/security/doona { };
 
+  dotter = callPackage ../tools/misc/dotter { };
+
   droidcam = callPackage ../applications/video/droidcam { };
 
   ecdsautils = callPackage ../tools/security/ecdsautils { };
@@ -9144,6 +9146,8 @@ with pkgs;
 
   rocket = libsForQt5.callPackage ../tools/graphics/rocket { };
 
+  rtabmap = libsForQt5.callPackage ../applications/video/rtabmap/default.nix { };
+
   rtaudio = callPackage ../development/libraries/audio/rtaudio {
     jack = libjack2;
     inherit (darwin.apple_sdk.frameworks) CoreAudio;
@@ -13419,7 +13423,6 @@ with pkgs;
 
   inherit (callPackage ../development/compilers/vala { })
     vala_0_48
-    vala_0_52
     vala_0_54
     vala;
 
