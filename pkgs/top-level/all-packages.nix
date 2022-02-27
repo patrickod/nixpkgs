@@ -3615,6 +3615,8 @@ with pkgs;
 
   odafileconverter = libsForQt5.callPackage ../applications/graphics/odafileconverter {};
 
+  oil-buku = callPackage ../applications/misc/oil { };
+
   ossutil = callPackage ../tools/admin/ossutil {};
 
   pastel = callPackage ../applications/misc/pastel {
@@ -5011,7 +5013,7 @@ with pkgs;
 
   schildichat-desktop = callPackage ../applications/networking/instant-messengers/schildichat/schildichat-desktop.nix {
     inherit (darwin.apple_sdk.frameworks) Security AppKit CoreServices;
-    electron = electron_13;
+    electron = electron_15;
   };
   schildichat-desktop-wayland = writeScriptBin "schildichat-desktop" ''
     #!/bin/sh
@@ -6719,12 +6721,15 @@ with pkgs;
   ipfs = callPackage ../applications/networking/ipfs {
     buildGoModule = buildGo116Module;
   };
-  ipfs-migrator = callPackage ../applications/networking/ipfs-migrator {
-    buildGoModule = buildGo116Module;
-  };
   ipfs-cluster = callPackage ../applications/networking/ipfs-cluster {
     buildGoModule = buildGo116Module;
   };
+
+  ipfs-migrator-all-fs-repo-migrations = callPackage ../applications/networking/ipfs-migrator/all-migrations.nix {
+    buildGoModule = buildGo116Module;
+  };
+  ipfs-migrator-unwrapped = callPackage ../applications/networking/ipfs-migrator/unwrapped.nix { };
+  ipfs-migrator = callPackage ../applications/networking/ipfs-migrator { };
 
   ipget = callPackage ../applications/networking/ipget { };
 
@@ -11413,7 +11418,9 @@ with pkgs;
 
   zdelta = callPackage ../tools/compression/zdelta { };
 
-  zellij = callPackage ../tools/misc/zellij { };
+  zellij = callPackage ../tools/misc/zellij {
+    inherit (darwin.apple_sdk.frameworks) DiskArbitration Foundation;
+  };
 
   zenith = callPackage ../tools/system/zenith {
     inherit (darwin.apple_sdk.frameworks) IOKit;
@@ -21018,8 +21025,7 @@ with pkgs;
   dnsutils = bind.dnsutils;
   dig = bind.dnsutils;
 
-  inherit (callPackages ../servers/bird { })
-    bird bird6 bird2;
+  bird = callPackage ../servers/bird { };
 
   bosun = callPackage ../servers/monitoring/bosun { };
 
@@ -27560,7 +27566,6 @@ with pkgs;
       avahi = avahi-compat;
       jackSupport = config.mumble.jackSupport or false;
       speechdSupport = config.mumble.speechdSupport or false;
-      pulseSupport = config.pulseaudio or stdenv.isLinux;
     }).mumble;
 
   mumble_overlay = callPackage ../applications/networking/mumble/overlay.nix {
@@ -28784,6 +28789,8 @@ with pkgs;
   swingsane = callPackage ../applications/graphics/swingsane { };
 
   sxiv = callPackage ../applications/graphics/sxiv { };
+
+  nsxiv = callPackage ../applications/graphics/nsxiv { };
 
   resilio-sync = callPackage ../applications/networking/resilio-sync { };
 
@@ -33586,7 +33593,9 @@ with pkgs;
 
   pgmanage = callPackage ../applications/misc/pgmanage { };
 
-  pgadmin = callPackage ../applications/misc/pgadmin {
+  pgadmin4 = callPackage ../tools/admin/pgadmin { };
+
+  pgadmin3 = callPackage ../tools/admin/pgadmin/3.nix {
     openssl = openssl_1_0_2;
   };
 
