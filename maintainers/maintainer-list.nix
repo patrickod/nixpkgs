@@ -2993,6 +2993,12 @@
     githubId = 8404455;
     name = "Diego Lelis";
   };
+  DieracDelta = {
+    email = "justin@restivo.me";
+    github = "DieracDelta";
+    githubId = 13730968;
+    name = "Justin Restivo";
+  };
   diffumist = {
     email = "git@diffumist.me";
     github = "diffumist";
@@ -6524,7 +6530,7 @@
     githubId = 18447310;
   };
   kloenk = {
-    email = "me@kloenk.de";
+    email = "me@kloenk.dev";
     matrix = "@kloenk:petabyte.dev";
     name = "Finn Behrens";
     github = "kloenk";
@@ -11552,6 +11558,12 @@
     github = "Steell";
     githubId = 1699155;
     name = "Steve Elliott";
+  };
+  stehessel = {
+      email = "stephan@stehessel.de";
+      github = "stehessel";
+      githubId = 55607356;
+      name = "Stephan Heßelmann";
   };
   stelcodes = {
     email = "stel@stel.codes";
