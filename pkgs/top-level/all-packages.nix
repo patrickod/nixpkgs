@@ -27906,8 +27906,6 @@ with pkgs;
   obs-studio-plugins = recurseIntoAttrs (callPackage ../applications/video/obs-studio/plugins {});
   wrapOBS = callPackage ../applications/video/obs-studio/wrapper.nix {};
 
-  obs-looking-glass = callPackage ../applications/virtualization/looking-glass-client/obs-looking-glass.nix { };
-
   obsidian = callPackage ../applications/misc/obsidian { };
 
   octoprint = callPackage ../applications/misc/octoprint { };
