@@ -2418,6 +2418,23 @@
     githubId = 5510514;
     name = "Conrad Mearns";
   };
+  corbanr = {
+    email = "corban@raunco.co";
+    github = "CorbanR";
+    githubId = 1918683;
+    matrix = "@corbansolo:matrix.org";
+    name = "Corban Raun";
+    keys = [
+      {
+        longkeyid = "rsa4096/0xA697A56F1F151189";
+        fingerprint = "6607 0B24 8CE5 64ED 22CE  0950 A697 A56F 1F15 1189";
+      }
+      {
+        longkeyid = "ed25519/0x230F4AC153F90F29";
+        fingerprint = "D8CB 816A B678 A4E6 1EC7  5325 230F 4AC1 53F9 0F29";
+      }
+    ];
+  };
   couchemar = {
     email = "couchemar@yandex.ru";
     github = "couchemar";
@@ -7904,12 +7921,6 @@
     github = "kira-bruneau";
     githubId = 382041;
   };
-  meutraa = {
-    email = "paul+nixpkgs@lost.host";
-    name = "Paul Meredith";
-    github = "meutraa";
-    githubId = 68550871;
-  };
   mephistophiles = {
     email = "mussitantesmortem@gmail.com";
     name = "Maxim Zhukov";
@@ -8545,6 +8556,12 @@
     github = "myrl";
     githubId = 9636071;
     name = "Myrl Hex";
+  };
+  n0emis = {
+    email = "nixpkgs@n0emis.network";
+    github = "n0emis";
+    githubId = 22817873;
+    name = "Ember Keske";
   };
   nadrieril = {
     email = "nadrieril@gmail.com";
@@ -10275,6 +10292,13 @@
     github = "rhoriguchi ";
     githubId = 6047658;
     name = "Ryan Horiguchi";
+  };
+  rhysmdnz = {
+    email = "rhys@memes.nz";
+    matrix = "@rhys:memes.nz";
+    github = "rhysmdnz";
+    githubId = 2162021;
+    name = "Rhys Davies";
   };
   ribose-jeffreylau = {
     name = "Jeffrey Lau";
@@ -12810,9 +12834,9 @@
     githubId = 5837359;
     name = "Adrian Pistol";
   };
-  vika_nezrimaya = {
+  vikanezrimaya = {
     email = "vika@fireburn.ru";
-    github = "kisik21";
+    github = "vikanezrimaya";
     githubId = 7953163;
     name = "Vika Shleina";
     keys = [{

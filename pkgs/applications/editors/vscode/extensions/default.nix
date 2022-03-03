@@ -349,6 +349,42 @@ let
         };
       };
 
+      bierner.emojisense = buildVscodeMarketplaceExtension {
+        mktplcRef = {
+          name = "emojisense";
+          publisher = "bierner";
+          version = "0.9.0";
+          sha256 = "0gpcpwh57lqlynsrkv3smykndb46xjh7r85lb291wdklq5ahmb2j";
+        };
+        meta = with lib; {
+          license = licenses.mit;
+        };
+      };
+
+      bierner.markdown-checkbox = buildVscodeMarketplaceExtension {
+        mktplcRef = {
+          name = "markdown-checkbox";
+          publisher = "bierner";
+          version = "0.3.1";
+          sha256 = "0x57dnr6ksqxi28g1c392k04vxy0vdni9nl4xps3i5zh0pyxizhw";
+        };
+        meta = with lib; {
+          license = licenses.mit;
+        };
+      };
+
+      bierner.markdown-emoji = buildVscodeMarketplaceExtension {
+        mktplcRef = {
+          name = "markdown-emoji";
+          publisher = "bierner";
+          version = "0.2.1";
+          sha256 = "1lcg2b39jydl40wcfrbgshl2i1r58k92c7dipz0hl1fa1v23vj4v";
+        };
+        meta = with lib; {
+          license = licenses.mit;
+        };
+      };
+
       bradlc.vscode-tailwindcss = buildVscodeMarketplaceExtension {
         mktplcRef = {
           name = "vscode-tailwindcss";
@@ -1276,8 +1312,8 @@ let
         mktplcRef = {
           name = "vscode-clangd";
           publisher = "llvm-vs-code-extensions";
-          version = "0.1.13";
-          sha256 = "/MpwbM+obcD3uqk8hnDrnbEK9Jot4fMe4sNzLt6mVGI=";
+          version = "0.1.15";
+          sha256 = "0skasnc490wp0l5xzpdmwdzjr4qiy63kg2qi27060m5yqkq3h8xn";
         };
         meta = {
           license = lib.licenses.mit;
@@ -1537,8 +1573,8 @@ let
         mktplcRef = {
           name = "java";
           publisher = "redhat";
-          version = "1.2.0";
-          sha256 = "sha256-YmR3FWhPZSU2gE6NIVoA1HZBzaYaTNYFXC/uNwbDEdQ=";
+          version = "1.3.0";
+          sha256 = "sha256-Y5hP/Rq9BsFwbCRQWOfiLHKoYkKBpZx8blg9o74obfk=";
         };
         buildInputs = [ jdk ];
         meta = {
@@ -1821,8 +1857,8 @@ let
         mktplcRef = {
           name = "code-spell-checker";
           publisher = "streetsidesoftware";
-          version = "2.1.5";
-          sha256 = "sha256-nIR3PtbtnSbAU0rS+qVtPsj++Dbfp/k86dWkx4xYcno=";
+          version = "2.1.7";
+          sha256 = "sha256-C0jYDIDBK1JH8eFaFmCUilBXCbU5y2TRF3OZAw9ijoY=";
         };
         meta = with lib; {
           changelog = "https://marketplace.visualstudio.com/items/streetsidesoftware.code-spell-checker/changelog";
@@ -1879,8 +1915,8 @@ let
         mktplcRef = {
           publisher = "takayama";
           name = "vscode-qq";
-          version = "1.4.0";
-          sha256 = "sha256-DYjNWSKOrDYvdiV7G24uKz6w4ggeYUMkQIiOGZAbMSI=";
+          version = "1.4.2";
+          sha256 = "sha256-koeiFXUFI/i8EGCRDTym62m7JER18J9MKZpbAozr0Ng=";
         };
         meta = {
           license = lib.licenses.mpl20;

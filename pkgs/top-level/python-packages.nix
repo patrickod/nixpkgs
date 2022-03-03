@@ -186,6 +186,8 @@ in {
 
   actdiag = callPackage ../development/python-modules/actdiag { };
 
+  adafruit-io = callPackage ../development/python-modules/adafruit-io { };
+
   adafruit-platformdetect = callPackage ../development/python-modules/adafruit-platformdetect { };
 
   adafruit-pureio = callPackage ../development/python-modules/adafruit-pureio { };
@@ -1210,9 +1212,7 @@ in {
 
   binwalk = callPackage ../development/python-modules/binwalk { };
 
-  binwalk-full = appendToName "full" (self.binwalk.override {
-    visualizationSupport = true;
-  });
+  binwalk-full = self.binwalk.override { visualizationSupport = true; };
 
   biopython = callPackage ../development/python-modules/biopython { };
 
@@ -3029,6 +3029,8 @@ in {
 
   flax = callPackage ../development/python-modules/flax { };
 
+  fleep = callPackage ../development/python-modules/fleep { };
+
   flexmock = callPackage ../development/python-modules/flexmock { };
 
   flickrapi = callPackage ../development/python-modules/flickrapi { };
@@ -3924,6 +3926,8 @@ in {
 
   icmplib = callPackage ../development/python-modules/icmplib { };
 
+  icnsutil = callPackage ../development/python-modules/icnsutil { };
+
   ics = callPackage ../development/python-modules/ics { };
 
   idasen = callPackage ../development/python-modules/idasen { };
@@ -4344,6 +4348,8 @@ in {
 
   jupyter_core = callPackage ../development/python-modules/jupyter_core { };
 
+  jupyter-lsp = callPackage ../development/python-modules/jupyter-lsp { };
+
   jupyter_server = callPackage ../development/python-modules/jupyter_server { };
 
   jupyterhub = callPackage ../development/python-modules/jupyterhub { };
@@ -4365,6 +4371,8 @@ in {
   jupyterlab_server = callPackage ../development/python-modules/jupyterlab_server { };
 
   jupyterlab-widgets = callPackage ../development/python-modules/jupyterlab-widgets { };
+
+  jupyterlab-lsp = callPackage ../development/python-modules/jupyterlab-lsp { };
 
   jupyter-packaging = callPackage ../development/python-modules/jupyter-packaging { };
 
@@ -5466,6 +5474,8 @@ in {
 
   nextcloudmonitor = callPackage ../development/python-modules/nextcloudmonitor { };
 
+  nextcord = callPackage ../development/python-modules/nextcord { };
+
   nghttp2 = (toPythonModule (pkgs.nghttp2.override {
     inherit (self) python cython setuptools;
     inherit (pkgs) ncurses;
@@ -5738,6 +5748,8 @@ in {
   openrouteservice = callPackage ../development/python-modules/openrouteservice { };
 
   opensensemap-api = callPackage ../development/python-modules/opensensemap-api { };
+
+  opensfm = callPackage ../development/python-modules/opensfm { };
 
   openshift = callPackage ../development/python-modules/openshift { };
 
@@ -6079,6 +6091,8 @@ in {
   parameterizedtestcase = callPackage ../development/python-modules/parameterizedtestcase { };
 
   pdunehd = callPackage ../development/python-modules/pdunehd { };
+
+  pyprecice = callPackage ../development/python-modules/pyprecice { };
 
   phonopy = callPackage ../development/python-modules/phonopy { };
 
@@ -6764,6 +6778,8 @@ in {
   pycryptodomex = callPackage ../development/python-modules/pycryptodomex { };
 
   pyct = callPackage ../development/python-modules/pyct { };
+
+  pyctr = callPackage ../development/python-modules/pyctr { };
 
   pycuda = callPackage ../development/python-modules/pycuda {
     cudatoolkit = pkgs.cudatoolkit;
@@ -8593,6 +8609,8 @@ in {
 
   re-assert = callPackage ../development/python-modules/re-assert { };
 
+  readability-lxml = callPackage ../development/python-modules/readability-lxml { };
+
   readchar = callPackage ../development/python-modules/readchar { };
 
   readlike = callPackage ../development/python-modules/readlike { };
@@ -8736,6 +8754,8 @@ in {
   rflink = callPackage ../development/python-modules/rflink { };
 
   rich = callPackage ../development/python-modules/rich { };
+
+  rich-rst = callPackage ../development/python-modules/rich-rst { };
 
   rig = callPackage ../development/python-modules/rig { };
 
@@ -9836,6 +9856,8 @@ in {
 
   textile = callPackage ../development/python-modules/textile { };
 
+  textual = callPackage ../development/python-modules/textual { };
+
   testing-common-database = callPackage ../development/python-modules/testing-common-database { };
 
   testing-postgresql = callPackage ../development/python-modules/testing-postgresql { };
@@ -9985,6 +10007,8 @@ in {
 
   toposort = callPackage ../development/python-modules/toposort { };
 
+  torch-tb-profiler = callPackage ../development/python-modules/torch-tb-profiler/default.nix { };
+
   torchaudio-bin = callPackage ../development/python-modules/torchaudio/bin.nix { };
 
   torchgpipe = callPackage ../development/python-modules/torchgpipe { };
@@ -10111,6 +10135,8 @@ in {
 
   twitch-python = callPackage ../development/python-modules/twitch-python { };
 
+  twitchapi = callPackage ../development/python-modules/twitchapi { };
+
   twitter = callPackage ../development/python-modules/twitter { };
 
   twitter-common-collections = callPackage ../development/python-modules/twitter-common-collections { };
@@ -10159,13 +10185,21 @@ in {
 
   typer = callPackage ../development/python-modules/typer { };
 
+  types-cryptography = callPackage ../development/python-modules/types-cryptography { };
+
   types-dateutil = callPackage ../development/python-modules/types-dateutil { };
 
   types-decorator = callPackage ../development/python-modules/types-decorator { };
 
+  types-enum34 = callPackage ../development/python-modules/types-enum34 { };
+
   types-freezegun = callPackage ../development/python-modules/types-freezegun { };
 
   types-futures = callPackage ../development/python-modules/types-futures { };
+
+  types-ipaddress = callPackage ../development/python-modules/types-ipaddress { };
+
+  types-paramiko = callPackage ../development/python-modules/types-paramiko { };
 
   types-protobuf = callPackage ../development/python-modules/types-protobuf { };
 

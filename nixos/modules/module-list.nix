@@ -91,6 +91,7 @@
   ./hardware/video/switcheroo-control.nix
   ./hardware/video/uvcvideo/default.nix
   ./hardware/video/webcam/facetimehd.nix
+  ./hardware/xone.nix
   ./hardware/xpadneo.nix
   ./i18n/input-method/default.nix
   ./i18n/input-method/fcitx.nix
@@ -396,6 +397,7 @@
   ./services/development/jupyterhub/default.nix
   ./services/development/rstudio-server/default.nix
   ./services/development/lorri.nix
+  ./services/development/zammad.nix
   ./services/display-managers/greetd.nix
   ./services/editors/emacs.nix
   ./services/editors/infinoted.nix
@@ -949,7 +951,6 @@
   ./services/security/clamav.nix
   ./services/security/fail2ban.nix
   ./services/security/fprintd.nix
-  ./services/security/fprot.nix
   ./services/security/haka.nix
   ./services/security/haveged.nix
   ./services/security/hockeypuck.nix
