@@ -218,6 +218,11 @@ let
       # Kernel TLS
       TLS         = whenAtLeast "4.13" module;
       TLS_DEVICE  = whenAtLeast "4.18" yes;
+
+      # infiniband
+      INFINIBAND = module;
+      INFINIBAND_IPOIB = module;
+      INFINIBAND_IPOIB_CM = yes;
     };
 
     wireless = {
@@ -474,6 +479,7 @@ let
       DEFAULT_SECURITY_APPARMOR        = yes;
 
       RANDOM_TRUST_CPU                 = whenAtLeast "4.19" yes; # allow RDRAND to seed the RNG
+      RANDOM_TRUST_BOOTLOADER          = whenAtLeast "5.4" yes; # allow the bootloader to seed the RNG
 
       MODULE_SIG            = no; # r13y, generates a random key during build and bakes it in
       # Depends on MODULE_SIG and only really helps when you sign your modules
@@ -542,7 +548,7 @@ let
       UPROBE_EVENT          = { optional = true; tristate = whenOlder "4.11" "y";};
       UPROBE_EVENTS         = { optional = true; tristate = whenAtLeast "4.11" "y";};
       BPF_SYSCALL           = yes;
-      BPF_UNPRIV_DEFAULT_OFF = whenBetween "5.10" "5.15" yes;
+      BPF_UNPRIV_DEFAULT_OFF = whenBetween "5.10" "5.16" yes;
       BPF_EVENTS            = yes;
       FUNCTION_PROFILER     = yes;
       RING_BUFFER_BENCHMARK = no;
@@ -719,7 +725,12 @@ let
 
       HID_ACRUX_FF       = yes;
       DRAGONRISE_FF      = yes;
+      GREENASIA_FF       = yes;
       HOLTEK_FF          = yes;
+      JOYSTICK_PSXPAD_SPI_FF = whenAtLeast "4.14" yes;
+      LOGIG940_FF        = yes;
+      NINTENDO_FF        = whenAtLeast "5.16" yes;
+      PLAYSTATION_FF     = whenAtLeast "5.12" yes;
       SONY_FF            = yes;
       SMARTJOYPLUS_FF    = yes;
       THRUSTMASTER_FF    = yes;
