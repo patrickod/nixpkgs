@@ -2854,6 +2854,8 @@ with pkgs;
 
   cucumber = callPackage ../development/tools/cucumber {};
 
+  dabet = callPackage ../tools/misc/dabet { };
+
   dabtools = callPackage ../applications/radio/dabtools { };
 
   daemontools = callPackage ../tools/admin/daemontools { };
@@ -3424,7 +3426,11 @@ with pkgs;
 
   jellycli = callPackage ../applications/audio/jellycli { };
 
-  jellyfin = callPackage ../servers/jellyfin { };
+  jellyfin = callPackage ../servers/jellyfin {
+    ffmpeg = jellyfin-ffmpeg;
+  };
+
+  jellyfin-ffmpeg = callPackage ../development/libraries/jellyfin-ffmpeg { };
 
   jellyfin-media-player = libsForQt5.callPackage ../applications/video/jellyfin-media-player {
     inherit (darwin.apple_sdk.frameworks) CoreFoundation Cocoa CoreAudio MediaPlayer;
@@ -6493,6 +6499,8 @@ with pkgs;
   hasmail = callPackage ../applications/networking/mailreaders/hasmail { };
 
   haste-client = callPackage ../tools/misc/haste-client { };
+
+  haste-server = callPackage ../servers/haste-server { };
 
   hal-hardware-analyzer = libsForQt5.callPackage ../applications/science/electronics/hal-hardware-analyzer { };
 
@@ -12783,10 +12791,6 @@ with pkgs;
   buildGraalvmNativeImage = callPackage ../build-support/build-graalvm-native-image {
     graalvm = graalvm11-ce;
   };
-
-  inherit (callPackages ../development/compilers/graalvm/enterprise-edition.nix { })
-    graalvm8-ee
-    graalvm11-ee;
 
   openshot-qt = libsForQt5.callPackage ../applications/video/openshot-qt { };
 
@@ -20478,6 +20482,10 @@ with pkgs;
 
   kyotocabinet = callPackage ../development/libraries/kyotocabinet { };
 
+  tomlc99 = callPackage ../development/libraries/tomlc99 { };
+
+  tomlcpp = callPackage ../development/libraries/tomlcpp { };
+
   tokyocabinet = callPackage ../development/libraries/tokyo-cabinet { };
 
   tokyotyrant = callPackage ../development/libraries/tokyo-tyrant { };
@@ -25470,10 +25478,11 @@ with pkgs;
 
   em = callPackage ../applications/editors/em { };
 
-  emacs = emacs27;
-  emacs-nox = emacs27-nox;
+  emacs = emacs28;
+  emacsNativeComp = emacs28NativeComp;
+  emacs-nox = emacs28-nox;
 
-  emacs27 = callPackage ../applications/editors/emacs/27.nix {
+  emacs28 = callPackage ../applications/editors/emacs/28.nix {
     # use override to enable additional features
     libXaw = xorg.libXaw;
     Xaw3d = null;
@@ -25485,7 +25494,11 @@ with pkgs;
     inherit (darwin) sigtool;
   };
 
-  emacs27-nox = lowPrio (emacs27.override {
+  emacs28NativeComp = emacs28.override {
+    nativeComp = true;
+  };
+
+  emacs28-nox = lowPrio (emacs28.override {
     withX = false;
     withNS = false;
     withGTK2 = false;
@@ -27074,13 +27087,13 @@ with pkgs;
 
     # C++20 is required, darwin has Clang 7 by default, aarch64 has gcc 9 by default
     stdenv = if stdenv.isDarwin
-      then llvmPackages_12.libcxxStdenv
+      then llvmPackages_12.stdenv
       else if stdenv.isAarch64 then gcc10Stdenv else stdenv;
 
     # tdesktop has random crashes when jemalloc is built with gcc.
     # Apparently, it triggers some bug due to usage of gcc's builtin
     # functions like __builtin_ffsl by jemalloc when it's built with gcc.
-    jemalloc = (jemalloc.override { stdenv = llvmPackages.stdenv; }).overrideAttrs(_: {
+    jemalloc = (jemalloc.override { stdenv = clangStdenv; }).overrideAttrs(_: {
       # no idea how to fix the tests :(
       doCheck = false;
     });
@@ -28037,8 +28050,6 @@ with pkgs;
   spacegun = callPackage ../applications/networking/cluster/spacegun {};
 
   stride = callPackage ../applications/networking/instant-messengers/stride { };
-
-  sudolikeaboss = callPackage ../tools/security/sudolikeaboss { };
 
   speedread = callPackage ../applications/misc/speedread { };
 
@@ -29694,6 +29705,8 @@ with pkgs;
   unigine-heaven = callPackage ../applications/graphics/unigine-heaven { };
 
   unigine-tropics = pkgsi686Linux.callPackage ../applications/graphics/unigine-tropics { };
+
+  unigine-sanctuary = pkgsi686Linux.callPackage ../applications/graphics/unigine-sanctuary { };
 
   unigine-superposition = libsForQt5.callPackage ../applications/graphics/unigine-superposition { };
 

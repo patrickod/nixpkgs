@@ -209,6 +209,8 @@ in {
 
   aesara = callPackage ../development/python-modules/aesara { };
 
+  aesedb = callPackage ../development/python-modules/aesedb { };
+
   afdko = callPackage ../development/python-modules/afdko { };
 
   affine = callPackage ../development/python-modules/affine { };
@@ -1983,6 +1985,8 @@ in {
 
   cypari2 = callPackage ../development/python-modules/cypari2 { };
 
+  cypherpunkpay = callPackage ../development/python-modules/cypherpunkpay { };
+
   cysignals = callPackage ../development/python-modules/cysignals { };
 
   cython = callPackage ../development/python-modules/Cython { };
@@ -2851,6 +2855,7 @@ in {
 
   fenics = callPackage ../development/libraries/science/math/fenics {
     hdf5 = pkgs.hdf5_1_10;
+    boost = pkgs.boost169;
   };
 
   ffcv = callPackage ../development/python-modules/ffcv { };
@@ -3199,6 +3204,8 @@ in {
   gattlib = callPackage ../development/python-modules/gattlib {
     inherit (pkgs) bluez glib pkg-config;
   };
+
+  gb-io = callPackage ../development/python-modules/gb-io { };
 
   gbinder-python = callPackage ../development/python-modules/gbinder-python { };
 
@@ -4896,6 +4903,8 @@ in {
 
   lupupy = callPackage ../development/python-modules/lupupy { };
 
+  lxmf= callPackage ../development/python-modules/lxmf { };
+
   lxml = callPackage ../development/python-modules/lxml {
     inherit (pkgs) libxml2 libxslt zlib;
   };
@@ -5240,6 +5249,8 @@ in {
 
   mohawk = callPackage ../development/python-modules/mohawk { };
 
+  monero = callPackage ../development/python-modules/monero { };
+
   mongomock = callPackage ../development/python-modules/mongomock { };
 
   mongodict = callPackage ../development/python-modules/mongodict { };
@@ -5412,6 +5423,8 @@ in {
   nampa = callPackage ../development/python-modules/nampa { };
 
   nanoleaf = callPackage ../development/python-modules/nanoleaf { };
+
+  nomadnet = callPackage ../development/python-modules/nomadnet { };
 
   nanomsg-python = callPackage ../development/python-modules/nanomsg-python {
     inherit (pkgs) nanomsg;
@@ -7419,6 +7432,8 @@ in {
     inherit (pkgs) jq;
   };
 
+  pypng = callPackage ../development/python-modules/pypng { };
+
   phonemizer = callPackage ../development/python-modules/phonemizer { };
 
   pyopencl = callPackage ../development/python-modules/pyopencl {
@@ -8880,6 +8895,8 @@ in {
   rnc2rng = callPackage ../development/python-modules/rnc2rng { };
 
   rnginline = callPackage ../development/python-modules/rnginline { };
+
+  rns = callPackage ../development/python-modules/rns { };
 
   robomachine = callPackage ../development/python-modules/robomachine { };
 
@@ -10988,6 +11005,8 @@ in {
     ffmpegSupport = false;
     phantomjsSupport = false;
   };
+
+  yoyo-migrations = callPackage ../development/python-modules/yoyo-migrations { };
 
   yt-dlp = callPackage ../tools/misc/yt-dlp { };
 
