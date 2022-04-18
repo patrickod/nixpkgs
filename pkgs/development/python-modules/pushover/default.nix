@@ -1,13 +1,15 @@
-{ lib, buildPythonPackage, fetchPypi
+{ lib, buildPythonPackage, fetchFromGitHub
 , requests }:
 
 buildPythonPackage rec {
   pname = "python-pushover";
-  version = "0.4";
+  version = "1.2";
 
-  src = fetchPypi {
-    inherit pname version;
-    sha256 = "dee1b1344fb8a5874365fc9f886d9cbc7775536629999be54dfa60177cf80810";
+  src = fetchFromGitHub {
+    owner = "almir1904";
+    repo = "python-pushover";
+    rev = "master";
+    sha256 = "sha256-RRc8ld0pq2mf6gzHq0PhZEQ2cshyt1SQiGT3P21JGNk";
   };
 
   propagatedBuildInputs = [ requests ];
