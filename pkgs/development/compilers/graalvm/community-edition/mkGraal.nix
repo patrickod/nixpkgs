@@ -1,7 +1,36 @@
-{ javaVersion
+{
+  # An attrset describing each platform configuration. All values are extract
+  # from the GraalVM releases available on
+  # https://github.com/graalvm/graalvm-ce-builds/releases
+  # Example:
+  # config = {
+  #   x86_64-linux = {
+  #     # List of products that will be included in the GraalVM derivation
+  #     # See `with{NativeImage,Ruby,Python,WASM,*}Svm` variables for the
+  #     # available values
+  #     products = [ "graalvm-ce" "native-image-installable-svm" ];
+  #     # GraalVM arch, not to be confused with the nix platform
+  #     arch = "linux-amd64";
+  #     # GraalVM version
+  #     version = "22.0.0.2";
+  #   };
+  # }
+  config
+  # GraalVM version that will be used unless overriden by `config.<platform>.version`
 , defaultVersion
-, platforms
-, config
+  # Java version used by GraalVM
+, javaVersion
+  # Platforms were GraalVM will be allowed to build (i.e. `meta.platforms`)
+, platforms ? builtins.attrNames config
+  # If set to true, update script will (re-)generate the sources file even if
+  # there are no updates available
+, forceUpdate ? false
+  # Path for the sources file that will be used
+  # See `update.nix` file for a description on how this file works
+, sourcesPath ? ./. + "/graalvm${javaVersion}-ce-sources.json"
+  # Use musl instead of glibc to allow true static builds in GraalVM's
+  # Native Image (i.e.: `--static --libc=musl`). This will cause glibc static
+  # builds to fail, so it should be used with care
 , useMusl ? false
 }:
 
@@ -32,10 +61,11 @@
 , gtkSupport ? stdenv.isLinux
 , cairo
 , glib
-, gtk3
-, writeShellScript
-, jq
+  # updateScript deps
 , gnused
+, gtk3
+, jq
+, writeShellScript
 }:
 
 assert useMusl -> stdenv.isLinux;
@@ -44,8 +74,7 @@ let
   platform = config.${stdenv.hostPlatform.system} or (throw "Unsupported system: ${stdenv.hostPlatform.system}");
   version = platform.version or defaultVersion;
   name = "graalvm${javaVersion}-ce";
-  sourcesFilename = "${name}-sources.json";
-  sources = builtins.fromJSON (builtins.readFile (./. + "/${sourcesFilename}"));
+  sources = builtins.fromJSON (builtins.readFile sourcesPath);
 
   runtimeLibraryPath = lib.makeLibraryPath
     ([ cups ] ++ lib.optionals gtkSupport [ cairo glib gtk3 ]);
@@ -56,7 +85,7 @@ let
   ] ++ lib.optionals useMusl [
     (lib.getDev musl)
     # GraalVM 21.3.0+ expects musl-gcc as <system>-musl-gcc
-    (writeShellScriptBin "${stdenv.system}-musl-gcc" ''${lib.getDev musl}/bin/musl-gcc "$@"'')
+    (writeShellScriptBin "${stdenv.hostPlatform.system}-musl-gcc" ''${lib.getDev musl}/bin/musl-gcc "$@"'')
   ]);
 
   withNativeImageSvm = builtins.elem "native-image-installable-svm" platform.products;
@@ -141,7 +170,7 @@ let
 
     installPhase = ''
       # ensure that $lib/lib exists to avoid breaking builds
-      mkdir -p $lib/lib
+      mkdir -p "$lib/lib"
       # jni.h expects jni_md.h to be in the header search path.
       ln -s $out/include/linux/*_md.h $out/include/
 
@@ -152,25 +181,25 @@ let
         if [ -z "\''${JAVA_HOME-}" ]; then export JAVA_HOME=$out; fi
       EOF
       ${
-      lib.optionalString (stdenv.isLinux) ''
-        # provide libraries needed for static compilation
-        ${
-          if useMusl then
-            "for f in ${musl.stdenv.cc.cc}/lib/* ${musl}/lib/* ${zlib.static}/lib/*; do"
-          else
-            "for f in ${glibc}/lib/* ${glibc.static}/lib/* ${zlib.static}/lib/*; do"
-        }
-          ln -s $f $out/lib/svm/clibraries/${platform.arch}/$(basename $f)
-        done
+        lib.optionalString (stdenv.isLinux) ''
+          # provide libraries needed for static compilation
+          ${
+            if useMusl then
+              ''for f in "${musl.stdenv.cc.cc}/lib/"* "${musl}/lib/"* "${zlib.static}/lib/"*; do''
+            else
+              ''for f in "${glibc}/lib/"* "${glibc.static}/lib/"* "${zlib.static}/lib/"*; do''
+          }
+            ln -s "$f" "$out/lib/svm/clibraries/${platform.arch}/$(basename $f)"
+          done
 
-        # add those libraries to $lib output too, so we can use them with
-        # `native-image -H:CLibraryPath=''${lib.getLib graalvmXX-ce}/lib ...` and reduce
-        # closure size by not depending on GraalVM $out (that is much bigger)
-        mkdir -p $lib/lib
-        for f in ${glibc}/lib/*; do
-          ln -s $f $lib/lib/$(basename $f)
-        done
-      ''
+          # add those libraries to $lib output too, so we can use them with
+          # `native-image -H:CLibraryPath=''${lib.getLib graalvmXX-ce}/lib ...` and reduce
+          # closure size by not depending on GraalVM $out (that is much bigger)
+          # we always use glibc here, since musl is only supported for static compilation
+          for f in "${glibc}/lib/"*; do
+            ln -s "$f" "$lib/lib/$(basename $f)"
+          done
+        ''
       }
     '';
 
@@ -181,17 +210,11 @@ let
     autoPatchelfIgnoreMissingDeps = withRubySvm && stdenv.isDarwin;
 
     preFixup = lib.optionalString (stdenv.isLinux) ''
-      # We cannot use -exec since wrapProgram is a function but not a
-      # command.
-      #
-      # jspawnhelper is executed from JVM, so it doesn't need to wrap it,
-      # and it breaks building OpenJDK (#114495).
-      for bin in $( find "$out" -executable -type f -not -path '*/languages/ruby/lib/gems/*' -not -name jspawnhelper ); do
-        if patchelf --print-interpreter "$bin" &> /dev/null || head -n 1 "$bin" | grep '^#!' -q; then
-          wrapProgram "$bin" \
-            --prefix LD_LIBRARY_PATH : "${runtimeLibraryPath}" \
-            --prefix PATH : "${runtimeDependencies}"
-        fi
+      # Find all executables in any directory that contains '/bin/'
+      for bin in $(find "$out" -executable -type f -wholename '*/bin/*'); do
+        wrapProgram "$bin" \
+          --prefix LD_LIBRARY_PATH : "${runtimeLibraryPath}" \
+          --prefix PATH : "${runtimeDependencies}"
       done
 
       find "$out" -name libfontmanager.so -exec \
@@ -285,7 +308,7 @@ let
       inherit (platform) products;
       home = graalvmXXX-ce;
       updateScript = import ./update.nix {
-        inherit lib writeShellScript jq sourcesFilename name config gnused defaultVersion;
+        inherit config defaultVersion forceUpdate gnused jq lib name sourcesPath writeShellScript;
         graalVersion = version;
         javaVersion = "java${javaVersion}";
       };

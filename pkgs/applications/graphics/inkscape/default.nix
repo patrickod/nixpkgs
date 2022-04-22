@@ -51,6 +51,7 @@ let
       urllib3
       requests
       appdirs
+      pyserial
     ]);
 in
 stdenv.mkDerivation rec {
