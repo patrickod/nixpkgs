@@ -675,6 +675,12 @@
     githubId = 858965;
     name = "Andrew Morsillo";
   };
+  an-empty-string = {
+    name = "Tris Emmy Wilson";
+    email = "tris@tris.fyi";
+    github = "an-empty-string";
+    githubId = 681716;
+  };
   andehen = {
     email = "git@andehen.net";
     github = "andehen";
@@ -3842,6 +3848,13 @@
     github = "ethercrow";
     githubId = 222467;
     name = "Dmitry Ivanov";
+  };
+  ethindp = {
+    name = "Ethin Probst";
+    email = "harlydavidsen@gmail.com";
+    matrix = "@ethindp:the-gdn.net";
+    github = "ethindp";
+    githubId = 8030501;
   };
   Etjean = {
     email = "et.jean@outlook.fr";
@@ -11060,22 +11073,6 @@
     github = "samueldr";
     githubId = 132835;
     name = "Samuel Dionne-Riel";
-  };
-  samuelgrf = {
-    email = "s@muel.gr";
-    github = "samuelgrf";
-    githubId = 67663538;
-    name = "Samuel Gräfenstein";
-    keys = [
-      {
-        longkeyid = "rsa4096/0xDE75F92E318123F0";
-        fingerprint = "6F2E 2A90 423C 8111 BFF2  895E DE75 F92E 3181 23F0";
-      }
-      {
-        longkeyid = "rsa4096/0xEF76A063F15C63C8";
-        fingerprint = "FF24 5832 8FAF 4660 18C6  186E EF76 A063 F15C 63C8";
-      }
-    ];
   };
   samuelrivas = {
     email = "samuelrivas@gmail.com";
