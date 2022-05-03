@@ -35332,4 +35332,6 @@ with pkgs;
   honeyvent = callPackage ../servers/tracing/honeycomb/honeyvent { };
 
   mictray = callPackage ../tools/audio/mictray { };
+
+  git-history = with python3Packages; toPythonApplication git-history;
 }
