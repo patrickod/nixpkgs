@@ -11292,4 +11292,6 @@ in {
   neotime = callPackage ../development/python-modules/neo4j/neotime.nix { };
 
   okta = callPackage ../development/python-modules/okta { };
+
+  git-history = callPackage ../development/python-modules/git-history { };
 }
