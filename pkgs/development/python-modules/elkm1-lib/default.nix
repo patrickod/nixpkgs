@@ -11,16 +11,16 @@
 
 buildPythonPackage rec {
   pname = "elkm1-lib";
-  version = "1.3.5";
+  version = "2.0.0";
   format = "pyproject";
 
-  disabled = pythonOlder "3.6";
+  disabled = pythonOlder "3.9";
 
   src = fetchFromGitHub {
     owner = "gwww";
     repo = "elkm1";
     rev = version;
-    hash = "sha256-sYE7bZcMXsf+4r9Rs4d0XaUqdWVZfDU9/xPqIiiJkUQ=";
+    hash = "sha256-o0RQgAP38W7paVJonrfj54y2OhMmTihT9xiipEyNVaM=";
   };
 
   nativeBuildInputs = [

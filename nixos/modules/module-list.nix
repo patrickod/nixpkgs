@@ -57,6 +57,7 @@
   ./hardware/sensor/hddtemp.nix
   ./hardware/sensor/iio.nix
   ./hardware/keyboard/teck.nix
+  ./hardware/keyboard/uhk.nix
   ./hardware/keyboard/zsa.nix
   ./hardware/ksm.nix
   ./hardware/ledger.nix
@@ -196,7 +197,6 @@
   ./programs/partition-manager.nix
   ./programs/plotinus.nix
   ./programs/proxychains.nix
-  ./programs/phosh.nix
   ./programs/qt5ct.nix
   ./programs/screen.nix
   ./programs/sedutil.nix
@@ -505,6 +505,7 @@
   ./services/mail/postfixadmin.nix
   ./services/mail/postsrsd.nix
   ./services/mail/postgrey.nix
+  ./services/mail/public-inbox.nix
   ./services/mail/spamassassin.nix
   ./services/mail/rspamd.nix
   ./services/mail/rss2email.nix
@@ -737,6 +738,7 @@
   ./services/networking/blocky.nix
   ./services/networking/charybdis.nix
   ./services/networking/cjdns.nix
+  ./services/networking/cloudflare-dyndns.nix
   ./services/networking/cntlm.nix
   ./services/networking/connman.nix
   ./services/networking/consul.nix
@@ -935,6 +937,7 @@
   ./services/networking/unifi.nix
   ./services/video/unifi-video.nix
   ./services/video/rtsp-simple-server.nix
+  ./services/networking/uptermd.nix
   ./services/networking/v2ray.nix
   ./services/networking/vsftpd.nix
   ./services/networking/wasabibackend.nix
@@ -974,6 +977,7 @@
   ./services/security/hockeypuck.nix
   ./services/security/hologram-server.nix
   ./services/security/hologram-agent.nix
+  ./services/security/kanidm.nix
   ./services/security/munge.nix
   ./services/security/nginx-sso.nix
   ./services/security/oauth2_proxy.nix
@@ -1077,6 +1081,7 @@
   ./services/web-apps/trilium.nix
   ./services/web-apps/selfoss.nix
   ./services/web-apps/shiori.nix
+  ./services/web-apps/snipe-it.nix
   ./services/web-apps/vikunja.nix
   ./services/web-apps/virtlyst.nix
   ./services/web-apps/wiki-js.nix
@@ -1255,6 +1260,7 @@
   ./virtualisation/virtualbox-guest.nix
   ./virtualisation/virtualbox-host.nix
   ./virtualisation/vmware-guest.nix
+  ./virtualisation/vmware-host.nix
   ./virtualisation/waydroid.nix
   ./virtualisation/xen-dom0.nix
   ./virtualisation/xe-guest-utilities.nix

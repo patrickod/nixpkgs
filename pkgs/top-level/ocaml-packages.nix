@@ -139,10 +139,7 @@ let
 
     benchmark = callPackage ../development/ocaml-modules/benchmark { };
 
-    biniou =
-      if lib.versionOlder "4.02" ocaml.version
-      then callPackage ../development/ocaml-modules/biniou { }
-      else callPackage ../development/ocaml-modules/biniou/1.0.nix { };
+    biniou = callPackage ../development/ocaml-modules/biniou { };
 
     bisect_ppx = callPackage ../development/ocaml-modules/bisect_ppx { };
 
@@ -336,6 +333,8 @@ let
       inherit (pkgs) opam git mercurial coreutils gnutar bzip2;
     };
 
+    dune-rpc = callPackage ../development/ocaml-modules/dune-rpc { };
+
     dune-site = callPackage ../development/ocaml-modules/dune-site { };
 
     duration =  callPackage ../development/ocaml-modules/duration { };
@@ -422,6 +421,8 @@ let
     ffmpeg-avdevice = callPackage ../development/ocaml-modules/ffmpeg/ffmpeg-avdevice.nix {
       inherit (pkgs) ffmpeg;
     };
+
+    fiber = callPackage ../development/ocaml-modules/fiber { };
 
     fileutils = callPackage ../development/ocaml-modules/fileutils { };
 
@@ -1343,6 +1344,8 @@ let
 
     tcslib = callPackage ../development/ocaml-modules/tcslib { };
 
+    telegraml = callPackage ../development/ocaml-modules/telegraml { };
+
     terminal = callPackage ../development/ocaml-modules/terminal { };
 
     terminal_size = callPackage ../development/ocaml-modules/terminal_size { };
@@ -1417,6 +1420,8 @@ let
     wtf8 = callPackage ../development/ocaml-modules/wtf8 { };
 
     x509 = callPackage ../development/ocaml-modules/x509 { };
+
+    xdg = callPackage ../development/ocaml-modules/xdg { };
 
     xenstore = callPackage ../development/ocaml-modules/xenstore { };
 
