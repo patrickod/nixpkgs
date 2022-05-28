@@ -4,6 +4,7 @@
 , updateScript ? null
 , binaryName ? "firefox"
 , application ? "browser"
+, applicationName ? "Mozilla Firefox"
 , src
 , unpackPhase ? null
 , extraPatches ? []
@@ -18,6 +19,7 @@
 
 
 { lib
+, pkgs
 , stdenv
 
 # build time
@@ -161,6 +163,22 @@ let
       ln -s $lib $out/lib/wasm32-wasi
     done
   '';
+
+  distributionIni = pkgs.writeText "distribution.ini" (lib.generators.toINI {} {
+    # Some light branding indicating this build uses our distro preferences
+    Global = {
+      id = "nixos";
+      version = "1.0";
+      about = "${applicationName} for NixOS";
+    };
+    Preferences = {
+      # These values are exposed through telemetry
+      "app.distributor" = "nixos";
+      "app.distributor.channel" = "nixpkgs";
+      "app.partner.nixos" = "nixos";
+    };
+  });
+
 in
 
 buildStdenv.mkDerivation ({
@@ -171,8 +189,8 @@ buildStdenv.mkDerivation ({
 
   outputs = [
     "out"
-    "symbols"
-  ];
+  ]
+  ++ lib.optionals crashreporterSupport [ "symbols" ];
 
   # Add another configure-build-profiling run before the final configure phase if we build with pgo
   preConfigurePhases = lib.optionals pgoSupport [
@@ -202,7 +220,6 @@ buildStdenv.mkDerivation ({
   nativeBuildInputs = [
     autoconf
     cargo
-    dump_syms
     llvmPackages.llvm # llvm-objdump
     makeWrapper
     nodejs
@@ -216,6 +233,7 @@ buildStdenv.mkDerivation ({
     which
     wrapGAppsHook
   ]
+  ++ lib.optionals crashreporterSupport [ dump_syms ]
   ++ lib.optionals pgoSupport [ xvfb-run ]
   ++ extraNativeBuildInputs;
 
@@ -290,6 +308,7 @@ buildStdenv.mkDerivation ({
     "--enable-application=${application}"
     "--enable-default-toolkit=cairo-gtk3${lib.optionalString waylandSupport "-wayland"}"
     "--enable-system-pixman"
+    "--with-distribution-id=org.nixos"
     "--with-libclang-path=${llvmPackages.libclang.lib}/lib"
     "--with-system-ffi"
     "--with-system-icu"
@@ -421,15 +440,19 @@ buildStdenv.mkDerivation ({
 
   # Generate build symbols once after the final build
   # https://firefox-source-docs.mozilla.org/crash-reporting/uploading_symbol.html
-  preInstall = ''
+  preInstall = lib.optionalString crashreporterSupport ''
     ./mach buildsymbols
     mkdir -p $symbols/
     cp mozobj/dist/*.crashreporter-symbols.zip $symbols/
-
+  '' + ''
     cd mozobj
   '';
 
-  postInstall = lib.optionalString buildStdenv.isLinux ''
+  postInstall = ''
+    # Install distribution customizations
+    install -Dvm644 ${distributionIni} $out/lib/${binaryName}/distribution/distribution.ini
+
+  '' + lib.optionalString buildStdenv.isLinux ''
     # Remove SDK cruft. FIXME: move to a separate output?
     rm -rf $out/share/idl $out/include $out/lib/${binaryName}-devel-*
 
