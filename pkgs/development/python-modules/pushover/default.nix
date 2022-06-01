@@ -1,5 +1,4 @@
-{ lib, buildPythonPackage, fetchFromGitHub
-, requests }:
+{ stdenv, lib, buildPythonPackage, fetchFromGitHub , requests }:
 
 buildPythonPackage rec {
   pname = "python-pushover";
@@ -18,6 +17,7 @@ buildPythonPackage rec {
   doCheck = false;
 
   meta = with lib; {
+    broken = (stdenv.isLinux && stdenv.isAarch64) || stdenv.isDarwin;
     description = "Bindings and command line utility for the Pushover notification service";
     homepage = "https://github.com/Thibauth/python-pushover";
     license = licenses.gpl3;
