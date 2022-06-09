@@ -10,7 +10,7 @@
 
 buildPythonPackage rec {
   pname = "pysnmplib";
-  version = "5.0.15";
+  version = "5.0.17";
   format = "pyproject";
 
   disabled = pythonOlder "3.8";
@@ -19,7 +19,7 @@ buildPythonPackage rec {
     owner = "pysnmp";
     repo = "pysnmp";
     rev = "v${version}";
-    hash = "sha256-9HkS8oY9aHr8jXmryUMNz3z36BMWeYMuXLKdpEzCgZc=";
+    hash = "sha256-RG8EJmNDXRozlFx76c7p4wILwkatHg/eAhVojp807uQ=";
   };
 
   nativeBuildInputs = [
