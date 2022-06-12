@@ -1,24 +1,39 @@
-{ pkgs, stdenv, buildPythonPackage, fetchPypi, neotime, neobolt, pytz }:
+{ lib
+, buildPythonPackage
+, fetchFromGitHub
+, pythonOlder
+, pytz
+}:
 
 buildPythonPackage rec {
   pname = "neo4j";
-  version = "1.7.6";
+  version = "4.4.4";
+  format = "setuptools";
 
-  src = fetchPypi {
-    inherit pname version;
-    sha256 = "82169d548f984f745a519bc8a70cce05662fb7e10ed0179984ca2d45736bc01e";
+  disabled = pythonOlder "3.7";
+
+  src = fetchFromGitHub {
+    owner = "neo4j";
+    repo = "neo4j-python-driver";
+    rev = version;
+    hash = "sha256-Sd+ZeyJCzqGsBl3rdxfKPD0gYZ49qAfiRbuXaNGpj8M=";
   };
 
   propagatedBuildInputs = [
-    neotime
-    neobolt
     pytz
   ];
 
-  meta = with stdenv.lib; {
+  # Missing dependencies
+  doCheck = false;
+
+  pythonImportsCheck = [
+    "neo4j"
+  ];
+
+  meta = with lib; {
+    description = "Neo4j Bolt Driver for Python";
     homepage = "https://github.com/neo4j/neo4j-python-driver";
-    description = "Neo4j Bolt driver for Python";
     license = licenses.asl20;
-    maintainers = with maintainers; [ patrickod ];
+    maintainers = with maintainers; [ fab ];
   };
 }
