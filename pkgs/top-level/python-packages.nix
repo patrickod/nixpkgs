@@ -771,6 +771,8 @@ in {
 
   atomicwrites = callPackage ../development/python-modules/atomicwrites { };
 
+  atomicwrites-homeassistant = callPackage ../development/python-modules/atomicwrites-homeassistant { };
+
   atomman = callPackage ../development/python-modules/atomman { };
 
   atpublic = callPackage ../development/python-modules/atpublic { };
@@ -1618,6 +1620,8 @@ in {
 
   cgroup-utils = callPackage ../development/python-modules/cgroup-utils { };
 
+  chacha20poly1305-reuseable = callPackage ../development/python-modules/chacha20poly1305-reuseable { };
+
   chai = callPackage ../development/python-modules/chai { };
 
   chainer = callPackage ../development/python-modules/chainer {
@@ -1974,7 +1978,11 @@ in {
 
   criticality-score = callPackage ../development/python-modules/criticality-score { };
 
+  cron-descriptor = callPackage ../development/python-modules/cron-descriptor { };
+
   croniter = callPackage ../development/python-modules/croniter { };
+
+  cronsim = callPackage ../development/python-modules/cronsim { };
 
   crossplane = callPackage ../development/python-modules/crossplane { };
 
@@ -2199,6 +2207,8 @@ in {
   deepmerge = callPackage ../development/python-modules/deepmerge { };
 
   deeptoolsintervals = callPackage ../development/python-modules/deeptoolsintervals { };
+
+  deepwave = callPackage ../development/python-modules/deepwave { };
 
   deep-translator = callPackage ../development/python-modules/deep-translator { };
 
@@ -2641,9 +2651,13 @@ in {
 
   durus = callPackage ../development/python-modules/durus {  };
 
-  dvclive = callPackage ../development/python-modules/dvclive {  };
+  dvc-data = callPackage ../development/python-modules/dvc-data {  };
+
+  dvc-objects = callPackage ../development/python-modules/dvc-objects {  };
 
   dvc-render = callPackage ../development/python-modules/dvc-render {  };
+
+  dvclive = callPackage ../development/python-modules/dvclive {  };
 
   dwdwfsapi = callPackage ../development/python-modules/dwdwfsapi { };
 
@@ -3258,7 +3272,9 @@ in {
 
   fontmake = callPackage ../development/python-modules/fontmake { };
 
-  skia-pathops = callPackage ../development/python-modules/skia-pathops { };
+  skia-pathops = callPackage ../development/python-modules/skia-pathops {
+    inherit (pkgs.darwin.apple_sdk.frameworks) ApplicationServices OpenGL;
+  };
 
   openstep-plist = callPackage ../development/python-modules/openstep-plist { };
 
@@ -4603,7 +4619,11 @@ in {
 
   jupyter = callPackage ../development/python-modules/jupyter { };
 
+  jupyter-book = callPackage ../development/python-modules/jupyter-book { };
+
   jupyter-c-kernel = callPackage ../development/python-modules/jupyter-c-kernel { };
+
+  jupyter-cache = callPackage ../development/python-modules/jupyter-cache { };
 
   jupyter-client = callPackage ../development/python-modules/jupyter-client { };
 
@@ -5668,6 +5688,10 @@ in {
 
   mysql-connector = callPackage ../development/python-modules/mysql-connector { };
 
+  myst-docutils = callPackage ../development/python-modules/myst-docutils { };
+
+  myst-nb = callPackage ../development/python-modules/myst-nb { };
+
   myst-parser = callPackage ../development/python-modules/myst-parser { };
 
   nad-receiver = callPackage ../development/python-modules/nad-receiver { };
@@ -6461,6 +6485,8 @@ in {
 
   netmap = callPackage ../development/python-modules/netmap { };
 
+  onetimepad = callPackage ../development/python-modules/onetimepad { };
+
   openai = callPackage ../development/python-modules/openai { };
 
   openapi-core = callPackage ../development/python-modules/openapi-core { };
@@ -6649,6 +6675,8 @@ in {
   pyskyqremote = callPackage ../development/python-modules/pyskyqremote { };
 
   pysolcast = callPackage ../development/python-modules/pysolcast { };
+
+  pysqlitecipher = callPackage ../development/python-modules/pysqlitecipher { };
 
   pysyncthru = callPackage ../development/python-modules/pysyncthru { };
 
@@ -7238,6 +7266,8 @@ in {
 
   pydash = callPackage ../development/python-modules/pydash { };
 
+  pydata-sphinx-theme = callPackage ../development/python-modules/pydata-sphinx-theme { };
+
   pydbus = callPackage ../development/python-modules/pydbus { };
 
   pydeck = callPackage ../development/python-modules/pydeck { };
@@ -7491,8 +7521,6 @@ in {
   pyi2cflash = callPackage ../development/python-modules/pyi2cflash { };
 
   pyialarm = callPackage ../development/python-modules/pyialarm { };
-
-  pyialarmxr-homeassistant = callPackage ../development/python-modules/pyialarmxr-homeassistant { };
 
   pyicloud = callPackage ../development/python-modules/pyicloud { };
 
@@ -9390,6 +9418,8 @@ in {
 
   rstcheck = callPackage ../development/python-modules/rstcheck { };
 
+  rstcheck-core = callPackage ../development/python-modules/rstcheck-core { };
+
   rtmidi-python = callPackage ../development/python-modules/rtmidi-python {
     inherit (pkgs.darwin.apple_sdk.frameworks) CoreAudio CoreMIDI CoreServices;
   };
@@ -9582,6 +9612,8 @@ in {
 
   segments = callPackage ../development/python-modules/segments { };
 
+  segno = callPackage ../development/python-modules/segno { };
+
   segyio = toPythonModule (callPackage ../development/python-modules/segyio {
     inherit (pkgs) cmake ninja;
   });
@@ -9728,6 +9760,8 @@ in {
   simple-di = callPackage ../development/python-modules/simple-di { };
 
   simple-rest-client = callPackage ../development/python-modules/simple-rest-client { };
+
+  simple-rlp = callPackage ../development/python-modules/simple-rlp { };
 
   simple-salesforce = callPackage ../development/python-modules/simple-salesforce { };
 
@@ -9961,7 +9995,23 @@ in {
 
   sphinx-better-theme = callPackage ../development/python-modules/sphinx-better-theme { };
 
+  sphinx-book-theme = callPackage ../development/python-modules/sphinx-book-theme { };
+
+  sphinx-comments = callPackage ../development/python-modules/sphinx-comments { };
+
+  sphinx-design = callPackage ../development/python-modules/sphinx-design { };
+
+  sphinx-external-toc = callPackage ../development/python-modules/sphinx-external-toc { };
+
+  sphinx-jupyterbook-latex = callPackage ../development/python-modules/sphinx-jupyterbook-latex { };
+
+  sphinx-multitoc-numbering = callPackage ../development/python-modules/sphinx-multitoc-numbering { };
+
   sphinx-pytest = callPackage ../development/python-modules/sphinx-pytest { };
+
+  sphinx-thebe = callPackage ../development/python-modules/sphinx-thebe { };
+
+  sphinx-togglebutton = callPackage ../development/python-modules/sphinx-togglebutton { };
 
   sphinxcontrib-actdiag = callPackage ../development/python-modules/sphinxcontrib-actdiag { };
 
@@ -11622,6 +11672,8 @@ in {
 
   zope_broken = callPackage ../development/python-modules/zope_broken { };
 
+  zope-cachedescriptors = callPackage ../development/python-modules/zope-cachedescriptors { };
+
   zope_component = callPackage ../development/python-modules/zope_component { };
 
   zope_configuration = callPackage ../development/python-modules/zope_configuration { };
@@ -11657,6 +11709,8 @@ in {
   zope_schema = callPackage ../development/python-modules/zope_schema { };
 
   zope_size = callPackage ../development/python-modules/zope_size { };
+
+  zope-testbrowser = callPackage ../development/python-modules/zope-testbrowser { };
 
   zope_testing = callPackage ../development/python-modules/zope_testing { };
 

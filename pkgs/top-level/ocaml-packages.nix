@@ -502,10 +502,10 @@ let
 
     hack_parallel = callPackage ../development/ocaml-modules/hack_parallel { };
 
-    hacl_x25519 = callPackage ../development/ocaml-modules/hacl_x25519 { };
-
     hacl-star = callPackage ../development/ocaml-modules/hacl-star { };
     hacl-star-raw = callPackage ../development/ocaml-modules/hacl-star/raw.nix { };
+
+    happy-eyeballs = callPackage ../development/ocaml-modules/happy-eyeballs { };
 
     hashcons = callPackage ../development/ocaml-modules/hashcons { };
 
@@ -521,7 +521,9 @@ let
 
     hpack = callPackage ../development/ocaml-modules/hpack { };
 
-    hxd = callPackage ../development/ocaml-modules/hxd { };
+    hxd = callPackage ../development/ocaml-modules/hxd {
+      cmdliner = cmdliner_1_1;
+    };
 
     imagelib = callPackage ../development/ocaml-modules/imagelib { };
 
@@ -530,8 +532,6 @@ let
     integers = callPackage ../development/ocaml-modules/integers { };
 
     io-page = callPackage ../development/ocaml-modules/io-page { };
-
-    io-page-unix = callPackage ../development/ocaml-modules/io-page/unix.nix { };
 
     ipaddr = callPackage ../development/ocaml-modules/ipaddr { };
 
@@ -920,10 +920,6 @@ let
     mustache =  callPackage ../development/ocaml-modules/mustache { };
 
     netchannel = callPackage ../development/ocaml-modules/netchannel { };
-
-    nocrypto =  callPackage ../development/ocaml-modules/nocrypto { };
-
-    noise = callPackage ../development/ocaml-modules/noise { };
 
     nonstd =  callPackage ../development/ocaml-modules/nonstd { };
 
