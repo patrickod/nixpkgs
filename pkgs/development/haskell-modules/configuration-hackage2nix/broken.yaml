@@ -262,6 +262,7 @@ broken-packages:
   - authenticate-ldap
   - authinfo-hs
   - auto
+  - autodocodec-yaml
   - autom
   - autonix-deps
   - autopack
@@ -358,6 +359,7 @@ broken-packages:
   - binary-derive
   - binary-ext
   - binary-indexed-tree
+  - binary-io
   - binary-protocol
   - binary-tree
   - binary-typed
@@ -366,6 +368,7 @@ broken-packages:
   - bindings-apr
   - bindings-bfd
   - bindings-cctools
+  - bindings-common
   - bindings-dc1394
   - bindings-eskit
   - bindings-EsounD
@@ -1132,6 +1135,7 @@ broken-packages:
   - direct-plugins
   - direm
   - dirtree
+  - discord-haskell
   - discordian-calendar
   - discord-types
   - discrete
@@ -1312,6 +1316,7 @@ broken-packages:
   - enum-text
   - enum-utf8
   - envelope
+  - env-extra
   - env-parser
   - envstatus
   - epanet-haskell
@@ -1415,6 +1420,7 @@ broken-packages:
   - fast-nats
   - fastpbkdf2
   - FastPush
+  - fast-tags
   - FastxPipe
   - fathead-util
   - fb
@@ -1657,6 +1663,7 @@ broken-packages:
   - gentlemark
   - geocode-google
   - GeocoderOpenCage
+  - geodetics
   - geodetic-types
   - GeoIp
   - geojson-types
@@ -1777,6 +1784,7 @@ broken-packages:
   - goatee
   - gochan
   - godot-haskell
+  - godot-megaparsec
   - gofer-prelude
   - gogol-core
   - gooey
@@ -2332,6 +2340,7 @@ broken-packages:
   - houseman
   - hp2any-core
   - hpack-convert
+  - hpapi
   - hpasteit
   - HPath
   - hpc-coveralls
@@ -2705,6 +2714,7 @@ broken-packages:
   - IsNull
   - iso8601-duration
   - isobmff
+  - isomorphism-class
   - isotope
   - itcli
   - itemfield
@@ -2838,6 +2848,7 @@ broken-packages:
   - khph
   - kickass-torrents-dump-parser
   - kickchan
+  - ki-unlifted
   - kleene-list
   - kmonad
   - kmp-dfa
@@ -2868,6 +2879,7 @@ broken-packages:
   - lambdabot-utils
   - lambdabot-xmpp
   - lambda-bridge
+  - lambda-calculator
   - lambda-canvas
   - lambdacms-core
   - lambda-cube
@@ -4008,7 +4020,6 @@ broken-packages:
   - postmaster
   - potato-tool
   - potoki-core
-  - powerdns
   - powermate
   - powerpc
   - powerqueue-levelmem
@@ -4104,6 +4115,7 @@ broken-packages:
   - provenience
   - proxy-kindness
   - proxy-mapping
+  - psc-ide
   - pseudo-trie
   - PSQueue
   - PTQ
@@ -4121,6 +4133,7 @@ broken-packages:
   - pure-io
   - purenix
   - pure-priority-queue
+  - purescript-tsd-gen
   - pure-zlib
   - pushbullet
   - pushbullet-types
@@ -4155,6 +4168,7 @@ broken-packages:
   - quenya-verb
   - querystring-pickle
   - questioner
+  - quibble-core
   - QuickAnnotate
   - quickcheck-arbitrary-template
   - quickcheck-property-comb
@@ -4411,6 +4425,7 @@ broken-packages:
   - ruin
   - runhs
   - runmany
+  - rustls
   - rws
   - RxHaskell
   - rz-pipe
@@ -5831,7 +5846,10 @@ broken-packages:
   - zendesk-api
   - zeno
   - zeolite-lang
+  - zephyr
+  - zeromq4-clone-pattern
   - zeromq4-conduit
+  - zeromq4-patterns
   - zeromq-haskell
   - zettelkast
   - ZFS
