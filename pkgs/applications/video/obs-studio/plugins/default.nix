@@ -8,5 +8,6 @@
   obs-websocket = libsForQt5.callPackage ./obs-websocket.nix {};
   wlrobs = callPackage ./wlrobs.nix {};
   obs-nvfbc = callPackage ./obs-nvfbc.nix {};
+  obs-pipewire-audio-capture = callPackage ./obs-pipewire-audio-capture.nix {};
   obs-vkcapture = callPackage ./obs-vkcapture.nix {};
 }
