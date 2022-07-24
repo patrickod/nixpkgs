@@ -292,6 +292,8 @@ with pkgs;
 
   cfn-nag = callPackage ../development/tools/cfn-nag { };
 
+  cxx-rs = callPackage ../development/libraries/cxx-rs { };
+
   elfcat = callPackage ../tools/misc/elfcat { };
 
   # Zip file format only allows times after year 1980, which makes e.g. Python
@@ -827,6 +829,10 @@ with pkgs;
   copyDesktopItems = makeSetupHook { } ../build-support/setup-hooks/copy-desktop-items.sh;
 
   makeDesktopItem = callPackage ../build-support/make-desktopitem { };
+
+  copyPkgconfigItems = makeSetupHook { } ../build-support/setup-hooks/copy-pkgconfig-items.sh;
+
+  makePkgconfigItem = callPackage ../build-support/make-pkgconfigitem { };
 
   makeDarwinBundle = callPackage ../build-support/make-darwin-bundle { };
 
@@ -2044,7 +2050,9 @@ with pkgs;
 
   betterdiscord-installer = callPackage ../tools/misc/betterdiscord-installer { };
 
-  binocle = callPackage ../applications/misc/binocle { };
+  binocle = callPackage ../applications/misc/binocle {
+    inherit (darwin.apple_sdk.frameworks) AppKit CoreFoundation CoreGraphics CoreVideo Foundation Metal QuartzCore;
+  };
 
   bitwise = callPackage ../tools/misc/bitwise { };
 
@@ -2484,7 +2492,9 @@ with pkgs;
 
   gtklp = callPackage ../tools/misc/gtklp { };
 
-  google-amber = callPackage ../tools/graphics/amber { };
+  google-amber = callPackage ../tools/graphics/amber {
+    inherit (darwin) cctools;
+  };
 
   hakrawler = callPackage ../tools/security/hakrawler { };
 
@@ -4246,7 +4256,6 @@ with pkgs;
 
   noti = callPackage ../tools/misc/noti {
     inherit (darwin.apple_sdk.frameworks) Cocoa;
-    buildGoPackage = buildGo117Package;
   };
 
   notify = callPackage ../tools/misc/notify { };
@@ -5801,6 +5810,8 @@ with pkgs;
   efibootmgr = callPackage ../tools/system/efibootmgr { };
 
   efivar = callPackage ../tools/system/efivar { };
+
+  eget = callPackage ../tools/misc/eget { };
 
   evemu = callPackage ../tools/system/evemu { };
 
@@ -10100,6 +10111,8 @@ with pkgs;
 
   realvnc-vnc-viewer = callPackage ../tools/admin/realvnc-vnc-viewer {};
 
+  re-isearch = callPackage ../applications/search/re-isearch { };
+
   reaverwps = callPackage ../tools/networking/reaver-wps {};
 
   reaverwps-t6x = callPackage ../tools/networking/reaver-wps-t6x {};
@@ -11999,7 +12012,9 @@ with pkgs;
     });
   };
 
-  wgpu-utils = callPackage ../tools/graphics/wgpu-utils { };
+  wgpu-utils = callPackage ../tools/graphics/wgpu-utils {
+    inherit (darwin.apple_sdk.frameworks) QuartzCore;
+  };
 
   wg-bond = callPackage ../applications/networking/wg-bond { };
 
@@ -15741,9 +15756,7 @@ with pkgs;
       binutils = binutils;
     };
 
-  dive = callPackage ../development/tools/dive {
-    buildGoModule = buildGo117Module;
-  };
+  dive = callPackage ../development/tools/dive { };
 
   doclifter = callPackage ../development/tools/misc/doclifter { };
 
@@ -16115,7 +16128,9 @@ with pkgs;
 
   kubeaudit = callPackage ../tools/security/kubeaudit { };
 
-  kubectx = callPackage ../development/tools/kubectx { };
+  kubectx = callPackage ../development/tools/kubectx {
+    buildGoModule = buildGo117Module;
+  };
 
   kube-linter = callPackage ../development/tools/kube-linter { };
 
@@ -16958,6 +16973,8 @@ with pkgs;
   arrayfire = callPackage ../development/libraries/arrayfire {};
 
   arrow-cpp = callPackage ../development/libraries/arrow-cpp {};
+
+  arrow-glib = callPackage ../development/libraries/arrow-glib {};
 
   arsenal = callPackage ../tools/security/arsenal { };
 
@@ -18728,6 +18745,8 @@ with pkgs;
   libuchardet = callPackage ../development/libraries/libuchardet { };
 
   libchop = callPackage ../development/libraries/libchop { };
+
+  libcifpp = callPackage ../development/libraries/libcifpp { };
 
   libcint = callPackage ../development/libraries/libcint { };
 
@@ -22531,6 +22550,8 @@ with pkgs;
 
   oauth2-proxy = callPackage ../servers/oauth2-proxy { };
 
+  onlyoffice-documentserver = callPackage ../servers/onlyoffice-documentserver { };
+
   openbgpd = callPackage ../servers/openbgpd { };
 
   openafs_1_8 = callPackage ../servers/openafs/1.8 { tsmbac = null; ncurses = null; };
@@ -23128,6 +23149,8 @@ with pkgs;
     unifi7;
 
   unifi = unifi7;
+
+  unifi-protect-backup = callPackage ../applications/backup/unifi-protect-backup { };
 
   unifi-video = callPackage ../servers/unifi-video { };
 
@@ -23787,6 +23810,8 @@ with pkgs;
   linux_xanmod = linuxKernel.kernels.linux_xanmod;
   linuxPackages_xanmod_latest = linuxKernel.packages.linux_xanmod_latest;
   linux_xanmod_latest = linuxKernel.kernels.linux_xanmod_latest;
+  linuxPackages_xanmod_tt = linuxKernel.packages.linux_xanmod_tt;
+  linux_xanmod_tt = linuxKernel.kernels.linux_xanmod_tt;
 
   linux-doc = callPackage ../os-specific/linux/kernel/htmldocs.nix { };
 
@@ -24641,6 +24666,8 @@ with pkgs;
 
   cnstrokeorder = callPackage ../data/fonts/cnstrokeorder {};
 
+  colloid-gtk-theme = callPackage ../data/themes/colloid-gtk-theme { };
+
   comfortaa = callPackage ../data/fonts/comfortaa {};
 
   comic-mono = callPackage ../data/fonts/comic-mono { };
@@ -25263,6 +25290,8 @@ with pkgs;
   phinger-cursors = callPackage ../data/icons/phinger-cursors { };
 
   qogir-icon-theme = callPackage ../data/icons/qogir-icon-theme { };
+
+  qogir-kde = callPackage ../data/themes/qogir-kde { };
 
   qogir-theme = callPackage ../data/themes/qogir { };
 
@@ -26050,6 +26079,8 @@ with pkgs;
   caerbannog = callPackage ../applications/misc/caerbannog { };
 
   cardboard = callPackage ../applications/window-managers/cardboard { };
+
+  cardo = callPackage ../data/fonts/cardo { };
 
   cage = callPackage ../applications/window-managers/cage {
     wlroots = wlroots_0_14;
@@ -27877,6 +27908,8 @@ with pkgs;
     texinfo = texinfo6_7; # Uses @setcontentsaftertitlepage, removed in 6.8.
   };
 
+  avalonia-ilspy = callPackage ../applications/misc/avalonia-ilspy { };
+
   imag = callPackage ../applications/misc/imag {
     inherit (darwin.apple_sdk.frameworks) Security;
   };
@@ -29246,7 +29279,7 @@ with pkgs;
   netcoredbg = callPackage ../development/tools/misc/netcoredbg { };
 
   ncdu = callPackage ../tools/misc/ncdu { };
-  ncdu_2 = callPackage ../tools/misc/ncdu_2 { };
+  ncdu_1 = callPackage ../tools/misc/ncdu/1.nix { };
 
   ncdc = callPackage ../applications/networking/p2p/ncdc { };
 
@@ -33409,6 +33442,8 @@ with pkgs;
   delly = callPackage ../applications/science/biology/delly { };
 
   diamond = callPackage ../applications/science/biology/diamond { };
+
+  dssp = callPackage ../applications/science/biology/dssp { };
 
   ecopcr = callPackage ../applications/science/biology/ecopcr { };
 
