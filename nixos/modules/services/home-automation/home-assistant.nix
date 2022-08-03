@@ -92,7 +92,7 @@ in {
         "default_config"
         "met"
         "esphome"
-      ] ++ optionals (pkgs.stdenv.hostPlatform.isAarch32 || pkgs.stdenv.hostPlatform.isAarch64) [
+      ] ++ optionals pkgs.stdenv.hostPlatform.isAarch [
         # Use the platform as an indicator that we might be running on a RaspberryPi and include
         # relevant components
         "rpi_power"
@@ -389,10 +389,9 @@ in {
         "mysql.service"
         "postgresql.service"
       ];
-      reloadTriggers = [
-        configFile
-        lovelaceConfigFile
-      ];
+      reloadTriggers = lib.optional (cfg.config != null) configFile
+      ++ lib.optional (cfg.lovelaceConfig != null) lovelaceConfigFile;
+
       preStart = let
         copyConfig = if cfg.configWritable then ''
           cp --no-preserve=mode ${configFile} "${cfg.configDir}/configuration.yaml"

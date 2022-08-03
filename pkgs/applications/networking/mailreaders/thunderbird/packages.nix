@@ -29,6 +29,7 @@ rec {
     };
     updateScript = callPackage ./update.nix {
       attrPath = "thunderbird-91-unwrapped";
+      versionPrefix = "91";
     };
   }).override {
     geolocationSupport = false;
@@ -38,13 +39,13 @@ rec {
   };
   thunderbird-102 = (buildMozillaMach rec {
     pname = "thunderbird";
-    version = "102.0.1";
+    version = "102.0.3";
     application = "comm/mail";
     applicationName = "Mozilla Thunderbird";
     binaryName = pname;
     src = fetchurl {
       url = "mirror://mozilla/thunderbird/releases/${version}/source/thunderbird-${version}.source.tar.xz";
-      sha512 = "72e6ac7946d8bdcee1a46a321c1226fb88facc299cf01f63b139e7e84a4692284cb20e615c5f9a6da12c974a17e2deb548dde48a77d56b1850f71bdcedb137d8";
+      sha512 = "ac9f22935ef558890c95cf7fbbbe32a5bb1b7140acb10088ed0d037d1ca5c6e11695c131eb40844807003b77e83b1dd2d9008df420ec394fed5008d5c4c6c3cb";
     };
     extraPatches = [
       # The file to be patched is different from firefox's `no-buildconfig-ffx90.patch`.
@@ -63,6 +64,7 @@ rec {
     };
     updateScript = callPackage ./update.nix {
       attrPath = "thunderbird-unwrapped";
+      versionPrefix = "102";
     };
   }).override {
     geolocationSupport = false;
