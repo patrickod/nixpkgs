@@ -2,7 +2,7 @@
 # Do not edit!
 
 {
-  version = "2022.8.0";
+  version = "2022.8.1";
   components = {
     "abode" = ps: with ps; [
       abodepy
@@ -867,6 +867,7 @@
       pyflume
     ];
     "flunearyou" = ps: with ps; [
+      aiohttp-cors
       pyflunearyou
     ];
     "flux" = ps: with ps; [
@@ -1817,7 +1818,8 @@
       nextcloudmonitor
     ];
     "nextdns" = ps: with ps; [
-    ]; # missing inputs: nextdns
+      nextdns
+    ];
     "nfandroidtv" = ps: with ps; [
     ]; # missing inputs: notifications-android-tv
     "nightscout" = ps: with ps; [
@@ -3616,6 +3618,7 @@
     "network"
     "nexia"
     "nextbus"
+    "nextdns"
     "nightscout"
     "nina"
     "no_ip"
