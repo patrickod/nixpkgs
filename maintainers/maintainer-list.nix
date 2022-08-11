@@ -9682,6 +9682,12 @@
     githubId = 1237862;
     name = "Ollie Bunting";
   };
+  oluceps = {
+    email = "nixos@oluceps.uk";
+    github = "oluceps";
+    githubId = 35628088;
+    name = "oluceps";
+  };
   olynch = {
     email = "owen@olynch.me";
     github = "olynch";
@@ -9789,6 +9795,12 @@
     github = "otavio";
     githubId = 25278;
     name = "Otavio Salvador";
+  };
+  otini = {
+    name = "Olivier Nicole";
+    email = "olivier@chnik.fr";
+    github = "OlivierNicole";
+    githubId = 14031333;
   };
   otwieracz = {
     email = "slawek@otwiera.cz";
