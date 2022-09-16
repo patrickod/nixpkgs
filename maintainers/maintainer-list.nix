@@ -373,6 +373,12 @@
     githubId = 10677343;
     name = "Eugene";
   };
+  afh = {
+    email = "surryhill+nix@gmail.com";
+    github = "afh";
+    githubId = 16507;
+    name = "Alexis Hildebrandt";
+  };
   aflatter = {
     email = "flatter@fastmail.fm";
     github = "aflatter";
@@ -2443,6 +2449,12 @@
     githubId = 42220376;
     name = "Charlotte Van Petegem";
   };
+  ciferkey = {
+    name = "Matthew Brunelle";
+    email = "ciferkey@gmail.com";
+    github = "ciferkey";
+    githubId = 101422;
+  };
   cigrainger = {
     name = "Christopher Grainger";
     email = "chris@amplified.ai";
@@ -3738,6 +3750,12 @@
     email = "edli.merkaj@identinet.io";
     github = "edlimerkaj";
     githubId = 71988351;
+  };
+  ehllie = {
+    email = "me@ehllie.xyz";
+    github = "ehllie";
+    githubId = 20847625;
+    name = "Elizabeth Paź";
   };
   elliottslaughter = {
     name = "Elliott Slaughter";
@@ -9395,6 +9413,13 @@
     githubId = 137805;
     name = "Alexander Tsvyashchenko";
   };
+  Necior = {
+    email = "adrian@sadlocha.eu";
+    github = "Necior";
+    githubId = 2404518;
+    matrix = "@n3t:matrix.org";
+    name = "Adrian Sadłocha";
+  };
   neeasade = {
     email = "nathanisom27@gmail.com";
     github = "neeasade";
@@ -10970,6 +10995,13 @@
     github = "RaitoBezarius";
     githubId = 314564;
     name = "Ryan Lahfa";
+  };
+  raphaelr = {
+    email = "raphael-git@tapesoftware.net";
+    matrix = "@raphi:tapesoftware.net";
+    github = "raphaelr";
+    githubId = 121178;
+    name = "Raphael Robatsch";
   };
   raquelgb = {
     email = "raquel.garcia.bautista@gmail.com";
