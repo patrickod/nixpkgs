@@ -125,6 +125,13 @@
       </listitem>
       <listitem>
         <para>
+          Perl has been updated to 5.36, and its core module
+          <literal>HTTP::Tiny</literal> was patched to verify SSL/TLS
+          certificates by default.
+        </para>
+      </listitem>
+      <listitem>
+        <para>
           Cinnamon has been updated to 5.4. While at it, the cinnamon
           module now defaults to blueman as bluetooth manager and
           slick-greeter as lightdm greeter to match upstream.
@@ -205,6 +212,14 @@
       </listitem>
       <listitem>
         <para>
+          <link xlink:href="https://github.com/prymitive/kthxbye">kthxbye</link>,
+          an alert acknowledgement management daemon for Prometheus
+          Alertmanager. Available as
+          <link xlink:href="options.html#opt-services.kthxbye.enable">services.kthxbye</link>
+        </para>
+      </listitem>
+      <listitem>
+        <para>
           <link xlink:href="https://github.com/jtroo/kanata">kanata</link>,
           a tool to improve keyboard comfort and usability with advanced
           customization. Available as
@@ -223,6 +238,13 @@
           <link xlink:href="https://www.getoutline.com/">Outline</link>,
           a wiki and knowledge base similar to Notion. Available as
           <link linkend="opt-services.outline.enable">services.outline</link>.
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <link xlink:href="https://git.sr.ht/~migadu/alps">alps</link>,
+          a simple and extensible webmail. Available as
+          <link linkend="opt-services.alps.enable">services.alps</link>.
         </para>
       </listitem>
       <listitem>
@@ -307,6 +329,13 @@
           a simple blogging platform with ActivityPub support. Available
           as
           <link xlink:href="options.html#opt-services.writefreely.enable">services.writefreely</link>.
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <link xlink:href="https://listmonk.app">Listmonk</link>, a
+          self-hosted newsletter manager. Enable using
+          <link xlink:href="options.html#opt-services.listmonk.enable">services.listmonk</link>.
         </para>
       </listitem>
     </itemizedlist>
@@ -455,6 +484,14 @@
       </listitem>
       <listitem>
         <para>
+          The (previously undocumented) Nixpkgs configuration option
+          <literal>checkMeta</literal> now defaults to
+          <literal>true</literal>. This may cause evaluation failures
+          for packages with incorrect <literal>meta</literal> attribute.
+        </para>
+      </listitem>
+      <listitem>
+        <para>
           xow package removed along with the
           <literal>hardware.xow</literal> module, due to the project
           being deprecated in favor of <literal>xone</literal>, which is
@@ -472,6 +509,14 @@
       </listitem>
       <listitem>
         <para>
+          lemmy module option
+          <literal>services.lemmy.settings.database.createLocally</literal>
+          moved to
+          <literal>services.lemmy.database.createLocally</literal>.
+        </para>
+      </listitem>
+      <listitem>
+        <para>
           virtlyst package and <literal>services.virtlyst</literal>
           module removed, due to lack of maintainers.
         </para>
@@ -484,6 +529,14 @@
           <literal>python3.pkgs.graphite_beacon</literal> and
           <literal>python3.pkgs.influxgraph</literal> packages, have
           been removed due to lack of upstream maintenance.
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          The <literal>aws</literal> package has been removed due to
+          being abandoned by the upstream. It is recommended to use
+          <literal>awscli</literal> or <literal>awscli2</literal>
+          instead.
         </para>
       </listitem>
       <listitem>
@@ -524,6 +577,15 @@
         <para>
           <literal>k3s</literal> supports <literal>clusterInit</literal>
           option, and it is enabled by default, for servers.
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <literal>stylua</literal> no longer accepts
+          <literal>lua52Support</literal> and
+          <literal>luauSupport</literal> overrides, use
+          <literal>features</literal> instead, which defaults to
+          <literal>[ &quot;lua54&quot; &quot;luau&quot; ]</literal>.
         </para>
       </listitem>
     </itemizedlist>
