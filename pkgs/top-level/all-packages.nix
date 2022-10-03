@@ -244,6 +244,8 @@ with pkgs;
 
   asn = callPackage ../applications/networking/asn { };
 
+  asnmap = callPackage ../tools/security/asnmap { };
+
   astrolog = callPackage ../applications/science/astronomy/astrolog { };
 
   atkinson-hyperlegible = callPackage ../data/fonts/atkinson-hyperlegible { };
@@ -1745,6 +1747,8 @@ with pkgs;
     inherit (qt5) wrapQtAppsHook;
   };
 
+  felix-fm = callPackage ../applications/file-managers/felix-fm { };
+
   joshuto = callPackage ../applications/file-managers/joshuto {
     inherit (darwin.apple_sdk.frameworks) SystemConfiguration Foundation;
   };
@@ -2853,6 +2857,8 @@ with pkgs;
     inherit (androidenv.androidPkgs_9_0) platform-tools;
   };
 
+  amoco = callPackage ../tools/security/amoco {};
+
   anbox = callPackage ../os-specific/linux/anbox { };
 
   androidenv = callPackage ../development/mobile/androidenv {
@@ -3334,6 +3340,8 @@ with pkgs;
 
   clash = callPackage ../tools/networking/clash { };
 
+  clash-geoip = callPackage ../data/misc/clash-geoip { };
+
   clasp = callPackage ../tools/misc/clasp { };
 
   clevercsv = with python3Packages; toPythonApplication clevercsv;
@@ -3813,7 +3821,7 @@ with pkgs;
 
   element-desktop = callPackage ../applications/networking/instant-messengers/element/element-desktop.nix {
     inherit (darwin.apple_sdk.frameworks) Security AppKit CoreServices;
-    electron = electron_19;
+    electron = electron_20;
   };
   element-desktop-wayland = writeScriptBin "element-desktop" ''
     #!/bin/sh
@@ -3891,6 +3899,8 @@ with pkgs;
 
   facter = callPackage ../tools/system/facter { };
 
+  faketty = callPackage ../tools/misc/faketty { };
+
   fasd = callPackage ../tools/misc/fasd { };
 
   fastJson = callPackage ../development/libraries/fastjson { };
@@ -3904,6 +3914,8 @@ with pkgs;
   };
 
   faudio = callPackage ../development/libraries/faudio { };
+
+  fblog = callPackage ../development/tools/fblog { };
 
   fd = callPackage ../tools/misc/fd { };
 
@@ -3969,7 +3981,9 @@ with pkgs;
 
   fx_cast_bridge = callPackage ../tools/misc/fx_cast { };
 
-  fzf = callPackage ../tools/misc/fzf { };
+  fzf = callPackage ../tools/misc/fzf {
+    buildGoModule = buildGo119Module;
+  };
 
   fzf-obc = callPackage ../shells/bash/fzf-obc { };
 
@@ -4153,6 +4167,8 @@ with pkgs;
   humioctl = callPackage ../applications/logging/humioctl {};
 
   huniq = callPackage ../tools/text/huniq { };
+
+  hunt = callPackage ../tools/misc/hunt { };
 
   hyprland = callPackage ../applications/window-managers/hyprland {
     wlroots = wlroots.overrideAttrs (_: {
@@ -4712,7 +4728,9 @@ with pkgs;
 
   statserial = callPackage ../tools/misc/statserial { };
 
-  steampipe = callPackage ../tools/misc/steampipe { };
+  steampipe = callPackage ../tools/misc/steampipe {
+    buildGoModule = buildGo119Module;
+  };
 
   step-ca = callPackage ../tools/security/step-ca {
     inherit (darwin.apple_sdk.frameworks) PCSC;
@@ -7969,6 +7987,8 @@ with pkgs;
 
   joplin-desktop = callPackage ../applications/misc/joplin-desktop { };
 
+  jot = callPackage ../applications/misc/jot { };
+
   journaldriver = callPackage ../tools/misc/journaldriver {
     openssl = openssl_1_1;
   };
@@ -7994,6 +8014,8 @@ with pkgs;
   jiq = callPackage ../development/tools/misc/jiq { };
 
   jql = callPackage ../development/tools/jql { };
+
+  jqp = callPackage ../development/tools/jqp { };
 
   jo = callPackage ../development/tools/jo { };
 
@@ -8566,6 +8588,8 @@ with pkgs;
 
   latexrun = callPackage ../tools/typesetting/tex/latexrun { };
 
+  lazycli = callPackage ../tools/misc/lazycli { };
+
   lcdf-typetools = callPackage ../tools/misc/lcdf-typetools { };
 
   ldapmonitor = callPackage ../tools/security/ldapmonitor { };
@@ -8988,6 +9012,8 @@ with pkgs;
   mfcuk = callPackage ../tools/security/mfcuk { };
 
   mfoc = callPackage ../tools/security/mfoc { };
+
+  microbin = callPackage ../servers/microbin { };
 
   microdnf = callPackage ../tools/package-management/microdnf { };
 
@@ -9490,7 +9516,7 @@ with pkgs;
   # ntfsprogs are merged into ntfs-3g
   ntfsprogs = pkgs.ntfs3g;
 
-  ntfy = callPackage ../tools/misc/ntfy {};
+  ntfy = callPackage ../tools/misc/ntfy { python = python39; };
 
   ntfy-sh = callPackage ../tools/misc/ntfy-sh { };
 
@@ -10108,6 +10134,8 @@ with pkgs;
 
   plantuml = callPackage ../tools/misc/plantuml { };
 
+  plantuml-c4 = callPackage ../tools/misc/plantuml/plantuml-c4.nix { };
+
   plantuml-server = callPackage ../tools/misc/plantuml-server { };
 
   plan9port = callPackage ../tools/system/plan9port {
@@ -10198,19 +10226,7 @@ with pkgs;
 
   podman-tui = callPackage ../applications/virtualization/podman-tui { };
 
-  pods = callPackage ../applications/virtualization/pods {
-    # taken from #182618, remove when merged
-    libadwaita = libadwaita.overrideAttrs (_: rec {
-      version = "1.2.0";
-      src = fetchFromGitLab {
-        domain = "gitlab.gnome.org";
-        owner = "GNOME";
-        repo = "libadwaita";
-        rev = version;
-        hash = "sha256-3lH7Vi9M8k+GSrCpvruRpLrIpMoOakKbcJlaAc/FK+U=";
-      };
-    });
-  };
+  pods = callPackage ../applications/virtualization/pods { };
 
   pod2mdoc = callPackage ../tools/misc/pod2mdoc { };
 
@@ -10866,10 +10882,7 @@ with pkgs;
 
   sacd = callPackage ../tools/cd-dvd/sacd { };
 
-  safe = callPackage ../tools/security/safe {
-    # pinned due to build failure or vendoring problems. When unpinning double check with: nix-build -A $name.go-modules --rebuild
-    buildGoModule = buildGo117Module;
-  };
+  safe = callPackage ../tools/security/safe { };
 
   safety-cli = with python3.pkgs; toPythonApplication safety;
 
@@ -13364,7 +13377,7 @@ with pkgs;
 
   devpi-client = python3Packages.callPackage ../development/tools/devpi-client {};
 
-  devpi-server = callPackage ../development/tools/devpi-server {};
+  devpi-server = python3Packages.callPackage ../development/tools/devpi-server {};
 
   dictu = callPackage ../development/compilers/dictu { };
 
@@ -22407,6 +22420,11 @@ with pkgs;
   wxGTK31-gtk2 = wxGTK31.override { withGtk2 = true; };
   wxGTK31-gtk3 = wxGTK31.override { withGtk2 = false; };
 
+  wxGTK32 = callPackage ../development/libraries/wxwidgets/wxGTK32.nix {
+    inherit (darwin.stubs) setfile;
+    inherit (darwin.apple_sdk.frameworks) AGL Carbon Cocoa Kernel QTKit AVFoundation AVKit WebKit;
+  };
+
   wxSVG = callPackage ../development/libraries/wxSVG {
     wxGTK = wxGTK30-gtk3;
     inherit (darwin.apple_sdk.frameworks) Cocoa;
@@ -22742,7 +22760,8 @@ with pkgs;
   quicklispPackages = quicklispPackagesSBCL;
 
   # Alternative lisp-modules implementation
-  lispPackages_new = callPackage ../development/lisp-modules-new/lisp-packages.nix {};
+  lispPackages_new = recurseIntoAttrs (callPackage ../development/lisp-modules-new/lisp-packages.nix {});
+
 
   ### DEVELOPMENT / PERL MODULES
 
@@ -23091,10 +23110,7 @@ with pkgs;
   grafana = callPackage ../servers/monitoring/grafana { };
   grafanaPlugins = callPackages ../servers/monitoring/grafana/plugins { };
 
-  grafana-agent = callPackage ../servers/monitoring/grafana-agent {
-    # pinned due to build failure or vendoring problems. When unpinning double check with: nix-build -A $name.go-modules --rebuild
-    buildGoModule = buildGo117Module;
-  };
+  grafana-agent = callPackage ../servers/monitoring/grafana-agent { };
 
   grafana-loki = callPackage ../servers/monitoring/loki { };
 
@@ -24097,7 +24113,7 @@ with pkgs;
     libdrm = if stdenv.isLinux then libdrm else null;
     abiCompat = config.xorg.abiCompat # `config` because we have no `xorg.override`
       or (if stdenv.isDarwin then "1.18" else null); # 1.19 needs fixing on Darwin
-  }) // { inherit xlibsWrapper; } );
+  }));
 
   xorg-autoconf = callPackage ../development/tools/misc/xorg-autoconf { };
 
@@ -24616,6 +24632,7 @@ with pkgs;
   tgt = callPackage ../tools/networking/tgt { };
 
   lkl = callPackage ../applications/virtualization/lkl { };
+  lklWithFirewall = callPackage ../applications/virtualization/lkl { firewallSupport = true; };
 
   inherit (callPackages ../os-specific/linux/kernel-headers { })
     linuxHeaders makeLinuxHeaders;
@@ -24879,6 +24896,8 @@ with pkgs;
 
   open-vm-tools = callPackage ../applications/virtualization/open-vm-tools { };
   open-vm-tools-headless = open-vm-tools.override { withX = false; };
+
+  oxtools = callPackage ../os-specific/linux/oxtools { };
 
   air = callPackage ../development/tools/air { };
 
@@ -26635,14 +26654,16 @@ with pkgs;
 
   foxitreader = libsForQt512.callPackage ../applications/misc/foxitreader { };
 
-  pdfstudio = import ../applications/misc/pdfstudio {
-    program = "pdfstudio";
-    inherit callPackage fetchurl libgccjit;
+  pdfstudio2021 = callPackage ../applications/misc/pdfstudio {
+    year = "2021";
   };
 
-  pdfstudioviewer = import ../applications/misc/pdfstudio {
+  pdfstudio2022 = callPackage ../applications/misc/pdfstudio {
+    year = "2022";
+  };
+
+  pdfstudioviewer = callPackage ../applications/misc/pdfstudio {
     program = "pdfstudioviewer";
-    inherit callPackage fetchurl libgccjit;
   };
 
   aeolus = callPackage ../applications/audio/aeolus { };
@@ -27805,9 +27826,7 @@ with pkgs;
 
   fritzprofiles = with python3.pkgs; toPythonApplication fritzprofiles;
 
-  fsv = callPackage ../applications/misc/fsv {
-    autoreconfHook = buildPackages.autoreconfHook269;
-  };
+  fsv = callPackage ../applications/misc/fsv { };
 
   ft2-clone = callPackage ../applications/audio/ft2-clone {
     inherit (darwin.apple_sdk.frameworks) CoreAudio CoreMIDI CoreServices Cocoa;
@@ -27965,10 +27984,7 @@ with pkgs;
 
   gopher = callPackage ../applications/networking/gopher/gopher { };
 
-  gophernotes = callPackage ../applications/editors/gophernotes {
-    # pinned due to build failure or vendoring problems. When unpinning double check with: nix-build -A $name.go-modules --rebuild
-    buildGoModule = buildGo117Module;
-  };
+  gophernotes = callPackage ../applications/editors/gophernotes { };
 
   goxel = callPackage ../applications/graphics/goxel { };
 
@@ -29007,6 +29023,12 @@ with pkgs;
 
   inkscape-extensions = recurseIntoAttrs (callPackages ../applications/graphics/inkscape/extensions.nix {});
 
+  inlyne = callPackage ../applications/misc/inlyne {
+    inherit (xorg) libX11 libXcursor libXi libXrandr libxcb;
+    inherit (darwin) libobjc;
+    inherit (darwin.apple_sdk.frameworks) AppKit ApplicationServices CoreFoundation CoreGraphics CoreServices CoreText CoreVideo Foundation Metal QuartzCore Security;
+  };
+
   inspectrum = callPackage ../applications/radio/inspectrum { };
 
   inputplug = callPackage ../tools/X11/inputplug { };
@@ -29108,10 +29130,7 @@ with pkgs;
 
   k3sup = callPackage ../applications/networking/cluster/k3sup {};
 
-  kconf = callPackage ../applications/networking/cluster/kconf {
-    # pinned due to build failure or vendoring problems. When unpinning double check with: nix-build -A $name.go-modules --rebuild
-    buildGoModule = buildGo117Module;
-  };
+  kconf = callPackage ../applications/networking/cluster/kconf { };
 
   kail = callPackage ../tools/networking/kail {  };
 
@@ -29258,10 +29277,7 @@ with pkgs;
 
   kubebuilder = callPackage ../applications/networking/cluster/kubebuilder { };
 
-  kuttl = callPackage ../applications/networking/cluster/kuttl {
-    # pinned due to build failure or vendoring problems. When unpinning double check with: nix-build -A $name.go-modules --rebuild
-    buildGoModule = buildGo117Module;
-  };
+  kuttl = callPackage ../applications/networking/cluster/kuttl { };
 
   kubectl-doctor = callPackage ../applications/networking/cluster/kubectl-doctor {
     # pinned due to build failure or vendoring problems. When unpinning double check with: nix-build -A $name.go-modules --rebuild
@@ -30043,7 +30059,9 @@ with pkgs;
 
   nerd-font-patcher = callPackage ../applications/misc/nerd-font-patcher { };
 
-  newsflash = callPackage ../applications/networking/feedreaders/newsflash { };
+  newsflash = callPackage ../applications/networking/feedreaders/newsflash {
+    webkitgtk = webkitgtk_5_0;
+  };
 
   nicotine-plus = callPackage ../applications/networking/soulseek/nicotine-plus { };
 
@@ -31783,10 +31801,7 @@ with pkgs;
 
   toxic = callPackage ../applications/networking/instant-messengers/toxic { };
 
-  toxiproxy = callPackage ../development/tools/toxiproxy {
-    # pinned due to build failure or vendoring problems. When unpinning double check with: nix-build -A $name.go-modules --rebuild
-    buildGoModule = buildGo117Module;
-  };
+  toxiproxy = callPackage ../development/tools/toxiproxy { };
 
   tqsl = callPackage ../applications/radio/tqsl {
     openssl = openssl_1_1;
@@ -32288,7 +32303,9 @@ with pkgs;
 
   weston = callPackage ../applications/window-managers/weston { };
 
-  whalebird = callPackage ../applications/misc/whalebird { };
+  whalebird = callPackage ../applications/misc/whalebird {
+    electron = electron_19;
+  };
 
   wio = callPackage ../applications/window-managers/wio {
     wlroots = wlroots_0_14;
@@ -33001,6 +33018,8 @@ with pkgs;
   snarkos = callPackage ../applications/blockchains/snarkos {
     inherit (darwin.apple_sdk.frameworks) Security;
   };
+
+  taro = callPackage ../applications/blockchains/taro { };
 
   terra-station = callPackage ../applications/blockchains/terra-station { };
 
@@ -35871,8 +35890,7 @@ with pkgs;
   gotestwaf = callPackage ../tools/security/gotestwaf { };
 
   gowitness = callPackage ../tools/security/gowitness {
-    # pinned due to build failure or vendoring problems. When unpinning double check with: nix-build -A $name.go-modules --rebuild
-    buildGoModule = buildGo117Module;
+    buildGoModule = buildGo119Module;
   };
 
   guetzli = callPackage ../applications/graphics/guetzli { };
@@ -37201,10 +37219,7 @@ with pkgs;
 
   zfs-replicate = python3Packages.callPackage ../tools/backup/zfs-replicate { };
 
-  zrepl = callPackage ../tools/backup/zrepl {
-    # pinned due to build failure or vendoring problems. When unpinning double check with: nix-build -A $name.go-modules --rebuild
-    buildGoModule = buildGo117Module;
-  };
+  zrepl = callPackage ../tools/backup/zrepl { };
 
   uhubctl = callPackage ../tools/misc/uhubctl {};
 

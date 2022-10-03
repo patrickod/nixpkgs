@@ -2146,6 +2146,8 @@ in {
 
   cryptoparser = callPackage ../development/python-modules/cryptoparser { };
 
+  crysp = callPackage ../development/python-modules/crysp { };
+
   crytic-compile = callPackage ../development/python-modules/crytic-compile { };
 
   csrmesh  = callPackage ../development/python-modules/csrmesh { };
@@ -4397,6 +4399,8 @@ in {
 
   iaqualink = callPackage ../development/python-modules/iaqualink { };
 
+  ibeacon-ble = callPackage ../development/python-modules/ibeacon-ble { };
+
   ibis = callPackage ../development/python-modules/ibis { };
 
   ibis-framework = callPackage ../development/python-modules/ibis-framework { };
@@ -4983,6 +4987,8 @@ in {
   keepkey_agent = callPackage ../development/python-modules/keepkey_agent { };
 
   keepkey = callPackage ../development/python-modules/keepkey { };
+
+  kegtron-ble = callPackage ../development/python-modules/kegtron-ble { };
 
   keras-applications = callPackage ../development/python-modules/keras-applications { };
 
