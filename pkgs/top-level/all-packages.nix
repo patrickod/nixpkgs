@@ -37600,8 +37600,6 @@ with pkgs;
 
   cartography = callPackage ../tools/security/cartography {};
 
-  cargo-hf2 = callPackage ../development/tools/hf2-rs/cargo-hf2.nix {} ;
-
   zalgo = callPackage ../tools/misc/zalgo { };
 
   zettlr = callPackage ../applications/misc/zettlr {
