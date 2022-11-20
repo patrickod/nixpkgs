@@ -67,7 +67,7 @@
 , CoreServices
 
   # nvim-treesitter dependencies
-, tree-sitter
+, callPackage
 
   # sved dependencies
 , glib
@@ -113,6 +113,16 @@
 }:
 
 self: super: {
+
+  barbecue-nvim = super.vimshell-vim.overrideAttrs (old: {
+    dependencies = with self; [ nvim-lspconfig nvim-navic nvim-web-devicons ];
+    meta = {
+      description = "A VS Code like winbar for Neovim";
+      homepage = "https://github.com/utilyre/barbecue.nvim";
+      license = lib.licenses.mit;
+      maintainers = with lib.maintainers; [ lightquantum ];
+    };
+  });
 
   clang_complete = super.clang_complete.overrideAttrs (old: {
     # In addition to the arguments you pass to your compiler, you also need to
@@ -461,20 +471,14 @@ self: super: {
     dependencies = with self; [ lush-nvim ];
   });
 
-  himalaya-vim = buildVimPluginFrom2Nix {
-    pname = "himalaya-vim";
-    inherit (himalaya) src version;
-    dependencies = with self; [ himalaya ];
-    configurePhase = ''
-      cd vim
+  himalaya-vim = super.himalaya-vim.overrideAttrs (old: {
+    postPatch = ''
       substituteInPlace plugin/himalaya.vim \
-        --replace 'if !executable("himalaya")' 'if v:false'
+        --replace "if !executable('himalaya')" "if v:false"
+      substituteInPlace autoload/himalaya/request.vim \
+        --replace "'himalaya" "'${himalaya}/bin/himalaya"
     '';
-    postFixup = ''
-      mkdir -p $out/bin
-      ln -s ${himalaya}/bin/himalaya $out/bin/himalaya
-    '';
-  };
+  });
 
   jedi-vim = super.jedi-vim.overrideAttrs (old: {
     # checking for python3 support in vim would be neat, too, but nobody else seems to care
@@ -521,6 +525,10 @@ self: super: {
           --replace "let l:path = s:root . '/bin/'" "let l:path = '${LanguageClient-neovim-bin}' . '/bin/'"
       '';
     };
+
+  lazy-lsp-nvim = super.lazy-lsp-nvim.overrideAttrs (old: {
+    dependencies = with self; [ nvim-lspconfig ];
+  });
 
   lean-nvim = super.lean-nvim.overrideAttrs (old: {
     dependencies = with self; [ nvim-lspconfig plenary-nvim ];
@@ -620,6 +628,10 @@ self: super: {
     dependencies = with self; [ plenary-nvim ];
   });
 
+  neo-tree-nvim = super.neo-tree-nvim.overrideAttrs (old: {
+    dependencies = with self; [ plenary-nvim nui-nvim ];
+  });
+
   noice-nvim = super.noice-nvim.overrideAttrs(old: {
     dependencies = with self; [ nui-nvim nvim-notify ];
   });
@@ -644,23 +656,9 @@ self: super: {
     dependencies = with self; [ plenary-nvim ];
   });
 
-  # Usage:
-  # pkgs.vimPlugins.nvim-treesitter.withPlugins (p: [ p.tree-sitter-c p.tree-sitter-java ... ])
-  # or for all grammars:
-  # pkgs.vimPlugins.nvim-treesitter.withPlugins (_: tree-sitter.allGrammars)
-  nvim-treesitter = super.nvim-treesitter.overrideAttrs (old: {
-    passthru.withPlugins =
-      grammarFn: self.nvim-treesitter.overrideAttrs (_: {
-        postPatch =
-          let
-            grammars = tree-sitter.withPlugins grammarFn;
-          in
-          ''
-            rm -r parser
-            ln -s ${grammars} parser
-          '';
-      });
-  });
+  nvim-treesitter = super.nvim-treesitter.overrideAttrs (old:
+    callPackage ./nvim-treesitter/overrides.nix { } self super
+  );
 
   octo-nvim = super.octo-nvim.overrideAttrs (old: {
     dependencies = with self; [ telescope-nvim plenary-nvim ];
@@ -671,8 +669,6 @@ self: super: {
   });
 
   inherit parinfer-rust;
-
-  # plenary-nvim = super.toVimPlugin(luaPackages.plenary-nvim);
 
   plenary-nvim = super.plenary-nvim.overrideAttrs (old: {
     postPatch = ''
@@ -1001,7 +997,7 @@ self: super: {
             libiconv
           ];
 
-          cargoSha256 = "sha256-AY14YEdMpHXmiHwEA9hwSwwwJ8hYIomAuIuCJv1OUDw=";
+          cargoSha256 = "sha256-MzacdTuCaBIAyWxH+Uza1KToGZgGPcwMCe5JtQ+68/M=";
         };
       in
       ''
@@ -1314,6 +1310,7 @@ self: super: {
       "coc-smartf"
       "coc-snippets"
       "coc-solargraph"
+      "coc-spell-checker"
       "coc-sqlfluff"
       "coc-stylelint"
       "coc-sumneko-lua"
