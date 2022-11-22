@@ -790,6 +790,7 @@ with pkgs;
   mysql-shell = callPackage ../development/tools/mysql-shell {
     inherit (darwin) cctools developer_cmds DarwinTools;
     inherit (darwin.apple_sdk.frameworks) CoreServices;
+    antlr = antlr4_10;
     boost = boost177; # Configure checks for specific version.
     protobuf = protobuf3_19;
     icu =  icu69;
@@ -2702,6 +2703,11 @@ with pkgs;
   };
 
   gmnitohtml = callPackage ../applications/misc/gmnitohtml { };
+
+  go2tv = darwin.apple_sdk_11_0.callPackage ../applications/video/go2tv {
+    inherit (darwin.apple_sdk_11_0.frameworks) Carbon Cocoa Kernel UserNotifications;
+  };
+  go2tv-lite = go2tv.override { withGui = false; };
 
   goimapnotify = callPackage ../tools/networking/goimapnotify { };
 
@@ -5277,8 +5283,6 @@ with pkgs;
   libceph = ceph.lib;
   inherit (callPackages ../tools/filesystems/ceph {
     lua = lua5_4;
-    # needs to be the same openssl version as python/pyopenssl
-    curl = (curl.override { openssl = openssl_1_1; });
   })
     ceph
     ceph-client;
@@ -5784,15 +5788,7 @@ with pkgs;
 
   davfs2 = callPackage ../tools/filesystems/davfs2 { };
 
-  dbeaver = callPackage ../applications/misc/dbeaver {
-    jdk = jdk11; # AlgorithmId.md5WithRSAEncryption_oid was removed in jdk15
-
-    # TODO: remove once maven uses JDK 11
-    # error: org/eclipse/tycho/core/p2/P2ArtifactRepositoryLayout has been compiled by a more recent version of the Java Runtime (class file version 55.0), this version of the Java Runtime only recognizes class file versions up to 52.0
-    maven = maven.override {
-      jdk = jdk11;
-    };
-  };
+  dbeaver = callPackage ../applications/misc/dbeaver { };
 
   dbench = callPackage ../development/tools/misc/dbench { };
 
@@ -5847,6 +5843,8 @@ with pkgs;
   ddclient = callPackage ../tools/networking/ddclient { };
 
   dd_rescue = callPackage ../tools/system/dd_rescue { };
+
+  ddh = callPackage ../tools/system/ddh { };
 
   ddrescue = callPackage ../tools/system/ddrescue { };
 
@@ -6466,11 +6464,7 @@ with pkgs;
 
   exactaudiocopy = callPackage ../applications/audio/exact-audio-copy { };
 
-  exempi = callPackage ../development/libraries/exempi {
-    stdenv = if stdenv.isDarwin then stdenv
-             else gcc9Stdenv;
-    boost  = if stdenv.isDarwin then boost else boost15x;
-  };
+  exempi = callPackage ../development/libraries/exempi { };
 
   executor = with python3Packages; toPythonApplication executor;
 
@@ -7206,7 +7200,9 @@ with pkgs;
 
   github-backup = callPackage ../tools/misc/github-backup { };
 
-  github-runner = callPackage ../development/tools/continuous-integration/github-runner { };
+  github-runner = callPackage ../development/tools/continuous-integration/github-runner {
+     inherit (darwin) autoSignDarwinBinariesHook;
+  };
 
   gitkraken = callPackage ../applications/version-management/gitkraken { };
 
@@ -11460,9 +11456,6 @@ with pkgs;
   skytemple = callPackage ../applications/misc/skytemple {};
 
   sleuthkit = callPackage ../tools/system/sleuthkit {};
-
-  # Not updated upstream since 2018, doesn't support qt newer than 5.12
-  sleepyhead = libsForQt512.callPackage ../applications/misc/sleepyhead {};
 
   slides = callPackage ../applications/misc/slides { };
 
@@ -15793,6 +15786,16 @@ with pkgs;
   phpExtensions = php.extensions;
   phpPackages = php.packages;
 
+  # Import PHP82 interpreter, extensions and packages
+  php82 = callPackage ../development/interpreters/php/8.2.nix {
+    stdenv = if stdenv.cc.isClang then llvmPackages.stdenv else stdenv;
+    pcre2 = pcre2.override {
+      withJitSealloc = !stdenv.isDarwin;
+    };
+  };
+  php82Extensions = recurseIntoAttrs php82.extensions;
+  php82Packages = recurseIntoAttrs php82.packages;
+
   # Import PHP81 interpreter, extensions and packages
   php81 = callPackage ../development/interpreters/php/8.1.nix {
     stdenv = if stdenv.cc.isClang then llvmPackages.stdenv else stdenv;
@@ -16258,14 +16261,20 @@ with pkgs;
 
   autoadb = callPackage ../misc/autoadb { };
 
-  ansible = ansible_2_12;
-  ansible_2_13 = python3Packages.toPythonApplication python3Packages.ansible-core;
-  ansible_2_12 = python3Packages.toPythonApplication (python3Packages.ansible-core.overridePythonAttrs (oldAttrs: rec {
-    version = "2.12.6";
+  ansible = ansible_2_14;
+  ansible_2_14 = python3Packages.toPythonApplication python3Packages.ansible-core;
+  ansible_2_13 = python3Packages.toPythonApplication (python3Packages.ansible-core.overridePythonAttrs (oldAttrs: rec {
+    version = "2.13.6";
     src = oldAttrs.src.override {
       inherit version;
-      hash = "sha256-XzZuhRFZ2Pcs5o0yuMDt2lbuU3wB6faOyjgr0VEK9l0=";
-      sha256 = "";
+      hash = "sha256-Mf4yK2MpBnSo9zhhEN9QHwBEqkSJC+OrMTpuIluaKc8=";
+    };
+  }));
+  ansible_2_12 = python3Packages.toPythonApplication (python3Packages.ansible-core.overridePythonAttrs (oldAttrs: rec {
+    version = "2.12.10";
+    src = oldAttrs.src.override {
+      inherit version;
+      hash = "sha256-/rHfYXOM/B9eiTtCouwafeMpd9Z+hnB7Retj0MXDwjY=";
     };
     meta.changelog = "https://github.com/ansible/ansible/blob/v${version}/changelogs/CHANGELOG-v${lib.versions.majorMinor version}.rst";
   }));
@@ -17584,6 +17593,8 @@ with pkgs;
 
   privacyidea = callPackage ../applications/misc/privacyidea { };
 
+  process-compose = callPackage ../applications/misc/process-compose { };
+
   process-viewer = callPackage ../applications/misc/process-viewer {
     inherit (darwin.apple_sdk.frameworks) DiskArbitration Foundation IOKit;
   };
@@ -18587,8 +18598,7 @@ with pkgs;
   cypress = callPackage ../development/web/cypress { };
 
   cyrus_sasl = callPackage ../development/libraries/cyrus-sasl {
-    libkrb5 = if stdenv.isFreeBSD then libheimdal else libkrb5;
-    openssl = openssl_1_1;
+    libkrb5 = if stdenv.isFreeBSD then heimdal else libkrb5;
   };
 
   # Make bdb5 the default as it is the last release under the custom
@@ -19251,8 +19261,7 @@ with pkgs;
   gns3-gui = gns3Packages.guiStable;
   gns3-server = gns3Packages.serverStable;
 
-  gobject-introspection = if (!stdenv.hostPlatform.canExecute stdenv.targetPlatform) && stdenv.targetPlatform.emulatorAvailable buildPackages
-    then callPackage ../development/libraries/gobject-introspection/wrapper.nix { } else gobject-introspection-unwrapped;
+  gobject-introspection = callPackage ../development/libraries/gobject-introspection/wrapper.nix { };
 
   gobject-introspection-unwrapped = callPackage ../development/libraries/gobject-introspection {
     nixStoreDir = config.nix.storeDir or builtins.storeDir;
@@ -19326,8 +19335,6 @@ with pkgs;
   gsasl = callPackage ../development/libraries/gsasl { };
 
   gsl = callPackage ../development/libraries/gsl { };
-
-  gsl_1 = callPackage ../development/libraries/gsl/gsl-1_16.nix { };
 
   gsl-lite = callPackage ../development/libraries/gsl-lite { };
 
@@ -19506,7 +19513,6 @@ with pkgs;
     inherit (darwin.apple_sdk.frameworks) CoreFoundation Security SystemConfiguration;
     autoreconfHook = buildPackages.autoreconfHook269;
   };
-  libheimdal = heimdal;
 
   harfbuzz = callPackage ../development/libraries/harfbuzz {
     inherit (darwin.apple_sdk.frameworks) ApplicationServices CoreText;
@@ -21685,9 +21691,7 @@ with pkgs;
 
   openexrid-unstable = callPackage ../development/libraries/openexrid-unstable { };
 
-  openldap = callPackage ../development/libraries/openldap {
-    openssl = openssl_1_1;
-  };
+  openldap = callPackage ../development/libraries/openldap { };
 
   opencolorio = darwin.apple_sdk_11_0.callPackage ../development/libraries/opencolorio {
     inherit (darwin.apple_sdk_11_0.frameworks) Carbon GLUT Cocoa;
@@ -22055,6 +22059,7 @@ with pkgs;
       inherit bison cups dconf harfbuzz libGL perl gtk3 ninja;
       inherit (gst_all_1) gstreamer gst-plugins-base gst-plugins-good gst-libav gst-vaapi;
       inherit buildPackages;
+      inherit libglvnd;
       cmake = cmake.overrideAttrs (attrs: {
         patches = attrs.patches ++ [
           ../development/libraries/qt-6/patches/cmake.patch
@@ -22546,6 +22551,8 @@ with pkgs;
   sphinx-autobuild = with python3Packages; toPythonApplication sphinx-autobuild;
 
   sphinx-serve = with python3Packages; toPythonApplication sphinx-serve;
+
+  inherit (python3Packages) sphinxHook;
 
   sphinxsearch = callPackage ../servers/search/sphinxsearch { };
 
@@ -23499,7 +23506,7 @@ with pkgs;
 
   inherit (callPackages ../servers/asterisk { })
     asterisk asterisk-stable asterisk-lts
-    asterisk_16 asterisk_18 asterisk_19;
+    asterisk_16 asterisk_18 asterisk_19 asterisk_20;
 
   asterisk-module-sccp = callPackage ../servers/asterisk/sccp { };
 
@@ -26600,6 +26607,8 @@ with pkgs;
 
   manrope = callPackage ../data/fonts/manrope { };
 
+  martian-mono = callPackage ../data/fonts/martian-mono { };
+
   marwaita = callPackage ../data/themes/marwaita { };
 
   marwaita-manjaro = callPackage ../data/themes/marwaita-manjaro { };
@@ -29430,6 +29439,8 @@ with pkgs;
 
   waybar = callPackage ../applications/misc/waybar {};
 
+  waylock = callPackage ../applications/misc/waylock {};
+
   wayshot = callPackage ../tools/misc/wayshot { };
 
   waylevel = callPackage ../tools/misc/waylevel { };
@@ -29978,7 +29989,7 @@ with pkgs;
 
   kupfer = callPackage ../applications/misc/kupfer { };
 
-  kvirc = libsForQt514.callPackage ../applications/networking/irc/kvirc { };
+  kvirc = libsForQt515.callPackage ../applications/networking/irc/kvirc { };
 
   lame = callPackage ../development/libraries/lame { };
 
@@ -30204,6 +30215,7 @@ with pkgs;
   lv2-cpp-tools = callPackage ../applications/audio/lv2-cpp-tools { };
 
   lxi-tools = callPackage ../tools/networking/lxi-tools { };
+  lxi-tools-gui = callPackage ../tools/networking/lxi-tools { withGui = true; };
 
   lynx = callPackage ../applications/networking/browsers/lynx { };
 
@@ -30793,7 +30805,7 @@ with pkgs;
 
   yambar = callPackage ../applications/misc/yambar { };
 
-  polyphone = libsForQt514.callPackage ../applications/audio/polyphone { };
+  polyphone = libsForQt5.callPackage ../applications/audio/polyphone { };
 
   portfolio = callPackage ../applications/office/portfolio {
     jre = openjdk11;
@@ -30976,7 +30988,7 @@ with pkgs;
 
   notepad-next = libsForQt5.callPackage ../applications/editors/notepad-next { };
 
-  notepadqq = libsForQt514.callPackage ../applications/editors/notepadqq { };
+  notepadqq = libsForQt5.callPackage ../applications/editors/notepadqq { };
 
   notmuch = callPackage ../applications/networking/mailreaders/notmuch {
     gmime = gmime3;
@@ -32526,6 +32538,10 @@ with pkgs;
   ttyper = callPackage ../applications/misc/ttyper { };
 
   tudu = callPackage ../applications/office/tudu { };
+
+  tumpa = callPackage ../applications/misc/tumpa {
+    inherit (pkgs.libsForQt5) wrapQtAppsHook;
+  };
 
   tuna = python3Packages.callPackage ../os-specific/linux/tuna { };
 

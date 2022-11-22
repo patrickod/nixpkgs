@@ -799,6 +799,8 @@ self: super: with self; {
 
   avro-python3 = callPackage ../development/python-modules/avro-python3 { };
 
+  awacs = callPackage ../development/python-modules/awacs { };
+
   awesome-slugify = callPackage ../development/python-modules/awesome-slugify { };
 
   awesomeversion = callPackage ../development/python-modules/awesomeversion { };
@@ -7590,8 +7592,6 @@ self: super: with self; {
 
   pychart = callPackage ../development/python-modules/pychart { };
 
-  pychef = callPackage ../development/python-modules/pychef { };
-
   pychm = callPackage ../development/python-modules/pychm { };
 
   PyChromecast = callPackage ../development/python-modules/pychromecast { };
@@ -11307,6 +11307,8 @@ self: super: with self; {
 
   trio-websocket = callPackage ../development/python-modules/trio-websocket { };
 
+  troposphere = callPackage ../development/python-modules/troposphere { };
+
   trueskill = callPackage ../development/python-modules/trueskill { };
 
   trustme = callPackage ../development/python-modules/trustme { };
@@ -11324,10 +11326,6 @@ self: super: with self; {
   tunigo = callPackage ../development/python-modules/tunigo { };
 
   tubeup = callPackage ../development/python-modules/tubeup { };
-
-  tumpa = callPackage ../development/python-modules/tumpa {
-    inherit (pkgs.libsForQt5) wrapQtAppsHook;
-  };
 
   turnt = callPackage ../development/python-modules/turnt { };
 
