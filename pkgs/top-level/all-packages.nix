@@ -6643,6 +6643,8 @@ with pkgs;
 
   fluent-bit = callPackage ../tools/misc/fluent-bit { };
 
+  fluent-reader = callPackage ../applications/networking/feedreaders/fluent-reader { };
+
   flux = callPackage ../development/compilers/flux { };
 
   fido2luks = callPackage ../tools/security/fido2luks {};
@@ -10396,6 +10398,8 @@ with pkgs;
   pim6sd = callPackage ../servers/pim6sd { };
 
   phosh = callPackage ../applications/window-managers/phosh { };
+
+  phosh-mobile-settings = callPackage ../applications/window-managers/phosh/phosh-mobile-settings.nix { };
 
   pinentry = libsForQt5.callPackage ../tools/security/pinentry { };
 
@@ -15058,6 +15062,9 @@ with pkgs;
     inherit (darwin.apple_sdk.frameworks) Security SystemConfiguration;
   };
   cargo-criterion = callPackage ../development/tools/rust/cargo-criterion { };
+  cargo-cyclonedx = callPackage ../development/tools/rust/cargo-cyclonedx {
+    inherit (darwin.apple_sdk.frameworks) Security SystemConfiguration CoreFoundation;
+  };
   cargo-deadlinks = callPackage ../development/tools/rust/cargo-deadlinks {
     inherit (darwin.apple_sdk.frameworks) Security;
   };
@@ -15942,7 +15949,7 @@ with pkgs;
   pysideApiextractor = callPackage ../development/python-modules/pyside/apiextractor.nix { };
   pysideGeneratorrunner = callPackage ../development/python-modules/pyside/generatorrunner.nix { };
 
-  svg2tikz = python27Packages.svg2tikz;
+  svg2tikz = with python3.pkgs; toPythonApplication svg2tikz;
 
   svg2pdf = callPackage ../tools/graphics/svg2pdf { };
 
@@ -21173,7 +21180,7 @@ with pkgs;
   };
 
   libxml2Python = let
-    libxml2 = python2Packages.libxml2;
+    inherit (python3.pkgs) libxml2;
   in pkgs.buildEnv { # slightly hacky
     name = "libxml2+py-${res.libxml2.version}";
     paths = with libxml2; [ dev bin py ];
@@ -21999,7 +22006,7 @@ with pkgs;
     (import ../development/libraries/qt-5/5.12) {
       inherit newScope;
       inherit lib fetchurl fetchpatch fetchFromGitHub makeSetupHook makeWrapper;
-      inherit bison cups dconf harfbuzz libGL perl gtk3;
+      inherit bison cups dconf harfbuzz libGL perl gtk3 python2;
       inherit (gst_all_1) gstreamer gst-plugins-base;
       inherit darwin;
       inherit buildPackages;
@@ -22012,7 +22019,7 @@ with pkgs;
     (import ../development/libraries/qt-5/5.14) {
       inherit newScope;
       inherit lib fetchurl fetchpatch fetchFromGitHub makeSetupHook makeWrapper;
-      inherit bison cups dconf harfbuzz libGL perl gtk3;
+      inherit bison cups dconf harfbuzz libGL perl gtk3 python2;
       inherit (gst_all_1) gstreamer gst-plugins-base;
       inherit darwin;
       inherit buildPackages;
@@ -22025,7 +22032,7 @@ with pkgs;
     (import ../development/libraries/qt-5/5.15) {
       inherit newScope;
       inherit lib stdenv fetchurl fetchpatch fetchgit fetchFromGitHub makeSetupHook makeWrapper;
-      inherit bison cups dconf harfbuzz libGL perl gtk3;
+      inherit bison cups dconf harfbuzz libGL perl gtk3 python3;
       inherit (gst_all_1) gstreamer gst-plugins-base;
       inherit darwin;
       inherit buildPackages;
@@ -28139,9 +28146,7 @@ with pkgs;
 
   echoip = callPackage ../servers/echoip { };
 
-  eclipses = recurseIntoAttrs (callPackage ../applications/editors/eclipse {
-    jdk = jdk11;
-  });
+  eclipses = recurseIntoAttrs (callPackage ../applications/editors/eclipse { });
 
   ecpdap = callPackage ../development/embedded/fpga/ecpdap {
     inherit (darwin.apple_sdk.frameworks) AppKit;
@@ -29143,6 +29148,8 @@ with pkgs;
   google-chrome-dev = google-chrome.override { chromium = chromiumDev; channel = "dev"; };
 
   go-graft = callPackage ../applications/networking/go-graft { };
+
+  gostatic = callPackage ../applications/misc/gostatic {};
 
   gosmore = callPackage ../applications/misc/gosmore { stdenv = gcc10StdenvCompat; };
 
@@ -33956,7 +33963,6 @@ with pkgs;
 
   asc = callPackage ../games/asc {
     lua = lua5_1;
-    libsigcxx = libsigcxx12;
     physfs = physfs_2;
   };
 
@@ -36789,6 +36795,8 @@ with pkgs;
 
   muse = libsForQt5.callPackage ../applications/audio/muse { };
 
+  museeks = callPackage ../applications/audio/museeks { };
+
   musly = callPackage ../applications/audio/musly { };
 
   mynewt-newt = callPackage ../tools/package-management/mynewt-newt { };
@@ -37489,7 +37497,10 @@ with pkgs;
 
   wacomtablet = libsForQt5.callPackage ../tools/misc/wacomtablet { };
 
-  wasmer = callPackage ../development/interpreters/wasmer { };
+  wasmer = callPackage ../development/interpreters/wasmer {
+    llvmPackages = llvmPackages_12;
+    inherit (darwin.apple_sdk.frameworks) CoreFoundation SystemConfiguration Security;
+  };
 
   yabasic = callPackage ../development/interpreters/yabasic { };
 
