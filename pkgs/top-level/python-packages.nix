@@ -1512,9 +1512,13 @@ self: super: with self; {
 
   caldav = callPackage ../development/python-modules/caldav { };
 
+  calver = callPackage ../development/python-modules/calver { };
+
   callee = callPackage ../development/python-modules/callee { };
 
   calmjs-parse = callPackage ../development/python-modules/calmjs-parse { };
+
+  camel-converter = callPackage ../development/python-modules/camel-converter { };
 
   can = callPackage ../development/python-modules/can { };
 
@@ -2423,6 +2427,8 @@ self: super: with self; {
 
   dissect-target = callPackage ../development/python-modules/dissect-target { };
 
+  dissect-thumbcache = callPackage ../development/python-modules/dissect-thumbcache { };
+
   dissect-util = callPackage ../development/python-modules/dissect-util { };
 
   dissect-vmfs = callPackage ../development/python-modules/dissect-vmfs { };
@@ -2671,6 +2677,8 @@ self: super: with self; {
   };
 
   dnachisel = callPackage ../development/python-modules/dnachisel { };
+
+  dnfile = callPackage ../development/python-modules/dnfile { };
 
   dnslib = callPackage ../development/python-modules/dnslib { };
 
@@ -6886,8 +6894,6 @@ self: super: with self; {
 
   pandas-stubs = callPackage ../development/python-modules/pandas-stubs { };
 
-  parameterizedtestcase = callPackage ../development/python-modules/parameterizedtestcase { };
-
   pdunehd = callPackage ../development/python-modules/pdunehd { };
 
   pencompy = callPackage ../development/python-modules/pencompy { };
@@ -7914,8 +7920,6 @@ self: super: with self; {
   pygmo = callPackage ../development/python-modules/pygmo { };
 
   pygmt = callPackage ../development/python-modules/pygmt { };
-
-  pygobject2 = callPackage ../development/python-modules/pygobject { };
 
   pygobject3 = callPackage ../development/python-modules/pygobject/3.nix {
     # inherit (pkgs) meson won't work because it won't be spliced
@@ -9014,6 +9018,8 @@ self: super: with self; {
   python-dateutil = callPackage ../development/python-modules/dateutil { };
 
   python-dbusmock = callPackage ../development/python-modules/python-dbusmock { };
+
+  python-decouple = callPackage ../development/python-modules/python-decouple { };
 
   pythondialog = callPackage ../development/python-modules/pythondialog { };
 

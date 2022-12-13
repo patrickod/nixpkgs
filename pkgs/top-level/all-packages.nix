@@ -185,9 +185,7 @@ with pkgs;
     meta.platforms = lib.platforms.linux;
   } ../build-support/setup-hooks/auto-patchelf.sh;
 
-  appflowy = callPackage ../applications/office/appflowy {
-    openssl = openssl_1_1;
-  };
+  appflowy = callPackage ../applications/office/appflowy { };
 
   appimageTools = callPackage ../build-support/appimage {
     buildFHSUserEnv = buildFHSUserEnvBubblewrap;
@@ -3304,6 +3302,8 @@ with pkgs;
 
   plausible = callPackage ../servers/web-apps/plausible { };
 
+  pam-reattach = callPackage ../os-specific/darwin/pam-reattach {};
+
   reattach-to-user-namespace = callPackage ../os-specific/darwin/reattach-to-user-namespace {};
 
   skhd = callPackage ../os-specific/darwin/skhd {
@@ -4000,6 +4000,8 @@ with pkgs;
   wluma = callPackage ../tools/wayland/wluma {  };
 
   wob = callPackage ../tools/wayland/wob { };
+
+  wpaperd = callPackage ../tools/wayland/wpaperd { };
 
   wshowkeys = callPackage ../tools/wayland/wshowkeys { };
 
@@ -6985,7 +6987,7 @@ with pkgs;
 
   fcitx5-chewing = callPackage ../tools/inputmethods/fcitx5/fcitx5-chewing.nix { };
 
-  fcitx5-lua = callPackage ../tools/inputmethods/fcitx5/fcitx5-lua.nix { };
+  fcitx5-lua = callPackage ../tools/inputmethods/fcitx5/fcitx5-lua.nix { lua = lua5_3; };
 
   fcitx5-m17n = callPackage ../tools/inputmethods/fcitx5/fcitx5-m17n.nix { };
 
@@ -9095,6 +9097,28 @@ with pkgs;
   libinsane = callPackage ../development/libraries/libinsane { };
 
   libint = callPackage ../development/libraries/libint {};
+  libintPsi4 = callPackage ../development/libraries/libint {
+    enableFortran = false;
+    enableSSE = false;
+    maxAm = 6;
+    eriDeriv = 2;
+    eri3Deriv = 2;
+    eri2Deriv = 2;
+    eriAm = [ 6 5 4 ];
+    eri3Am = [ 6 5 4 ];
+    eri2Am = [ 6 5 4 ];
+    eriOptAm = [ 3 2 2 ];
+    eri3OptAm = [ 3 2 2 ];
+    eri2OptAm = [ 3 2 2 ];
+    enableOneBody = true;
+    oneBodyDerivOrd = 2;
+    enableGeneric = false;
+    enableContracted = false;
+    cartGaussOrd = "standard";
+    shGaussOrd = "gaussian";
+    eri2PureSh = false;
+    eri3PureSh = false;
+  };
 
   libipfix = callPackage ../development/libraries/libipfix { };
 
@@ -12564,6 +12588,8 @@ with pkgs;
 
   v2ray = callPackage ../tools/networking/v2ray { };
 
+  v2raya = callPackage ../tools/networking/v2raya { };
+
   v2ray-domain-list-community = callPackage ../data/misc/v2ray-domain-list-community { };
 
   v2ray-geoip = callPackage ../data/misc/v2ray-geoip { };
@@ -12652,9 +12678,11 @@ with pkgs;
 
   vix = callPackage ../tools/misc/vix { };
 
-  vkBasalt = callPackage ../tools/graphics/vkBasalt {
-    vkBasalt32 = pkgsi686Linux.vkBasalt;
+  vkbasalt = callPackage ../tools/graphics/vkbasalt {
+    vkbasalt32 = pkgsi686Linux.vkbasalt;
   };
+
+  vkbasalt-cli = callPackage ../tools/graphics/vkbasalt-cli { };
 
   vkmark = callPackage ../tools/graphics/vkmark { };
 
@@ -15350,9 +15378,7 @@ with pkgs;
   };
   cargo-sweep = callPackage ../development/tools/rust/cargo-sweep { };
   cargo-sync-readme = callPackage ../development/tools/rust/cargo-sync-readme {};
-  cargo-tally = callPackage ../development/tools/rust/cargo-tally {
-    inherit (darwin.apple_sdk.frameworks) DiskArbitration Foundation IOKit;
-  };
+  cargo-tally = callPackage ../development/tools/rust/cargo-tally { };
   cargo-temp = callPackage ../development/tools/rust/cargo-temp { };
   cargo-udeps = callPackage ../development/tools/rust/cargo-udeps {
     inherit (darwin.apple_sdk.frameworks) CoreServices Security SystemConfiguration;
@@ -17939,9 +17965,7 @@ with pkgs;
 
   segger-ozone = callPackage ../development/tools/misc/segger-ozone { };
 
-  selene = callPackage ../development/tools/selene {
-    inherit (darwin.apple_sdk.frameworks) Security;
-  };
+  selene = callPackage ../development/tools/selene { };
 
   shadowenv = callPackage ../tools/misc/shadowenv {
     inherit (darwin.apple_sdk.frameworks) Security;
@@ -21669,6 +21693,8 @@ with pkgs;
   ndpi = callPackage ../development/libraries/ndpi { };
 
   nemo-qml-plugin-dbus = libsForQt5.callPackage ../development/libraries/nemo-qml-plugin-dbus { };
+
+  netflix = callPackage ../applications/video/netflix { };
 
   nifticlib = callPackage ../development/libraries/science/biology/nifticlib { };
 
@@ -27750,9 +27776,9 @@ with pkgs;
 
   bonzomatic = callPackage ../applications/editors/bonzomatic { };
 
-  bottles = callPackage ../applications/misc/bottles {
-    wine = null;
-  };
+  bottles = callPackage ../applications/misc/bottles/fhsenv.nix { };
+
+  bottles-unwrapped = callPackage ../applications/misc/bottles { };
 
   brave = callPackage ../applications/networking/browsers/brave { };
 
@@ -29392,6 +29418,8 @@ with pkgs;
 
   jackline = callPackage ../applications/networking/instant-messengers/jackline { };
 
+  jay = callPackage ../applications/window-managers/jay { };
+
   keylight-controller-mschneider82 = callPackage ../applications/misc/keylight-controller-mschneider82 { };
 
   leftwm = callPackage ../applications/window-managers/leftwm { };
@@ -30616,7 +30644,7 @@ with pkgs;
     inherit (darwin) libiconv;
   };
 
-  nbstripout = callPackage ../applications/version-management/nbstripout { python = python3; };
+  nbstripout = callPackage ../applications/version-management/nbstripout { };
 
   ncmpc = callPackage ../applications/audio/ncmpc { };
 
@@ -32780,7 +32808,7 @@ with pkgs;
   wrapNeovim = neovim-unwrapped: lib.makeOverridable (neovimUtils.legacyWrapper neovim-unwrapped);
   neovim-unwrapped = callPackage ../applications/editors/neovim {
     CoreServices =  darwin.apple_sdk.frameworks.CoreServices;
-    lua = luajit;
+    lua = if (stdenv.hostPlatform.isRiscV64 || stdenv.hostPlatform.isRiscV64) then lua5_1 else luajit;
   };
 
   neovimUtils = callPackage ../applications/editors/neovim/utils.nix {
@@ -33648,7 +33676,7 @@ with pkgs;
 
   ergo = callPackage ../applications/blockchains/ergo { };
 
-  erigon = callPackage ../applications/blockchains/erigon.nix { };
+  erigon = callPackage ../applications/blockchains/erigon { };
 
   exodus = callPackage ../applications/blockchains/exodus { };
 
@@ -34794,8 +34822,7 @@ with pkgs;
   # You still can override by passing more arguments.
   space-orbit = callPackage ../games/space-orbit { };
 
-  spring = callPackage ../games/spring
-    { stdenv = gcc10StdenvCompat; asciidoc = asciidoc-full; };
+  spring = callPackage ../games/spring { asciidoc = asciidoc-full; };
 
   springLobby = callPackage ../games/spring/springlobby.nix { };
 
@@ -38166,4 +38193,6 @@ with pkgs;
   aitrack = libsForQt5.callPackage ../applications/misc/aitrack { };
 
   widevine-cdm = callPackage ../applications/networking/browsers/misc/widevine-cdm.nix { };
+
+  alsa-scarlett-gui = callPackage ../applications/audio/alsa-scarlett-gui { };
 }
