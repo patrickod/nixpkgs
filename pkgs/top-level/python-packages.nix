@@ -780,6 +780,8 @@ self: super: with self; {
 
   autocommand = callPackage ../development/python-modules/autocommand { };
 
+  autofaiss = callPackage ../development/python-modules/autofaiss { };
+
   autograd = callPackage ../development/python-modules/autograd { };
 
   autoit-ripper = callPackage ../development/python-modules/autoit-ripper { };
@@ -1186,6 +1188,10 @@ self: super: with self; {
 
   beancount = callPackage ../development/python-modules/beancount { };
 
+  beancount-black = callPackage ../development/python-modules/beancount-black { };
+
+  beancount-parser = callPackage ../development/python-modules/beancount-parser { };
+
   beancount_docverif = callPackage ../development/python-modules/beancount_docverif { };
 
   beanstalkc = callPackage ../development/python-modules/beanstalkc { };
@@ -1436,6 +1442,8 @@ self: super: with self; {
   btrfs = callPackage ../development/python-modules/btrfs { };
 
   btrfsutil = callPackage ../development/python-modules/btrfsutil { };
+
+  btsmarthub_devicelist = callPackage ../development/python-modules/btsmarthub_devicelist { };
 
   btsocket = callPackage ../development/python-modules/btsocket { };
 
@@ -2487,6 +2495,8 @@ self: super: with self; {
 
   django-celery-email = callPackage ../development/python-modules/django-celery-email { };
 
+  django-celery-results = callPackage ../development/python-modules/django-celery-results { };
+
   django_classytags = callPackage ../development/python-modules/django_classytags { };
 
   django-cleanup = callPackage ../development/python-modules/django-cleanup { };
@@ -2934,6 +2944,8 @@ self: super: with self; {
   emailthreads = callPackage ../development/python-modules/emailthreads { };
 
   email-validator = callPackage ../development/python-modules/email-validator { };
+
+  embedding-reader = callPackage ../development/python-modules/embedding-reader { };
 
   embrace = callPackage ../development/python-modules/embrace { };
 
@@ -5882,6 +5894,8 @@ self: super: with self; {
 
   mongoengine = callPackage ../development/python-modules/mongoengine { };
 
+  mongoquery = callPackage ../development/python-modules/mongoquery { };
+
   monkeyhex = callPackage ../development/python-modules/monkeyhex { };
 
   monosat = pkgs.monosat.python {
@@ -6652,6 +6666,8 @@ self: super: with self; {
   packbits = callPackage ../development/python-modules/packbits { };
 
   packet-python = callPackage ../development/python-modules/packet-python { };
+
+  packvers = callPackage ../development/python-modules/packvers { };
 
   pafy = callPackage ../development/python-modules/pafy { };
 
@@ -12022,6 +12038,8 @@ self: super: with self; {
   wktutils = callPackage ../development/python-modules/wktutils { };
 
   wled = callPackage ../development/python-modules/wled { };
+
+  wn = callPackage ../development/python-modules/wn { };
 
   woob = callPackage ../development/python-modules/woob { };
 

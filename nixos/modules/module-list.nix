@@ -180,6 +180,7 @@
   ./programs/hamster.nix
   ./programs/htop.nix
   ./programs/iftop.nix
+  ./programs/i3lock.nix
   ./programs/iotop.nix
   ./programs/java.nix
   ./programs/k3b.nix
@@ -724,6 +725,7 @@
   ./services/monitoring/riemann.nix
   ./services/monitoring/scollector.nix
   ./services/monitoring/smartd.nix
+  ./services/monitoring/statsd.nix
   ./services/monitoring/sysstat.nix
   ./services/monitoring/teamviewer.nix
   ./services/monitoring/telegraf.nix
@@ -819,6 +821,8 @@
   ./services/networking/firefox-syncserver.nix
   ./services/networking/fireqos.nix
   ./services/networking/firewall.nix
+  ./services/networking/firewall-iptables.nix
+  ./services/networking/firewall-nftables.nix
   ./services/networking/flannel.nix
   ./services/networking/freenet.nix
   ./services/networking/freeradius.nix
@@ -873,6 +877,7 @@
   ./services/networking/miniupnpd.nix
   ./services/networking/miredo.nix
   ./services/networking/mjpg-streamer.nix
+  ./services/networking/mmsd.nix
   ./services/networking/monero.nix
   ./services/networking/morty.nix
   ./services/networking/mosquitto.nix
@@ -887,6 +892,8 @@
   ./services/networking/namecoind.nix
   ./services/networking/nar-serve.nix
   ./services/networking/nat.nix
+  ./services/networking/nat-iptables.nix
+  ./services/networking/nat-nftables.nix
   ./services/networking/nats.nix
   ./services/networking/nbd.nix
   ./services/networking/ncdns.nix
