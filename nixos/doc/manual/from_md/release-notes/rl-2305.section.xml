@@ -25,6 +25,13 @@
     <itemizedlist>
       <listitem>
         <para>
+          <link xlink:href="https://akkoma.social">Akkoma</link>, an
+          ActivityPub microblogging server. Available as
+          <link xlink:href="options.html#opt-services.akkoma.enable">services.akkoma</link>.
+        </para>
+      </listitem>
+      <listitem>
+        <para>
           <link xlink:href="https://github.com/akinomyoga/ble.sh">blesh</link>,
           a line editor written in pure bash. Available as
           <link linkend="opt-programs.bash.blesh.enable">programs.bash.blesh</link>.
@@ -408,6 +415,13 @@
           <literal>client</literal>. The strict RPF warning has been
           removed as the RPF will be loosened automatically based on the
           value of this setting.
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <link xlink:href="https://xastir.org/index.php/Main_Page">Xastir</link>
+          can now access AX.25 interfaces via the
+          <literal>libax25</literal> package.
         </para>
       </listitem>
     </itemizedlist>
