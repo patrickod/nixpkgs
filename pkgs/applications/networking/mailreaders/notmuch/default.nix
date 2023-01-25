@@ -84,7 +84,7 @@ stdenv.mkDerivation rec {
   # doCheck = !stdenv.hostPlatform.isDarwin && (lib.versionAtLeast gmime.version "3.0.3");
   doCheck = false;
   checkTarget = "test";
-  checkInputs = [
+  nativeCheckInputs = [
     which dtach openssl bash
     gdb man emacs
   ];

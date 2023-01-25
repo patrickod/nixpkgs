@@ -227,7 +227,7 @@ let
 
     doCheck = false;
 
-    checkInputs = [
+    nativeCheckInputs = [
       coreutils
       (python3.withPackages (ps: [ ps.pexpect ]))
       procps
