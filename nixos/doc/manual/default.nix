@@ -21,6 +21,8 @@ let
     withManOptDedupPatch = true;
   };
 
+  manpageUrls = pkgs.path + "/doc/manpage-urls.json";
+
   # We need to strip references to /nix/store/* from options,
   # including any `extraSources` if some modules came from elsewhere,
   # or else the build will fail.
@@ -48,7 +50,7 @@ let
       };
     in buildPackages.nixosOptionsDoc {
       inherit (eval) options;
-      inherit (revision);
+      inherit revision;
       transformOptions = opt: opt // {
         # Clean up declaration sites to not refer to the NixOS source tree.
         declarations =
@@ -68,12 +70,15 @@ let
 
   sources = lib.sourceFilesBySuffices ./. [".xml"];
 
-  modulesDoc = builtins.toFile "modules.xml" ''
-    <section xmlns:xi="http://www.w3.org/2001/XInclude" id="modules">
-    ${(lib.concatMapStrings (path: ''
-      <xi:include href="${path}" />
-    '') (lib.catAttrs "value" config.meta.doc))}
-    </section>
+  modulesDoc = runCommand "modules.xml" {
+    nativeBuildInputs = [ pkgs.nixos-render-docs ];
+  } ''
+    nixos-render-docs manual docbook \
+      --manpage-urls ${manpageUrls} \
+      "$out" \
+      --section \
+        --section-id modules \
+        --chapters ${lib.concatMapStrings (p: "${p.value} ") config.meta.doc}
   '';
 
   generatedSources = runCommand "generated-docbook" {} ''
@@ -251,20 +256,38 @@ in rec {
   # Generate the NixOS manpages.
   manpages = runCommand "nixos-manpages"
     { inherit sources;
-      nativeBuildInputs = [ buildPackages.libxml2.bin buildPackages.libxslt.bin ];
+      nativeBuildInputs = [
+        buildPackages.installShellFiles
+      ] ++ lib.optionals allowDocBook [
+        buildPackages.libxml2.bin
+        buildPackages.libxslt.bin
+      ] ++ lib.optionals (! allowDocBook) [
+        buildPackages.nixos-render-docs
+      ];
       allowedReferences = ["out"];
     }
     ''
       # Generate manpages.
-      mkdir -p $out/share/man
-      xsltproc --nonet \
-        --maxdepth 6000 \
-        --param man.output.in.separate.dir 1 \
-        --param man.output.base.dir "'$out/share/man/'" \
-        --param man.endnotes.are.numbered 0 \
-        --param man.break.after.slash 1 \
-        ${docbook_xsl_ns}/xml/xsl/docbook/manpages/docbook.xsl \
-        ${manual-combined}/man-pages-combined.xml
+      mkdir -p $out/share/man/man8
+      installManPage ${./manpages}/*
+      ${if allowDocBook
+        then ''
+          xsltproc --nonet \
+            --maxdepth 6000 \
+            --param man.output.in.separate.dir 1 \
+            --param man.output.base.dir "'$out/share/man/'" \
+            --param man.endnotes.are.numbered 0 \
+            --param man.break.after.slash 1 \
+            ${docbook_xsl_ns}/xml/xsl/docbook/manpages/docbook.xsl \
+            ${manual-combined}/man-pages-combined.xml
+        ''
+        else ''
+          mkdir -p $out/share/man/man5
+          nixos-render-docs options manpage \
+            --revision ${lib.escapeShellArg revision} \
+            ${optionsJSON}/share/doc/nixos/options.json \
+            $out/share/man/man5/configuration.nix.5
+        ''}
     '';
 
 }
