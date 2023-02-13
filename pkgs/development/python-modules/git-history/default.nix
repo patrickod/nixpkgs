@@ -4,15 +4,15 @@
 
 buildPythonPackage rec {
   pname = "git-history";
-  version = "0.6.1";
+  version = "0.7a0";
 
-  disabled = pythonOlder "3.6";
+  disabled = pythonOlder "3.7";
 
   src = fetchFromGitHub {
     owner = "simonw";
     repo = pname;
     rev = version;
-    sha256 = "sha256-Gbf4NcFu23o2nuUkUqka1o61H2cU61k6sk6netibL+Y";
+    sha256 = "sha256-6v5y2vguQKoDp02XjJI5gB6qLTmf5wkhnhKsW+8lQ/w=";
   };
 
   propagatedBuildInputs = [ click sqlite-utils git GitPython setuptools pytest ];
