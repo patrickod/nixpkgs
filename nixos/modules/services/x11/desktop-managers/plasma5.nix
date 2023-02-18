@@ -90,8 +90,8 @@ in
 
     phononBackend = mkOption {
       type = types.enum [ "gstreamer" "vlc" ];
-      default = "gstreamer";
-      example = "vlc";
+      default = "vlc";
+      example = "gstreamer";
       description = lib.mdDoc "Phonon audio backend to install.";
     };
 
@@ -316,7 +316,8 @@ in
         ++ lib.optional config.services.colord.enable pkgs.colord-kde
         ++ lib.optional config.services.hardware.bolt.enable pkgs.plasma5Packages.plasma-thunderbolt
         ++ lib.optionals config.services.samba.enable [ kdenetwork-filesharing pkgs.samba ]
-        ++ lib.optional config.services.xserver.wacom.enable pkgs.wacomtablet;
+        ++ lib.optional config.services.xserver.wacom.enable pkgs.wacomtablet
+        ++ lib.optional config.services.flatpak.enable flatpak-kcm;
 
       # Extra services for D-Bus activation
       services.dbus.packages = [

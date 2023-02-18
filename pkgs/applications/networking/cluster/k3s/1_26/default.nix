@@ -75,7 +75,7 @@ let
     description = "A lightweight Kubernetes distribution";
     license = licenses.asl20;
     homepage = "https://k3s.io";
-    maintainers = with maintainers; [ euank mic92 superherointj ];
+    maintainers = with maintainers; [ euank mic92 superherointj yajo ];
     platforms = platforms.linux;
   };
 
@@ -319,7 +319,14 @@ buildGoModule rec {
 
   passthru.updateScript = ./update.sh;
 
-  passthru.tests = nixosTests.k3s;
+  passthru.mkTests = version:
+    let k3s_version = "k3s_" + lib.replaceStrings ["."] ["_"] (lib.versions.majorMinor version);
+    in {
+      single-node = nixosTests.k3s.single-node.${k3s_version};
+      multi-node = nixosTests.k3s.multi-node.${k3s_version};
+    };
+  passthru.tests = passthru.mkTests k3sVersion;
+
 
   meta = baseMeta;
 }
