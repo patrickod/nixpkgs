@@ -81,7 +81,6 @@ in mkLicense lset) ({
   apsl10 = {
     spdxId = "APSL-1.0";
     fullName = "Apple Public Source License 1.0";
-    url = "https://web.archive.org/web/20040701000000*/http://www.opensource.apple.com/apsl/1.0.txt";
   };
 
   apsl20 = {
@@ -107,6 +106,11 @@ in mkLicense lset) ({
   asl20 = {
     spdxId = "Apache-2.0";
     fullName = "Apache License 2.0";
+  };
+
+  asl20-llvm = {
+    spdxId = "Apache-2.0 WITH LLVM-exception";
+    fullName = "Apache License 2.0 with LLVM Exceptions";
   };
 
   bitstreamVera = {
@@ -655,11 +659,6 @@ in mkLicense lset) ({
   llgpl21 = {
     fullName = "Lisp LGPL; GNU Lesser General Public License version 2.1 with Franz Inc. preamble for clarification of LGPL terms in context of Lisp";
     url = "https://opensource.franz.com/preamble.html";
-  };
-
-  llvm-exception = {
-    spdxId = "LLVM-exception";
-    fullName = "LLVM Exception"; # LLVM exceptions to the Apache 2.0 License
   };
 
   lppl12 = {

@@ -19,13 +19,13 @@
 
 stdenv.mkDerivation rec {
   pname = "fizz";
-  version = "2023.02.06.00";
+  version = "2023.02.27.00";
 
   src = fetchFromGitHub {
     owner = "facebookincubator";
     repo = "fizz";
     rev = "v${version}";
-    sha256 = "sha256-JwRoIiSumT1jw5/VX/TkxpTJbrmLLke27xH8UHtrs2c=";
+    hash = "sha256-zb3O5YHQc+1cPcL0K3FwhMfr+/KFQU7SDVT1bEITF6E=";
   };
 
   nativeBuildInputs = [ cmake ];

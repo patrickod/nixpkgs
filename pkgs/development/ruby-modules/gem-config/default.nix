@@ -221,6 +221,10 @@ in
     buildInputs = [ libffi ];
   };
 
+  fiddle = attrs: {
+    buildInputs = [ libffi ];
+  };
+
   gdk_pixbuf2 = attrs: {
     nativeBuildInputs = [ pkg-config bundler rake ]
       ++ lib.optionals stdenv.isDarwin [ DarwinTools ];
@@ -229,6 +233,7 @@ in
 
   gpgme = attrs: {
     buildInputs = [ gpgme ];
+    nativeBuildInputs = [ pkg-config ];
     buildFlags = [ "--use-system-libraries" ];
   };
 
@@ -323,7 +328,7 @@ in
     nativeBuildInputs = [ pkg-config ] ++ lib.optional stdenv.isDarwin cctools;
     buildInputs = [ openssl ];
     hardeningDisable = [ "format" ];
-    NIX_CFLAGS_COMPILE = toString [
+    env.NIX_CFLAGS_COMPILE = toString [
       "-Wno-error=stringop-overflow"
       "-Wno-error=implicit-fallthrough"
       "-Wno-error=sizeof-pointer-memaccess"
@@ -402,6 +407,9 @@ in
     buildFlags = [
       "--with-xml2-lib=${libxml2.out}/lib"
       "--with-xml2-include=${libxml2.dev}/include/libxml2"
+    ] ++ lib.optionals stdenv.isDarwin [
+      "--with-iconv-dir=${libiconv}"
+      "--with-opt-include=${libiconv}/include"
     ];
   };
 
