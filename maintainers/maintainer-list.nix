@@ -5256,6 +5256,12 @@
     githubId = 606000;
     name = "Gabriel Adomnicai";
   };
+  GabrielDougherty = {
+    email = "contact@gabrieldougherty.com";
+    github = "GabrielDougherty";
+    githubId = 10541219;
+    name = "Gabriel Dougherty";
+  };
   garaiza-93 = {
     email = "araizagustavo93@gmail.com";
     github = "garaiza-93";
@@ -8074,6 +8080,13 @@
     githubId = 15692230;
     name = "Muhammad Herdiansyah";
   };
+  konradmalik = {
+    email = "konrad.malik@gmail.com";
+    matrix = "@konradmalik:matrix.org";
+    name = "Konrad Malik";
+    github = "konradmalik";
+    githubId = 13033392;
+  };
   koozz = {
     email = "koozz@linux.com";
     github = "koozz";
@@ -8935,7 +8948,8 @@
     githubId = 13547699;
     name = "Corin Hoad";
     keys = [{
-      fingerprint = "BA3A 5886 AE6D 526E 20B4  57D6 6A37 DF94 8318 8492";
+      # fingerprint = "BA3A 5886 AE6D 526E 20B4  57D6 6A37 DF94 8318 8492"; # old key, superseded
+      fingerprint = "6E69 6A19 4BD8 BFAE 7362  ACDB 6437 4619 95CA 7F16";
     }];
   };
   lux = {
@@ -9256,6 +9270,12 @@
     github = "matejc";
     githubId = 854770;
     name = "Matej Cotman";
+  };
+  mateodd25 = {
+    email = "mateodd@icloud.com";
+    github = "mateodd25";
+    githubId = 854770;
+    name = "Mateo Diaz";
   };
   mathnerd314 = {
     email = "mathnerd314.gph+hs@gmail.com";
@@ -10708,12 +10728,6 @@
     keys = [{
       fingerprint = "7BC1 77D9 C222 B1DC FB2F  0484 C061 089E FEBF 7A35";
     }];
-  };
-  nichtsfrei = {
-    email = "philipp.eder@posteo.net";
-    github = "nichtsfrei";
-    githubId = 1665818;
-    name = "Philipp Eder";
   };
   nickcao = {
     name = "Nick Cao";
@@ -12986,6 +13000,11 @@
     github = "rtreffer";
     githubId = 61306;
     name = "Rene Treffer";
+  };
+  ruby0b = {
+    github = "ruby0b";
+    githubId = 106119328;
+    name = "ruby0b";
   };
   rubyowo = {
     name = "Rei Star";
