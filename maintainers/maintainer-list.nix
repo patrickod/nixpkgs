@@ -678,6 +678,12 @@
     githubId = 36147;
     name = "Alireza Meskin";
   };
+  alizter = {
+    email = "alizter@gmail.com";
+    github = "Alizter";
+    githubId = 8614547;
+    name = "Ali Caglayan";
+  };
   alkasm = {
     email = "alexreynolds00@gmail.com";
     github = "alkasm";
@@ -1831,6 +1837,12 @@
     github = "benpye";
     githubId = 442623;
     name = "Ben Pye";
+  };
+  benwbooth = {
+    email = "benwboooth@gmail.com";
+    github = "benwbooth";
+    githubId = 75972;
+    name = "Ben Booth";
   };
   berberman = {
     email = "berberman@yandex.com";
@@ -4889,7 +4901,7 @@
     email = "nixpkgs@felipeqq2.rocks";
     github = "felipeqq2";
     githubId = 71830138;
-    keys = [{ fingerprint = "F5F0 2BCE 3580 BF2B 707A  AA8C 2FD3 4A9E 2671 91B8"; }];
+    keys = [{ fingerprint = "7391 BF2D A2C3 B2C9 BE25  ACA9 C7A7 4616 F302 5DF4"; }];
     matrix = "@felipeqq2:pub.solar";
   };
   felixscheinost = {
@@ -5242,6 +5254,12 @@
     github = "fxfactorial";
     githubId = 3036816;
     name = "Edgar Aroutiounian";
+  };
+  fxttr = {
+    name = "Florian Büstgens";
+    email = "fb@fx-ttr.de";
+    github = "fxttr";
+    githubId = 16306293;
   };
   fzakaria = {
     name = "Farid Zakaria";
@@ -8681,6 +8699,12 @@
     githubId = 542154;
     name = "Lorenz Leutgeb";
   };
+  lugarun = {
+    email = "lfschmidt.me@gmail.com";
+    github = "lugarun";
+    githubId = 5767106;
+    name = "Lukas Schmidt";
+  };
   luis = {
     email = "luis.nixos@gmail.com";
     github = "Luis-Hebendanz";
@@ -11537,6 +11561,12 @@
     githubId = 1368952;
     name = "Pedro Lara Campos";
   };
+  penalty1083 = {
+    email = "penalty1083@outlook.com";
+    github = "penalty1083";
+    githubId = 121009904;
+    name = "penalty1083";
+  };
   penguwin = {
     email = "penguwin@penguwin.eu";
     github = "penguwin";
@@ -13287,6 +13317,12 @@
     github = "savannidgerinel";
     githubId = 8534888;
     name = "Savanni D'Gerinel";
+  };
+  savyajha = {
+    email = "savya.jha@hawkradius.com";
+    github = "savyajha";
+    githubId = 3996019;
+    name = "Savyasachee Jha";
   };
   sayanarijit = {
     email = "sayanarijit@gmail.com";
