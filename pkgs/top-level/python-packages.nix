@@ -7817,6 +7817,8 @@ self: super: with self; {
 
   py-nightscout = callPackage ../development/python-modules/py-nightscout { };
 
+  py-serializable = callPackage ../development/python-modules/py-serializable { };
+
   py-synologydsm-api = callPackage ../development/python-modules/py-synologydsm-api { };
 
   py-sneakers = callPackage ../development/python-modules/py-sneakers { };
@@ -11698,6 +11700,12 @@ self: super: with self; {
   timezonefinder = callPackage ../development/python-modules/timezonefinder { };
 
   timm = callPackage ../development/python-modules/timm { };
+
+  tiny-cuda-nn = toPythonModule (pkgs.tiny-cuda-nn.override {
+    cudaPackages = self.torch.cudaPackages;
+    python3Packages = self;
+    pythonSupport = true;
+  });
 
   tinycss2 = callPackage ../development/python-modules/tinycss2 { };
 
