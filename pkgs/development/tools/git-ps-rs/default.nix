@@ -12,16 +12,21 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "git-ps-rs";
-  version = "6.5.0";
+  version = "6.6.0";
 
   src = fetchFromGitHub {
     owner = "uptech";
     repo = "git-ps-rs";
     rev = version;
-    hash = "sha256-4wSm3H+98ZJZ+fZdLYshPKafRkPq98Pv3Lwh9o0be6U=";
+    hash = "sha256-pWad/OCSoszdEQb6Mb6fD4vsZRagbYa3TKft4IyGg94=";
   };
 
-  cargoHash = "sha256-1p46xvo7abMPlVP8BeQ1j/8QQpK3kCgbTL3cdidfq04=";
+  cargoLock = {
+    lockFile = ./Cargo.lock;
+    outputHashes = {
+      "home-dir-0.1.0" = "sha256-k5GYZcR1FI/JEfJhPWOdICBZ9CqJCqX+fYygxxWvFp4=";
+    };
+  };
 
   nativeBuildInputs = [
     pkg-config

@@ -5,6 +5,7 @@
 , buildGoModule
 , buildVimPluginFrom2Nix
 , fetchFromGitHub
+, fetchFromSourcehut
 , fetchpatch
 , fetchurl
 , substituteAll
@@ -300,6 +301,14 @@ self: super: {
     dependencies = with self; [ completion-nvim nvim-treesitter ];
   });
 
+  copilot-vim = super.copilot-vim.overrideAttrs (old: {
+    postInstall = ''
+      substituteInPlace $out/autoload/copilot/agent.vim \
+        --replace "  let node = get(g:, 'copilot_node_command', ''\'''\')" \
+                  "  let node = get(g:, 'copilot_node_command', '${nodejs}/bin/node')"
+    '';
+  });
+
   cpsm = super.cpsm.overrideAttrs (old: {
     nativeBuildInputs = [ cmake ];
     buildInputs = [
@@ -496,12 +505,13 @@ self: super: {
   });
 
   himalaya-vim = super.himalaya-vim.overrideAttrs (old: {
-    postPatch = ''
-      substituteInPlace plugin/himalaya.vim \
-        --replace "if !executable('himalaya')" "if v:false"
-      substituteInPlace autoload/himalaya/request.vim \
-        --replace "'himalaya" "'${himalaya}/bin/himalaya"
-    '';
+    buildInputs = [ himalaya ];
+    src = fetchFromSourcehut {
+      owner = "~soywod";
+      repo = "himalaya-vim";
+      rev = "v${himalaya.version}";
+      sha256 = "W+91hnNeS6WkDiR9r1s7xPTK9JlCWiVkI/nXVYbepY0=";
+    };
   });
 
   jedi-vim = super.jedi-vim.overrideAttrs (old: {
@@ -595,6 +605,17 @@ self: super: {
       rev = "5d916c39c1852e09fcd39eab174b8e5bbdb25f8f";
       sha256 = "10d6dh0czdpgfpzqs5vzxfffkm0460qjzi2mfkacgghqf3iwkbja";
     };
+    passthru.python3Dependencies = ps: with ps; [
+      pynvim
+      jupyter-client
+      ueberzug
+      pillow
+      cairosvg
+      plotly
+      ipykernel
+      pyperclip
+      pnglatex
+    ];
     meta.homepage = "https://github.com/WhiteBlackGoose/magma-nvim-goose/";
   };
 
@@ -793,7 +814,7 @@ self: super: {
         pname = "sg-nvim-rust";
         inherit (old) version src;
 
-        cargoHash = "sha256-z3ZWHhqiJKFzVcFJadfPU6+ELlnvEOAprCyStszegdI=";
+        cargoHash = "sha256-gnQNQlW/c1vzyR+HbYn7rpxZ1C6WXFcqpylIOTUMZ6g=";
 
         nativeBuildInputs = [ pkg-config ];
 
