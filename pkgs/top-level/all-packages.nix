@@ -4564,7 +4564,7 @@ with pkgs;
 
   dtools = callPackage ../development/tools/dtools { };
 
-  dt-shell-color-scripts = callPackage ../tools/misc/dt-shell-color-scripts { };
+  dwt1-shell-color-scripts = callPackage ../tools/misc/dwt1-shell-color-scripts { };
 
   dtrx = callPackage ../tools/compression/dtrx { };
 
@@ -27582,6 +27582,8 @@ with pkgs;
 
   brise = callPackage ../data/misc/brise { };
 
+  apl386 = callPackage ../data/fonts/apl386 { };
+
   bqn386 = callPackage ../data/fonts/bqn386 { };
 
   cacert = callPackage ../data/misc/cacert { };
@@ -29490,6 +29492,8 @@ with pkgs;
   denaro = callPackage ../applications/finance/denaro { };
 
   dfasma = libsForQt5.callPackage ../applications/audio/dfasma { };
+
+  dfilemanager = libsForQt5.callPackage ../applications/file-managers/dfilemanager { };
 
   dht = callPackage ../applications/networking/p2p/dht { };
 
@@ -35433,6 +35437,8 @@ with pkgs;
 
   cri-o = callPackage ../applications/virtualization/cri-o/wrapper.nix { };
   cri-o-unwrapped = callPackage ../applications/virtualization/cri-o { };
+
+  conceal = callPackage ../applications/misc/conceal { };
 
   confd = callPackage ../tools/system/confd { };
 
