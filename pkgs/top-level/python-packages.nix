@@ -258,6 +258,8 @@ self: super: with self; {
 
   aiomisc = callPackage ../development/python-modules/aiomisc { };
 
+  aiomisc-pytest = callPackage ../development/python-modules/aiomisc-pytest { };
+
   aiomodernforms = callPackage ../development/python-modules/aiomodernforms { };
 
   aiomultiprocess = callPackage ../development/python-modules/aiomultiprocess { };
@@ -2276,7 +2278,9 @@ self: super: with self; {
 
   datadog = callPackage ../development/python-modules/datadog { };
 
-  datafusion = callPackage ../development/python-modules/datafusion { };
+  datafusion = callPackage ../development/python-modules/datafusion {
+    inherit (pkgs.darwin.apple_sdk.frameworks) Security;
+  };
 
   datamodeldict = callPackage ../development/python-modules/datamodeldict { };
 
@@ -2754,6 +2758,8 @@ self: super: with self; {
   django-timezone-field = callPackage ../development/python-modules/django-timezone-field { };
 
   django_treebeard = callPackage ../development/python-modules/django_treebeard { };
+
+  django-two-factor-auth = callPackage ../development/python-modules/django-two-factor-auth { };
 
   django-versatileimagefield = callPackage ../development/python-modules/django-versatileimagefield { };
 
@@ -4129,7 +4135,7 @@ self: super: with self; {
 
   gpgme = toPythonModule (pkgs.gpgme.override {
     pythonSupport = true;
-    inherit python;
+    python3 = python;
   });
 
   gphoto2 = callPackage ../development/python-modules/gphoto2 { };
@@ -8119,6 +8125,8 @@ self: super: with self; {
 
   pydash = callPackage ../development/python-modules/pydash { };
 
+  pydata-google-auth = callPackage ../development/python-modules/pydata-google-auth { };
+
   pydata-sphinx-theme = callPackage ../development/python-modules/pydata-sphinx-theme { };
 
   pydbus = callPackage ../development/python-modules/pydbus { };
@@ -9742,8 +9750,6 @@ self: super: with self; {
   pytm = callPackage ../development/python-modules/pytm { };
 
   pytmx = callPackage ../development/python-modules/pytmx { };
-
-  pytoml = callPackage ../development/python-modules/pytoml { };
 
   pytomlpp = callPackage ../development/python-modules/pytomlpp { };
 
@@ -12485,6 +12491,8 @@ self: super: with self; {
   vxi11 = callPackage ../development/python-modules/vxi11 { };
 
   vyper = callPackage ../development/compilers/vyper { };
+
+  w1thermsensor = callPackage ../development/python-modules/w1thermsensor { };
 
   w3lib = callPackage ../development/python-modules/w3lib { };
 

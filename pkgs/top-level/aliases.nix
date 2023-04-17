@@ -163,6 +163,10 @@ mapAliases ({
   bud = throw "bud has been removed: abandoned by upstream"; # Added 2022-03-14
   inherit (libsForQt5.mauiPackages) buho; # added 2022-05-17
   buttersink = throw "buttersink has been removed: abandoned by upstream"; # Added 2022-04-05
+  # Shorter names; keep the longer name for back-compat. Added 2023-04-11
+  buildFHSUserEnv = buildFHSEnv;
+  buildFHSUserEnvChroot = buildFHSEnvChroot;
+  buildFHSUserEnvBubblewrap = buildFHSEnvBubblewrap;
 
   # bitwarden_rs renamed to vaultwarden with release 1.21.0 (2021-04-30)
   bitwarden_rs = vaultwarden;
@@ -635,6 +639,7 @@ mapAliases ({
   gr-nacl = gnuradio3_7.pkgs.nacl; # Added 2019-05-27, changed 2020-10-16
   gr-osmosdr = gnuradio3_7.pkgs.osmosdr; # Added 2019-05-27, changed 2020-10-16
   gr-rds = gnuradio3_7.pkgs.rds; # Added 2019-05-27, changed 2020-10-16
+  grub2_full = grub2; # Added 2022-11-18
   grv = throw "grv has been dropped due to the lack of maintanence from upstream since 2019"; # Added 2022-06-01
   gsettings_desktop_schemas = throw "'gsettings_desktop_schemas' has been renamed to/replaced by 'gsettings-desktop-schemas'"; # Converted to throw 2022-02-22
   gsl_1 = throw "'gsl_1' has been renamed to/replaced by 'gsl'"; # Added 2022-11-19
