@@ -1,51 +1,51 @@
-{ lib, stdenv, fetchFromGitHub, glfw, pkg-config, libXrandr, libXdamage
-, libXext, libXrender, libXinerama, libXcursor, libXxf86vm, libXi
-, libX11, libGLU, python3Packages, ensureNewerSourcesForZipFilesHook
+{ lib
+, stdenv
+, fetchFromGitHub
+, libXrandr
+, libXext
+, libXinerama
+, libXcursor
+, libXi
+, libX11
+, libGLU
 , Cocoa
+, cmake
+, ninja
+, ffmpeg
+, ncurses5
 }:
 
 stdenv.mkDerivation rec {
   pname = "glslviewer";
-  version = "1.6.8";
+  version = "3.2.2";
 
   src = fetchFromGitHub {
     owner = "patriciogonzalezvivo";
     repo = "glslViewer";
     rev = version;
-    sha256 = "0v7x93b61ama0gmzlx1zc56jgi7bvzsfvbkfl82xzwf2h5g1zni7";
+    sha256 = "sha256-R8B7f4pjiWqRjx12832lrMZkfiwDwkCwhC0zTdyLOpo=";
+    fetchSubmodules = true;
   };
 
-  postPatch = ''
-    sed '1i#include <cstring>' -i src/tools/text.cpp # gcc12
-  '';
 
-  nativeBuildInputs = [ pkg-config ensureNewerSourcesForZipFilesHook python3Packages.six ];
+  nativeBuildInputs = [ cmake ninja ];
+  cmakeFlags = [
+    "-DCMAKE_BUILD_TYPE='Release'"
+    "-GNinja"
+  ];
+
   buildInputs = [
-    glfw libGLU glfw libXrandr libXdamage
-    libXext libXrender libXinerama libXcursor libXxf86vm
-    libXi libX11
-  ] ++ (with python3Packages; [ python setuptools wrapPython ])
-    ++ lib.optional stdenv.isDarwin Cocoa;
-  pythonPath = with python3Packages; [ pyyaml requests ];
-
-  # Makefile has /usr/local/bin hard-coded for 'make install'
-  preConfigure = ''
-    substituteInPlace Makefile \
-        --replace '/usr/local' "$out" \
-        --replace '/usr/bin/clang++' 'clang++'
-    substituteInPlace Makefile \
-        --replace 'python setup.py install' "python setup.py install --prefix=$out"
-    2to3 -w bin/*
-  '';
-
-  preInstall = ''
-    mkdir -p $out/bin $(toPythonPath "$out")
-    export PYTHONPATH=$PYTHONPATH:$(toPythonPath "$out")
-  '';
-
-  postInstall = ''
-    wrapPythonPrograms
-  '';
+    libX11
+    libXrandr
+    libXinerama
+    libXcursor
+    libXi
+    libXext
+    libGLU
+    ffmpeg
+    ncurses5
+  ]
+  ++ lib.optional stdenv.isDarwin Cocoa;
 
   meta = with lib; {
     description = "Live GLSL coding renderer";
