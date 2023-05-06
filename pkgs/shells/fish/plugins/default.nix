@@ -32,6 +32,8 @@ lib.makeScope newScope (self: with self; {
 
   fzf-fish = callPackage ./fzf-fish.nix { };
 
+  github-copilot-cli-fish = callPackage ./github-copilot-cli-fish.nix { };
+
   grc = callPackage ./grc.nix { };
 
   humantime-fish = callPackage ./humantime-fish.nix { };
@@ -49,6 +51,8 @@ lib.makeScope newScope (self: with self; {
   sponge = callPackage ./sponge.nix { };
 
   tide = callPackage ./tide.nix { };
+
+  wakatime-fish = callPackage ./wakatime-fish.nix { };
 
   z = callPackage ./z.nix { };
 } // lib.optionalAttrs config.allowAliases {

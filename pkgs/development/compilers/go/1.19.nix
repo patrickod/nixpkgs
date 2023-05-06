@@ -47,11 +47,11 @@ let
 in
 stdenv.mkDerivation rec {
   pname = "go";
-  version = "1.19.8";
+  version = "1.19.9";
 
   src = fetchurl {
     url = "https://go.dev/dl/go${version}.src.tar.gz";
-    hash = "sha256-HXpnkp3Mr+r4op5VmFvCt4ngSZyxoXEAA58ITjI42i8=";
+    hash = "sha256-ExGQpGl6cMWx0jLfXT9Vo/nsDnjkBRYZb/s/Ca5qV0Q=";
   };
 
   strictDeps = true;
@@ -59,7 +59,7 @@ stdenv.mkDerivation rec {
     ++ lib.optionals stdenv.isLinux [ stdenv.cc.libc.out ]
     ++ lib.optionals (stdenv.hostPlatform.libc == "glibc") [ stdenv.cc.libc.static ];
 
-  depsTargetTargetPropagated = lib.optionals stdenv.isDarwin [ Foundation Security xcbuild ];
+  depsTargetTargetPropagated = lib.optionals stdenv.targetPlatform.isDarwin [ Foundation Security xcbuild ];
 
   depsBuildTarget = lib.optional isCross targetCC;
 

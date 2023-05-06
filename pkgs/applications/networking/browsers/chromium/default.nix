@@ -1,5 +1,6 @@
 { newScope, config, stdenv, fetchurl, makeWrapper
 , llvmPackages_15
+, llvmPackages_16
 , ed, gnugrep, coreutils, xdg-utils
 , glib, gtk3, gtk4, gnome, gsettings-desktop-schemas, gn, fetchgit
 , libva, pipewire, wayland
@@ -53,6 +54,9 @@ let
           inherit (upstream-info.deps.gn) url rev sha256;
         };
       });
+    } // lib.optionalAttrs (chromiumVersionAtLeast "113") rec {
+      llvmPackages = llvmPackages_16;
+      stdenv = llvmPackages_16.stdenv;
     });
 
     browser = callPackage ./browser.nix {
@@ -166,7 +170,7 @@ in stdenv.mkDerivation {
 
   buildInputs = [
     # needed for GSETTINGS_SCHEMAS_PATH
-    gsettings-desktop-schemas glib gtk3
+    gsettings-desktop-schemas glib gtk3 gtk4
 
     # needed for XDG_ICON_DIRS
     gnome.adwaita-icon-theme
