@@ -145,6 +145,7 @@ in
           type = types.attrsOf unitOption;
           default = {
             OnCalendar = "daily";
+            Persistent = true;
           };
           description = lib.mdDoc ''
             When to run the backup. See {manpage}`systemd.timer(5)` for details.
@@ -152,6 +153,7 @@ in
           example = {
             OnCalendar = "00:05";
             RandomizedDelaySec = "5h";
+            Persistent = true;
           };
         };
 
@@ -339,6 +341,7 @@ in
               RuntimeDirectory = "restic-backups-${name}";
               CacheDirectory = "restic-backups-${name}";
               CacheDirectoryMode = "0700";
+              PrivateTmp = true;
             } // optionalAttrs (backup.environmentFile != null) {
               EnvironmentFile = backup.environmentFile;
             };

@@ -64,7 +64,7 @@ let
 
   ldconfig = writeShellScriptBin "ldconfig" ''
     # due to a glibc bug, 64-bit ldconfig complains about patchelf'd 32-bit libraries, so we're using 32-bit ldconfig
-    exec ${pkgsi686Linux.glibc.bin}/bin/ldconfig -f /etc/ld.so.conf -C /etc/ld.so.cache "$@"
+    exec ${if stdenv.isx86_64 && stdenv.isLinux then pkgsi686Linux.glibc.bin else pkgs.glibc.bin}/bin/ldconfig -f /etc/ld.so.conf -C /etc/ld.so.cache "$@"
   '';
   etcProfile = writeText "profile" ''
     export PS1='${name}-chrootenv:\u@\h:\w\$ '
@@ -75,6 +75,19 @@ let
 
     # XDG_DATA_DIRS is used by pressure-vessel (steam proton) and vulkan loaders to find the corresponding icd
     export XDG_DATA_DIRS=$XDG_DATA_DIRS''${XDG_DATA_DIRS:+:}/run/opengl-driver/share:/run/opengl-driver-32/share
+
+    # Following XDG spec [1], XDG_DATA_DIRS should default to "/usr/local/share:/usr/share".
+    # In nix, it is commonly set without containing these values, so we add them as fallback.
+    #
+    # [1] <https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html>
+    case ":$XDG_DATA_DIRS:" in
+      *:/usr/local/share:*) ;;
+      *) export XDG_DATA_DIRS="$XDG_DATA_DIRS''${XDG_DATA_DIRS:+:}/usr/local/share" ;;
+    esac
+    case ":$XDG_DATA_DIRS:" in
+      *:/usr/share:*) ;;
+      *) export XDG_DATA_DIRS="$XDG_DATA_DIRS''${XDG_DATA_DIRS:+:}/usr/share" ;;
+    esac
 
     # Force compilers and other tools to look in default search paths
     unset NIX_ENFORCE_PURITY

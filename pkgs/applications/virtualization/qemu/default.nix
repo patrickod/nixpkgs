@@ -27,6 +27,8 @@
 , tpmSupport ? true
 , uringSupport ? stdenv.isLinux, liburing
 , canokeySupport ? false, canokey-qemu
+, capstoneSupport ? true, capstone
+, enableDocs ? true
 , hostCpuOnly ? false
 , hostCpuTargets ? (if hostCpuOnly
                     then (lib.optional stdenv.isx86_64 "i386-softmmu"
@@ -93,7 +95,8 @@ stdenv.mkDerivation rec {
     ++ lib.optionals libiscsiSupport [ libiscsi ]
     ++ lib.optionals smbdSupport [ samba ]
     ++ lib.optionals uringSupport [ liburing ]
-    ++ lib.optionals canokeySupport [ canokey-qemu ];
+    ++ lib.optionals canokeySupport [ canokey-qemu ]
+    ++ lib.optionals capstoneSupport [ capstone ];
 
   dontUseMesonConfigure = true; # meson's configurePhase isn't compatible with qemu build
 
@@ -147,7 +150,7 @@ stdenv.mkDerivation rec {
 
   configureFlags = [
     "--disable-strip" # We'll strip ourselves after separating debug info.
-    "--enable-docs"
+    (lib.enableFeature enableDocs "docs")
     "--enable-tools"
     "--localstatedir=/var"
     "--sysconfdir=/etc"
@@ -174,7 +177,8 @@ stdenv.mkDerivation rec {
     ++ lib.optional libiscsiSupport "--enable-libiscsi"
     ++ lib.optional smbdSupport "--smbd=${samba}/bin/smbd"
     ++ lib.optional uringSupport "--enable-linux-io-uring"
-    ++ lib.optional canokeySupport "--enable-canokey";
+    ++ lib.optional canokeySupport "--enable-canokey"
+    ++ lib.optional capstoneSupport "--enable-capstone";
 
   dontWrapGApps = true;
 

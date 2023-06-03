@@ -13,7 +13,7 @@
 
 buildPythonPackage rec {
   pname = "claripy";
-  version = "9.2.47";
+  version = "9.2.53";
   format = "pyproject";
 
   disabled = pythonOlder "3.8";
@@ -22,7 +22,7 @@ buildPythonPackage rec {
     owner = "angr";
     repo = pname;
     rev = "refs/tags/v${version}";
-    hash = "sha256-YleXykwajlGaqcNRrUYK8ttmzOYdVBpjjBi8aGMK75M=";
+    hash = "sha256-ufS/xGEnyXOzFevONsaFHyHNvPnEKvkJ5NkDpnWuMT8=";
   };
 
   nativeBuildInputs = [

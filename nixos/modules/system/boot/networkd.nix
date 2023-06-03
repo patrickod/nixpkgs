@@ -25,9 +25,11 @@ let
 
       sectionDHCPv4 = checkUnitConfig "DHCPv4" [
         (assertOnlyFields [
+          "ClientIdentifier"
           "DUIDType"
           "DUIDRawData"
         ])
+        (assertValueOneOf "ClientIdentifier" ["mac" "duid" "duid-only"])
       ];
 
       sectionDHCPv6 = checkUnitConfig "DHCPv6" [
@@ -70,6 +72,9 @@ let
           "CombinedChannels"
           "RxBufferSize"
           "TxBufferSize"
+          "ReceiveQueues"
+          "TransmitQueues"
+          "TransmitQueueLength"
         ])
         (assertValueOneOf "MACAddressPolicy" ["persistent" "random" "none"])
         (assertMacAddress "MACAddress")
@@ -96,6 +101,9 @@ let
         (assertRange "CombinedChannels" 1 4294967295)
         (assertInt "RxBufferSize")
         (assertInt "TxBufferSize")
+        (assertRange "ReceiveQueues" 1 4096)
+        (assertRange "TransmitQueues" 1 4096)
+        (assertRange "TransmitQueueLength" 1 4294967294)
       ];
     };
 
@@ -2383,7 +2391,7 @@ let
     bridgeVLANConfig = mkOption {
       default = {};
       example = { VLAN = "10-20"; };
-      type = types.addCheck (types.attrsOf unitOption) check.network.sectionbridgeVLAN;
+      type = types.addCheck (types.attrsOf unitOption) check.network.sectionBridgeVLAN;
       description = lib.mdDoc ''
         Each attribute in this set specifies an option in the
         `[BridgeVLAN]` section of the unit.  See
@@ -2842,7 +2850,7 @@ let
         ''
         + optionalString (def.tokenBucketFilterConfig != { }) ''
           [TokenBucketFilter]
-          ${attrsToSection def.tockenBucketFilterConfig}
+          ${attrsToSection def.tokenBucketFilterConfig}
         ''
         + optionalString (def.pieConfig != { }) ''
           [PIE]
@@ -2944,9 +2952,9 @@ let
     value.source = "${cfg.units.${name}.unit}/${name}";
   }) (attrNames cfg.units));
 
-  commonOptions = {
+  commonOptions = visible: {
 
-    systemd.network.enable = mkOption {
+    enable = mkOption {
       default = false;
       type = types.bool;
       description = lib.mdDoc ''
@@ -2954,31 +2962,35 @@ let
       '';
     };
 
-    systemd.network.links = mkOption {
+    links = mkOption {
       default = {};
+      inherit visible;
       type = with types; attrsOf (submodule [ { options = linkOptions; } ]);
       description = lib.mdDoc "Definition of systemd network links.";
     };
 
-    systemd.network.netdevs = mkOption {
+    netdevs = mkOption {
       default = {};
+      inherit visible;
       type = with types; attrsOf (submodule [ { options = netdevOptions; } ]);
       description = lib.mdDoc "Definition of systemd network devices.";
     };
 
-    systemd.network.networks = mkOption {
+    networks = mkOption {
       default = {};
+      inherit visible;
       type = with types; attrsOf (submodule [ { options = networkOptions; } networkConfig ]);
       description = lib.mdDoc "Definition of systemd networks.";
     };
 
-    systemd.network.config = mkOption {
+    config = mkOption {
       default = {};
+      inherit visible;
       type = with types; submodule [ { options = networkdOptions; } networkdConfig ];
       description = lib.mdDoc "Definition of global systemd network config.";
     };
 
-    systemd.network.units = mkOption {
+    units = mkOption {
       description = lib.mdDoc "Definition of networkd units.";
       default = {};
       internal = true;
@@ -2991,7 +3003,7 @@ let
         }));
     };
 
-    systemd.network.wait-online = {
+    wait-online = {
       enable = mkOption {
         type = types.bool;
         default = true;
@@ -3225,8 +3237,9 @@ let
 in
 
 {
-  options = commonOptions // {
-    boot.initrd = commonOptions;
+  options = {
+    systemd.network = commonOptions true;
+    boot.initrd.systemd.network = commonOptions "shallow";
   };
 
   config = mkMerge [

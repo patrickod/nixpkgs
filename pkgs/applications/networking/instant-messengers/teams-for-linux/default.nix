@@ -17,18 +17,18 @@
 
 stdenv.mkDerivation rec {
   pname = "teams-for-linux";
-  version = "1.0.65";
+  version = "1.1.1";
 
   src = fetchFromGitHub {
     owner = "IsmaelMartinez";
     repo = pname;
     rev = "v${version}";
-    sha256 = "sha256-Rj6A1h5R4w8zacoTV0WKTbTD67qwsw4zHP+KQ6h7/gs=";
+    sha256 = "sha256-Yeq74thHzFt4+KDf7cwgyVbTIeXF9/zb81bEAINJbEU=";
   };
 
   offlineCache = fetchYarnDeps {
     yarnLock = "${src}/yarn.lock";
-    sha256 = "sha256-3zjmVIPQ+F2jPQ2xkAv5hQUjr8k5jIHTsa73J+IMayw=";
+    sha256 = "sha256-Zk3TAoGAPeki/ogfNl/XqeBBn6N/kbNcktRHEyqPOAA=";
   };
 
   patches = [

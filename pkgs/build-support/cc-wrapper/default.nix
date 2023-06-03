@@ -17,7 +17,6 @@
 , isGNU ? false, isClang ? cc.isClang or false, isCcache ? cc.isCcache or false, gnugrep ? null
 , buildPackages ? {}
 , libcxx ? null
-, grossHackForStagingNext ? false
 
 # Whether or not to add `-B` and `-L` to `nix-support/cc-{c,ld}flags`
 , useCcForLibs ?
@@ -52,7 +51,6 @@
 
 # the derivation at which the `-B` and `-L` flags added by `useCcForLibs` will point
 , gccForLibs ? if useCcForLibs then cc else null
-, tmpDropB ? false # temporary hack; see PR #225846
 }:
 
 with lib;
@@ -319,7 +317,7 @@ stdenv.mkDerivation {
       touch "$out/nix-support/cc-ldflags"
     ''
 
-    # Backwards compatability for packages expecting this file, e.g. with
+    # Backwards compatibility for packages expecting this file, e.g. with
     # `$NIX_CC/nix-support/dynamic-linker`.
     #
     # TODO(@Ericson2314): Remove this after stable release and force
@@ -336,7 +334,7 @@ stdenv.mkDerivation {
     ##
     ## GCC libs for non-GCC support
     ##
-    + optionalString (useGccForLibs && !tmpDropB) ''
+    + optionalString (useGccForLibs && isClang) ''
 
       echo "-B${gccForLibs}/lib/gcc/${targetPlatform.config}/${gccForLibs.version}" >> $out/nix-support/cc-cflags
     ''
@@ -366,9 +364,9 @@ stdenv.mkDerivation {
     ''
     # this ensures that when clang passes -lgcc_s to lld (as it does
     # when building e.g. firefox), lld is able to find libgcc_s.so
-    + lib.optionalString (gccForLibs?libgcc) ''
-      echo "-L${gccForLibs.libgcc}/lib" >> $out/nix-support/cc-ldflags
-    '')
+    + concatMapStrings (libgcc: ''
+      echo "-L${libgcc}/lib" >> $out/nix-support/cc-ldflags
+    '') (lib.toList (gccForLibs.libgcc or [])))
 
     ##
     ## General libc support
@@ -415,7 +413,7 @@ stdenv.mkDerivation {
     # already knows how to find its own libstdc++, and adding
     # additional -isystem flags will confuse gfortran (see
     # https://github.com/NixOS/nixpkgs/pull/209870#issuecomment-1500550903)
-    + optionalString (libcxx == null && (if grossHackForStagingNext then isClang else true) && (useGccForLibs && gccForLibs.langCC or false)) ''
+    + optionalString (libcxx == null && isClang && (useGccForLibs && gccForLibs.langCC or false)) ''
       for dir in ${gccForLibs}${lib.optionalString (hostPlatform != targetPlatform) "/${targetPlatform.config}"}/include/c++/*; do
         echo "-isystem $dir" >> $out/nix-support/libcxx-cxxflags
       done
@@ -520,7 +518,7 @@ stdenv.mkDerivation {
     ''
 
     # TODO: categorize these and figure out a better place for them
-    + optionalString hostPlatform.isCygwin ''
+    + optionalString targetPlatform.isWindows ''
       hardening_unsupported_flags+=" pic"
     '' + optionalString targetPlatform.isMinGW ''
       hardening_unsupported_flags+=" stackprotector fortify"

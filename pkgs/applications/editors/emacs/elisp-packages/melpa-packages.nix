@@ -125,7 +125,7 @@ let
         ligo-mode =
           if super.ligo-mode.version == "0.3"
           then markBroken super.ligo-mode
-          else super.ligo-mode;
+          else null; # auto-updater is failing; use manual one
 
         # upstream issue: missing file header
         link = markBroken super.link;
@@ -519,6 +519,13 @@ let
           postInstall = (old.postInstall or "") + "\n" + ''
             mkdir -p $out/bin
             install -m755 -Dt $out/bin ./source/server/telega-server
+          '';
+        });
+
+        tokei = super.tokei.overrideAttrs (attrs: {
+          postPatch = attrs.postPatch or "" + ''
+            substituteInPlace tokei.el \
+              --replace 'tokei-program "tokei"' 'tokei-program "${lib.getExe pkgs.tokei}"'
           '';
         });
 

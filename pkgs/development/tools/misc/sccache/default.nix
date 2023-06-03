@@ -1,17 +1,17 @@
 { lib, fetchFromGitHub, rustPlatform, pkg-config, openssl, stdenv, Security }:
 
 rustPlatform.buildRustPackage rec {
-  version = "0.4.1";
+  version = "0.5.1";
   pname = "sccache";
 
   src = fetchFromGitHub {
     owner = "mozilla";
     repo = "sccache";
     rev = "v${version}";
-    sha256 = "sha256-omov7/o1ToWJBTsDXTp3FNLk7PuWGL3J6pNz6n47taU=";
+    sha256 = "sha256-RcosHR+PD78hk7XMClUCWICrtWR/9OxIuyCFy2EK/Qs=";
   };
 
-  cargoSha256 = "sha256-UkccHrs3q4MlIaK/lo+bPC9Jy/JCBjGzo8jgjZsvEIc=";
+  cargoSha256 = "sha256-qDFBIU/IbQjLpTulI8tolFg54+2m2mV/JHuX4bsJYWw=";
 
   nativeBuildInputs = [ pkg-config ];
   buildInputs = [ openssl ] ++ lib.optional stdenv.isDarwin Security;

@@ -2,21 +2,17 @@
 , lib
 , rustPlatform
 , nushell
-, nix-update-script
 , IOKit
 , CoreFoundation
 }:
 
-let
-  pname = "nushell_plugin_query";
-in
 rustPlatform.buildRustPackage {
-  inherit pname;
-  version = nushell.version;
+  pname = "nushell_plugin_query";
+  version = "0.80.0";
 
   src = nushell.src;
 
-  cargoHash = "sha256-tHTAz3/4EihdVGXAePCmcOUOjeaqjrY6fIESOGcCW/8=";
+  cargoHash = "sha256-k4UjHNf5L9RmYuB66gcoyCmhd1MvtAxTOxRh24sv0sk=";
 
   buildInputs = lib.optionals stdenv.isDarwin [ IOKit CoreFoundation ];
 

@@ -42,6 +42,10 @@ stdenv.mkDerivation rec {
 
     substituteInPlace lib/Makefile.local \
       --replace '-install_name $(libdir)' "-install_name $out/lib"
+
+    # do not override CFLAGS of the Makefile created by mkmf
+    substituteInPlace bindings/Makefile.local \
+      --replace 'CFLAGS="$(CFLAGS) -pipe -fno-plt -fPIC"' ""
   '' + lib.optionalString withEmacs ''
     substituteInPlace emacs/notmuch-emacs-mua \
       --replace 'EMACS:-emacs' 'EMACS:-${emacs}/bin/emacs' \
@@ -79,6 +83,10 @@ stdenv.mkDerivation rec {
   in ''
     mkdir -p test/test-databases
     ln -s ${test-database} test/test-databases/database-v1.tar.xz
+  ''
+  # Issues since gnupg: 2.4.0 -> 2.4.1
+  + ''
+    rm test/{T350-crypto,T357-index-decryption}.sh
   '';
 
   doCheck = !stdenv.hostPlatform.isDarwin && (lib.versionAtLeast gmime3.version "3.0.3");

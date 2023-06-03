@@ -1,6 +1,7 @@
 { lib
 , stdenv
 , fetchFromGitHub
+, cargo
 , cmake
 , openssl
 , perl
@@ -18,13 +19,13 @@
 
 stdenv.mkDerivation rec {
   pname = "libdeltachat";
-  version = "1.113.0";
+  version = "1.115.0";
 
   src = fetchFromGitHub {
     owner = "deltachat";
     repo = "deltachat-core-rust";
     rev = "v${version}";
-    hash = "sha256-Ft7BMgHGeTEM3WQVhAEjtyYYCfVFa2+ZkbdmDF22X9A=";
+    hash = "sha256-GAU/v2/MwvgqtZnvp2wwrKpPXhzr5g7QxVngR+pt35c=";
   };
 
   patches = [
@@ -45,10 +46,9 @@ stdenv.mkDerivation rec {
     cmake
     perl
     pkg-config
-  ] ++ (with rustPlatform; [
-    cargoSetupHook
-    rust.cargo
-  ]) ++ lib.optionals stdenv.isDarwin [
+    rustPlatform.cargoSetupHook
+    cargo
+  ] ++ lib.optionals stdenv.isDarwin [
     fixDarwinDylibNames
   ];
 

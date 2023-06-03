@@ -1,33 +1,51 @@
-{ mkDerivation, fetchFromGitHub, extra-cmake-modules, lib, libpulseaudio, git, flac,
-  qtbase, qtquickcontrols2, qtgraphicaleffects, libxcb
+{ stdenv
+, lib
+, fetchFromGitHub
+, cmake
+, flac
+, libpulseaudio
+, qtbase
+, qtgraphicaleffects
+, qtquickcontrols2
+, wrapQtAppsHook
 }:
 
-mkDerivation rec {
+stdenv.mkDerivation (finalAttrs: {
   pname = "noson";
-  version = "4.4.2";
+  version = "5.4.1";
 
   src = fetchFromGitHub {
     owner = "janbar";
     repo = "noson-app";
-    rev = "${version}";
-    sha256 = "0annp87sdcb5sq9ywivm1wmrnx2751dv0rdxdrg42yip4cnsr4jv";
+    rev = finalAttrs.version;
+    hash = "sha256-7RrBfkUCRVzUGl+OT3OuoMlu4D3Sa7RpBefFgmfX1Fs=";
   };
 
+  nativeBuildInputs = [
+    cmake
+    wrapQtAppsHook
+  ];
+
+  buildInputs = [
+    flac
+    libpulseaudio
+    qtbase
+    qtgraphicaleffects
+    qtquickcontrols2
+  ];
+
+  # wrapQtAppsHook doesn't automatically find noson-gui
   dontWrapQtApps = true;
   preFixup = ''
-    for f in noson-gui noson-cli; do
-      wrapQtApp $out/lib/noson/$f
-    done
+    wrapQtApp "$out/lib/noson/noson-gui"
   '';
 
-  nativeBuildInputs = [ extra-cmake-modules git ];
-
-  propagatedBuildInputs = [ libpulseaudio flac qtbase qtquickcontrols2 qtgraphicaleffects libxcb ];
-
   meta = with lib; {
-    homepage = "https://github.com/janbar/noson-app";
-    description = "A fast and smart SONOS controller for Linux platforms";
-    license = licenses.gpl3;
-    maintainers = with maintainers; [ patrickod ];
+    description = "SONOS controller for Linux (and macOS)";
+    homepage = "https://janbar.github.io/noson-app/";
+    mainProgram = "noson-app";
+    platforms = platforms.linux ++ platforms.darwin;
+    license = [ licenses.gpl3Only ];
+    maintainers = with maintainers; [ callahad ];
   };
-}
+})

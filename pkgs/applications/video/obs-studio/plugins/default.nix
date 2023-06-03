@@ -14,7 +14,11 @@
 
   looking-glass-obs = callPackage ./looking-glass-obs.nix { };
 
+  obs-3d-effect = callPackage ./obs-3d-effect.nix { };
+
   obs-backgroundremoval = callPackage ./obs-backgroundremoval { };
+
+  obs-command-source = callPackage ./obs-command-source.nix { };
 
   obs-gstreamer = callPackage ./obs-gstreamer.nix { };
 
@@ -32,9 +36,17 @@
 
   obs-pipewire-audio-capture = callPackage ./obs-pipewire-audio-capture.nix { };
 
+  obs-shaderfilter = qt6Packages.callPackage ./obs-shaderfilter.nix { };
+
+  obs-source-clone = callPackage ./obs-source-clone.nix { };
+
   obs-source-record = callPackage ./obs-source-record.nix { };
 
+  obs-teleport = callPackage ./obs-teleport { };
+
   obs-vaapi = callPackage ./obs-vaapi { };
+
+  obs-vintage-filter = callPackage ./obs-vintage-filter.nix { };
 
   obs-vkcapture = callPackage ./obs-vkcapture.nix {
     obs-vkcapture32 = pkgsi686Linux.obs-studio-plugins.obs-vkcapture;

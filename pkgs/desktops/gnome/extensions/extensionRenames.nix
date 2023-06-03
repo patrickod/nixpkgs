@@ -10,7 +10,6 @@
   # These are conflicts for older extensions (i.e. they don't support the latest GNOME version).
   # Make sure to move them up once they are updated
 
-  # ####### GNOME 43 #######
   "apps-menu@gnome-shell-extensions.gcampax.github.com" = "applications-menu";
   "Applications_Menu@rmy.pobox.com" = "frippery-applications-menu";
 
@@ -23,15 +22,20 @@
   "clipboard-indicator@tudmotu.com" = "clipboard-indicator";
   "clipboard-indicator@Dieg0Js.github.io" = "clipboard-indicator-2";
 
+  "vbox-applet@gs.eros2.info" = "virtualbox-applet";
+  "vbox-applet@buba98" = "virtualbox-applet-2";
+
+  "panel-date-format@keiii.github.com" = "panel-date-format";
+  "panel-date-format@atareao.es" = "panel-date-format-2";
+
+  # ####### GNOME 43 #######
+
   # DEPRECATED: Use "Caffeine" instead
   "KeepAwake@jepfa.de" = "keep-awake";
   "awake@vixalien.com" = null;
 
   "noannoyance@sindex.com" = "noannoyance";
   "noannoyance@daase.net" = "noannoyance-2";
-
-  "vbox-applet@gs.eros2.info" = "virtualbox-applet";
-  "vbox-applet@buba98" = "virtualbox-applet-2";
 
   "batime@martin.zurowietz.de" = "battery-time";
   "batterytime@typeof.pw" = "battery-time-2";
@@ -47,11 +51,6 @@
 
   "lockkeys@vaina.lt" = "lock-keys";
   "lockkeys@fawtytoo" = "lock-keys-2";
-
-  "panel-date-format@keiii.github.com" = "panel-date-format";
-  "panel-date-format@atareao.es" = "panel-date-format-2";
-
-  "volume_scroller@noskoski" = "volume-scroller-3";
 
   "wireguard-indicator@gregos.me" = "wireguard-indicator-2";
   "wireguard-indicator@atareao.es" = "wireguard-indicator";

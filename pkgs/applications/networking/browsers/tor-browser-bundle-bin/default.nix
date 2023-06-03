@@ -88,7 +88,7 @@ let
   fteLibPath = lib.makeLibraryPath [ stdenv.cc.cc gmp ];
 
   # Upstream source
-  version = "12.0.4";
+  version = "12.0.6";
 
   lang = "ALL";
 
@@ -100,7 +100,7 @@ let
         "https://tor.eff.org/dist/torbrowser/${version}/tor-browser-linux64-${version}_${lang}.tar.xz"
         "https://tor.calyxinstitute.org/dist/torbrowser/${version}/tor-browser-linux64-${version}_${lang}.tar.xz"
       ];
-      hash = "sha256-VT0bD4v8SBq0emFYsxELreY4o+u+FQfyBEnSMzmRd7Y=";
+      hash = "sha256-MLy/T8A+udasITWYSzaqXSFhA3PJsG7DnKJG0b9UYvA=";
     };
 
     i686-linux = fetchurl {
@@ -110,7 +110,7 @@ let
         "https://tor.eff.org/dist/torbrowser/${version}/tor-browser-linux32-${version}_${lang}.tar.xz"
         "https://tor.calyxinstitute.org/dist/torbrowser/${version}/tor-browser-linux32-${version}_${lang}.tar.xz"
       ];
-      hash = "sha256-mi8btxI6de5iQ8HzNpvuFdJHjzi03zZJT65dsWEiDHA=";
+      hash = "sha256-njJB5k7rQxRyL7foU8fLCQxy43dJvV26oKvQ+fw6U0o=";
     };
   };
 
@@ -291,7 +291,7 @@ stdenv.mkDerivation rec {
     export LOCALE_ARCHIVE=${glibcLocales}/lib/locale/locale-archive
 
     # Enter local state directory.
-    REAL_HOME=\$HOME
+    REAL_HOME=\''${HOME%/}
     TBB_HOME=\''${TBB_HOME:-''${XDG_DATA_HOME:-\$REAL_HOME/.local/share}/tor-browser}
     HOME=\$TBB_HOME
 

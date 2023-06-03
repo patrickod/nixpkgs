@@ -1,12 +1,9 @@
 { lib
 , buildNpmPackage
-, nodejs-16_x
 , fetchFromGitHub
 }:
-let
-  buildNpmPackage' = buildNpmPackage.override { nodejs = nodejs-16_x; };
-in
-buildNpmPackage' rec {
+
+buildNpmPackage rec {
   pname = "docker-compose-language-service";
   version = "0.1.3";
 

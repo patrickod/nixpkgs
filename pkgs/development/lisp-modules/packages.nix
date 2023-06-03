@@ -217,8 +217,8 @@ let
     pname = "facts";
     version = "0.1-632217602";
     src = pkgs.fetchzip {
-      url = "https://github.com/facts-db/cl-lessp/archive/632217602b85b679e8d420654a0aa39e798ca3b5.tar.gz";
-      sha256 = "09z1vwzjm7hlb529jl3hcjnfd11gh128lmdg51im7ar4jv4746iw";
+      url = "https://beta.quicklisp.org/archive/cl-facts/2022-11-06/cl-facts-20221106-git.tgz";
+      sha256 = "sha256-PBpyyJYkq1NjKK9VikSAL4TmrGRwUJlEWRSeKj/f4Sc=";
     };
     lispLibs = [ self.lessp self.rollback ] ++ [ super.local-time ];
   };
@@ -322,19 +322,35 @@ let
     };
     buildScript = pkgs.writeText "build-stumpwm.lisp" ''
       (load "${super.stumpwm.asdfFasl}/asdf.${super.stumpwm.faslExt}")
-      (asdf:load-system 'stumpwm/build)
+
+      (asdf:load-system 'stumpwm)
+
+      ;; Prevents package conflict error
+      (when (uiop:version<= "3.1.5" (asdf:asdf-version))
+        (uiop:symbol-call '#:asdf '#:register-immutable-system :stumpwm)
+        (dolist (system-name (uiop:symbol-call '#:asdf
+                                               '#:system-depends-on
+                                               (asdf:find-system :stumpwm)))
+          (uiop:symbol-call '#:asdf '#:register-immutable-system system-name)))
+
+      ;; Prevents "cannot create /homeless-shelter" error
+      (asdf:disable-output-translations)
+
       (sb-ext:save-lisp-and-die
         "stumpwm"
         :executable t
+        :purify t
         #+sb-core-compression :compression
         #+sb-core-compression t
-        :toplevel #'stumpwm:main)
+        :toplevel #'stumpwm:stumpwm)
     '';
     installPhase = ''
       mkdir -p $out/bin
       cp -v stumpwm $out/bin
     '';
   });
+
+  stumpwm-unwrapped = super.stumpwm;
 
   ltk = super.ltk.overrideLispAttrs (o: {
     src = pkgs.fetchzip {
@@ -589,6 +605,23 @@ let
     };
     systems = [ "eu.turtleware.polyclot" "eu.turtleware.polyclot/demo" ];
     lispLibs = with super; [ clim mcclim mcclim-layouts ];
+  };
+
+  kons-9 = build-asdf-system rec {
+    pname = "kons-9";
+    version = "trunk";
+    src = pkgs.fetchFromGitHub {
+      owner = "kaveh808";
+      repo = "kons-9";
+      rev = "95ad44fac0566f445c4b7bd040339dcff75ee992";
+      sha256 = "19rl7372j9f1cv2kl55r8vyf4dhcz4way4hkjgysbxzrb1psp17n";
+    };
+    systems = [ "kons-9" "kons-9/testsuite" ];
+    lispLibs = with super; [
+      closer-mop trivial-main-thread trivial-backtrace cffi cl-opengl cl-glu
+      cl-glfw3 cl-paths-ttf zpb-ttf cl-vectors origin clobber
+      org_dot_melusina_dot_confidence
+    ];
   };
 
   });
