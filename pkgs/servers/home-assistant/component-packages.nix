@@ -2,7 +2,7 @@
 # Do not edit!
 
 {
-  version = "2023.6.0";
+  version = "2023.6.2";
   components = {
     "3_day_blinds" = ps: with ps; [
     ];
@@ -2010,9 +2010,8 @@
     "keyboard" = ps: with ps; [
     ]; # missing inputs: pyuserinput
     "keyboard_remote" = ps: with ps; [
-      aionotify
       evdev
-    ];
+    ]; # missing inputs: asyncinotify
     "keymitt_ble" = ps: with ps; [
       pymicrobot
       aioesphomeapi
@@ -2863,7 +2862,8 @@
       opensensemap-api
     ];
     "opensky" = ps: with ps; [
-    ]; # missing inputs: python-opensky
+      python-opensky
+    ];
     "opentherm_gw" = ps: with ps; [
       pyotgw
     ];
@@ -2877,8 +2877,7 @@
       pyopnsense
     ];
     "opple" = ps: with ps; [
-      pyoppleio
-    ];
+    ]; # missing inputs: pyoppleio-legacy
     "oralb" = ps: with ps; [
       aioesphomeapi
       aiohttp-cors
@@ -3352,7 +3351,7 @@
       pyruckus
     ];
     "russound_rio" = ps: with ps; [
-    ]; # missing inputs: russound_rio
+    ]; # missing inputs: russound-rio
     "russound_rnet" = ps: with ps; [
     ]; # missing inputs: russound
     "ruuvi_gateway" = ps: with ps; [
@@ -3500,10 +3499,11 @@
       psutil-home-assistant
       pyserial
       pyudev
+      sensirion-ble
       sqlalchemy
       webrtcvad
       zeroconf
-    ]; # missing inputs: sensirion-ble
+    ];
     "sensor" = ps: with ps; [
       fnv-hash-fast
       psutil-home-assistant
@@ -3645,7 +3645,8 @@
     "siren" = ps: with ps; [
     ];
     "sisyphus" = ps: with ps; [
-    ]; # missing inputs: sisyphus-control
+      sisyphus-control
+    ];
     "sky_hub" = ps: with ps; [
       pyskyqhub
     ];
@@ -5280,6 +5281,7 @@
     "sense"
     "senseme"
     "sensibo"
+    "sensirion_ble"
     "sensor"
     "sensorpro"
     "sensorpush"
