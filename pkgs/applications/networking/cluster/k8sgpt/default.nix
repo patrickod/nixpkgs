@@ -2,16 +2,16 @@
 
 buildGoModule rec {
   pname = "k8sgpt";
-  version = "0.3.8";
+  version = "0.3.14";
 
   src = fetchFromGitHub {
     owner = "k8sgpt-ai";
     repo = "k8sgpt";
     rev = "v${version}";
-    hash = "sha256-61u6iGz1cloIKJ2UyyQGPOZJvnAax05sI4XA9NCpJso=";
+    hash = "sha256-n1bWAx3BQxgiuhDdTb2HU1DSEBQqOP/ek9bJBZlbWEM=";
   };
 
-  vendorHash = "sha256-vmTfiUuuHHRzCwgWWzE80bq3VceRSHqpEYV7Zo7SJAI=";
+  vendorHash = "sha256-FUgIziVI99kL3dLJLqVFPEmQqLKXxAMie2q46sp0PeU=";
 
   CGO_ENABLED = 0;
 
