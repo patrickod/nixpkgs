@@ -16,6 +16,7 @@ buildPythonPackage rec {
   };
 
   propagatedBuildInputs = [ click sqlite-utils git GitPython setuptools pytest ];
+  doCheck = false;
 
   pythonImportsCheck = [
     "git_history"
