@@ -1575,8 +1575,8 @@ let
         mktplcRef = {
           publisher = "github";
           name = "copilot";
-          version = "1.126.493";
-          sha256 = "1an7z8z3xz2piw2xz1hdrs6l5rhpyvnjmb650ff2m4k24n01svfy";
+          version = "1.135.544";
+          sha256 = "sha256-OeG1nkQbQAfu8NuDEA+iaWy0ioFyXPe7Qm/CZIKPiX8=";
         };
 
         meta = {
@@ -1592,8 +1592,8 @@ let
         mktplcRef = {
           publisher = "github";
           name = "copilot-chat";
-          version = "0.3.2023061502";
-          sha256 = "sha256-sUoKwlPDMz+iQbmIsD2JhyDwmUQzOyCHXaXCUaizQ7k=";
+          version = "0.11.2023111001";
+          sha256 = "sha256-sBDvqqyq0R0ZyS81G61fI9Vd860RIjhNzCqY0bdz1mg=";
         };
         meta = {
           description = "GitHub Copilot Chat is a companion extension to GitHub Copilot that houses experimental chat features";
@@ -1741,6 +1741,22 @@ let
           homepage = "https://github.com/graphql/graphiql/tree/main/packages/vscode-graphql-syntax";
           license = lib.licenses.mit;
           maintainers = [ lib.maintainers.Enzime ];
+        };
+      };
+
+      griimick.vhs = buildVscodeMarketplaceExtension {
+        mktplcRef = {
+          name = "vhs";
+          publisher = "griimick";
+          version = "0.0.4";
+          sha256 = "sha256-zAy8o5d2pK5ra/dbwoLgPAQAYfRQtUYQjisWYgIhsXA=";
+        };
+        meta = {
+          description = "Visual Studio Code extension providing syntax support for VHS .tape files";
+          downloadPage = "https://marketplace.visualstudio.com/items?itemName=griimick.vhs";
+          homepage = "https://github.com/griimick/vscode-vhs";
+          license = lib.licenses.mit;
+          maintainers = [ lib.maintainers.drupol ];
         };
       };
 
@@ -2457,8 +2473,8 @@ let
         mktplcRef = {
           name = "vscode-pylance";
           publisher = "MS-python";
-          version = "2022.7.11";
-          sha256 = "sha256-JatjLZXO7iwpBwjL1hrNafBiF81CaozWWANyRm8A36Y=";
+          version = "2023.8.50";
+          sha256 = "sha256-xJU/j5r/Idp/0VorEfciT4SFKRBpMCv9Z0LKO/++1Gk=";
         };
 
         buildInputs = [ nodePackages.pyright ];
@@ -2469,6 +2485,7 @@ let
           downloadPage = "https://marketplace.visualstudio.com/items?itemName=ms-python.vscode-pylance";
           homepage = "https://github.com/microsoft/pylance-release";
           license = lib.licenses.unfree;
+          maintainers = [ lib.maintainers.ericthemagician ];
         };
       };
 
@@ -2735,8 +2752,8 @@ let
           publisher = "nvarner";
           # Please update the corresponding binary (typst-lsp) when updating
           # this extension.
-          version = "0.10.1";
-          sha256 = "sha256-+LOw9JPpL5eLNxmP4kyPo9S/w8ZxfPGSaY1oR8THmvI=";
+          version = "0.11.0";
+          sha256 = "sha256-fs+CBg3FwzTn608dm9EvfF2UrI2Sa5hsm0OK/WQyy6o=";
         };
 
         nativeBuildInputs = [ jq moreutils ];
@@ -3537,8 +3554,8 @@ let
         mktplcRef = {
           name = "uiua-vscode";
           publisher = "uiua-lang";
-          version = "0.0.22";
-          sha256 = "sha256-fJcSJwwRVofduWEEMa5f2VrSfyONKPkFl9OW+++lSRw=";
+          version = "0.0.23";
+          sha256 = "sha256-NauXoYTAka8qXNPYlW5g7r6NNX1x8cnvDRbEGkRsMoY=";
         };
         meta = {
           description = "VSCode language extension for Uiua";
