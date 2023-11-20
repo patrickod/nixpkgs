@@ -41997,8 +41997,6 @@ with pkgs;
 
   lc3tools = callPackage ../development/tools/lc3tools { };
 
-  noson = libsForQt5.callPackage ../applications/audio/noson { };
-
   ldid-procursus = callPackage ../development/tools/ldid-procursus { };
 
   xcolor = callPackage ../tools/graphics/xcolor { };
