@@ -40,6 +40,16 @@ let
         };
       });
 
+      # https://github.com/home-assistant/core/pull/101913
+      aiohttp = super.aiohttp.overridePythonAttrs (old: rec {
+        version = "3.8.5";
+        src = fetchPypi {
+          inherit (old) pname;
+          inherit version;
+          hash = "sha256-uVUuxSzBR9vxlErHrJivdgLlHqLc0HbtGUyjwNHH0Lw=";
+        };
+      });
+
       aiowatttime = super.aiowatttime.overridePythonAttrs (oldAttrs: rec {
         version = "0.1.1";
         src = fetchFromGitHub {
@@ -290,16 +300,6 @@ let
         };
       });
 
-      websockets = super.websockets.overridePythonAttrs (oldAttrs: rec {
-        version = "11.0.1";
-        src = fetchFromGitHub {
-          owner = "aaugustin";
-          repo = "websockets";
-          rev = "refs/tags/${version}";
-          hash = "sha256-cD8pC7n2OGS8AjG0VdjNXi8jXxvN7yKkadNR0GCqc90=";
-        };
-      });
-
       # internal python packages only consumed by home-assistant itself
       home-assistant-frontend = self.callPackage ./frontend.nix { };
       home-assistant-intents = self.callPackage ./intents.nix { };
@@ -460,7 +460,6 @@ in python.pkgs.buildPythonApplication rec {
     pytestCheckHook
     requests-mock
     respx
-    stdlib-list
     syrupy
     tomli
     # required through tests/auth/mfa_modules/test_otp.py

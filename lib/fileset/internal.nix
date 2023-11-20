@@ -381,7 +381,7 @@ rec {
 
   # Turn a fileset into a source filter function suitable for `builtins.path`
   # Only directories recursively containing at least one files are recursed into
-  # Type: Path -> fileset -> (String -> String -> Bool)
+  # Type: fileset -> (String -> String -> Bool)
   _toSourceFilter = fileset:
     let
       # Simplify the tree, necessary to make sure all empty directories are null
@@ -753,9 +753,9 @@ rec {
 
       resultingTree =
         _differenceTree
-        positive._internalBase
-        positive._internalTree
-        negativeTreeWithPositiveBase;
+          positive._internalBase
+          positive._internalTree
+          negativeTreeWithPositiveBase;
     in
     # If the first file set is empty, we can never have any files in the result
     if positive._internalIsEmptyWithoutBase then
@@ -825,4 +825,27 @@ rec {
         ${baseNameOf root} =
           fromFile (baseNameOf root) rootType;
       };
+
+  # Support for `builtins.fetchGit` with `submodules = true` was introduced in 2.4
+  # https://github.com/NixOS/nix/commit/55cefd41d63368d4286568e2956afd535cb44018
+  _fetchGitSubmodulesMinver = "2.4";
+
+  # Mirrors the contents of a Nix store path relative to a local path as a file set.
+  # Some notes:
+  # - The store path is read at evaluation time.
+  # - The store path must not include files that don't exist in the respective local path.
+  #
+  # Type: Path -> String -> FileSet
+  _mirrorStorePath = localPath: storePath:
+    let
+      recurse = focusedStorePath:
+        mapAttrs (name: type:
+          if type == "directory" then
+            recurse (focusedStorePath + "/${name}")
+          else
+            type
+        ) (builtins.readDir focusedStorePath);
+    in
+    _create localPath
+      (recurse storePath);
 }
