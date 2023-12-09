@@ -1,5 +1,12 @@
 { stdenv, lib, fetchFromGitHub, fetchpatch, buildPythonPackage, python,
-  config, cudaSupport ? config.cudaSupport, cudaPackages, magma,
+  config, cudaSupport ? config.cudaSupport, cudaPackages,
+  effectiveMagma ?
+  if cudaSupport then magma-cuda-static
+  else if rocmSupport then magma-hip
+  else magma,
+  magma,
+  magma-hip,
+  magma-cuda-static,
   useSystemNccl ? true,
   MPISupport ? false, mpi,
   buildDocs ? false,
@@ -13,6 +20,7 @@
   Accelerate, CoreServices, libobjc,
 
   # Propagated build inputs
+  fsspec,
   filelock,
   jinja2,
   networkx,
@@ -111,16 +119,16 @@ let
   };
 
   brokenConditions = attrsets.filterAttrs (_: cond: cond) {
-    "CUDA and ROCm are not mutually exclusive" = cudaSupport && rocmSupport;
+    "CUDA and ROCm are mutually exclusive" = cudaSupport && rocmSupport;
     "CUDA is not targeting Linux" = cudaSupport && !stdenv.isLinux;
     "Unsupported CUDA version" = cudaSupport && !(builtins.elem cudaPackages.cudaMajorVersion [ "11" "12" ]);
     "MPI cudatoolkit does not match cudaPackages.cudatoolkit" = MPISupport && cudaSupport && (mpi.cudatoolkit != cudaPackages.cudatoolkit);
-    "Magma cudaPackages does not match cudaPackages" = cudaSupport && (magma.cudaPackages != cudaPackages);
+    "Magma cudaPackages does not match cudaPackages" = cudaSupport && (effectiveMagma.cudaPackages != cudaPackages);
   };
 in buildPythonPackage rec {
   pname = "torch";
   # Don't forget to update torch-bin to the same version.
-  version = "2.0.1";
+  version = "2.1.1";
   format = "setuptools";
 
   disabled = pythonOlder "3.8.0";
@@ -136,10 +144,13 @@ in buildPythonPackage rec {
     repo = "pytorch";
     rev = "refs/tags/v${version}";
     fetchSubmodules = true;
-    hash = "sha256-xUj77yKz3IQ3gd/G32pI4OhL3LoN1zS7eFg0/0nZp5I=";
+    hash = "sha256-01+uqHvPbQVXKLohGWfsCsZOjb7xmfjBKkTGUGMEdAI=";
   };
 
-  patches = lib.optionals (stdenv.isDarwin && stdenv.isx86_64) [
+  patches = lib.optionals cudaSupport [
+    ./fix-cmake-cuda-toolkit.patch
+  ]
+  ++ lib.optionals (stdenv.isDarwin && stdenv.isx86_64) [
     # pthreadpool added support for Grand Central Dispatch in April
     # 2020. However, this relies on functionality (DISPATCH_APPLY_AUTO)
     # that is available starting with macOS 10.13. However, our current
@@ -181,12 +192,11 @@ in buildPythonPackage rec {
         'message(FATAL_ERROR "Found NCCL header version and library version' \
         'message(WARNING "Found NCCL header version and library version'
   ''
-  # TODO(@connorbaker): Remove this patch after 2.1.0 lands.
+  # Remove PyTorch's FindCUDAToolkit.cmake and to use CMake's default.
+  # We do not remove the entirety of cmake/Modules_CUDA_fix because we need FindCUDNN.cmake.
   + lib.optionalString cudaSupport ''
-    substituteInPlace torch/utils/cpp_extension.py \
-      --replace \
-        "'8.6', '8.9'" \
-        "'8.6', '8.7', '8.9'"
+    rm cmake/Modules/FindCUDAToolkit.cmake
+    rm -rf cmake/Modules_CUDA_fix/{upstream,FindCUDA.cmake}
   ''
   # error: no member named 'aligned_alloc' in the global namespace; did you mean simply 'aligned_alloc'
   # This lib overrided aligned_alloc hence the error message. Tltr: his function is linkable but not in header.
@@ -359,7 +369,7 @@ in buildPythonPackage rec {
       cuda_profiler_api.dev # <cuda_profiler_api.h>
     ])
     ++ lib.optionals rocmSupport [ rocmPackages.llvm.openmp ]
-    ++ lib.optionals (cudaSupport || rocmSupport) [ magma ]
+    ++ lib.optionals (cudaSupport || rocmSupport) [ effectiveMagma ]
     ++ lib.optionals stdenv.isLinux [ numactl ]
     ++ lib.optionals stdenv.isDarwin [ Accelerate CoreServices libobjc ];
 
@@ -370,6 +380,7 @@ in buildPythonPackage rec {
     pyyaml
 
     # From install_requires:
+    fsspec
     filelock
     typing-extensions
     sympy
