@@ -32559,8 +32559,6 @@ with pkgs;
 
   mt32emu-smf2wav = callPackage ../applications/audio/munt/mt32emu-smf2wav.nix { };
 
-  offpunk = callPackage ../applications/networking/browsers/offpunk { };
-
   noson = libsForQt5.callPackage ../applications/audio/noson { };
 
   owl-compositor = callPackage ../applications/window-managers/owl { };
