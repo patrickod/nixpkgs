@@ -18,16 +18,17 @@
 , xcbuild
 , pango
 , pkg-config
+, nltk-data
 }:
 
 let
-  version = "2.1.2";
+  version = "2.5.2";
 
   src = fetchFromGitHub {
     owner = "paperless-ngx";
     repo = "paperless-ngx";
     rev = "refs/tags/v${version}";
-    hash = "sha256-jD0dRgU/9gtNZUuTV+zkjqWb8gBnvD/AOTPucdaVKwE=";
+    hash = "sha256-v6k9clKNBNb2MQp0BTrUL9zfY6SUKfzaaOycmV8RKyk=";
   };
 
   python = python3;
@@ -52,7 +53,7 @@ let
       cd src-ui
     '';
 
-    npmDepsHash = "sha256-K7wTYGGwEhPoXdRD+4swhSlMH0iem6YkF0tjnVHh7K8=";
+    npmDepsHash = "sha256-7//VmAgXB4H8hlalfu4JeqFDa8dj1u5Z1kbwp2Wi4cQ=";
 
     nativeBuildInputs = [
       pkg-config
@@ -122,6 +123,7 @@ python.pkgs.buildPythonApplication rec {
     constantly
     cryptography
     dateparser
+    django-allauth
     django-auditlog
     django-celery-results
     django-compression-middleware
@@ -211,7 +213,7 @@ python.pkgs.buildPythonApplication rec {
     whitenoise
     whoosh
     zipp
-    zope_interface
+    zope-interface
     zxing-cpp
   ]
   ++ redis.optional-dependencies.hiredis
@@ -293,6 +295,7 @@ python.pkgs.buildPythonApplication rec {
 
   passthru = {
     inherit python path frontend;
+    nltkData = with nltk-data; [ punkt snowball_data stopwords ];
     tests = { inherit (nixosTests) paperless; };
   };
 

@@ -233,7 +233,7 @@ let
   printEnabled = enabled: if enabled then "ON" else "OFF";
   withOpenblas = (enableBlas && blas.provider.pname == "openblas");
   #multithreaded openblas conflicts with opencv multithreading, which manifest itself in hung tests
-  #https://github.com/xianyi/OpenBLAS/wiki/Faq/4bded95e8dc8aadc70ce65267d1093ca7bdefc4c#multi-threaded
+  #https://github.com/OpenMathLib/OpenBLAS/wiki/Faq/4bded95e8dc8aadc70ce65267d1093ca7bdefc4c#multi-threaded
   openblas_ = blas.provider.override { singleThreaded = true; };
 
   inherit (cudaPackages) cudaFlags cudaVersion;
@@ -472,7 +472,13 @@ effectiveStdenv.mkDerivation {
   postInstall = ''
     sed -i "s|{exec_prefix}/$out|{exec_prefix}|;s|{prefix}/$out|{prefix}|" \
       "$out/lib/pkgconfig/opencv4.pc"
-    mkdir $cxxdev
+    mkdir "$cxxdev"
+  ''
+  # fix deps not progagating from opencv4.cxxdev if cuda is disabled
+  # see https://github.com/NixOS/nixpkgs/issues/276691
+  + lib.optionalString (!enableCuda) ''
+    mkdir -p "$cxxdev/nix-support"
+    echo "''${!outputDev}" >> "$cxxdev/nix-support/propagated-build-inputs"
   ''
   # install python distribution information, so other packages can `import opencv`
   + lib.optionalString enablePython ''

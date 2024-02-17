@@ -5,14 +5,14 @@
 
 python3.pkgs.buildPythonApplication rec {
   pname = "checkov";
-  version = "3.1.42";
+  version = "3.2.8";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "bridgecrewio";
     repo = "checkov";
     rev = "refs/tags/${version}";
-    hash = "sha256-tQemwSqlwVjBdxwJ22OY1CxZ/Kv06S9u0ECHtxe3Jm4=";
+    hash = "sha256-Hd1YOzIH6v8N/oP2cJRUv6OkgOv9aSe7nkvzpsCN3rc=";
   };
 
   patches = [
@@ -23,8 +23,16 @@ python3.pkgs.buildPythonApplication rec {
     "bc-detect-secrets"
     "bc-python-hcl2"
     "dpath"
+    "igraph"
     "license-expression"
     "networkx"
+    "openai"
+    "pycep-parser"
+    "termcolor"
+  ];
+
+  pythonRemoveDeps = [
+    # pythonRelaxDeps doesn't work with that one
     "pycep-parser"
   ];
 
@@ -73,7 +81,7 @@ python3.pkgs.buildPythonApplication rec {
     termcolor
     tqdm
     typing-extensions
-    update_checker
+    update-checker
   ];
 
   nativeCheckInputs = with python3.pkgs; [

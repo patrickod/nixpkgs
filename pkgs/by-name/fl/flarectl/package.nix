@@ -5,16 +5,16 @@
 
 buildGoModule rec {
   pname = "flarectl";
-  version = "0.83.0";
+  version = "0.88.0";
 
   src = fetchFromGitHub {
     owner = "cloudflare";
     repo = "cloudflare-go";
     rev = "v${version}";
-    hash = "sha256-TPUHSoot+Hsq71KcNXuJn5sHRuDn3J1FB3r/29Ce9/c=";
+    hash = "sha256-nFTE6RCVpfF/CPcwKM0wK15/1KMXAuvSdmtrt+Xrp8E=";
   };
 
-  vendorHash = "sha256-XziR/ZB0kva/sl2Tj+m0pdK5HxLW6osBXD00+m/y0cQ=";
+  vendorHash = "sha256-AxBvmDB3mfgkv7U+BzR0Khdgx1hrDI61CSxr45pRZqg=";
 
   subPackages = [ "cmd/flarectl" ];
 
