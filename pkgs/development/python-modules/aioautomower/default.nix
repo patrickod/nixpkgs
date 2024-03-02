@@ -14,7 +14,7 @@
 
 buildPythonPackage rec {
   pname = "aioautomower";
-  version = "2024.2.6";
+  version = "2024.2.9";
   pyproject = true;
 
   disabled = pythonOlder "3.11";
@@ -23,7 +23,7 @@ buildPythonPackage rec {
     owner = "Thomas55555";
     repo = "aioautomower";
     rev = "refs/tags/${version}";
-    hash = "sha256-iYC2bYkO9INbSeny9gy/I0cDSYeyrJiD9MJddUFIlhg=";
+    hash = "sha256-vjg7y+9E4R1Q7h+ao/ttuRbvui4u5hESR8tImWSO04U=";
   };
 
   postPatch = ''
@@ -55,6 +55,11 @@ buildPythonPackage rec {
 
   pytestFlagsArray = [
     "--snapshot-update"
+  ];
+
+  disabledTests = [
+    # File is missing
+    "test_standard_mower"
   ];
 
   meta = with lib; {
