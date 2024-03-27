@@ -35,10 +35,10 @@ rustPlatform.buildRustPackage rec {
 
   cargoHash = "sha256-jtBw4ahSl88L0iuCXxQgZVm1EcboWRJMNtjxLVTtzts=";
 
-  meta = with lib; {
+  meta = {
     description = "A fast line-oriented regex search tool, similar to ag and ack";
     homepage = "https://github.com/BurntSushi/ripgrep";
-    license = licenses.unlicense;
+    license = lib.licenses.unlicense;
     maintainers = [];
   };
 }
@@ -651,6 +651,66 @@ buildPythonPackage rec {
 }
 ```
 
+#### Rust package built with `meson` {#rust-package-built-with-meson}
+
+Some projects, especially GNOME applications, are built with the Meson Build System instead of calling Cargo directly. Using `rustPlatform.buildRustPackage` may successfully build the main program, but related files will be missing. Instead, you need to set up Cargo dependencies with `fetchCargoTarball` and `cargoSetupHook` and leave the rest to Meson. `rust` and `cargo` are still needed in `nativeBuildInputs` for Meson to use.
+
+```nix
+{ lib
+, stdenv
+, fetchFromGitLab
+, meson
+, ninja
+, pkg-config
+, rustPlatform
+, rustc
+, cargo
+, wrapGAppsHook4
+, blueprint-compiler
+, libadwaita
+, libsecret
+, tracker
+}:
+
+stdenv.mkDerivation rec {
+  pname = "health";
+  version = "0.95.0";
+
+  src = fetchFromGitLab {
+    domain = "gitlab.gnome.org";
+    owner = "World";
+    repo = "health";
+    rev = version;
+    hash = "sha256-PrNPprSS98yN8b8yw2G6hzTSaoE65VbsM3q7FVB4mds=";
+  };
+
+  cargoDeps = rustPlatform.fetchCargoTarball {
+    inherit src;
+    name = "${pname}-${version}";
+    hash = "sha256-8fa3fa+sFi5H+49B5sr2vYPkp9C9s6CcE0zv4xB8gww=";
+  };
+
+  nativeBuildInputs = [
+    meson
+    ninja
+    pkg-config
+    rustPlatform.cargoSetupHook
+    rustc
+    cargo
+    wrapGAppsHook4
+    blueprint-compiler
+  ];
+
+  buildInputs = [
+    libadwaita
+    libsecret
+    tracker
+  ];
+
+  # ...
+}
+```
+
 ## `buildRustCrate`: Compiling Rust crates using Nix instead of Cargo {#compiling-rust-crates-using-nix-instead-of-cargo}
 
 ### Simple operation {#simple-operation}
@@ -903,8 +963,8 @@ with import <nixpkgs>
 };
 let
   rustPlatform = makeRustPlatform {
-    cargo = rust-bin.stable.latest.minimal;
-    rustc = rust-bin.stable.latest.minimal;
+    cargo = rust-bin.selectLatestNightlyWith (toolchain: toolchain.default);
+    rustc = rust-bin.selectLatestNightlyWith (toolchain: toolchain.default);
   };
 in
 
@@ -923,11 +983,11 @@ rustPlatform.buildRustPackage rec {
 
   doCheck = false;
 
-  meta = with lib; {
+  meta = {
     description = "A fast line-oriented regex search tool, similar to ag and ack";
     homepage = "https://github.com/BurntSushi/ripgrep";
-    license = with licenses; [ mit unlicense ];
-    maintainers = with maintainers; [];
+    license = with lib.licenses; [ mit unlicense ];
+    maintainers = with lib.maintainers; [];
   };
 }
 ```

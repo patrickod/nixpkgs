@@ -163,6 +163,7 @@
   ./programs/clash-verge.nix
   ./programs/cnping.nix
   ./programs/command-not-found/command-not-found.nix
+  ./programs/coolercontrol.nix
   ./programs/criu.nix
   ./programs/darling.nix
   ./programs/dconf.nix
@@ -202,6 +203,7 @@
   ./programs/i3lock.nix
   ./programs/iotop.nix
   ./programs/java.nix
+  ./programs/joycond-cemuhook.nix
   ./programs/k3b.nix
   ./programs/k40-whisperer.nix
   ./programs/kbdlight.nix
@@ -585,6 +587,7 @@
   ./services/home-automation/govee2mqtt.nix
   ./services/home-automation/home-assistant.nix
   ./services/home-automation/homeassistant-satellite.nix
+  ./services/home-automation/matter-server.nix
   ./services/home-automation/zigbee2mqtt.nix
   ./services/home-automation/zwave-js.nix
   ./services/logging/SystemdJournal2Gelf.nix
@@ -718,6 +721,7 @@
   ./services/misc/libreddit.nix
   ./services/misc/lidarr.nix
   ./services/misc/lifecycled.nix
+  ./services/misc/llama-cpp.nix
   ./services/misc/logkeys.nix
   ./services/misc/mame.nix
   ./services/misc/mbpfan.nix
@@ -780,12 +784,14 @@
   ./services/misc/svnserve.nix
   ./services/misc/synergy.nix
   ./services/misc/sysprof.nix
+  ./services/misc/tabby.nix
   ./services/misc/tandoor-recipes.nix
   ./services/misc/taskserver
   ./services/misc/tautulli.nix
   ./services/misc/tiddlywiki.nix
   ./services/misc/tp-auto-kbbl.nix
   ./services/misc/tuxclocker.nix
+  ./services/misc/transfer-sh.nix
   ./services/misc/tzupdate.nix
   ./services/misc/uhub.nix
   ./services/misc/weechat.nix
@@ -938,6 +944,7 @@
   ./services/networking/dnscrypt-wrapper.nix
   ./services/networking/dnsdist.nix
   ./services/networking/dnsmasq.nix
+  ./services/networking/dnsproxy.nix
   ./services/networking/doh-proxy-rust.nix
   ./services/networking/ejabberd.nix
   ./services/networking/envoy.nix
@@ -1013,6 +1020,7 @@
   ./services/networking/lxd-image-server.nix
   ./services/networking/magic-wormhole-mailbox-server.nix
   ./services/networking/matterbridge.nix
+  ./services/networking/mihomo.nix
   ./services/networking/minidlna.nix
   ./services/networking/miniupnpd.nix
   ./services/networking/miredo.nix
@@ -1029,6 +1037,7 @@
   ./services/networking/multipath.nix
   ./services/networking/murmur.nix
   ./services/networking/mxisd.nix
+  ./services/networking/mycelium.nix
   ./services/networking/namecoind.nix
   ./services/networking/nar-serve.nix
   ./services/networking/nat.nix
@@ -1265,6 +1274,7 @@
   ./services/video/go2rtc/default.nix
   ./services/video/frigate.nix
   ./services/video/mirakurun.nix
+  ./services/video/photonvision.nix
   ./services/video/replay-sorcery.nix
   ./services/video/mediamtx.nix
   ./services/video/unifi-video.nix
@@ -1353,6 +1363,7 @@
   ./services/web-apps/plausible.nix
   ./services/web-apps/powerdns-admin.nix
   ./services/web-apps/pretalx.nix
+  ./services/web-apps/pretix.nix
   ./services/web-apps/prosody-filer.nix
   ./services/web-apps/rimgo.nix
   ./services/web-apps/sftpgo.nix
