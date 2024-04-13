@@ -1,15 +1,16 @@
-{ lib
-, buildPythonPackage
-, fetchFromGitHub
-, pytestCheckHook
-, pythonOlder
-, requests
-, setuptools
+{
+  lib,
+  buildPythonPackage,
+  fetchFromGitHub,
+  pytestCheckHook,
+  pythonOlder,
+  requests,
+  setuptools,
 }:
 
 buildPythonPackage rec {
   pname = "tencentcloud-sdk-python";
-  version = "3.0.1115";
+  version = "3.0.1127";
   pyproject = true;
 
   disabled = pythonOlder "3.9";
@@ -18,24 +19,16 @@ buildPythonPackage rec {
     owner = "TencentCloud";
     repo = "tencentcloud-sdk-python";
     rev = "refs/tags/${version}";
-    hash = "sha256-3tkkLB27R4trvS3LY0tRv0+q37SfT7S6gr9i1OWaNUU=";
+    hash = "sha256-NF3ygbCLbx2wszgnyWNSZWc+p7t/c2PtJ0N2zUGIkkg=";
   };
 
-  build-system = [
-    setuptools
-  ];
+  build-system = [ setuptools ];
 
-  dependencies = [
-    requests
-  ];
+  dependencies = [ requests ];
 
-  nativeCheckInputs = [
-    pytestCheckHook
-  ];
+  nativeCheckInputs = [ pytestCheckHook ];
 
-  pythonImportsCheck = [
-    "tencentcloud"
-  ];
+  pythonImportsCheck = [ "tencentcloud" ];
 
   pytestFlagsArray = [
     # Other tests require credentials

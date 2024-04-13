@@ -186,8 +186,6 @@ let
 
     chacha = callPackage ../development/ocaml-modules/chacha { };
 
-    charInfo_width = callPackage ../development/ocaml-modules/charInfo_width { };
-
     checkseum = callPackage ../development/ocaml-modules/checkseum { };
 
     chrome-trace = callPackage ../development/ocaml-modules/chrome-trace { };
@@ -737,7 +735,7 @@ let
       then callPackage ../development/ocaml-modules/janestreet/janePackage_0_14.nix {}
       else if lib.versionOlder "4.07" ocaml.version
       then callPackage ../development/ocaml-modules/janestreet/janePackage_0_12.nix {}
-      else callPackage ../development/ocaml-modules/janestreet/janePackage.nix {};
+      else null;
 
     janeStreet =
       if lib.versionOlder "4.13.1" ocaml.version
@@ -763,10 +761,6 @@ let
         inherit (pkgs) openssl;
       }
       else import ../development/ocaml-modules/janestreet {
-        self = self // {
-          ppxlib = ppxlib.override { version = "0.8.1"; };
-        };
-        inherit (pkgs) openssl;
       };
 
     janeStreet_0_15 = (lib.makeScope self.newScope (self': with self'; {
@@ -1232,6 +1226,8 @@ let
     };
 
     ocaml-lsp = callPackage ../development/ocaml-modules/ocaml-lsp { };
+
+    ocaml-lua = callPackage ../development/ocaml-modules/ocaml-lua { };
 
     ocaml_lwt = lwt;
 
@@ -1724,6 +1720,8 @@ let
     stdune = callPackage ../development/ocaml-modules/stdune { };
 
     stog = callPackage ../applications/misc/stog { };
+    stog_asy = callPackage ../applications/misc/stog/asy.nix { };
+    stog_markdown = callPackage ../applications/misc/stog/markdown.nix { };
 
     stringext = callPackage ../development/ocaml-modules/stringext { };
 
@@ -2000,6 +1998,8 @@ in let inherit (pkgs) callPackage; in rec
   ocamlPackages_5_0 = mkOcamlPackages (callPackage ../development/compilers/ocaml/5.0.nix { });
 
   ocamlPackages_5_1 = mkOcamlPackages (callPackage ../development/compilers/ocaml/5.1.nix { });
+
+  ocamlPackages_5_2 = mkOcamlPackages (callPackage ../development/compilers/ocaml/5.2.nix { });
 
   ocamlPackages_latest = ocamlPackages_5_1;
 
