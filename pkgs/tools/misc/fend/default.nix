@@ -4,6 +4,8 @@
 , rustPlatform
 , darwin
 , pandoc
+, pkg-config
+, openssl
 , installShellFiles
 , copyDesktopItems
 , makeDesktopItem
@@ -16,19 +18,19 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "fend";
-  version = "1.3.3";
+  version = "1.4.8";
 
   src = fetchFromGitHub {
     owner = "printfn";
-    repo = pname;
+    repo = "fend";
     rev = "v${version}";
-    sha256 = "sha256-4N2MSs4Uhd0NcS57b6qIJd8ovnUVjLiLniMsHTdZHCo=";
+    hash = "sha256-i4h2QYgA1XX+qHOEH07PR3G/0SSA8a413vm9T39TuYQ=";
   };
 
-  cargoHash = "sha256-Y8LfkFPM4MKxwW6xk93+vCASkVfsMp3GugjH/kIAvQ8=";
+  cargoHash = "sha256-EhumvDwXNXB0Vp3qWkJs0y0gEwiy3Z9/3KZ92YDTlqk=";
 
-  nativeBuildInputs = [ pandoc installShellFiles copyDesktopItems ];
-  buildInputs = lib.optionals stdenv.isDarwin [ darwin.apple_sdk.frameworks.Security ];
+  nativeBuildInputs = [ pandoc installShellFiles pkg-config copyDesktopItems ];
+  buildInputs = [ pkg-config openssl ] ++ lib.optionals stdenv.isDarwin [ darwin.apple_sdk.frameworks.Security ];
 
   postBuild = ''
     patchShebangs --build ./documentation/build.sh
@@ -46,7 +48,7 @@ rustPlatform.buildRustPackage rec {
   '';
 
   postInstall = ''
-    install -D -m 444 $src/icon/fend-icon-256.png $out/share/icons/hicolor/256x256/apps/fend.png
+    install -D -m 444 $src/icon/icon.svg $out/share/icons/hicolor/scalable/apps/fend.svg
   '';
 
   desktopItems = [

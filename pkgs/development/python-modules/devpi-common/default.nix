@@ -1,10 +1,14 @@
-{ lib, buildPythonPackage, fetchPypi
-, pythonOlder
-, setuptools
-, setuptools-changelog-shortener
-, requests
-, pytestCheckHook
-, lazy
+{
+  lib,
+  buildPythonPackage,
+  fetchPypi,
+  pythonOlder,
+  setuptools,
+  setuptools-changelog-shortener,
+  requests,
+  tomli,
+  pytestCheckHook,
+  lazy,
 }:
 
 buildPythonPackage rec {
@@ -27,21 +31,21 @@ buildPythonPackage rec {
   propagatedBuildInputs = [
     requests
     lazy
+    tomli
   ];
 
-  nativeCheckInputs = [
-    pytestCheckHook
-  ];
+  nativeCheckInputs = [ pytestCheckHook ];
 
-  pythonImportsCheck = [
-    "devpi_common"
-  ];
+  pythonImportsCheck = [ "devpi_common" ];
 
   meta = with lib; {
     homepage = "https://github.com/devpi/devpi";
     description = "Utilities jointly used by devpi-server and devpi-client";
     changelog = "https://github.com/devpi/devpi/blob/common-${version}/common/CHANGELOG";
     license = licenses.mit;
-    maintainers = with maintainers; [ lewo makefu ];
+    maintainers = with maintainers; [
+      lewo
+      makefu
+    ];
   };
 }

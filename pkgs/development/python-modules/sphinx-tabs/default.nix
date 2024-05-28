@@ -1,38 +1,38 @@
-{ lib
-, buildPythonPackage
-, fetchFromGitHub
+{
+  lib,
+  buildPythonPackage,
+  fetchFromGitHub,
 
-# build-system
-, setuptools
+  # build-system
+  setuptools,
 
-# documentation build dependencies
-, sphinxHook
-# runtime dependencies
-, sphinx
-, pygments
-, docutils
-# test dependencies
-, pytest
-, beautifulsoup4
+  # documentation build dependencies
+  sphinxHook,
+  # runtime dependencies
+  sphinx,
+  pygments,
+  docutils,
+  # test dependencies
+  pytest,
+  beautifulsoup4,
 }:
 
 buildPythonPackage rec {
   pname = "sphinx-tabs";
-  version = "3.4.4";
+  version = "3.4.5";
   format = "pyproject";
 
-  outputs = [ "out" "doc" ];
+  outputs = [
+    "out"
+    "doc"
+  ];
 
   src = fetchFromGitHub {
     owner = "executablebooks";
     repo = "sphinx-tabs";
     rev = "refs/tags/v${version}";
-    hash = "sha256-RcCADGJfwXP/U7Uws/uX+huaJzRDRUabQOnc9gqMUzM=";
+    hash = "sha256-uFSnIhvnmg3ZURJGbSOUpLVx0EDUs/9SewspM7gtNRk=";
   };
-
-  postPatch = ''
-    substituteInPlace setup.py --replace 'docutils~=0.18.0' 'docutils'
-  '';
 
   nativeBuildInputs = [
     setuptools
@@ -45,7 +45,8 @@ buildPythonPackage rec {
     docutils
   ];
 
-  nativeCheckInputs = [ pytest
+  nativeCheckInputs = [
+    pytest
     beautifulsoup4
   ];
 

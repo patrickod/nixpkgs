@@ -45,11 +45,11 @@ in
 
 stdenv.mkDerivation rec {
   pname = "gnome-software";
-  version = "45.2";
+  version = "46.1";
 
   src = fetchurl {
     url = "mirror://gnome/sources/gnome-software/${lib.versions.major version}/${pname}-${version}.tar.xz";
-    sha256 = "C92PwMrs1usBPGAQ28qTB3OXEYpu9eryZOKoIKKS9bc=";
+    hash = "sha256-tu63iRAN6UtQ6+Lnfxaya+TC2xVImQXxmNBgxCXhkHY=";
   };
 
   patches = [
@@ -117,7 +117,8 @@ stdenv.mkDerivation rec {
 
   meta = with lib; {
     description = "Software store that lets you install and update applications and system extensions";
-    homepage = "https://wiki.gnome.org/Apps/Software";
+    mainProgram = "gnome-software";
+    homepage = "https://apps.gnome.org/Software/";
     license = licenses.gpl2Plus;
     maintainers = teams.gnome.members;
     platforms = platforms.linux;

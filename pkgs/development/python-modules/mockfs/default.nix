@@ -1,10 +1,11 @@
-{ lib
-, buildPythonPackage
-, fetchFromGitHub
-, setuptools
-, setuptools-scm
-, wheel
-, pytestCheckHook
+{
+  lib,
+  buildPythonPackage,
+  fetchFromGitHub,
+  setuptools,
+  setuptools-scm,
+  importlib-metadata,
+  pytestCheckHook,
 }:
 
 buildPythonPackage rec {
@@ -23,19 +24,16 @@ buildPythonPackage rec {
     sed -i '/addopts/d' pytest.ini
   '';
 
-  env.SETUPTOOLS_SCM_PRETEND_VERSION = version;
-
   nativeBuildInputs = [
     setuptools
     setuptools-scm
-    wheel
   ];
+
+  propagatedBuildInputs = [ importlib-metadata ];
 
   pythonImportsCheck = [ "mockfs" ];
 
-  nativeCheckInputs = [
-    pytestCheckHook
-  ];
+  nativeCheckInputs = [ pytestCheckHook ];
 
   meta = with lib; {
     description = "A simple mock filesystem for use in unit tests";

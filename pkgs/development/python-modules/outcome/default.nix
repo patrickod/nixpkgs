@@ -1,18 +1,22 @@
-{ lib, buildPythonPackage, fetchPypi, pythonOlder
-, attrs
-, pytest
+{
+  lib,
+  buildPythonPackage,
+  fetchPypi,
+  setuptools,
+  attrs,
+  pytest,
 }:
 
 buildPythonPackage rec {
   pname = "outcome";
-  version = "1.2.0";
-  format = "setuptools";
-  disabled = pythonOlder "3.4";
+  version = "1.3.0.post0";
 
   src = fetchPypi {
     inherit pname version;
-    hash = "sha256-b4K9PeRdowPPH3ceyvoWM3UKNYQ2qLtg4Goc63RdJnI=";
+    hash = "sha256-nc8C5l8pcbgAR7N3Ro5yomjhXArzzxI45v8U9/kRQ7g=";
   };
+
+  nativeBuildInputs = [ setuptools ];
 
   nativeCheckInputs = [ pytest ];
   propagatedBuildInputs = [ attrs ];
@@ -22,7 +26,10 @@ buildPythonPackage rec {
   meta = {
     description = "Capture the outcome of Python function calls.";
     homepage = "https://github.com/python-trio/outcome";
-    license = with lib.licenses; [ mit asl20 ];
+    license = with lib.licenses; [
+      mit
+      asl20
+    ];
     maintainers = with lib.maintainers; [ catern ];
   };
 }

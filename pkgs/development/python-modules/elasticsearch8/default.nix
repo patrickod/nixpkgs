@@ -1,46 +1,39 @@
-{ lib
-, aiohttp
-, buildPythonPackage
-, elastic-transport
-, fetchPypi
-, pythonOlder
-, requests
-, urllib3
+{
+  lib,
+  aiohttp,
+  buildPythonPackage,
+  elastic-transport,
+  fetchPypi,
+  pythonOlder,
+  requests,
+  urllib3,
 }:
 
 buildPythonPackage rec {
   pname = "elasticsearch8";
-  version = "8.11.1";
+  version = "8.13.0";
   format = "setuptools";
 
   disabled = pythonOlder "3.7";
 
   src = fetchPypi {
     inherit pname version;
-    hash = "sha256-nY+qZ94uVBLMPb0i0k7gEUfcR5lsE6lcbtFtGQkTKeo=";
+    hash = "sha256-NWg+/dr8jXCCLeXBAXY1yL6/2CB0xCO5tswY4y/5erw=";
   };
 
-  nativeBuildInputs = [
-    elastic-transport
-  ];
+  nativeBuildInputs = [ elastic-transport ];
 
-  propagatedBuildInputs = [
-    requests
-  ];
+  propagatedBuildInputs = [ requests ];
 
   passthru.optional-dependencies = {
-    async = [
-      aiohttp
-    ];
+    async = [ aiohttp ];
   };
 
   # Check is disabled because running them destroy the content of the local cluster!
   # https://github.com/elasticsearch/elasticsearch-py/tree/main/test_elasticsearch
   doCheck = false;
 
-  pythonImportsCheck = [
-    "elasticsearch8"
-  ];
+  pythonImportsCheck = [ "elasticsearch8" ];
 
   meta = with lib; {
     description = "Official low-level client for Elasticsearch";

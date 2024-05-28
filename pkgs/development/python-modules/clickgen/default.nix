@@ -1,19 +1,21 @@
-{ lib
-, stdenv
-, buildPythonPackage
-, pythonOlder
-, fetchFromGitHub
-, pillow
-, toml
-, numpy
-, pyyaml
-, python
-, pytestCheckHook
+{
+  lib,
+  stdenv,
+  buildPythonPackage,
+  pythonOlder,
+  fetchFromGitHub,
+  attrs,
+  pillow,
+  toml,
+  numpy,
+  pyyaml,
+  python,
+  pytestCheckHook,
 }:
 
 buildPythonPackage rec {
   pname = "clickgen";
-  version = "2.1.9";
+  version = "2.2.2";
   format = "setuptools";
 
   disabled = pythonOlder "3.8";
@@ -22,10 +24,16 @@ buildPythonPackage rec {
     owner = "ful1e5";
     repo = "clickgen";
     rev = "refs/tags/v${version}";
-    hash = "sha256-mSaltlX2eNRLJ09zN5Tim8mW8mnjPi10W4QIEpiBQvI=";
+    hash = "sha256-Lsb0FvJohwsXofpcq7OgWfhl/3qVxAqY0wdvum6ywSQ=";
   };
 
-  propagatedBuildInputs = [ pillow toml numpy pyyaml ];
+  propagatedBuildInputs = [
+    attrs
+    numpy
+    pillow
+    pyyaml
+    toml
+  ];
 
   nativeCheckInputs = [ pytestCheckHook ];
 

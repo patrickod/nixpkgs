@@ -1,33 +1,34 @@
-{ lib
-, fetchFromGitHub
-, fetchNpmDeps
-, buildPythonPackage
-, nix-update-script
+{
+  lib,
+  fetchFromGitHub,
+  fetchNpmDeps,
+  buildPythonPackage,
+  nix-update-script,
 
-# build-system
-, gettext
-, nodejs
-, npmHooks
-, setuptools-scm
+  # build-system
+  gettext,
+  nodejs,
+  npmHooks,
+  setuptools-scm,
 
-# dependencies
-, django
+  # dependencies
+  django,
 
-# tests
-, pytest-django
-, pytestCheckHook
+  # tests
+  pytest-django,
+  pytestCheckHook,
 }:
 
 buildPythonPackage rec {
   pname = "django-hijack";
-  version = "3.4.3";
+  version = "3.4.5";
   format = "setuptools";
 
   src = fetchFromGitHub {
     owner = "django-hijack";
     repo = "django-hijack";
     rev = "refs/tags/${version}";
-    hash = "sha256-D9IyuM+ZsvFZL0nhMt1VQ1DYcKg4CS8FPAgSWLtsXeE=";
+    hash = "sha256-FXh5OFMTjsKgjEeIS+CiOwyGOs4AisJA+g49rCILDsQ=";
   };
 
   postPatch = ''
@@ -40,10 +41,8 @@ buildPythonPackage rec {
 
   npmDeps = fetchNpmDeps {
     inherit src;
-    hash = "sha256-X3bJ6STFq6zGIzXHSd2C67d4kSOVJJR5aBSM3o5T850=";
+    hash = "sha256-cZEr/7FW4vCR8gpraT+/rPwYK9Xn22b5WH7lnuK5L4U=";
   };
-
-  SETUPTOOLS_SCM_PRETEND_VERSION = version;
 
   nativeBuildInputs = [
     gettext
@@ -52,9 +51,7 @@ buildPythonPackage rec {
     setuptools-scm
   ];
 
-  propagatedBuildInputs = [
-    django
-  ];
+  propagatedBuildInputs = [ django ];
 
   nativeCheckInputs = [
     pytestCheckHook
@@ -64,8 +61,10 @@ buildPythonPackage rec {
   env.DJANGO_SETTINGS_MODULE = "hijack.tests.test_app.settings";
 
   pytestFlagsArray = [
-    "--pyargs" "hijack"
-    "-W" "ignore::DeprecationWarning"
+    "--pyargs"
+    "hijack"
+    "-W"
+    "ignore::DeprecationWarning"
   ];
 
   # needed for npmDeps update

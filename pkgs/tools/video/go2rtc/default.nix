@@ -5,20 +5,16 @@
 
 buildGoModule rec {
   pname = "go2rtc";
-  version = "1.8.4";
+  version = "1.9.2";
 
   src = fetchFromGitHub {
     owner = "AlexxIT";
     repo = "go2rtc";
     rev = "refs/tags/v${version}";
-    hash = "sha256-knC8GWu8543QIvk2OKotTHB88qgSQpOI+58oHusgVKc=";
+    hash = "sha256-GqZs11g05xc3Nob/jqGbG/rFYBhyEPNdXYJuJBiAyko=";
   };
 
-  vendorHash = "sha256-+n0atALq5e2iEbEeJ1kefnKka7gTE0iFRSRnUCz4bh8=";
-
-  buildFlagArrays = [
-    "-trimpath"
-  ];
+  vendorHash = "sha256-5c3oauklMD9fEnVGPyWq6hR5jz6pSnq2kmdq+0JBfpo=";
 
   CGO_ENABLED = 0;
 

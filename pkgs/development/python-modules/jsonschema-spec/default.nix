@@ -1,20 +1,22 @@
-{ lib
-, buildPythonPackage
-, fetchFromGitHub
-, pythonOlder
+{
+  lib,
+  buildPythonPackage,
+  fetchFromGitHub,
+  pythonOlder,
+  pythonRelaxDepsHook,
 
-# build
-, poetry-core
+  # build
+  poetry-core,
 
-# propagates
-, pathable
-, pyyaml
-, referencing
-, requests
+  # propagates
+  pathable,
+  pyyaml,
+  referencing,
+  requests,
 
-# tests
-, pytestCheckHook
-, responses
+  # tests
+  pytestCheckHook,
+  responses,
 }:
 
 buildPythonPackage rec {
@@ -40,7 +42,10 @@ buildPythonPackage rec {
 
   nativeBuildInputs = [
     poetry-core
+    pythonRelaxDepsHook
   ];
+
+  pythonRelaxDeps = [ "referencing" ];
 
   propagatedBuildInputs = [
     pathable
@@ -53,6 +58,8 @@ buildPythonPackage rec {
     pytestCheckHook
     responses
   ];
+
+  passthru.skipBulkUpdate = true; # newer versions under the jsonschema-path name
 
   meta = with lib; {
     changelog = "https://github.com/p1c2u/jsonschema-spec/releases/tag/${version}";

@@ -1,9 +1,10 @@
 { lib
-, buildGoModule
+, stdenv
+, buildGo122Module
 , fetchFromGitHub
 , fetchNpmDeps
 , cacert
-, go
+, go_1_22
 , git
 , enumer
 , mockgen
@@ -11,25 +12,29 @@
 , npmHooks
 , nix-update-script
 , nixosTests
-, stdenv
 }:
+
+let
+  buildGoModule = buildGo122Module;
+  go = go_1_22;
+in
 
 buildGoModule rec {
   pname = "evcc";
-  version = "0.122.1";
+  version = "0.126.3";
 
   src = fetchFromGitHub {
     owner = "evcc-io";
-    repo = pname;
+    repo = "evcc";
     rev = version;
-    hash = "sha256-mD4D2DVai9KV7/RYFmcY7iOGVQGRpwg+rTfNsP8OpCY=";
+    hash = "sha256-Q+g/XEfIfpGchIZQdouoP9muqq6l0xixOLmIntgIWe0=";
   };
 
-  vendorHash = "sha256-B4gR9sXpGuVv3x6sktFSPlbhq5n5aD5d7ksz67X5nY8=";
+  vendorHash = "sha256-tFj1cPBB1qeuwz1RXVVDVNJRfFFKPH6mdMnaiM3jwUc=";
 
   npmDeps = fetchNpmDeps {
     inherit src;
-    hash = "sha256-KTMUZOW56vPGoJviKRJWM9UL28gXL0L3j4ZmUzSeavU=";
+    hash = "sha256-ghDLmsmcG+qDItiqaZy8MTYw/AU58bZfUzYY32XKNyk=";
   };
 
   nativeBuildInputs = [
@@ -67,13 +72,33 @@ buildGoModule rec {
     make ui
   '';
 
-  doCheck = !stdenv.isDarwin; # tries to bind to local network, doesn't work in darwin sandbox
+  doCheck = !stdenv.isDarwin; # darwin sandbox limitations around network access, access to /etc/protocols and likely more
 
-  preCheck = ''
-    # requires network access
-    rm meter/template_test.go
-    rm charger/template_test.go
-  '';
+  checkFlags = let
+    skippedTests = [
+      # network access
+      "TestOctopusConfigParse"
+      "TestTemplates/allinpower"
+      "TestTemplates/electricitymaps"
+      "TestTemplates/elering"
+      "TestTemplates/energinet"
+      "TestTemplates/grünstromindex"
+      "TestTemplates/pun"
+      "TestTemplates/entsoe"
+      "TestTemplates/ngeso"
+      "TestTemplates/tibber"
+      "TestTemplates/groupe-e"
+      "TestTemplates/awattar"
+      "TestTemplates/energy-charts-api"
+      "TestTemplates/polestar"
+      "TestTemplates/sma-inverter-speedwire/battery"
+      "TestTemplates/sma-inverter-speedwire/pv"
+      "TestTemplates/smartenergy"
+      "TestTemplates/tibber-pulse/grid"
+
+    ];
+  in
+  [ "-skip=^${lib.concatStringsSep "$|^" skippedTests}$" ];
 
   passthru = {
     tests = {

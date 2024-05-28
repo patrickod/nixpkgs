@@ -1,11 +1,13 @@
-{ stdenv
-, lib
-, buildPythonPackage
-, fetchFromGitHub
-, poetry-core
-, prompt-toolkit
-, pytestCheckHook
-, pythonOlder
+{
+  stdenv,
+  lib,
+  buildPythonPackage,
+  fetchFromGitHub,
+  poetry-core,
+  prompt-toolkit,
+  pytestCheckHook,
+  pythonOlder,
+  pythonRelaxDepsHook,
 }:
 
 buildPythonPackage rec {
@@ -24,15 +26,14 @@ buildPythonPackage rec {
 
   nativeBuildInputs = [
     poetry-core
+    pythonRelaxDepsHook
   ];
 
-  propagatedBuildInputs = [
-    prompt-toolkit
-  ];
+  pythonRelaxDeps = [ "prompt_toolkit" ];
 
-  nativeCheckInputs = [
-    pytestCheckHook
-  ];
+  propagatedBuildInputs = [ prompt-toolkit ];
+
+  nativeCheckInputs = [ pytestCheckHook ];
 
   preCheck = lib.optionalString stdenv.isDarwin ''
     ulimit -n 1024
@@ -43,9 +44,7 @@ buildPythonPackage rec {
     "test_blank_line_fix"
   ];
 
-  pythonImportsCheck = [
-    "questionary"
-  ];
+  pythonImportsCheck = [ "questionary" ];
 
   meta = with lib; {
     description = "Python library to build command line user prompts";

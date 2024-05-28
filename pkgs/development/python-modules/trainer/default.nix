@@ -1,22 +1,23 @@
-{ lib
-, buildPythonPackage
-, fetchFromGitHub
+{
+  lib,
+  buildPythonPackage,
+  fetchFromGitHub,
 
-, coqpit
-, fsspec
-, torch
-, tensorboard
-, protobuf
-, psutil
+  coqpit,
+  fsspec,
+  torch,
+  tensorboard,
+  protobuf,
+  psutil,
 
-, pytestCheckHook
-, soundfile
-, torchvision
+  pytestCheckHook,
+  soundfile,
+  torchvision,
 }:
 
 let
   pname = "trainer";
-  version = "0.0.32";
+  version = "0.0.36";
 in
 buildPythonPackage {
   inherit pname version;
@@ -26,7 +27,7 @@ buildPythonPackage {
     owner = "coqui-ai";
     repo = "Trainer";
     rev = "refs/tags/v${version}";
-    hash = "sha256-lSfkokPFB09KZBHe/Qkon2gUsA82AK52WNK1bJfzCNc=";
+    hash = "sha256-z6TOzWqE3NytkdG3nUzh9GpFVGQEXFyzSQ8gvdB4wiw=";
   };
 
   postPatch = ''
@@ -51,9 +52,7 @@ buildPythonPackage {
     torchvision
   ];
 
-  pythonImportsCheck = [
-    "trainer"
-  ];
+  pythonImportsCheck = [ "trainer" ];
 
   meta = with lib; {
     description = "A general purpose model trainer, as flexible as it gets";

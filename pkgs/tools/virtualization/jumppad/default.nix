@@ -2,18 +2,21 @@
 
 buildGoModule rec {
   pname = "jumppad";
-  version = "0.5.53";
+  version = "0.11.1";
 
   src = fetchFromGitHub {
     owner = "jumppad-labs";
-    repo = pname;
-    rev = "v${version}";
-    hash = "sha256-93KTi7m+7zS6hSIF4dA995Z8jUdmE5u3O8ytCLsEqdE=";
+    repo = "jumppad";
+    rev = version;
+    hash = "sha256-8oynWGvWRqXcIBpgLEpFFDwPCbyePXJmFC8xgKPaN9Q=";
   };
-  vendorHash = "sha256-o3jA1gVKW6KUHzy5zZO4aaGVoCBFN96hbK0/usQ32fw=";
+  vendorHash = "sha256-39CORZ5qqbMJuTzYt1sKbHPPYkQEwQWSIQ4hWqdUFmk=";
+
+  subPackages = [ "." ];
 
   ldflags = [
-    "-s" "-w" "-X main.version=${version}"
+    "-s"
+    "-X main.version=${version}"
   ];
 
   # Tests require a large variety of tools and resources to run including

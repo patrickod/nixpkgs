@@ -1,15 +1,16 @@
-{ lib
-, buildPythonPackage
-, fetchPypi
-, lxml
-, setuptools-git
-, sphinx
+{
+  lib,
+  buildPythonPackage,
+  fetchPypi,
+  lxml,
+  setuptools,
+  setuptools-git,
 }:
 
 buildPythonPackage rec {
   pname = "dbus-deviation";
   version = "0.6.1";
-  format = "pyproject";
+  pyproject = true;
 
   src = fetchPypi {
     inherit pname version;
@@ -21,13 +22,11 @@ buildPythonPackage rec {
   '';
 
   nativeBuildInputs = [
+    setuptools
     setuptools-git
-    sphinx
   ];
 
-  propagatedBuildInputs = [
-    lxml
-  ];
+  propagatedBuildInputs = [ lxml ];
 
   pythonImportsCheck = [ "dbusdeviation" ];
 

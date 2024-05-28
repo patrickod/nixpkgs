@@ -1,11 +1,9 @@
-{ skawarePackages }:
+{ skawarePackages, stdenv, skalibs }:
 
-with skawarePackages;
-
-buildPackage {
+skawarePackages.buildPackage {
   pname = "tipidee";
-  version = "0.0.2.0";
-  sha256 = "5I+/gfvN8s4bf6Oi+5kzRndWeLV7movyRfznz0kNMoY=";
+  version = "0.0.4.0";
+  sha256 = "sha256-FzZRGg8IBTkzXINb9WCdVukej9KyPFQIUuXfdcLz1RQ=";
 
   description = "A HTTP 1.1 webserver, serving static files and CGI/NPH";
 
@@ -37,4 +35,5 @@ buildPackage {
     mv examples $doc/share/doc/tipidee/examples
   '';
 
+  broken = stdenv.isDarwin;
 }

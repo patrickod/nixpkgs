@@ -12,13 +12,13 @@
 
 stdenv.mkDerivation rec {
   pname = "bpftune";
-  version = "unstable-2023-09-11";
+  version = "0-unstable-2024-05-17";
 
   src = fetchFromGitHub {
     owner = "oracle";
     repo = "bpftune";
-    rev = "22926812a555eac910eac0699100bac0f8776f1b";
-    hash = "sha256-BflJc5lYWYFIo9LzKfb34F4V1qOI8ywVjnzOLz605DI=";
+    rev = "83115c56cf9620fe5669f4a3be67ab779d8f4536";
+    hash = "sha256-er2i7CEUXF3BpWTG//s8C0xfIk5gSVOHB8nE1r7PX78=";
   };
 
   postPatch = ''
@@ -70,6 +70,7 @@ stdenv.mkDerivation rec {
 
   meta = with lib; {
     description = "BPF-based auto-tuning of Linux system parameters";
+    mainProgram = "bpftune";
     homepage = "https://github.com/oracle-samples/bpftune";
     license = licenses.gpl2Only;
     maintainers = with maintainers; [ nickcao ];

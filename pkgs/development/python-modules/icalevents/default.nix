@@ -1,14 +1,16 @@
-{ lib
-, buildPythonPackage
-, fetchFromGitHub
-, pythonOlder
-, pytestCheckHook
-, poetry-core
-, datetime
-, httplib2
-, icalendar
-, python-dateutil
-, pytz
+{
+  lib,
+  buildPythonPackage,
+  fetchFromGitHub,
+  pythonOlder,
+  pytestCheckHook,
+  poetry-core,
+  pythonRelaxDepsHook,
+  datetime,
+  httplib2,
+  icalendar,
+  python-dateutil,
+  pytz,
 }:
 
 buildPythonPackage rec {
@@ -27,6 +29,7 @@ buildPythonPackage rec {
 
   nativeBuildInputs = [
     poetry-core
+    pythonRelaxDepsHook
   ];
 
   propagatedBuildInputs = [
@@ -37,9 +40,14 @@ buildPythonPackage rec {
     pytz
   ];
 
-  nativeCheckInputs = [
-    pytestCheckHook
+  pythonRelaxDeps = [
+    "datetime"
+    "httplib2"
+    "icalendar"
+    "pytz"
   ];
+
+  nativeCheckInputs = [ pytestCheckHook ];
 
   disabledTests = [
     # Makes HTTP calls

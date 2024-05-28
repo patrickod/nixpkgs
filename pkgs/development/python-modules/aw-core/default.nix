@@ -1,19 +1,21 @@
-{ lib
-, buildPythonPackage
-, fetchFromGitHub
-, pythonOlder
-, poetry-core
-, jsonschema
-, peewee
-, platformdirs
-, iso8601
-, rfc3339-validator
-, strict-rfc3339
-, tomlkit
-, deprecation
-, timeslot
-, pytestCheckHook
-, gitUpdater
+{
+  lib,
+  buildPythonPackage,
+  fetchFromGitHub,
+  pythonOlder,
+  pythonRelaxDepsHook,
+  poetry-core,
+  jsonschema,
+  peewee,
+  platformdirs,
+  iso8601,
+  rfc3339-validator,
+  strict-rfc3339,
+  tomlkit,
+  deprecation,
+  timeslot,
+  pytestCheckHook,
+  gitUpdater,
 }:
 
 buildPythonPackage rec {
@@ -34,6 +36,7 @@ buildPythonPackage rec {
 
   nativeBuildInputs = [
     poetry-core
+    pythonRelaxDepsHook
   ];
 
   propagatedBuildInputs = [
@@ -48,9 +51,12 @@ buildPythonPackage rec {
     timeslot
   ];
 
-  nativeCheckInputs = [
-    pytestCheckHook
+  pythonRelaxDeps = [
+    "platformdirs"
+    "iso8601"
   ];
+
+  nativeCheckInputs = [ pytestCheckHook ];
 
   preCheck = ''
     # Fake home folder for tests that write to $HOME
@@ -59,12 +65,11 @@ buildPythonPackage rec {
 
   pythonImportsCheck = [ "aw_core" ];
 
-  passthru.updateScript = gitUpdater {
-    rev-prefix = "v";
-  };
+  passthru.updateScript = gitUpdater { rev-prefix = "v"; };
 
   meta = with lib; {
     description = "Core library for ActivityWatch";
+    mainProgram = "aw-cli";
     homepage = "https://github.com/ActivityWatch/aw-core";
     maintainers = with maintainers; [ huantian ];
     license = licenses.mpl20;

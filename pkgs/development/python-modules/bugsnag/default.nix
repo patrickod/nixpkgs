@@ -1,27 +1,26 @@
-{ lib
-, blinker
-, buildPythonPackage
-, fetchPypi
-, flask
-, pythonOlder
-, webob
+{
+  lib,
+  blinker,
+  buildPythonPackage,
+  fetchPypi,
+  flask,
+  pythonOlder,
+  webob,
 }:
 
 buildPythonPackage rec {
   pname = "bugsnag";
-  version = "4.6.0";
+  version = "4.7.0";
   format = "setuptools";
 
   disabled = pythonOlder "3.5";
 
   src = fetchPypi {
     inherit pname version;
-    hash = "sha256-q+hxYDajPVkR/AHLfTRq/E8ofO3UepLNooUS/CLIN/4=";
+    hash = "sha256-+w0lI2goXYnfX2KB+DNFPXl6UCOhg5o17zggalyYXr8=";
   };
 
-  propagatedBuildInputs = [
-    webob
-  ];
+  propagatedBuildInputs = [ webob ];
 
   passthru.optional-dependencies = {
     flask = [
@@ -30,9 +29,7 @@ buildPythonPackage rec {
     ];
   };
 
-  pythonImportsCheck = [
-    "bugsnag"
-  ];
+  pythonImportsCheck = [ "bugsnag" ];
 
   # Module ha no tests
   doCheck = false;

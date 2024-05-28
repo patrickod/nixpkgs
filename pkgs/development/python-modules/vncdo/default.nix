@@ -1,19 +1,20 @@
-{ lib
-, buildPythonPackage
-, fetchFromGitHub
-, pexpect
-, pillow
-, pycryptodomex
-, pytestCheckHook
-, pythonOlder
-, pyvirtualdisplay
-, setuptools
-, twisted
+{
+  lib,
+  buildPythonPackage,
+  fetchFromGitHub,
+  pexpect,
+  pillow,
+  pycryptodomex,
+  pytestCheckHook,
+  pythonOlder,
+  pyvirtualdisplay,
+  setuptools,
+  twisted,
 }:
 
 buildPythonPackage rec {
   pname = "vncdo";
-  version = "1.1.0";
+  version = "1.2.0";
   pyproject = true;
 
   disabled = pythonOlder "3.7";
@@ -22,12 +23,10 @@ buildPythonPackage rec {
     owner = "sibson";
     repo = "vncdotool";
     rev = "refs/tags/v${version}";
-    hash = "sha256-m8msWa8uUuDEjEUlXHCgYi0HFPKXLVXpXLyuQ3quNbA=";
+    hash = "sha256-QrD6z/g85FwaZCJ1PRn8CBKCOQcbVjQ9g0NpPIxguqk=";
   };
 
-  nativeBuildInputs = [
-    setuptools
-  ];
+  nativeBuildInputs = [ setuptools ];
 
   propagatedBuildInputs = [
     pillow
@@ -41,9 +40,7 @@ buildPythonPackage rec {
     pyvirtualdisplay
   ];
 
-  pythonImportsCheck = [
-    "vncdotool"
-  ];
+  pythonImportsCheck = [ "vncdotool" ];
 
   meta = with lib; {
     description = "A command line VNC client and Python library";

@@ -1,17 +1,19 @@
-{ lib
-, buildPythonPackage
-, fetchFromGitHub
-, cython
-, joblib
-, numpy
-, pandas
-, scikit-learn
-, scipy
-, statsmodels
-, urllib3
-, pythonOlder
-, python
-, pytestCheckHook
+{
+  lib,
+  buildPythonPackage,
+  fetchFromGitHub,
+  cython,
+  joblib,
+  matplotlib,
+  numpy,
+  pandas,
+  scikit-learn,
+  scipy,
+  statsmodels,
+  urllib3,
+  pythonOlder,
+  python,
+  pytest7CheckHook,
 }:
 
 buildPythonPackage rec {
@@ -43,11 +45,15 @@ buildPythonPackage rec {
   # Make sure we're running the tests for the actually installed
   # package, so that cython's compiled files are available.
   preCheck = ''
-    cd $out/lib/${python.libPrefix}/site-packages
+    cd $out/${python.sitePackages}
   '';
 
-  nativeCheckInputs = [ pytestCheckHook ];
-  disabledTests= [
+  nativeCheckInputs = [
+    matplotlib
+    pytest7CheckHook
+  ];
+
+  disabledTests = [
     # touches internet
     "test_load_from_web"
   ];

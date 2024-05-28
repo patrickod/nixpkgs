@@ -1,17 +1,18 @@
-{ lib
-, buildPythonPackage
-, fetchPypi
-, pillow
+{
+  lib,
+  buildPythonPackage,
+  fetchPypi,
+  pillow,
 }:
 
 buildPythonPackage rec {
   pname = "wheezy.captcha";
-  version = "3.0.2";
+  version = "3.2.0";
   format = "setuptools";
 
   src = fetchPypi {
     inherit pname version;
-    hash = "sha256-PdtOhoVOopQsX2raPqh0P8meM8/MysgKsIe27HNtl3s=";
+    hash = "sha256-UtTpgrPK5eRr7sq97jptjdJyvAyrM2oU07+GZr2Ad7s=";
   };
 
   propagatedBuildInputs = [ pillow ];

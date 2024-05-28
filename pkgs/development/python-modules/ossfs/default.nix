@@ -1,12 +1,13 @@
-{ lib
-, aiooss2
-, buildPythonPackage
-, fetchFromGitHub
-, fsspec
-, oss2
-, pythonOlder
-, pythonRelaxDepsHook
-, setuptools-scm
+{
+  lib,
+  aiooss2,
+  buildPythonPackage,
+  fetchFromGitHub,
+  fsspec,
+  oss2,
+  pythonOlder,
+  pythonRelaxDepsHook,
+  setuptools-scm,
 }:
 
 buildPythonPackage rec {
@@ -22,8 +23,6 @@ buildPythonPackage rec {
     rev = "refs/tags/${version}";
     hash = "sha256-N1NkpI8inGJCf0xuc+FFmVX85CS7vqzoNddxZ9kqEk0=";
   };
-
-  SETUPTOOLS_SCM_PRETEND_VERSION = version;
 
   pythonRelaxDeps = [
     "aiooss2"
@@ -45,9 +44,7 @@ buildPythonPackage rec {
   # Most tests require network access
   doCheck = false;
 
-  pythonImportsCheck = [
-    "ossfs"
-  ];
+  pythonImportsCheck = [ "ossfs" ];
 
   meta = with lib; {
     description = "Filesystem for Alibaba Cloud (Aliyun) Object Storage System (OSS)";

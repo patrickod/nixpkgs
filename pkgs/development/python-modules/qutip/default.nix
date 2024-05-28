@@ -1,24 +1,25 @@
-{ lib
-, stdenv
-, buildPythonPackage
-, cvxopt
-, cvxpy
-, cython
-, fetchFromGitHub
-, ipython
-, matplotlib
-, numpy
-, packaging
-, pytest-rerunfailures
-, pytestCheckHook
-, python
-, pythonOlder
-, scipy
+{
+  lib,
+  stdenv,
+  buildPythonPackage,
+  cvxopt,
+  cvxpy,
+  cython_0,
+  fetchFromGitHub,
+  ipython,
+  matplotlib,
+  numpy,
+  packaging,
+  pytest-rerunfailures,
+  pytestCheckHook,
+  python,
+  pythonOlder,
+  scipy,
 }:
 
 buildPythonPackage rec {
   pname = "qutip";
-  version = "4.7.3";
+  version = "4.7.5";
   format = "setuptools";
 
   disabled = pythonOlder "3.7";
@@ -27,12 +28,10 @@ buildPythonPackage rec {
     owner = pname;
     repo = pname;
     rev = "refs/tags/v${version}";
-    hash = "sha256-cpzUHjZBpAbNEnYRuY1wUZouAEAgBaN9rWdxRSfI3bs=";
+    hash = "sha256-4nXZPZFu9L+Okha3qvPil1KvLGO1EbrzotQjqQ8r9l8=";
   };
 
-  nativeBuildInputs = [
-    cython
-  ];
+  nativeBuildInputs = [ cython_0 ];
 
   propagatedBuildInputs = [
     numpy
@@ -46,9 +45,7 @@ buildPythonPackage rec {
   ] ++ lib.flatten (builtins.attrValues passthru.optional-dependencies);
 
   # Disabling OpenMP support on Darwin.
-  setupPyGlobalFlags = lib.optionals (!stdenv.isDarwin) [
-    "--with-openmp"
-  ];
+  setupPyGlobalFlags = lib.optionals (!stdenv.isDarwin) [ "--with-openmp" ];
 
   # QuTiP tries to access the home directory to create an rc file for us.
   # We need to go to another directory to run the tests from there.
@@ -67,17 +64,11 @@ buildPythonPackage rec {
     runHook postCheck
   '';
 
-  pythonImportsCheck = [
-    "qutip"
-  ];
+  pythonImportsCheck = [ "qutip" ];
 
   passthru.optional-dependencies = {
-    graphics = [
-      matplotlib
-    ];
-    ipython = [
-      ipython
-    ];
+    graphics = [ matplotlib ];
+    ipython = [ ipython ];
     semidefinite = [
       cvxpy
       cvxopt

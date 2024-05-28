@@ -1,20 +1,21 @@
-{ lib
-, buildPythonPackage
-, fetchPypi
-, setuptools
-, zope_interface
-, zope_schema
-, zope-cachedescriptors
-, pytz
-, webtest
-, beautifulsoup4
-, soupsieve
-, wsgiproxy2
-, six
-, mock
-, zope-testing
-, zope_testrunner
-, python
+{
+  lib,
+  buildPythonPackage,
+  fetchPypi,
+  setuptools,
+  zope-interface,
+  zope-schema,
+  zope-cachedescriptors,
+  pytz,
+  webtest,
+  beautifulsoup4,
+  soupsieve,
+  wsgiproxy2,
+  six,
+  mock,
+  zope-testing,
+  zope-testrunner,
+  python,
 }:
 
 buildPythonPackage rec {
@@ -37,8 +38,8 @@ buildPythonPackage rec {
 
   propagatedBuildInputs = [
     setuptools
-    zope_interface
-    zope_schema
+    zope-interface
+    zope-schema
     zope-cachedescriptors
     pytz
     webtest
@@ -51,7 +52,7 @@ buildPythonPackage rec {
   nativeCheckInputs = [
     mock
     zope-testing
-    zope_testrunner
+    zope-testrunner
   ];
 
   checkPhase = ''

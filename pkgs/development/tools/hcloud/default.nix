@@ -6,16 +6,16 @@
 
 buildGoModule rec {
   pname = "hcloud";
-  version = "1.41.0";
+  version = "1.43.1";
 
   src = fetchFromGitHub {
     owner = "hetznercloud";
     repo = "cli";
     rev = "refs/tags/v${version}";
-    hash = "sha256-NcEJgC3FtGgv0m7qisCB8vaHvD5Yw/UIHsOFBYiID4c=";
+    hash = "sha256-XPDaywSCvXc9jo8bNxaF9Pj6Vs+Hz0MxDPbbnRNW3VI=";
   };
 
-  vendorHash = "sha256-qAgKotc+ypm0pHcbKCgpFmTY5W1b8Oq3XrrP6RVulig=";
+  vendorHash = "sha256-pN+HMsZ2FpxwF/yPfYGwJNj9i4fgnE3cKo3mti3KoR0=";
 
   ldflags = [
     "-s"
@@ -35,6 +35,7 @@ buildGoModule rec {
   meta = with lib; {
     changelog = "https://github.com/hetznercloud/cli/releases/tag/v${version}";
     description = "A command-line interface for Hetzner Cloud, a provider for cloud virtual private servers";
+    mainProgram = "hcloud";
     homepage = "https://github.com/hetznercloud/cli";
     license = licenses.mit;
     maintainers = with maintainers; [ zauberpony techknowlogick ];

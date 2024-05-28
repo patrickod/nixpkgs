@@ -1,18 +1,17 @@
-{ lib
-, stdenv
-, aiohttp
-, buildPythonPackage
-, cpufeature
-, fetchFromGitHub
-, poetry-core
-, pytestCheckHook
-, pythonOlder
-, zlib-ng
+{
+  lib,
+  aiohttp,
+  buildPythonPackage,
+  fetchFromGitHub,
+  poetry-core,
+  pytestCheckHook,
+  pythonOlder,
+  zlib-ng,
 }:
 
 buildPythonPackage rec {
   pname = "aiohttp-zlib-ng";
-  version = "0.1.2";
+  version = "0.3.1";
   pyproject = true;
 
   disabled = pythonOlder "3.8";
@@ -21,30 +20,24 @@ buildPythonPackage rec {
     owner = "bdraco";
     repo = "aiohttp-zlib-ng";
     rev = "refs/tags/v${version}";
-    hash = "sha256-lSzBmEgYrWKthpgceFn9LjsNw/ByPOrdPwVI8WU0Cvo=";
+    hash = "sha256-XA2XSX9KA/oBzOLJrhj78uoy6ufLbVTENYZL3y/+fwU=";
   };
 
   postPatch = ''
     substituteInPlace pyproject.toml \
-      --replace " --cov=aiohttp_zlib_ng --cov-report=term-missing:skip-covered" ""
+      --replace-fail " --cov=aiohttp_zlib_ng --cov-report=term-missing:skip-covered" ""
   '';
 
-  nativeBuildInputs = [
-    poetry-core
-  ];
+  nativeBuildInputs = [ poetry-core ];
 
   propagatedBuildInputs = [
     aiohttp
     zlib-ng
-  ] ++ lib.optional (lib.meta.availableOn stdenv.hostPlatform cpufeature) cpufeature;
-
-  nativeCheckInputs = [
-    pytestCheckHook
   ];
 
-  pythonImportsCheck = [
-    "aiohttp_zlib_ng"
-  ];
+  nativeCheckInputs = [ pytestCheckHook ];
+
+  pythonImportsCheck = [ "aiohttp_zlib_ng" ];
 
   meta = with lib; {
     description = "Enable zlib_ng on aiohttp";

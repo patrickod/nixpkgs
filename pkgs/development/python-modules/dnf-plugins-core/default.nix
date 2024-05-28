@@ -1,19 +1,20 @@
-{ lib
-, buildPythonPackage
-, fetchFromGitHub
+{
+  lib,
+  buildPythonPackage,
+  fetchFromGitHub,
 
   # dependencies
-, cmake
-, dateutil
-, dbus-python
-, dnf4
-, gettext
-, libcomps
-, libdnf
-, python
-, rpm
-, sphinx
-, systemd
+  cmake,
+  python-dateutil,
+  dbus-python,
+  dnf4,
+  gettext,
+  libcomps,
+  libdnf,
+  python,
+  rpm,
+  sphinx,
+  systemd,
 }:
 
 let
@@ -22,21 +23,22 @@ in
 
 buildPythonPackage rec {
   pname = "dnf-plugins-core";
-  version = "4.4.3";
+  version = "4.7.0";
   format = "other";
 
-  outputs = [ "out" "man" ];
+  outputs = [
+    "out"
+    "man"
+  ];
 
   src = fetchFromGitHub {
     owner = "rpm-software-management";
     repo = "dnf-plugins-core";
-    rev = version;
-    hash = "sha256-YEw8REvK2X7mBg9HDI6V2p8QtZ3TJh4Dzn8Uuhfbrgo=";
+    rev = "refs/tags/${version}";
+    hash = "sha256-AQnnXjkUajztbyoKzKhxiKxZsb2o2+7C15fsrxGkWcM=";
   };
 
-  patches = [
-    ./fix-python-install-dir.patch
-  ];
+  patches = [ ./fix-python-install-dir.patch ];
 
   postPatch = ''
     substituteInPlace CMakeLists.txt \
@@ -54,7 +56,7 @@ buildPythonPackage rec {
   ];
 
   propagatedBuildInputs = [
-    dateutil
+    python-dateutil
     dbus-python
     dnf4.py
     libcomps
@@ -108,9 +110,7 @@ buildPythonPackage rec {
     done
   '';
 
-  makeWrapperArgs = [
-    ''--add-flags "--setopt=pluginpath=$out/${python.sitePackages}/dnf-plugins"''
-  ];
+  makeWrapperArgs = [ ''--add-flags "--setopt=pluginpath=$out/${python.sitePackages}/dnf-plugins"'' ];
 
   meta = with lib; {
     description = "Core plugins to use with DNF package manager";

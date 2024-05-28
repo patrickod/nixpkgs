@@ -1,20 +1,21 @@
-{ lib
-, buildPythonPackage
-, inkscape
-, fetchFromGitLab
-, poetry-core
-, cssselect
-, lxml
-, numpy
-, packaging
-, pillow
-, pygobject3
-, pyparsing
-, pyserial
-, scour
-, gobject-introspection
-, pytestCheckHook
-, gtk3
+{
+  lib,
+  buildPythonPackage,
+  inkscape,
+  fetchFromGitLab,
+  poetry-core,
+  cssselect,
+  lxml,
+  numpy,
+  packaging,
+  pillow,
+  pygobject3,
+  pyparsing,
+  pyserial,
+  scour,
+  gobject-introspection,
+  pytestCheckHook,
+  gtk3,
 }:
 
 buildPythonPackage {
@@ -25,9 +26,7 @@ buildPythonPackage {
 
   inherit (inkscape) src;
 
-  nativeBuildInputs = [
-    poetry-core
-  ];
+  nativeBuildInputs = [ poetry-core ];
 
   propagatedBuildInputs = [
     cssselect
@@ -70,7 +69,8 @@ buildPythonPackage {
     cd share/extensions
 
     substituteInPlace pyproject.toml \
-      --replace 'scour = "^0.37"' 'scour = ">=0.37"'
+      --replace-fail 'scour = "^0.37"' 'scour = ">=0.37"' \
+      --replace-fail 'lxml = "^4.5.0"' 'lxml = "^4.5.0 || ^5.0.0"'
   '';
 
   meta = {

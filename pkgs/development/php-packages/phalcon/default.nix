@@ -1,17 +1,27 @@
-{ buildPecl, lib, pcre2, fetchFromGitHub, php, pkg-config }:
+{
+  buildPecl,
+  lib,
+  pcre2,
+  fetchFromGitHub,
+  php,
+  pkg-config,
+}:
 
 buildPecl rec {
   pname = "phalcon";
-  version = "5.4.0";
+  version = "5.7.0";
 
   src = fetchFromGitHub {
     owner = "phalcon";
     repo = "cphalcon";
     rev = "v${version}";
-    hash = "sha256-svw+cYL5ISKk6jEvdFmLcC4hEzrFw3kIbDJsymt2tEs=";
+    hash = "sha256-nckc7LPhXuUBJJvsqWEhH37K8fKdm9hIdkmVdiM3vcc=";
   };
 
-  internalDeps = [ php.extensions.session php.extensions.pdo ];
+  internalDeps = [
+    php.extensions.session
+    php.extensions.pdo
+  ];
 
   nativeBuildInputs = [ pkg-config ];
   buildInputs = [ pcre2 ];

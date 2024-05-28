@@ -1,24 +1,25 @@
-{ lib
-, buildPythonPackage
-, fetchPypi
-, pytestCheckHook
-, pythonOlder
-, nix-update-script
-, hatch-vcs
-, hatchling
-, langcodes
+{
+  lib,
+  buildPythonPackage,
+  fetchPypi,
+  pytestCheckHook,
+  pythonOlder,
+  nix-update-script,
+  hatch-vcs,
+  hatchling,
+  langcodes,
 }:
 
 buildPythonPackage rec {
   pname = "unidata-blocks";
-  version = "0.0.8";
+  version = "0.0.10";
 
   disabled = pythonOlder "3.11";
 
   src = fetchPypi {
     pname = "unidata_blocks";
     inherit version;
-    hash = "sha256-Y7OSFuPHgzNc/KtmBWwdVqH7Xy4v4w2UGHBUF9pIuSU=";
+    hash = "sha256-wwiOjfIAx6AZtK98uuPQ0jwblq+CdnMQp+JkQWh+RgM=";
   };
 
   format = "pyproject";

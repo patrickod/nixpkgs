@@ -10,16 +10,16 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "pueue";
-  version = "3.3.2";
+  version = "3.4.0";
 
   src = fetchFromGitHub {
     owner = "Nukesor";
     repo = "pueue";
     rev = "v${version}";
-    hash = "sha256-m819IxJjUjRJvKRUdqwq/iOq6zznbM8/iZsplkAk0F0=";
+    hash = "sha256-kKu/+F+zK0UyRHGkrZdD8alvsQTZFHhTqYK2phxo/ZA=";
   };
 
-  cargoHash = "sha256-tUuo3vRnWNR5xlt9DbnHtfZqs0mGfMu4sZ7GrT1q6v4=";
+  cargoHash = "sha256-KwIGJiCGcFEKuloVtJr0GQxoFQVt/OHyJ/YCp4bCSGc=";
 
   nativeBuildInputs = [
     installShellFiles
@@ -62,6 +62,6 @@ rustPlatform.buildRustPackage rec {
     '';
     changelog = "https://github.com/Nukesor/pueue/blob/v${version}/CHANGELOG.md";
     license = licenses.mit;
-    maintainers = with maintainers; [ marsam ];
+    maintainers = with maintainers; [ sarcasticadmin ];
   };
 }

@@ -1,10 +1,11 @@
-{ lib
-, stdenv
-, buildPythonPackage
-, fetchPypi
-, paramiko
-, pytestCheckHook
-, tornado
+{
+  lib,
+  stdenv,
+  buildPythonPackage,
+  fetchPypi,
+  paramiko,
+  pytestCheckHook,
+  tornado,
 }:
 
 buildPythonPackage rec {
@@ -22,13 +23,9 @@ buildPythonPackage rec {
     tornado
   ];
 
-  nativeCheckInputs = [
-    pytestCheckHook
-  ];
+  nativeCheckInputs = [ pytestCheckHook ];
 
-  pythonImportsCheck = [
-    "webssh"
-  ];
+  pythonImportsCheck = [ "webssh" ];
 
   disabledTests = [
     # Test fails with AttributeError (possibly related to paramiko update)
@@ -37,6 +34,7 @@ buildPythonPackage rec {
 
   meta = with lib; {
     description = "Web based SSH client";
+    mainProgram = "wssh";
     homepage = "https://github.com/huashengdun/webssh/";
     changelog = "https://github.com/huashengdun/webssh/releases/tag/v${version}";
     license = licenses.mit;

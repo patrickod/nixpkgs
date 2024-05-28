@@ -1,23 +1,24 @@
-{ lib
-, buildPythonPackage
-, fetchPypi
-, hatch-vcs
-, hatchling
-, pytest-mock
-, pytestCheckHook
-, pythonOlder
+{
+  lib,
+  buildPythonPackage,
+  fetchPypi,
+  hatch-vcs,
+  hatchling,
+  pytest-mock,
+  pytestCheckHook,
+  pythonOlder,
 }:
 
 buildPythonPackage rec {
   pname = "filelock";
-  version = "3.12.4";
+  version = "3.13.4";
   format = "pyproject";
 
   disabled = pythonOlder "3.7";
 
   src = fetchPypi {
     inherit pname version;
-    hash = "sha256-Lm8knx82VCkWBuBGsJ8f1erDmzYGZMJ/Wq0HIBL4vL0=";
+    hash = "sha256-0T9GZhi/3nK9LBglXiafclQsbnDnusg6AjLWscxcjPQ=";
   };
 
   nativeBuildInputs = [

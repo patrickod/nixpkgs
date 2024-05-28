@@ -1,8 +1,9 @@
-{ lib
-, buildPythonPackage
-, fetchPypi
-, zope-proxy
-, zope_testrunner
+{
+  lib,
+  buildPythonPackage,
+  fetchPypi,
+  zope-proxy,
+  zope-testrunner,
 }:
 
 buildPythonPackage rec {
@@ -18,7 +19,7 @@ buildPythonPackage rec {
 
   propagatedBuildInputs = [ zope-proxy ];
 
-  nativeCheckInputs = [ zope_testrunner ];
+  nativeCheckInputs = [ zope-testrunner ];
 
   checkPhase = ''
     zope-testrunner --test-path=src []

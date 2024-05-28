@@ -1,4 +1,12 @@
-{ lib, buildPythonPackage, fetchPypi, six, requests, websocket-client, docker_pycreds }:
+{
+  lib,
+  buildPythonPackage,
+  fetchPypi,
+  six,
+  requests,
+  websocket-client,
+  docker-pycreds,
+}:
 
 buildPythonPackage rec {
   version = "1.10.6";
@@ -17,7 +25,7 @@ buildPythonPackage rec {
     six
     requests
     websocket-client
-    docker_pycreds
+    docker-pycreds
   ];
 
   meta = {

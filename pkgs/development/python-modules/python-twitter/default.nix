@@ -1,15 +1,16 @@
-{ lib
-, buildPythonPackage
-, fetchFromGitHub
-, fetchpatch
-, filetype
-, future
-, hypothesis
-, pytestCheckHook
-, pythonOlder
-, requests
-, requests-oauthlib
-, responses
+{
+  lib,
+  buildPythonPackage,
+  fetchFromGitHub,
+  fetchpatch,
+  filetype,
+  future,
+  hypothesis,
+  pytestCheckHook,
+  pythonOlder,
+  requests,
+  requests-oauthlib,
+  responses,
 }:
 
 buildPythonPackage rec {
@@ -52,14 +53,12 @@ buildPythonPackage rec {
       --replace "'pytest-runner'" ""
   '';
 
-  pythonImportsCheck = [
-    "twitter"
-  ];
+  pythonImportsCheck = [ "twitter" ];
 
   meta = with lib; {
     description = "Python wrapper around the Twitter API";
     homepage = "https://github.com/bear/python-twitter";
     license = licenses.asl20;
-    maintainers = [ maintainers.marsam ];
+    maintainers = [ ];
   };
 }

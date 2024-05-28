@@ -1,13 +1,25 @@
-{ lib, fetchPypi, buildPythonPackage, nosexcover }:
+{
+  lib,
+  fetchPypi,
+  buildPythonPackage,
+  setuptools,
+  nosexcover,
+  pythonOlder,
+}:
 
 buildPythonPackage rec {
   pname = "smmap";
-  version = "5.0.0";
-  format = "setuptools";
+  version = "6.0.0";
+  pyproject = true;
+
   src = fetchPypi {
     inherit pname version;
-    sha256 = "c840e62059cd3be204b0c9c9f74be2c09d5648eddd4580d9314c3ecde0b30936";
+    hash = "sha256-jXkCjqbMEx2l6rCZpdlamY1DxneZVv/+O0VQQJEQdto=";
   };
+
+  nativeBuildInputs = [ setuptools ];
+
+  doCheck = pythonOlder "3.12";
 
   nativeCheckInputs = [ nosexcover ];
 

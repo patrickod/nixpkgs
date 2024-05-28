@@ -17,6 +17,9 @@
   "batime@martin.zurowietz.de" = "battery-time";
   "batterytime@typeof.pw" = "battery-time-2";
 
+  "power-profile-indicator@laux.wtf" = "power-profile-indicator";
+  "power-profile@fthx" = "power-profile-indicator-2";
+
   # ############################################################################
   # These are conflicts for older extensions (i.e. they don't support the latest GNOME version).
   # Make sure to move them up once they are updated
@@ -67,9 +70,6 @@
 
   "true-color-invert@jackkenney" = "true-color-invert";
   "true-color-window-invert@lynet101" = "true-color-window-invert";
-
-  "SomaFm-Radio@alireza6677.gmail.com" = "somafm-internet-radio";
-  "SomaFm-Radio@cajhne.gmail.com" = "somafm-internet-radio-2";
 
   # ####### GNOME 41 #######
 

@@ -1,13 +1,14 @@
-{ lib
-, buildPythonPackage
-, fetchPypi
-, cliche
-, marshmallow
-, pytestCheckHook
-, recline
-, requests
-, requests-toolbelt
-, urllib3
+{
+  lib,
+  buildPythonPackage,
+  fetchPypi,
+  cliche,
+  marshmallow,
+  pytestCheckHook,
+  recline,
+  requests,
+  requests-toolbelt,
+  urllib3,
 }:
 
 buildPythonPackage rec {
@@ -38,6 +39,7 @@ buildPythonPackage rec {
 
   meta = with lib; {
     description = "A library for working with ONTAP's REST APIs simply in Python";
+    mainProgram = "ontap-cli";
     homepage = "https://devnet.netapp.com/restapi.php";
     license = licenses.bsd3;
     maintainers = with maintainers; [ SuperSandro2000 ];

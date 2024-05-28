@@ -1,33 +1,34 @@
-{ lib
-, buildPythonPackage
-, fetchFromGitHub
-, pythonOlder
-# build inputs
-, networkx
-, numpy
-, scipy
-, scikit-learn
-, pandas
-, pyparsing
-, torch
-, statsmodels
-, tqdm
-, joblib
-, opt-einsum
-# check inputs
-, pytestCheckHook
-, pytest-cov
-, coverage
-, mock
-, black
+{
+  lib,
+  buildPythonPackage,
+  fetchFromGitHub,
+  pythonOlder,
+  # build inputs
+  networkx,
+  numpy,
+  scipy,
+  scikit-learn,
+  pandas,
+  pyparsing,
+  torch,
+  statsmodels,
+  tqdm,
+  joblib,
+  opt-einsum,
+  # check inputs
+  pytestCheckHook,
+  pytest-cov,
+  coverage,
+  mock,
+  black,
 }:
 let
   pname = "pgmpy";
-  version = "0.1.24";
-  # optional-dependencies = {
-  #   all = [ daft ];
-  # };
+  version = "0.1.25";
 in
+# optional-dependencies = {
+#   all = [ daft ];
+# };
 buildPythonPackage {
   inherit pname version;
   format = "setuptools";
@@ -38,7 +39,7 @@ buildPythonPackage {
     owner = "pgmpy";
     repo = pname;
     rev = "refs/tags/v${version}";
-    hash = "sha256-IMlo4SBxO9sPoZl0rQGc3FcvvIN/V/WZz+1BD7aBfzs=";
+    hash = "sha256-d2TNcJQ82XxTWdetLgtKXRpFulAEEzrr+cyRewoA6YI=";
   };
 
   propagatedBuildInputs = [

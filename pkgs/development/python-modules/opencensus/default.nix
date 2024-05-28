@@ -1,19 +1,20 @@
-{ buildPythonPackage
-, fetchPypi
-, lib
-, unittestCheckHook
-, google-api-core
-, opencensus-context
+{
+  buildPythonPackage,
+  fetchPypi,
+  lib,
+  unittestCheckHook,
+  google-api-core,
+  opencensus-context,
 }:
 
 buildPythonPackage rec {
   pname = "opencensus";
-  version = "0.11.3";
+  version = "0.11.4";
   format = "setuptools";
 
   src = fetchPypi {
     inherit pname version;
-    hash = "sha256-r3qYvVHmOWgUTXcvNG1pbtSYoy29xL4mfNYBHEzgXag=";
+    hash = "sha256-y++H2Lh3MGSrYOXCoc7Vi7qjim0FLEGuwiSVjOVE7/I=";
   };
 
   propagatedBuildInputs = [
@@ -21,15 +22,11 @@ buildPythonPackage rec {
     opencensus-context
   ];
 
-  pythonNamespaces = [
-    "opencensus.common"
-  ];
+  pythonNamespaces = [ "opencensus.common" ];
 
   doCheck = false; # No tests in sdist
 
-  pythonImportsCheck = [
-    "opencensus.common"
-  ];
+  pythonImportsCheck = [ "opencensus.common" ];
 
   meta = with lib; {
     description = "A stats collection and distributed tracing framework";

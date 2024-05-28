@@ -1,12 +1,14 @@
-{ lib
-, buildPythonPackage
-, fetchFromGitHub
-, pythonOlder
-, flit-core
-, z3-solver
-, astroid
-, pytestCheckHook
-, hypothesis
+{
+  lib,
+  buildPythonPackage,
+  fetchFromGitHub,
+  pythonOlder,
+  flit-core,
+  z3-solver,
+  astroid,
+  pytestCheckHook,
+  hypothesis,
+  pythonRelaxDepsHook,
 }:
 
 buildPythonPackage rec {
@@ -25,7 +27,11 @@ buildPythonPackage rec {
 
   nativeBuildInputs = [
     flit-core
+    pythonRelaxDepsHook
   ];
+
+  # z3 does not provide a dist-info, so python-runtime-deps-check will fail
+  pythonRemoveDeps = [ "z3-solver" ];
 
   postPatch = ''
     substituteInPlace pyproject.toml \
