@@ -1,15 +1,16 @@
-{ lib
-, buildPythonPackage
-, fetchFromGitHub
-, coreapi
-, django
-, django-guardian
-, pythonOlder
-, pytest-django
-, pytestCheckHook
-, pytz
-, pyyaml
-, uritemplate
+{
+  lib,
+  buildPythonPackage,
+  fetchFromGitHub,
+  coreapi,
+  django,
+  django-guardian,
+  pythonOlder,
+  pytest-django,
+  pytest7CheckHook,
+  pytz,
+  pyyaml,
+  uritemplate,
 }:
 
 buildPythonPackage rec {
@@ -32,18 +33,13 @@ buildPythonPackage rec {
 
   nativeCheckInputs = [
     pytest-django
-    pytestCheckHook
+    pytest7CheckHook
 
     # optional tests
     coreapi
     django-guardian
     pyyaml
     uritemplate
-  ];
-
-  pytestFlagsArray = [
-    # ytest.PytestRemovedIn8Warning: Support for nose tests is deprecated and will be removed in a future release.
-    "-W" "ignore::pytest.PytestRemovedIn8Warning"
   ];
 
   pythonImportsCheck = [ "rest_framework" ];

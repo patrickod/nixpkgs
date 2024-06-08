@@ -2,14 +2,14 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "mdbook-katex";
-  version = "0.7.0";
+  version = "0.9.0";
 
   src = fetchCrate {
     inherit pname version;
-    hash = "sha256-hrST3bfODCqsGUsO2sMk70KICMZCe+J1pDeO3TTcsaU=";
+    hash = "sha256-OTMPf/ZlUtqKz8Lb0uFOhad33N6SaCIZ86I2ajZ19fU=";
   };
 
-  cargoHash = "sha256-qoeHdgR67aZvmM6l8IPLcR2sHW2v5sL4k7ymxHPdlis=";
+  cargoHash = "sha256-U8uDcNkEyz7zAqCTthY5SVGshsJRKRaoBLOpBpQ9sho=";
 
   buildInputs = lib.optionals stdenv.isDarwin [ CoreServices ];
 
@@ -18,6 +18,6 @@ rustPlatform.buildRustPackage rec {
     mainProgram = "mdbook-katex";
     homepage = "https://github.com/lzanini/${pname}";
     license = [ licenses.mit ];
-    maintainers = with maintainers; [ lovesegfault ];
+    maintainers = with maintainers; [ lovesegfault matthiasbeyer ];
   };
 }

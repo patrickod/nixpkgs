@@ -6,16 +6,16 @@
 }:
 buildGoModule rec {
   pname = "eigenlayer";
-  version = "0.7.0";
+  version = "0.8.1";
 
   src = fetchFromGitHub {
     owner = "Layr-Labs";
     repo = "eigenlayer-cli";
     rev = "v${version}";
-    hash = "sha256-4KN5AletaQ/Xpr/mCLgB/ceVbqMzWoi7bKoWRDePnuc=";
+    hash = "sha256-YImQNqOPtHjFJz9mLrgoU0HUWZ4Pnkiff+5A8wYXxpA=";
   };
 
-  vendorHash = "sha256-6RF32eWU7HS9C3T7hDVHjWxX/3Ch/ixOGHml30Q9PaU=";
+  vendorHash = "sha256-+VKjsHFqWVqOxzC49GToxymD5AyI0j1ZDXQW2YnJysw=";
 
   ldflags = ["-s" "-w"];
   subPackages = ["cmd/eigenlayer"];

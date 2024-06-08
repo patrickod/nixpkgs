@@ -4,7 +4,7 @@
   fetchFromGitHub,
   fetchYarnDeps,
   nodejs,
-  prefetch-yarn-deps,
+  fixup-yarn-lock,
   yarn,
   nixosTests,
   nix-update-script,
@@ -12,13 +12,13 @@
 
 stdenv.mkDerivation rec {
   pname = "lxd-ui";
-  version = "0.8";
+  version = "0.8.1";
 
   src = fetchFromGitHub {
     owner = "canonical";
     repo = "lxd-ui";
     rev = "refs/tags/${version}";
-    hash = "sha256-oD/GPm84oFXHcZ8vTUzNgQinrHwNuvpeVjsrp8ibIZY=";
+    hash = "sha256-XLHLWD7iH4A5+MaFYiMILnjPGN565gBRpimFoOJMRtI=";
   };
 
   offlineCache = fetchYarnDeps {
@@ -28,7 +28,7 @@ stdenv.mkDerivation rec {
 
   nativeBuildInputs = [
     nodejs
-    prefetch-yarn-deps
+    fixup-yarn-lock
     yarn
   ];
 

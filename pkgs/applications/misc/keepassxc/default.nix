@@ -20,7 +20,7 @@
 , qtsvg
 , qtx11extras
 , readline
-, wrapGAppsHook
+, wrapGAppsHook3
 , wrapQtAppsHook
 , zlib
 
@@ -41,13 +41,13 @@
 
 stdenv.mkDerivation rec {
   pname = "keepassxc";
-  version = "2.7.7";
+  version = "2.7.8";
 
   src = fetchFromGitHub {
     owner = "keepassxreboot";
     repo = "keepassxc";
     rev = version;
-    hash = "sha256-HjDzb1H3eMSraKbfHgg9S+w4TXNt40lQkDz+EChb5Ks=";
+    hash = "sha256-Gb5/CPhn/phVVvz9BFv7rb12n/P3rPNl5r2gA+E5b0o=";
   };
 
   env.NIX_CFLAGS_COMPILE = lib.optionalString stdenv.cc.isClang (toString [
@@ -97,7 +97,7 @@ stdenv.mkDerivation rec {
     qttools
     pkg-config
   ]
-  ++ lib.optional (!stdenv.isDarwin) wrapGAppsHook;
+  ++ lib.optional (!stdenv.isDarwin) wrapGAppsHook3;
 
   dontWrapGApps = true;
   preFixup = ''

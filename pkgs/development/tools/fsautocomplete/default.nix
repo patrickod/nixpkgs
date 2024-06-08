@@ -2,13 +2,13 @@
 
 buildDotnetModule rec {
   pname = "fsautocomplete";
-  version = "0.69.0";
+  version = "0.73.1";
 
   src = fetchFromGitHub {
     owner = "fsharp";
     repo = "FsAutoComplete";
     rev = "v${version}";
-    hash = "sha256-o0aR4yRzRb3y8vARuhP7JnBQ72XBX0whfpC51b2cqF0=";
+    hash = "sha256-esvnbmifLFwzNUHTTwl6yEYPwFgWgKfaZGMQDJ+puus=";
   };
 
   nugetDeps = ./deps.nix;
@@ -20,8 +20,8 @@ buildDotnetModule rec {
       --replace TargetFrameworks TargetFramework \
   '';
 
-  dotnet-sdk = with dotnetCorePackages; combinePackages [ sdk_6_0 sdk_7_0 ];
-  dotnet-runtime = dotnetCorePackages.sdk_7_0;
+  dotnet-sdk = with dotnetCorePackages; combinePackages [ sdk_6_0 sdk_7_0 sdk_8_0_2xx ];
+  dotnet-runtime = dotnetCorePackages.sdk_8_0_2xx;
 
   projectFile = "src/FsAutoComplete/FsAutoComplete.fsproj";
   executables = [ "fsautocomplete" ];

@@ -1,18 +1,19 @@
-{ lib
-, buildPythonPackage
-, fetchFromGitHub
-, cython
-, joblib
-, matplotlib
-, numpy
-, pandas
-, scikit-learn
-, scipy
-, statsmodels
-, urllib3
-, pythonOlder
-, python
-, pytestCheckHook
+{
+  lib,
+  buildPythonPackage,
+  fetchFromGitHub,
+  cython,
+  joblib,
+  matplotlib,
+  numpy,
+  pandas,
+  scikit-learn,
+  scipy,
+  statsmodels,
+  urllib3,
+  pythonOlder,
+  python,
+  pytest7CheckHook,
 }:
 
 buildPythonPackage rec {
@@ -49,14 +50,10 @@ buildPythonPackage rec {
 
   nativeCheckInputs = [
     matplotlib
-    pytestCheckHook
+    pytest7CheckHook
   ];
 
-  pytestFlagsArray = [
-    "-W" "ignore::pytest.PytestRemovedIn8Warning"
-  ];
-
-  disabledTests= [
+  disabledTests = [
     # touches internet
     "test_load_from_web"
   ];

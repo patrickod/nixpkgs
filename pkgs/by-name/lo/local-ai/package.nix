@@ -1,10 +1,12 @@
 { config
+, callPackages
 , stdenv
 , lib
 , addDriverRunpath
-, fetchpatch
 , fetchFromGitHub
 , protobuf
+, protoc-gen-go
+, protoc-gen-go-grpc
 , grpc
 , openssl
 , llama-cpp
@@ -14,8 +16,6 @@
 , pkg-config
 , buildGoModule
 , makeWrapper
-, runCommand
-, testers
 
   # apply feature parameter names according to
   # https://github.com/NixOS/rfcs/pull/169
@@ -26,9 +26,6 @@
 , enable_avx512 ? stdenv.hostPlatform.avx512Support
 , enable_f16c ? true
 , enable_fma ? true
-
-, with_tinydream ? false
-, ncnn
 
 , with_openblas ? false
 , openblas
@@ -41,24 +38,19 @@
 , ocl-icd
 , opencl-headers
 
-, with_stablediffusion ? false
+, with_tinydream ? false # do not compile with cublas
+, ncnn
+
+, with_stablediffusion ? true
 , opencv
 
-, with_tts ? false
+, with_tts ? true
 , onnxruntime
 , sonic
 , spdlog
 , fmt
 , espeak-ng
 , piper-tts
-
-  # tests
-, fetchzip
-, fetchurl
-, writeText
-, symlinkJoin
-, linkFarmFromDrvs
-, jq
 }:
 let
   BUILD_TYPE =
@@ -68,24 +60,10 @@ let
     else if with_clblas then "clblas"
     else "";
 
-  inherit (cudaPackages) libcublas cuda_nvcc cuda_cccl cuda_cudart;
+  inherit (cudaPackages) libcublas cuda_nvcc cuda_cccl cuda_cudart cudatoolkit;
 
-  typedBuiltInputs =
-    lib.optionals with_cublas
-      [
-        cuda_nvcc # should be part of nativeBuildInputs
-        cuda_cudart
-        cuda_cccl
-        (lib.getDev libcublas)
-        (lib.getLib libcublas)
-      ]
-    ++ lib.optionals with_clblas
-      [ clblast ocl-icd opencl-headers ]
-    ++ lib.optionals with_openblas
-      [ openblas.dev ];
-
-  go-llama-ggml = effectiveStdenv.mkDerivation {
-    name = "go-llama-ggml";
+  go-llama = effectiveStdenv.mkDerivation {
+    name = "go-llama";
     src = fetchFromGitHub {
       owner = "go-skynet";
       repo = "go-llama.cpp";
@@ -97,9 +75,18 @@ let
       "libbinding.a"
       "BUILD_TYPE=${BUILD_TYPE}"
     ];
-    buildInputs = typedBuiltInputs;
+
+    buildInputs = [ ]
+      ++ lib.optionals with_clblas [ clblast ocl-icd opencl-headers ]
+      ++ lib.optionals with_openblas [ openblas.dev ];
+
+    nativeBuildInputs = [ cmake ]
+      # backward compatiblity with nixos-23.11
+      # use cuda_nvcc after release of nixos-24.05
+      ++ lib.optionals with_cublas [ cudatoolkit ];
+
     dontUseCmakeConfigure = true;
-    nativeBuildInputs = [ cmake ];
+
     installPhase = ''
       mkdir $out
       tar cf - --exclude=build --exclude=CMakeFiles --exclude="*.o" . \
@@ -112,8 +99,8 @@ let
     src = fetchFromGitHub {
       owner = "ggerganov";
       repo = "llama.cpp";
-      rev = "b06c16ef9f81d84da520232c125d4d8a1d273736";
-      hash = "sha256-t1AIx/Ir5RhasjblH4BSpGOXVvO84SJPSqa7rXWj6b4=";
+      rev = "c12452c7aec8a02264afc00196a13caa591a13ac";
+      hash = "sha256-Kji8dlz7OfhPeNXnYgBHzpGGMhCsRLJ9d+EFf77Q6Co=";
       fetchSubmodules = true;
     };
     postPatch = prev.postPatch + ''
@@ -266,13 +253,20 @@ let
     src = fetchFromGitHub {
       owner = "ggerganov";
       repo = "whisper.cpp";
-      rev = "1558ec5a16cb2b2a0bf54815df1d41f83dc3815b";
-      hash = "sha256-UAqWU3kvkHM+fV+T6gFVsAKuOG6N4FoFgTKGUptwjmE=";
+      rev = "73d13ad19a8c9c4da4f405088a85169b1a171e66";
+      hash = "sha256-7g/J3a3behGgcJXy9ryAYXxgOYnsRMlGmux13re28AY=";
     };
-    nativeBuildInputs = [ cmake pkg-config ];
-    buildInputs = typedBuiltInputs;
+
+    nativeBuildInputs = [ cmake pkg-config ]
+      ++ lib.optionals with_cublas [ cuda_nvcc ];
+
+    buildInputs = [ ]
+      ++ lib.optionals with_cublas [ cuda_cccl cuda_cudart libcublas ]
+      ++ lib.optionals with_clblas [ clblast ocl-icd opencl-headers ]
+      ++ lib.optionals with_openblas [ openblas.dev ];
+
     cmakeFlags = [
-      (lib.cmakeBool "WHISPER_CUBLAS" with_cublas)
+      (lib.cmakeBool "WHISPER_CUDA" with_cublas)
       (lib.cmakeBool "WHISPER_CLBLAST" with_clblas)
       (lib.cmakeBool "WHISPER_OPENBLAS" with_openblas)
       (lib.cmakeBool "WHISPER_NO_AVX" (!enable_avx))
@@ -310,8 +304,8 @@ let
     src = fetchFromGitHub {
       owner = "mudler";
       repo = "go-stable-diffusion";
-      rev = "362df9da29f882dbf09ade61972d16a1f53c3485";
-      hash = "sha256-A5KvMZOviPsIpPHxM8cacT+qE2x1iFJAbPsRs4sLijY=";
+      rev = "4a3cd6aeae6f66ee57eae9a0075f8c58c3a6a38f";
+      hash = "sha256-KXUvMP6cDyWib4rG0RmVRm3pgrdsfKXaH3k0v5/mTe8=";
       fetchSubmodules = true;
     };
     buildFlags = [ "libstablediffusion.a" ];
@@ -342,19 +336,19 @@ let
     ];
   });
 
-  go-tiny-dream = stdenv.mkDerivation {
+  go-tiny-dream = effectiveStdenv.mkDerivation {
     name = "go-tiny-dream";
     src = fetchFromGitHub {
       owner = "M0Rf30";
       repo = "go-tiny-dream";
-      rev = "772a9c0d9aaf768290e63cca3c904fe69faf677a";
-      hash = "sha256-r+wzFIjaI6cxAm/eXN3q8LRZZz+lE5EA4lCTk5+ZnIY=";
+      rev = "c04fa463ace9d9a6464313aa5f9cd0f953b6c057";
+      hash = "sha256-uow3vbAI4F/fTGjYOKOLqTpKq7NgGYSZhGlEhn7h6s0=";
       fetchSubmodules = true;
     };
     postUnpack = ''
       rm -rf source/ncnn
-      mkdir -p source/ncnn/build
-      cp -r --no-preserve=mode ${go-tiny-dream-ncnn} source/ncnn/build/install
+      mkdir -p source/ncnn/build/src
+      cp -r --no-preserve=mode ${go-tiny-dream-ncnn}/lib/. ${go-tiny-dream-ncnn}/include/. source/ncnn/build/src
     '';
     buildFlags = [ "libtinydream.a" ];
     installPhase = ''
@@ -378,18 +372,18 @@ let
       stdenv;
 
   pname = "local-ai";
-  version = "2.11.0";
+  version = "2.15.0";
   src = fetchFromGitHub {
     owner = "go-skynet";
     repo = "LocalAI";
     rev = "v${version}";
-    hash = "sha256-Sqo4NOggUNb1ZemT9TRknBmz8dThe/X43R+4JFfQJ4M=";
+    hash = "sha256-AjNgfZjVxlw0LtPbUTbJuLcUfqJdPzn6vOmUDz/v7Jc=";
   };
 
   self = buildGoModule.override { stdenv = effectiveStdenv; } {
     inherit pname version src;
 
-    vendorHash = "sha256-3bOr8DnAjTzOpVDB5wmlPxECNteWw3tI0yc1f2Wt4y0=";
+    vendorHash = "sha256-+ZPZkOpaTsKrL2HDOEtAr8sT6uqTiQXo/XS+MBNZq5E=";
 
     env.NIX_CFLAGS_COMPILE = lib.optionalString with_stablediffusion " -isystem ${opencv}/include/opencv4";
 
@@ -399,33 +393,44 @@ let
       in
       ''
         sed -i Makefile \
-          -e 's;git clone.*go-llama-ggml$;${cp} ${go-llama-ggml} sources/go-llama-ggml;' \
+          -e 's;git clone.*go-llama\.cpp$;${cp} ${go-llama} sources/go-llama\.cpp;' \
           -e 's;git clone.*gpt4all$;${cp} ${gpt4all} sources/gpt4all;' \
           -e 's;git clone.*go-piper$;${cp} ${if with_tts then go-piper else go-piper.src} sources/go-piper;' \
-          -e 's;git clone.*go-rwkv$;${cp} ${go-rwkv} sources/go-rwkv;' \
+          -e 's;git clone.*go-rwkv\.cpp$;${cp} ${go-rwkv} sources/go-rwkv\.cpp;' \
           -e 's;git clone.*whisper\.cpp$;${cp} ${whisper-cpp.src} sources/whisper\.cpp;' \
-          -e 's;git clone.*go-bert$;${cp} ${go-bert} sources/go-bert;' \
+          -e 's;git clone.*go-bert\.cpp$;${cp} ${go-bert} sources/go-bert\.cpp;' \
           -e 's;git clone.*diffusion$;${cp} ${if with_stablediffusion then go-stable-diffusion else go-stable-diffusion.src} sources/go-stable-diffusion;' \
           -e 's;git clone.*go-tiny-dream$;${cp} ${if with_tinydream then go-tiny-dream else go-tiny-dream.src} sources/go-tiny-dream;' \
           -e 's, && git checkout.*,,g' \
           -e '/mod download/ d' \
+          -e '/^ALL_GRPC_BACKENDS+=backend-assets\/grpc\/llama-cpp-/ d' \
+      '';
 
-        ${cp} ${llama-cpp-grpc}/bin/*grpc-server backend/cpp/llama/grpc-server
-        echo "grpc-server:" > backend/cpp/llama/Makefile
-      ''
-    ;
+    postConfigure = ''
+      mkdir -p backend-assets/grpc
+      cp ${llama-cpp-grpc}/bin/*grpc-server backend-assets/grpc/llama-cpp
+    '';
 
-    buildInputs = typedBuiltInputs
-      ++ lib.optional with_stablediffusion go-stable-diffusion.buildInputs
-      ++ lib.optional with_tts go-piper.buildInputs;
+    buildInputs = [ ]
+      ++ lib.optionals with_cublas [ libcublas ]
+      ++ lib.optionals with_clblas [ clblast ocl-icd opencl-headers ]
+      ++ lib.optionals with_openblas [ openblas.dev ]
+      ++ lib.optionals with_stablediffusion go-stable-diffusion.buildInputs
+      ++ lib.optionals with_tts go-piper.buildInputs;
 
-    nativeBuildInputs = [ makeWrapper ];
+    nativeBuildInputs = [
+      protobuf
+      protoc-gen-go
+      protoc-gen-go-grpc
+      makeWrapper
+    ]
+    ++ lib.optionals with_cublas [ cuda_nvcc ];
 
     enableParallelBuilding = false;
 
     modBuildPhase = ''
       mkdir sources
-      make prepare-sources
+      make prepare-sources protogen-go
       go mod tidy -v
     '';
 
@@ -489,7 +494,7 @@ let
 
     passthru.local-packages = {
       inherit
-        go-tiny-dream go-rwkv go-bert go-llama-ggml gpt4all go-piper
+        go-tiny-dream go-rwkv go-bert go-llama gpt4all go-piper
         llama-cpp-grpc whisper-cpp go-tiny-dream-ncnn espeak-ng' piper-phonemize
         piper-tts';
     };
@@ -500,84 +505,8 @@ let
         with_tinydream with_clblas;
     };
 
-    passthru.tests = {
-      version = testers.testVersion {
-        package = self;
-        version = "v" + version;
-      };
-      health =
-        let
-          port = "8080";
-        in
-        testers.runNixOSTest {
-          name = pname + "-health";
-          nodes.machine = {
-            systemd.services.local-ai = {
-              wantedBy = [ "multi-user.target" ];
-              serviceConfig.ExecStart = "${self}/bin/local-ai --debug --localai-config-dir . --address :${port}";
-            };
-          };
-          testScript = ''
-            machine.wait_for_open_port(${port})
-            machine.succeed("curl -f http://localhost:${port}/readyz")
-          '';
-        };
-    }
-    // lib.optionalAttrs with_tts {
-      # https://localai.io/features/text-to-audio/#piper
-      tts =
-        let
-          port = "8080";
-          voice-en-us = fetchzip {
-            url = "https://github.com/rhasspy/piper/releases/download/v0.0.2/voice-en-us-danny-low.tar.gz";
-            hash = "sha256-5wf+6H5HeQY0qgdqnAG1vSqtjIFM9lXH53OgouuPm0M=";
-            stripRoot = false;
-          };
-          ggml-tiny-en = fetchurl {
-            url = "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-tiny.en-q5_1.bin";
-            hash = "sha256-x3xXZvHO8JtrfUfyG1Rsvd1BV4hrO11tT3CekeZsfCs=";
-          };
-          whisper-en = {
-            name = "whisper-en";
-            backend = "whisper";
-            parameters.model = ggml-tiny-en.name;
-          };
-          models = symlinkJoin {
-            name = "models";
-            paths = [
-              voice-en-us
-              (linkFarmFromDrvs "whisper-en" [
-                (writeText "whisper-en.yaml" (builtins.toJSON whisper-en))
-                ggml-tiny-en
-              ])
-            ];
-          };
-        in
-        testers.runNixOSTest {
-          name = pname + "-tts";
-          nodes.machine = {
-            systemd.services.local-ai = {
-              wantedBy = [ "multi-user.target" ];
-              serviceConfig.ExecStart = "${self}/bin/local-ai --debug --models-path ${models} --localai-config-dir . --address :${port}";
-            };
-          };
-          testScript =
-            let
-              request = {
-                model = "en-us-danny-low.onnx";
-                backend = "piper";
-                input = "Hello, how are you?";
-              };
-            in
-            ''
-              machine.wait_for_open_port(${port})
-              machine.succeed("curl -f http://localhost:${port}/readyz")
-              machine.succeed("curl -f http://localhost:${port}/tts --json @${writeText "request.json" (builtins.toJSON request)} --output out.wav")
-              machine.succeed("curl -f http://localhost:${port}/v1/audio/transcriptions --header 'Content-Type: multipart/form-data' --form file=@out.wav --form model=${whisper-en.name} --output transcription.json")
-              machine.succeed("${jq}/bin/jq --exit-status 'debug | .segments | first.text == \"${request.input}\"' transcription.json")
-            '';
-        };
-    };
+    passthru.tests = callPackages ./tests.nix { inherit self; };
+    passthru.lib = callPackages ./lib.nix { };
 
     meta = with lib; {
       description = "OpenAI alternative to run local LLMs, image and audio generation";

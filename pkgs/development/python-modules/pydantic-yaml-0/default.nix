@@ -1,21 +1,22 @@
-{ lib
-, buildPythonPackage
-, fetchFromGitHub
-, nix-update-script
-, deprecated
-, importlib-metadata
-, pydantic_1
-, ruamel-yaml
-, semver
-, types-deprecated
-, setuptools
-, setuptools-scm
-, pytest-mock
-, pytestCheckHook
+{
+  lib,
+  buildPythonPackage,
+  fetchFromGitHub,
+  deprecated,
+  importlib-metadata,
+  pydantic_1,
+  ruamel-yaml,
+  semver,
+  types-deprecated,
+  setuptools,
+  setuptools-scm,
+  pytest-mock,
+  pytestCheckHook,
 }:
 
 buildPythonPackage rec {
   pname = "pydantic_yaml-0";
+  # nixpkgs-update: no auto update
   version = "0.11.2";
 
   pyproject = true;
@@ -46,16 +47,12 @@ buildPythonPackage rec {
     types-deprecated
   ];
 
-  pythonImportsCheck = [
-    "pydantic_yaml"
-  ];
+  pythonImportsCheck = [ "pydantic_yaml" ];
 
   nativeCheckInputs = [
     pytest-mock
     pytestCheckHook
   ];
-
-  passthru.updateScript = nix-update-script { };
 
   meta = {
     description = "A small helper library that adds some YAML capabilities to pydantic";
@@ -65,4 +62,3 @@ buildPythonPackage rec {
     maintainers = with lib.maintainers; [ jnsgruk ];
   };
 }
-

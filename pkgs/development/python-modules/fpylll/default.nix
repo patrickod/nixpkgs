@@ -1,22 +1,26 @@
-{ lib
-, fetchFromGitHub
-, buildPythonPackage
-, fetchpatch
+{
+  lib,
+  fetchFromGitHub,
+  buildPythonPackage,
+  fetchpatch,
 
-# build-system
-, cysignals
-, cython_3
-, pkgconfig
-, setuptools
+  # build-system
+  cysignals,
+  cython,
+  pkgconfig,
+  setuptools,
 
-, gmp
-, pari
-, mpfr
-, fplll
-, numpy
+  gmp,
+  pari,
+  mpfr,
+  fplll,
+  numpy,
 
-# tests
-, pytestCheckHook
+  # Reverse dependency
+  sage,
+
+  # tests
+  pytestCheckHook,
 }:
 
 buildPythonPackage rec {
@@ -43,7 +47,7 @@ buildPythonPackage rec {
   ];
 
   nativeBuildInputs = [
-    cython_3
+    cython
     cysignals
     pkgconfig
     setuptools
@@ -56,13 +60,9 @@ buildPythonPackage rec {
     fplll
   ];
 
-  propagatedBuildInputs = [
-    numpy
-  ];
+  propagatedBuildInputs = [ numpy ];
 
-  nativeCheckInputs = [
-    pytestCheckHook
-  ];
+  nativeCheckInputs = [ pytestCheckHook ];
 
   preCheck = ''
     # Since upstream introduced --doctest-modules in
@@ -71,6 +71,10 @@ buildPythonPackage rec {
     # should be identical anyway.
     export PY_IGNORE_IMPORTMISMATCH=1
   '';
+
+  passthru.tests = {
+    inherit sage;
+  };
 
   meta = with lib; {
     description = "A Python interface for fplll";

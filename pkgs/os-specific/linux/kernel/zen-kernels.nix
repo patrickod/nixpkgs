@@ -4,16 +4,16 @@ let
   # comments with variant added for update script
   # ./update-zen.py zen
   zenVariant = {
-    version = "6.8.4"; #zen
+    version = "6.9.3"; #zen
     suffix = "zen1"; #zen
-    sha256 = "0cbcij31gar4is5zcrl748ijn91jly74i2gggf43ndh8yrzdni85"; #zen
+    sha256 = "0vgy249zrzm6kn8wqisnbgbq8h6sffmk1zs6cx57annab9w0sb57"; #zen
     isLqx = false;
   };
   # ./update-zen.py lqx
   lqxVariant = {
-    version = "6.8.4"; #lqx
+    version = "6.9.3"; #lqx
     suffix = "lqx1"; #lqx
-    sha256 = "1hv9hvx9nw51qki5wbhm4dgyvgw7jjwxl8fvslaazn3r0rqch7z2"; #lqx
+    sha256 = "1wfjw5fq7myvhfb6srina0b7b76a08ib9x8hd8bdfr4zr6al8zq8"; #lqx
     isLqx = true;
   };
   zenKernelsFor = { version, suffix, sha256, isLqx }: buildLinux (args // {
@@ -84,8 +84,8 @@ let
       SCHED_PDS = yes;
 
       # Swap storage is compressed with LZ4 using zswap
-      ZSWAP_COMPRESSOR_DEFAULT_LZ4 = yes;
-      ZSWAP_COMPRESSOR_DEFAULT = freeform "lz4";
+      ZSWAP_COMPRESSOR_DEFAULT_LZ4  = lib.mkOptionDefault yes;
+      ZSWAP_COMPRESSOR_DEFAULT_ZSTD = lib.mkDefault no;
 
       # Fix error: unused option: XXX.
       CFS_BANDWIDTH = lib.mkForce (option no);

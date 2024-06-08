@@ -71,8 +71,10 @@ let
     ghc948
     ghc963
     ghc964
+    ghc965
     ghc981
     ghc982
+    ghc9101
   ];
 
   # packagePlatforms applied to `haskell.packages.*`
@@ -265,7 +267,6 @@ let
         agda
         arion
         bench
-        bustle
         blucontrol
         cabal-install
         cabal2nix
@@ -318,6 +319,7 @@ let
         madlang
         mailctl
         matterhorn
+        mkjson
         mueval
         naproche
         niv
@@ -329,6 +331,8 @@ let
         nix-script
         nix-tree
         nixfmt
+        nixfmt-classic
+        nixfmt-rfc-style
         nota
         nvfetcher
         ormolu
@@ -469,6 +473,15 @@ let
               inherit (packagePlatforms pkgs.pkgsCross.ghcjs.haskellPackages)
                 ghc
                 hello
+                microlens
+              ;
+            };
+
+            haskell.packages.ghc98 = {
+              inherit (packagePlatforms pkgs.pkgsCross.ghcjs.haskell.packages.ghc98)
+                ghc
+                hello
+                microlens
               ;
             };
 
@@ -476,6 +489,7 @@ let
               inherit (packagePlatforms pkgs.pkgsCross.ghcjs.haskell.packages.ghcHEAD)
                 ghc
                 hello
+                microlens
               ;
             };
           };
@@ -490,22 +504,27 @@ let
       cabal-install = lib.subtractLists [
         compilerNames.ghc981
         compilerNames.ghc982
+        compilerNames.ghc9101
       ] released;
       Cabal_3_10_3_0 = lib.subtractLists [
         compilerNames.ghc981
         compilerNames.ghc982
+        compilerNames.ghc9101
       ] released;
       Cabal-syntax_3_10_3_0 = lib.subtractLists [
         compilerNames.ghc981
         compilerNames.ghc982
+        compilerNames.ghc9101
       ] released;
       cabal2nix = lib.subtractLists [
         compilerNames.ghc981
         compilerNames.ghc982
+        compilerNames.ghc9101
       ] released;
       cabal2nix-unstable = lib.subtractLists [
         compilerNames.ghc981
         compilerNames.ghc982
+        compilerNames.ghc9101
       ] released;
       funcmp = released;
       haskell-language-server = lib.subtractLists [
@@ -513,25 +532,31 @@ let
         compilerNames.ghc8107
         # Support ceased as of 2.5.0.0
         compilerNames.ghc902
+        # No support yet (2024-05-12)
+        compilerNames.ghc9101
       ] released;
       hoogle = lib.subtractLists [
         compilerNames.ghc981
         compilerNames.ghc982
+        compilerNames.ghc9101
       ] released;
       hlint = lib.subtractLists [
         compilerNames.ghc902
         compilerNames.ghc981
         compilerNames.ghc982
+        compilerNames.ghc9101
       ] released;
       hpack = lib.subtractLists [
         compilerNames.ghc981
         compilerNames.ghc982
+        compilerNames.ghc9101
       ] released;
       hsdns = released;
       jailbreak-cabal = released;
       language-nix = lib.subtractLists [
         compilerNames.ghc981
         compilerNames.ghc982
+        compilerNames.ghc9101
       ] released;
       large-hashable = [
         compilerNames.ghc928
@@ -540,6 +565,7 @@ let
       titlecase = lib.subtractLists [
         compilerNames.ghc981
         compilerNames.ghc982
+        compilerNames.ghc9101
       ] released;
       ghc-api-compat = [
         compilerNames.ghc8107
@@ -551,14 +577,17 @@ let
       ghc-lib = lib.subtractLists [
         compilerNames.ghc981
         compilerNames.ghc982
+        compilerNames.ghc9101
       ] released;
       ghc-lib-parser = lib.subtractLists [
         compilerNames.ghc981
         compilerNames.ghc982
+        compilerNames.ghc9101
       ] released;
       ghc-lib-parser-ex = lib.subtractLists [
         compilerNames.ghc981
         compilerNames.ghc982
+        compilerNames.ghc9101
       ] released;
       ghc-source-gen = [
         # Feel free to remove these as they break,
@@ -575,11 +604,15 @@ let
       hashable = lib.subtractLists [
         compilerNames.ghc981
         compilerNames.ghc982
+        compilerNames.ghc9101
       ] released;
-      primitive = released;
+      primitive = lib.subtractLists [
+        compilerNames.ghc9101
+      ] released;
       weeder = lib.subtractLists [
         compilerNames.ghc981
         compilerNames.ghc982
+        compilerNames.ghc9101
       ] released;
     })
     {
@@ -593,42 +626,35 @@ let
           maintainers = lib.teams.haskell.members;
         };
         constituents =
-          let
-            # Filter out all Darwin derivations.  We don't want flakey Darwin
-            # derivations and flakey Hydra Darwin builders to block the
-            # mergeable job from successfully building.
-            filterInLinux =
-              lib.filter (drv: drv.system == "x86_64-linux" || drv.system == "aarch64-linux");
-          in
-          filterInLinux
-            (accumulateDerivations [
-              # haskell specific tests
-              jobs.tests.haskell
-              # important top-level packages
-              jobs.cabal-install
-              jobs.cabal2nix
-              jobs.cachix
-              jobs.darcs
-              jobs.haskell-language-server
-              jobs.hledger
-              jobs.hledger-ui
-              jobs.hpack
-              jobs.niv
-              jobs.pandoc
-              jobs.stack
-              jobs.stylish-haskell
-              # important haskell (library) packages
-              jobs.haskellPackages.cabal-plan
-              jobs.haskellPackages.distribution-nixpkgs
-              jobs.haskellPackages.hackage-db
-              jobs.haskellPackages.xmonad
-              jobs.haskellPackages.xmonad-contrib
-              # haskell packages maintained by @peti
-              # imported from the old hydra jobset
-              jobs.haskellPackages.hopenssl
-              jobs.haskellPackages.hsemail
-              jobs.haskellPackages.hsyslog
-            ]);
+          accumulateDerivations [
+            # haskell specific tests
+            jobs.tests.haskell
+            # important top-level packages
+            jobs.cabal-install
+            jobs.cabal2nix
+            jobs.cachix
+            jobs.darcs
+            jobs.haskell-language-server
+            jobs.hledger
+            jobs.hledger-ui
+            jobs.hpack
+            jobs.niv
+            jobs.pandoc
+            jobs.stack
+            jobs.stylish-haskell
+            jobs.shellcheck
+            # important haskell (library) packages
+            jobs.haskellPackages.cabal-plan
+            jobs.haskellPackages.distribution-nixpkgs
+            jobs.haskellPackages.hackage-db
+            jobs.haskellPackages.xmonad
+            jobs.haskellPackages.xmonad-contrib
+            # haskell packages maintained by @peti
+            # imported from the old hydra jobset
+            jobs.haskellPackages.hopenssl
+            jobs.haskellPackages.hsemail
+            jobs.haskellPackages.hsyslog
+           ];
       };
       maintained = pkgs.releaseTools.aggregate {
         name = "maintained-haskell-packages";

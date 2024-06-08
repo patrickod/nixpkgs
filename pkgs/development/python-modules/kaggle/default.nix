@@ -1,24 +1,25 @@
-{ buildPythonPackage
-, bleach
-, certifi
-, fetchPypi
-, lib
-, python-dateutil
-, python-slugify
-, six
-, requests
-, tqdm
-, urllib3
+{
+  buildPythonPackage,
+  bleach,
+  certifi,
+  fetchPypi,
+  lib,
+  python-dateutil,
+  python-slugify,
+  six,
+  requests,
+  tqdm,
+  urllib3,
 }:
 
 buildPythonPackage rec {
   pname = "kaggle";
-  version = "1.6.11";
+  version = "1.6.14";
   format = "setuptools";
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "sha256-oN3jld3SB5XZTqoM9mIj4bdgMuzOX6Rj3VQhbedvX1Y=";
+    sha256 = "sha256-WDUyveyjyeDK/EkxESxnN7Xmjxh6tZ7nff/fCf3529k=";
   };
 
   propagatedBuildInputs = [

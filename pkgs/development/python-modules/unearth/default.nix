@@ -1,33 +1,32 @@
-{ lib
-, buildPythonPackage
-, fetchPypi
-, pythonOlder
-, packaging
-, pdm-backend
-, httpx
-, flask
-, pytest-httpserver
-, pytest-mock
-, pytestCheckHook
-, requests-wsgi-adapter
-, trustme
+{
+  lib,
+  buildPythonPackage,
+  fetchPypi,
+  pythonOlder,
+  packaging,
+  pdm-backend,
+  httpx,
+  flask,
+  pytest-httpserver,
+  pytest-mock,
+  pytestCheckHook,
+  requests-wsgi-adapter,
+  trustme,
 }:
 
 buildPythonPackage rec {
   pname = "unearth";
-  version = "0.15.1";
+  version = "0.15.4";
   pyproject = true;
 
   disabled = pythonOlder "3.8";
 
   src = fetchPypi {
     inherit pname version;
-    hash = "sha256-hj3rMznA1lpb4NCtLGfUbV9XSnmOdO8FUr8R0pijCrs=";
+    hash = "sha256-+9has/2wlvmcgmaiCnV4qPMTCtSfR86osTjACIg7e2E=";
   };
 
-  build-system = [
-    pdm-backend
-  ];
+  build-system = [ pdm-backend ];
 
   dependencies = [
     packaging
@@ -45,9 +44,7 @@ buildPythonPackage rec {
     trustme
   ];
 
-  pythonImportsCheck = [
-    "unearth"
-  ];
+  pythonImportsCheck = [ "unearth" ];
 
   meta = with lib; {
     description = "A utility to fetch and download Python packages";

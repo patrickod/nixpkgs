@@ -6,8 +6,8 @@ in
 {
   options = {
     programs.fzf = {
-      fuzzyCompletion = lib.mkEnableOption (lib.mdDoc "fuzzy completion with fzf");
-      keybindings = lib.mkEnableOption (lib.mdDoc "fzf keybindings");
+      fuzzyCompletion = lib.mkEnableOption "fuzzy completion with fzf";
+      keybindings = lib.mkEnableOption "fzf keybindings";
     };
   };
 
@@ -15,11 +15,12 @@ in
     environment.systemPackages = lib.mkIf (cfg.keybindings || cfg.fuzzyCompletion) [ pkgs.fzf ];
 
     programs = {
-      bash.interactiveShellInit = lib.optionalString cfg.fuzzyCompletion ''
+      # load after programs.bash.completion.enable
+      bash.promptPluginInit = lib.mkAfter (lib.optionalString cfg.fuzzyCompletion ''
         source ${pkgs.fzf}/share/fzf/completion.bash
       '' + lib.optionalString cfg.keybindings ''
         source ${pkgs.fzf}/share/fzf/key-bindings.bash
-      '';
+      '');
 
       zsh = {
         interactiveShellInit = lib.optionalString (!config.programs.zsh.ohMyZsh.enable)

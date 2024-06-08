@@ -21,9 +21,10 @@
 , jdk21
 , gamemode
 , flite
-, mesa-demos
+, glxinfo
 , pciutils
 , udev
+, vulkan-loader
 , libusb1
 
 , msaClientID ? null
@@ -71,7 +72,7 @@ symlinkJoin {
   ]
   ++ lib.optional (lib.versionAtLeast qtbase.version "6" && stdenv.isLinux) qtwayland;
 
-  waylandPreExec = ''
+  waylandPreExec = lib.optionalString withWaylandGLFW ''
     if [ -n "$WAYLAND_DISPLAY" ]; then
       export LD_LIBRARY_PATH=${lib.getLib glfw-wayland-minecraft}/lib:"$LD_LIBRARY_PATH"
     fi
@@ -100,6 +101,7 @@ symlinkJoin {
         glfw
         openal
         stdenv.cc.cc.lib
+        vulkan-loader # VulkanMod's lwjgl
 
         # oshi
         udev
@@ -111,7 +113,7 @@ symlinkJoin {
 
       runtimePrograms = [
         xorg.xrandr
-        mesa-demos # need glxinfo
+        glxinfo
         pciutils # need lspci
       ]
       ++ additionalPrograms;

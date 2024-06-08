@@ -1,43 +1,45 @@
-{ lib
-, stdenv
-, rustPlatform
-, fetchFromGitHub
-, pkg-config
-, audioSupport ? true
-, darwin
-, alsa-lib
+{
+  lib,
+  stdenv,
+  rustPlatform,
+  fetchFromGitHub,
+  pkg-config,
+  audioSupport ? true,
+  darwin,
+  alsa-lib,
 
-# passthru.tests.run
-, runCommand
-, uiua
+  # passthru.tests.run
+  runCommand,
+  uiua,
 }:
 
+let
+  inherit (darwin.apple_sdk.frameworks) AppKit AudioUnit CoreServices;
+in
 rustPlatform.buildRustPackage rec {
   pname = "uiua";
-  version = "0.10.2";
+  version = "0.11.0";
 
   src = fetchFromGitHub {
     owner = "uiua-lang";
     repo = "uiua";
     rev = version;
-    hash = "sha256-vfWSMsduaJOh3ueJsjXW4MzYKZYI959lmah8glwex4A=";
+    hash = "sha256-zSSUXJtIyVUUo2g1DTdnUCbCqtelphYRRLaJXbQBgIw=";
   };
 
-  cargoHash = "sha256-LkW3/C67CuUpfGX3KQw3BjnmZpL1Vv+i7kqlXdhpP2I=";
+  cargoHash = "sha256-1J8Z6gmn1d4v15q9Jrp5usY2MTQDdexaa89PY3lTDxw=";
 
-  nativeBuildInputs = lib.optionals stdenv.isDarwin [
-    rustPlatform.bindgenHook
-  ] ++ lib.optionals audioSupport [
-    pkg-config
-  ];
+  nativeBuildInputs =
+    lib.optionals stdenv.isDarwin [ rustPlatform.bindgenHook ]
+    ++ lib.optionals audioSupport [ pkg-config ];
 
-  buildInputs = lib.optionals stdenv.isDarwin [
-    darwin.apple_sdk.frameworks.CoreServices
-  ] ++ lib.optionals (audioSupport && stdenv.isDarwin) [
-    darwin.apple_sdk.frameworks.AudioUnit
-  ] ++ lib.optionals (audioSupport && stdenv.isLinux) [
-    alsa-lib
-  ];
+  buildInputs =
+    lib.optionals stdenv.isDarwin [
+      AppKit
+      CoreServices
+    ]
+    ++ lib.optionals (audioSupport && stdenv.isDarwin) [ AudioUnit ]
+    ++ lib.optionals (audioSupport && stdenv.isLinux) [ alsa-lib ];
 
   buildFeatures = lib.optional audioSupport "audio";
 
@@ -59,6 +61,10 @@ rustPlatform.buildRustPackage rec {
     homepage = "https://www.uiua.org/";
     license = lib.licenses.mit;
     mainProgram = "uiua";
-    maintainers = with lib.maintainers; [ cafkafk tomasajt defelo ];
+    maintainers = with lib.maintainers; [
+      cafkafk
+      tomasajt
+      defelo
+    ];
   };
 }

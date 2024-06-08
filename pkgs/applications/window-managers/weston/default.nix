@@ -19,11 +19,11 @@
 
 stdenv.mkDerivation rec {
   pname = "weston";
-  version = "13.0.0";
+  version = "13.0.2";
 
   src = fetchurl {
     url = "https://gitlab.freedesktop.org/wayland/weston/-/releases/${version}/downloads/weston-${version}.tar.xz";
-    hash = "sha256-Uv8dSqI5Si5BbIWjOLYnzpf6cdQ+t2L9Sq8UXTb8eVo=";
+    hash = "sha256-T+EUAfVe3Dp7Z1/RwJ8VmGAWL6p9PJegpNaCOzHu0Qw=";
   };
 
   postPatch = ''

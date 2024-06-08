@@ -18,17 +18,17 @@ in
 {
   options = {
     services.cinnamon = {
-      apps.enable = mkEnableOption (lib.mdDoc "Cinnamon default applications");
+      apps.enable = mkEnableOption "Cinnamon default applications";
     };
 
     services.xserver.desktopManager.cinnamon = {
-      enable = mkEnableOption (lib.mdDoc "the cinnamon desktop manager");
+      enable = mkEnableOption "the cinnamon desktop manager";
 
       sessionPath = mkOption {
         default = [];
         type = types.listOf types.package;
         example = literalExpression "[ pkgs.gnome.gpaste ]";
-        description = lib.mdDoc ''
+        description = ''
           Additional list of packages to be added to the session search path.
           Useful for GSettings-conditional autostart.
 
@@ -39,13 +39,13 @@ in
       extraGSettingsOverrides = mkOption {
         default = "";
         type = types.lines;
-        description = lib.mdDoc "Additional gsettings overrides.";
+        description = "Additional gsettings overrides.";
       };
 
       extraGSettingsOverridePackages = mkOption {
         default = [];
         type = types.listOf types.path;
-        description = lib.mdDoc "List of packages for which gsettings are overridden.";
+        description = "List of packages for which gsettings are overridden.";
       };
     };
 
@@ -53,7 +53,7 @@ in
       default = [];
       example = literalExpression "[ pkgs.cinnamon.blueberry ]";
       type = types.listOf types.package;
-      description = lib.mdDoc "Which packages cinnamon should exclude from the default environment";
+      description = "Which packages cinnamon should exclude from the default environment";
     };
 
   };
@@ -116,7 +116,7 @@ in
       services.touchegg.enable = mkDefault true;
       services.udisks2.enable = true;
       services.upower.enable = mkDefault config.powerManagement.enable;
-      services.xserver.libinput.enable = mkDefault true;
+      services.libinput.enable = mkDefault true;
       services.xserver.updateDbusEnvironment = true;
       networking.networkmanager.enable = mkDefault true;
 
@@ -157,6 +157,7 @@ in
 
         # packages
         nemo-with-extensions
+        gnome-online-accounts-gtk
         cinnamon-control-center
         cinnamon-settings-daemon
         libgnomekbd

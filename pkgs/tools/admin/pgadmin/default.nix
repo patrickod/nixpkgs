@@ -7,7 +7,7 @@
 , postgresqlTestHook
 , postgresql
 , yarn
-, prefetch-yarn-deps
+, fixup-yarn-lock
 , nodejs
 , stdenv
 , server-mode ? true
@@ -15,30 +15,19 @@
 
 let
   pname = "pgadmin";
-  version = "8.5";
-  yarnHash = "sha256-VLf8GRJ2IIcrfBqdgT2uZG3kOEt0pd7Cksm+tdrQogA=";
+  version = "8.7";
+  yarnHash = "sha256-dBgbgZrjF1rNyN1Hp1nKiT6C6FVbYdbEZQgYbRKVsYI=";
 
   src = fetchFromGitHub {
     owner = "pgadmin-org";
     repo = "pgadmin4";
     rev = "REL-${lib.versions.major version}_${lib.versions.minor version}";
-    hash = "sha256-D/8tiVL2DwxvDiSqHeOF1P/yRRniZY39TyUfibrfAOo=";
+    hash = "sha256-KTu6cbB3AVxEOjDbTB4Uf7K4Sf6kHlNm4qecgdmR/LY=";
   };
 
   # keep the scope, as it is used throughout the derivation and tests
   # this also makes potential future overrides easier
-  pythonPackages = python3.pkgs.overrideScope (final: prev: rec {
-    # Flask 5.4.3 introduces an CSRF error which makes it impossible to login
-    # So either we downgrade flask here or use "WTF_CSRF_ENABLED = false" in the
-    # module config to disable CSRF.
-    flask-security-too = prev.flask-security-too.overridePythonAttrs (oldAttrs: rec {
-      version = "5.4.1";
-      src = oldAttrs.src.override {
-        inherit version;
-        hash = "sha256-Ay7+gk+zuUlXtw0LDdsnvSa22z+yE6VR1guu9QmiFvw=";
-      };
-    });
-  });
+  pythonPackages = python3.pkgs.overrideScope (final: prev: rec { });
 
   offlineCache = fetchYarnDeps {
     yarnLock = ./yarn.lock;
@@ -151,7 +140,7 @@ pythonPackages.buildPythonApplication rec {
     cp -v ../pkg/pip/setup_pip.py setup.py
   '';
 
-  nativeBuildInputs = with pythonPackages; [ cython pip sphinx yarn prefetch-yarn-deps nodejs ];
+  nativeBuildInputs = with pythonPackages; [ cython pip sphinx yarn fixup-yarn-lock nodejs ];
   buildInputs = [
     zlib
     pythonPackages.wheel
@@ -159,7 +148,6 @@ pythonPackages.buildPythonApplication rec {
 
   propagatedBuildInputs = with pythonPackages; [
     flask
-    flask-gravatar
     flask-login
     flask-mail
     flask-migrate
@@ -209,6 +197,7 @@ pythonPackages.buildPythonApplication rec {
     typer
     rich
     jsonformatter
+    libgravatar
   ];
 
   passthru.tests = {
@@ -221,6 +210,9 @@ pythonPackages.buildPythonApplication rec {
     pythonPackages.testscenarios
     pythonPackages.selenium
   ];
+
+  # sandboxing issues on aarch64-darwin, see https://github.com/NixOS/nixpkgs/issues/198495
+  doCheck = postgresql.doCheck;
 
   checkPhase = ''
     runHook preCheck
