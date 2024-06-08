@@ -40840,7 +40840,6 @@ with pkgs;
 
   gpio-utils = callPackage ../os-specific/linux/kernel/gpio-utils.nix { };
 
-
   vfio-isolate = callPackage ../applications/virtualization/vfio-isolate {};
 
   cartography = callPackage ../tools/security/cartography {};
