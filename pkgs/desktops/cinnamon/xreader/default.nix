@@ -27,13 +27,13 @@
 
 stdenv.mkDerivation rec {
   pname = "xreader";
-  version = "4.2.0";
+  version = "4.2.1";
 
   src = fetchFromGitHub {
     owner = "linuxmint";
     repo = pname;
     rev = version;
-    sha256 = "sha256-MWSAyXQcE8cDdzJISFV7UHheHX+7zF1Ula+LGicvUPM=";
+    sha256 = "sha256-+q0fZA72m5T5ZB6bYWPWdQGxLpwjNp5Vak2TzaGwGWQ=";
   };
 
   nativeBuildInputs = [
@@ -67,7 +67,7 @@ stdenv.mkDerivation rec {
   ];
 
   meta = with lib; {
-    description = "A document viewer capable of displaying multiple and single page
+    description = "Document viewer capable of displaying multiple and single page
 document formats like PDF and Postscript";
     homepage = "https://github.com/linuxmint/xreader";
     license = licenses.gpl2Plus;

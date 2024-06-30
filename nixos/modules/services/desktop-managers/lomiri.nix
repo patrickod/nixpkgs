@@ -37,6 +37,10 @@ in {
         suru-icon-theme
         # telephony-service # currently broken: https://github.com/NixOS/nixpkgs/pull/314043
       ]);
+      variables = {
+        # To override the keyboard layouts in Lomiri
+        NIXOS_XKB_LAYOUTS = config.services.xserver.xkb.layout;
+      };
     };
 
     hardware.pulseaudio.enable = lib.mkDefault true;
@@ -59,7 +63,7 @@ in {
     ];
 
     # Copy-pasted basic stuff
-    hardware.opengl.enable = lib.mkDefault true;
+    hardware.graphics.enable = lib.mkDefault true;
     fonts.enableDefaultPackages = lib.mkDefault true;
     programs.dconf.enable = lib.mkDefault true;
 

@@ -14,7 +14,7 @@ rustPlatform.buildRustPackage rec {
   pname = "nushell_plugin_polars";
   inherit (nushell) version src;
 
-  cargoHash = "sha256-GkVX12MEHFP4g183zUzOUn4MNeTEBEpB+D5s0OXa4nc=";
+  cargoHash = "sha256-OgrJNUVVyoqjRT0SPoX3PGRksLiAz254piw08k3gibo=";
 
   nativeBuildInputs = [ pkg-config ] ++ lib.optionals stdenv.cc.isClang [ rustPlatform.bindgenHook ];
   buildInputs =
@@ -35,7 +35,7 @@ rustPlatform.buildRustPackage rec {
   };
 
   meta = with lib; {
-    description = "Nushell dataframe plugin commands based on polars.";
+    description = "Nushell dataframe plugin commands based on polars";
     mainProgram = "nu_plugin_polars";
     homepage = "https://github.com/nushell/nushell/tree/${version}/crates/nu_plugin_polars";
     license = licenses.mit;

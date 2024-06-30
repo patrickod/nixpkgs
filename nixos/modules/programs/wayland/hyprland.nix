@@ -56,13 +56,14 @@ in
       services.displayManager.sessionPackages = [ cfg.package ];
 
       xdg.portal = {
+        enable = true;
         extraPortals = [ cfg.portalPackage ];
         configPackages = lib.mkDefault [ cfg.package ];
       };
 
       systemd = lib.mkIf cfg.systemd.setPath.enable {
         user.extraConfig = ''
-          DefaultEnvironment="PATH=$PATH:/run/current-system/sw/bin:/etc/profiles/per-user/%u/bin:/run/wrappers/bin"
+          DefaultEnvironment="PATH=/run/wrappers/bin:/etc/profiles/per-user/%u/bin:/nix/var/nix/profiles/default/bin:/run/current-system/sw/bin:$PATH"
         '';
       };
     }
@@ -70,7 +71,7 @@ in
     (import ./wayland-session.nix {
       inherit lib pkgs;
       enableXWayland = cfg.xwayland.enable;
-      enableWlrPortal = false; # Hyprland has its own portal, wlr is not needed
+      enableWlrPortal = lib.mkDefault false; # Hyprland has its own portal, wlr is not needed
     })
   ]);
 

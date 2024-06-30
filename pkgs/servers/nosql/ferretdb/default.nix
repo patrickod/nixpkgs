@@ -38,10 +38,10 @@ buildGoModule rec {
   passthru.tests = nixosTests.ferretdb;
 
   meta = with lib; {
-    description = "A truly Open Source MongoDB alternative";
+    description = "Truly Open Source MongoDB alternative";
     mainProgram = "ferretdb";
     changelog = "https://github.com/FerretDB/FerretDB/releases/tag/v${version}";
-    homepage = "https://www.ferretdb.io/";
+    homepage = "https://www.ferretdb.com/";
     license = licenses.asl20;
     maintainers = with maintainers; [ dit7ya noisersup julienmalka ];
   };

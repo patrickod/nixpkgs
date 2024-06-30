@@ -21,7 +21,7 @@
 , seatd
 , vulkan-loader
 , glslang
-, libliftoff
+, libliftoff_0_4
 , libdisplay-info
 , nixosTests
 
@@ -97,7 +97,7 @@ let
       passthru.tests.tinywl = nixosTests.tinywl;
 
       meta = {
-        description = "A modular Wayland compositor library";
+        description = "Modular Wayland compositor library";
         longDescription = ''
           Pluggable, composable, unopinionated modules for building a Wayland
           compositor; or about 50,000 lines of code you were going to write anyway.
@@ -132,7 +132,7 @@ rec {
     ];
     extraBuildInputs = [
       ffmpeg
-      libliftoff
+      libliftoff_0_4
       libdisplay-info
     ];
   };
