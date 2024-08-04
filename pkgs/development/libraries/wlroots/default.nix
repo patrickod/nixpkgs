@@ -21,8 +21,9 @@
 , seatd
 , vulkan-loader
 , glslang
-, libliftoff_0_4
+, libliftoff
 , libdisplay-info
+, lcms2
 , nixosTests
 
 , enableXWayland ? true
@@ -125,17 +126,31 @@ rec {
   };
 
   wlroots_0_17 = generic {
-    version = "0.17.3";
-    hash = "sha256-jth6BKci3sVDC86o+gSHKyDWnibVcNmipm7nn0S6LTg=";
+    version = "0.17.4";
+    hash = "sha256-AzmXf+HMX/6VAr0LpfHwfmDB9dRrrLQHt7l35K98MVo=";
     extraNativeBuildInputs = [
       hwdata
     ];
     extraBuildInputs = [
       ffmpeg
-      libliftoff_0_4
+      libliftoff
       libdisplay-info
     ];
   };
 
-  wlroots = wlroots_0_17;
+  wlroots_0_18 = generic {
+    version = "0.18.0";
+    hash = "sha256-LiRnvu7qCbfSg+ONWVCtWwdzxxFZHfbgmy7zApCIW40=";
+    extraNativeBuildInputs = [
+      hwdata
+    ];
+    extraBuildInputs = [
+      ffmpeg
+      libliftoff
+      libdisplay-info
+      lcms2
+    ];
+  };
+
+  wlroots = wlroots_0_18;
 }

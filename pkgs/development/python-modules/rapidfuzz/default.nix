@@ -19,7 +19,7 @@
 
 buildPythonPackage rec {
   pname = "rapidfuzz";
-  version = "3.9.3";
+  version = "3.9.4";
   pyproject = true;
 
   disabled = pythonOlder "3.8";
@@ -28,7 +28,7 @@ buildPythonPackage rec {
     owner = "maxbachmann";
     repo = "RapidFuzz";
     rev = "refs/tags/v${version}";
-    hash = "sha256-G1WveLVoeWkaKrHRFgCt8HVBnBYNdCb7/JVCm0L4dv8=";
+    hash = "sha256-Af5WTmvUVO91GfnnjVnShMB188XINBdmk2NWC80REdI=";
   };
 
   postPatch = ''
@@ -58,12 +58,6 @@ buildPythonPackage rec {
     + lib.optionalString (stdenv.isDarwin && stdenv.isx86_64) ''
       export CMAKE_ARGS="-DCMAKE_CXX_COMPILER_AR=$AR -DCMAKE_CXX_COMPILER_RANLIB=$RANLIB"
     '';
-
-  env.NIX_CFLAGS_COMPILE = toString (
-    lib.optionals (stdenv.cc.isClang && stdenv.isDarwin) [
-      "-fno-lto" # work around https://github.com/NixOS/nixpkgs/issues/19098
-    ]
-  );
 
   passthru.optional-dependencies = {
     full = [ numpy ];

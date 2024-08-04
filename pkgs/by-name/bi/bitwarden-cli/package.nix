@@ -4,29 +4,31 @@
 , nodejs_20
 , fetchFromGitHub
 , python3
-, darwin
+, cctools
 , nixosTests
+, xcbuild
 }:
 
 buildNpmPackage rec {
   pname = "bitwarden-cli";
-  version = "2024.6.0";
+  version = "2024.7.2";
 
   src = fetchFromGitHub {
     owner = "bitwarden";
     repo = "clients";
     rev = "cli-v${version}";
-    hash = "sha256-qiUUrs23WHE3+KFsWDknuDSA6M3Zwjz9Jdjq6mn5XkE=";
+    hash = "sha256-MqIznJe5GeRTJ+sgOJoTHAQaac0obuBDb63XxQeG1iY=";
   };
 
   nodejs = nodejs_20;
 
-  npmDepsHash = "sha256-Mgd15eFJtWoBqFFCsjmsnlNbcg5NDs1U7DlMkE0hIb8=";
+  npmDepsHash = "sha256-XDN92VPKTA9KeSg5CQXxhXyEARZBwpERZ3400xqwg7U=";
 
   nativeBuildInputs = [
-    python3
+    (python3.withPackages (ps: with ps; [ setuptools ]))
   ] ++ lib.optionals stdenv.isDarwin [
-    darwin.cctools
+    cctools
+    xcbuild.xcrun
   ];
 
   makeCacheWritable = true;

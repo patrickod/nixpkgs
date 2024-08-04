@@ -28,20 +28,20 @@ let
 in
 buildNpmPackage' rec {
   pname = "bruno";
-  version = "1.19.0";
+  version = "1.23.0";
 
   src = fetchFromGitHub {
     owner = "usebruno";
     repo = "bruno";
     rev = "v${version}";
-    hash = "sha256-XprUu4Dp7ER8YC1uO4kkzTZLsJtoOFH15elnkxUn7/c=";
+    hash = "sha256-zbQlmxrvA2rZLEGmhj7MkVP5SmJdhhL9F3wRrB97DJs=";
 
     postFetch = ''
       ${lib.getExe npm-lockfile-fix} $out/package-lock.json
     '';
   };
 
-  npmDepsHash = "sha256-BVCyZKhSBNJDmhnO68ULj5aMINFQIIlwlGqwjGkOoEI=";
+  npmDepsHash = "sha256-157hm7h5FWuOuxoo6WTtlMPq5LcRZIsSt5NDg0pvim8=";
   npmFlags = [ "--legacy-peer-deps" ];
 
   nativeBuildInputs = [
@@ -151,9 +151,9 @@ buildNpmPackage' rec {
   meta = with lib; {
     description = "Open-source IDE For exploring and testing APIs";
     homepage = "https://www.usebruno.com";
-    inherit (electron.meta) platforms;
+    platforms = platforms.linux ++ platforms.darwin;
     license = licenses.mit;
-    maintainers = with maintainers; [ gepbird kashw2 lucasew mattpolzin water-sucks ];
+    maintainers = with maintainers; [ gepbird kashw2 lucasew mattpolzin water-sucks redyf ];
     mainProgram = "bruno";
   };
 }
