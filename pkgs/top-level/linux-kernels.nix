@@ -61,7 +61,7 @@ in {
   kernels = recurseIntoAttrs (lib.makeExtensible (self: with self;
     let callPackage = newScope self; in {
 
-    # NOTE: PLEASE DO NOT ADD NEW VENDOR KERNELS TO NIXPKGS.
+    # NOTE: PLEASE DO NOT ADD NEW DOWNSTREAM KERNELS TO NIXPKGS.
     # New vendor kernels should go to nixos-hardware instead.
     # e.g. https://github.com/NixOS/nixos-hardware/tree/master/microsoft/surface/kernel
 
@@ -377,7 +377,10 @@ in {
 
     intel-speed-select = if lib.versionAtLeast kernel.version "5.3" then callPackage ../os-specific/linux/intel-speed-select { } else null;
 
-    ipu6-drivers = callPackage ../os-specific/linux/ipu6-drivers {};
+    ipu6-drivers =
+      if kernelOlder "6.10"
+      then callPackage ../os-specific/linux/ipu6-drivers {}
+      else null;
 
     ivsc-driver = callPackage ../os-specific/linux/ivsc-driver {};
 
