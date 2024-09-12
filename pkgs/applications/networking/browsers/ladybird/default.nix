@@ -8,16 +8,13 @@
 , unicode-emoji
 , unicode-character-database
 , cmake
-, dav1d
 , ninja
 , pkg-config
-, libaom
 , libavif
 , libjxl
 , libtiff
 , libwebp
 , libxcrypt
-, libyuv
 , python3
 , qt6Packages
 , woff2
@@ -61,13 +58,13 @@ let
 in
 stdenv.mkDerivation (finalAttrs: {
   pname = "ladybird";
-  version = "0-unstable-2024-08-12";
+  version = "0-unstable-2024-09-08";
 
   src = fetchFromGitHub {
     owner = "LadybirdWebBrowser";
     repo = "ladybird";
-    rev = "7e57cc7b090455e93261c847064f12a61d686ff3";
-    hash = "sha256-8rkgxEfRH8ERuC7iplQKOzKb1EJ4+SNGDX5gTGpOmQo=";
+    rev = "8d6f36f8d6c0aea0253df8c84746f8c99bf79b4d";
+    hash = "sha256-EB26SAh9eckpq/HrO8O+PivMMmLpFtCdCNkOJcLQvZw=";
   };
 
   postPatch = ''
@@ -137,14 +134,11 @@ stdenv.mkDerivation (finalAttrs: {
   ];
 
   buildInputs = with qt6Packages; [
-    dav1d
     ffmpeg
-    libaom
     libavif
     libjxl
     libwebp
     libxcrypt
-    libyuv
     qtbase
     qtmultimedia
     simdutf
@@ -178,7 +172,7 @@ stdenv.mkDerivation (finalAttrs: {
   '';
 
   # Only Ladybird and WebContent need wrapped, if Qt is enabled.
-  # On linux we end up wrapping some non-Qt apps, like headless-browser.
+  # On linux we end up wraping some non-Qt apps, like headless-browser.
   dontWrapQtApps = stdenv.isDarwin;
 
   passthru.tests = {
