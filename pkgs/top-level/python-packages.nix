@@ -3424,6 +3424,8 @@ self: super: with self; {
 
   django-jquery-js = callPackage ../development/python-modules/django-jquery-js { };
 
+  django-json-widget = callPackage ../development/python-modules/django-json-widget { };
+
   django-js-asset = callPackage ../development/python-modules/django-js-asset { };
 
   django-js-reverse = callPackage ../development/python-modules/django-js-reverse { };
@@ -9150,6 +9152,8 @@ self: super: with self; {
 
   nutils-poly = callPackage ../development/python-modules/nutils-poly { };
 
+  nutpie = callPackage ../development/python-modules/nutpie { };
+
   nvchecker = callPackage ../development/python-modules/nvchecker { };
 
   nvdlib = callPackage ../development/python-modules/nvdlib { };
@@ -9374,6 +9378,8 @@ self: super: with self; {
     enablePython = true;
     pythonPackages = self;
   });
+
+  opencv-python-headless = callPackage ../development/python-modules/opencv-python-headless { };
 
   openerz-api = callPackage ../development/python-modules/openerz-api { };
 
@@ -10285,7 +10291,9 @@ self: super: with self; {
 
   pykrakenapi = callPackage ../development/python-modules/pykrakenapi { };
 
-  pylance = callPackage ../development/python-modules/pylance { };
+  pylance = callPackage ../development/python-modules/pylance {
+    inherit (pkgs) protobuf;
+  };
 
   pylddwrap = callPackage ../development/python-modules/pylddwrap { };
 
