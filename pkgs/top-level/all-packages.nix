@@ -19158,13 +19158,10 @@ with pkgs;
 
   honeyvent = callPackage ../servers/tracing/honeycomb/honeyvent { };
 
-<<<<<<< HEAD
   mictray = callPackage ../tools/audio/mictray { };
 
   git-history = with python3Packages; toPythonApplication git-history;
 
-=======
->>>>>>> upstream/nixpkgs-unstable
   swift-corelibs-libdispatch = swiftPackages.Dispatch;
 
   aitrack = libsForQt5.callPackage ../applications/misc/aitrack { };
