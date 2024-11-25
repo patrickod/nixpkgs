@@ -34,6 +34,7 @@
 , nukeReferences
 , callPackage
 , majorMinorVersion
+, apple-sdk
 , cctools
 , darwin
 }:
@@ -105,6 +106,7 @@ let
       ;
       # inherit generated with 'nix eval --json --impure --expr "with import ./. {}; lib.attrNames (lib.functionArgs gcc${majorVersion}.cc.override)" | jq '.[]' --raw-output'
       inherit
+        apple-sdk
         binutils
         buildPackages
         cargo
@@ -224,7 +226,8 @@ pipe ((callFile ./common/builder.nix {}) ({
         libc = if libcCross != null then libcCross else stdenv.cc.libc;
       in
         (
-        '' echo "fixing the {GLIBC,UCLIBC,MUSL}_DYNAMIC_LINKER macros..."
+        ''
+           echo "fixing the {GLIBC,UCLIBC,MUSL}_DYNAMIC_LINKER macros..."
            for header in "gcc/config/"*-gnu.h "gcc/config/"*"/"*.h
            do
              grep -q _DYNAMIC_LINKER "$header" || continue

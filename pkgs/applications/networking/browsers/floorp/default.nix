@@ -9,7 +9,7 @@
 (
   (buildMozillaMach rec {
     pname = "floorp";
-    packageVersion = "11.19.1";
+    packageVersion = "11.20.0";
     applicationName = "Floorp";
     binaryName = "floorp";
     branding = "browser/branding/official";
@@ -17,14 +17,14 @@
     allowAddonSideload = true;
 
     # Must match the contents of `browser/config/version.txt` in the source tree
-    version = "128.4.0";
+    version = "128.5.0";
 
     src = fetchFromGitHub {
       owner = "Floorp-Projects";
       repo = "Floorp";
       fetchSubmodules = true;
       rev = "v${packageVersion}";
-      hash = "sha256-RFJ3aRbLwCf0qaluqImcF9+6frvJbw8QE3jBpxNxFjE=";
+      hash = "sha256-+FVnG8CKEQdFN9bO8rUZadp+d8keCB98T7qt9OBfLDA=";
     };
 
     extraConfigureFlags = [
@@ -50,7 +50,6 @@
       homepage = "https://floorp.app/";
       maintainers = with lib.maintainers; [ christoph-heiss ];
       platforms = lib.platforms.unix;
-      badPlatforms = lib.platforms.darwin;
       broken = stdenv.buildPlatform.is32bit;
       # since Firefox 60, build on 32-bit platforms fails with "out of memory".
       # not in `badPlatforms` because cross-compilation on 64-bit machine might work.
