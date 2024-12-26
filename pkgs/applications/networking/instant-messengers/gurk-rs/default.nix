@@ -1,12 +1,15 @@
-{ stdenv
-, lib
-, protobuf
-, rustPlatform
-, fetchFromGitHub
-, Cocoa
-, pkgsBuildHost
-, openssl
-, pkg-config
+{
+  stdenv,
+  lib,
+  protobuf,
+  rustPlatform,
+  fetchFromGitHub,
+  Cocoa,
+  pkgsBuildHost,
+  openssl,
+  pkg-config,
+  testers,
+  gurk-rs,
 }:
 
 rustPlatform.buildRustPackage rec {
@@ -28,18 +31,27 @@ rustPlatform.buildRustPackage rec {
 
   cargoHash = "sha256-jTZ2wJPXj3nU7GVTfne64eSra+JuKhNryCtRZMKOE44=";
 
-  nativeBuildInputs = [ protobuf pkg-config ];
+  nativeBuildInputs = [
+    protobuf
+    pkg-config
+  ];
 
-  buildInputs = [ openssl ]
-    ++ lib.optionals stdenv.hostPlatform.isDarwin [ Cocoa ];
+  buildInputs = [ openssl ] ++ lib.optionals stdenv.hostPlatform.isDarwin [ Cocoa ];
 
-  NIX_LDFLAGS = lib.optionals (stdenv.hostPlatform.isDarwin && stdenv.hostPlatform.isx86_64) [ "-framework" "AppKit" ];
+  NIX_LDFLAGS = lib.optionals (stdenv.hostPlatform.isDarwin && stdenv.hostPlatform.isx86_64) [
+    "-framework"
+    "AppKit"
+  ];
 
   PROTOC = "${pkgsBuildHost.protobuf}/bin/protoc";
 
   OPENSSL_NO_VENDOR = true;
 
   useNextest = true;
+
+  passthru.tests.version = testers.testVersion {
+    package = gurk-rs;
+  };
 
   meta = with lib; {
     description = "Signal Messenger client for terminal";

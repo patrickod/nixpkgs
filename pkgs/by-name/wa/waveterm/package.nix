@@ -18,7 +18,7 @@
   libXext,
   libXfixes,
   libXrandr,
-  mesa,
+  libgbm,
   expat,
   libxcb,
   alsa-lib,
@@ -29,35 +29,12 @@
   udev,
   libGL,
   fetchzip,
+  unzip,
 }:
-
 let
+  selectSystem = attrs: attrs.${stdenv.hostPlatform.system};
   pname = "waveterm";
-  version = "0.9.2";
-
-  src =
-    let
-      inherit (stdenv.hostPlatform) system;
-      selectSystem = attrs: attrs.${system};
-      suffix = selectSystem {
-        x86_64-linux = "waveterm-linux-x64";
-        aarch64-linux = "waveterm-linux-arm64";
-        x86_64-darwin = "Wave-darwin-x64";
-        aarch64-darwin = "Wave-darwin-arm64";
-      };
-      hash = selectSystem {
-        x86_64-linux = "sha256-s6s/SfLNVwRN50OgqWTohHT8/rFuu4P3hpxfhA7kPOU=";
-        aarch64-linux = "sha256-dxQbTPvge3QY40rWKAOV/uuTPzHsfNk9USxICoF1CQM=";
-        x86_64-darwin = "sha256-/nedzsQxqLclK5uwOKZ/WgRwjoHDCxLuI+/T1B3cyJM=";
-        aarch64-darwin = "sha256-lBJEJHgBozrR+JF5jlbmuG2c0P19qmjJUhwlJtHqkRE=";
-      };
-    in
-    fetchzip {
-      url = "https://github.com/wavetermdev/waveterm/releases/download/v${version}/${suffix}-${version}.zip";
-      inherit hash;
-      stripRoot = false;
-    };
-
+  version = "0.10.1";
   passthru.updateScript = ./update.sh;
 
   desktopItems = [
@@ -104,11 +81,27 @@ let
     inherit
       pname
       version
-      src
       desktopItems
       meta
       passthru
       ;
+
+    src =
+      let
+        arch = selectSystem {
+          x86_64-linux = "x64";
+          aarch64-linux = "arm64";
+        };
+        hash = selectSystem {
+          x86_64-linux = "sha256-zv8ndwMt4VqsdJEEdfXzK4rnyslxF/gwnFdUu5OavNY=";
+          aarch64-linux = "sha256-6EFk1CDPeYc1KWeIxBQEsMLA9tYpnSxjG+yRg5CkGZA=";
+        };
+      in
+      fetchzip {
+        url = "https://github.com/wavetermdev/waveterm/releases/download/v${version}/waveterm-linux-${arch}-${version}.zip";
+        inherit hash;
+        stripRoot = false;
+      };
 
     nativeBuildInputs = [
       copyDesktopItems
@@ -130,7 +123,7 @@ let
       libXext
       libXfixes
       libXrandr
-      mesa
+      libgbm
       expat
       libxcb
       alsa-lib
@@ -146,13 +139,14 @@ let
     installPhase = ''
       runHook preInstall
 
-      mkdir -p $out/waveterm $out/bin
-      cp -r ./* $out/waveterm/
+      mkdir $out
+      cp -r . $out/waveterm
 
       runHook postInstall
     '';
 
     preFixup = ''
+      mkdir $out/bin
       makeWrapper $out/waveterm/waveterm $out/bin/waveterm \
         --prefix LD_LIBRARY_PATH : "${
           lib.makeLibraryPath [
@@ -162,22 +156,41 @@ let
     '';
   };
 
-  darwin = stdenv.mkDerivation {
+  darwin = stdenv.mkDerivation rec {
     inherit
       pname
       version
-      src
       meta
       passthru
       ;
+
+    src =
+      let
+        arch = selectSystem {
+          x86_64-darwin = "x64";
+          aarch64-darwin = "arm64";
+        };
+        hash = selectSystem {
+          x86_64-darwin = "sha256-7TCDg0TU0Bx9WLwLiQRcyzrFTlmkXYQIpya2SUiEXoc=";
+          aarch64-darwin = "sha256-pVxPmTz1bCKREUOvA3Jrf7kiOI5iLzqgnutblEqc4IA=";
+        };
+      in
+      fetchurl {
+        url = "https://github.com/wavetermdev/waveterm/releases/download/v${version}/Wave-darwin-${arch}-${version}.zip";
+        inherit hash;
+      };
+
+    nativeBuildInputs = [
+      unzip
+    ];
 
     sourceRoot = "Wave.app";
 
     installPhase = ''
       runHook preInstall
 
-      mkdir -p $out/Applications/Wave.app
-      cp -R . $out/Applications/Wave.app
+      mkdir -p $out/Applications
+      cp -r . $out/Applications/Wave.app
 
       runHook postInstall
     '';

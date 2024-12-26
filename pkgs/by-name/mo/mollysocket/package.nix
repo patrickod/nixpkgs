@@ -1,37 +1,40 @@
-{ lib
-, rustPlatform
-, fetchFromGitHub
-, pkg-config
-, openssl
-, sqlite
-, stdenv
-, darwin
-, nixosTests
+{
+  lib,
+  rustPlatform,
+  fetchFromGitHub,
+  pkg-config,
+  openssl,
+  sqlite,
+  stdenv,
+  darwin,
+  nixosTests,
 }:
 
 rustPlatform.buildRustPackage rec {
   pname = "mollysocket";
-  version = "1.5.2";
+  version = "1.5.4";
 
   src = fetchFromGitHub {
     owner = "mollyim";
     repo = "mollysocket";
     rev = version;
-    hash = "sha256-6SS1OyAkjL2K87wbUmDs+dDSLp3xL65CkM2AziuN0JQ=";
+    hash = "sha256-kWmftkzxhVkXQ8EcGJz+Yg6o9OubIMQprwDrcKb2HWQ=";
   };
 
-  cargoHash = "sha256-gdHd10MfY7owKsLCsYCy4KIClnsgBzak6ZfghYuVDOc=";
+  cargoHash = "sha256-UgJI9lUbvX/Yw90fo6/voX9noWZH8XVssOR4DpquHUY=";
 
   nativeBuildInputs = [
     pkg-config
   ];
 
-  buildInputs = [
-    openssl
-    sqlite
-  ] ++ lib.optionals stdenv.hostPlatform.isDarwin [
-    darwin.apple_sdk.frameworks.Security
-  ];
+  buildInputs =
+    [
+      openssl
+      sqlite
+    ]
+    ++ lib.optionals stdenv.hostPlatform.isDarwin [
+      darwin.apple_sdk.frameworks.Security
+    ];
 
   checkFlags = [
     # tests interact with Signal servers

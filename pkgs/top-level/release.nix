@@ -35,6 +35,7 @@
     # so users choosing to allow don't have to rebuild them every time.
     permittedInsecurePackages = [
       "olm-3.2.16" # see PR #347899
+      "kanidm_1_3-1.3.3"
     ];
   }; }
 
@@ -215,8 +216,6 @@ let
               TODO: re-add tests; context: https://github.com/NixOS/nixpkgs/commit/36587a587ab191eddd868179d63c82cdd5dee21b
 
               jobs.tests.cc-wrapper.default.x86_64-linux
-              jobs.tests.cc-wrapper.gcc7Stdenv.x86_64-linux
-              jobs.tests.cc-wrapper.gcc8Stdenv.x86_64-linux
 
               # broken see issue #40038
 
@@ -248,8 +247,6 @@ let
               jobs.darwin.linux-builder.x86_64-darwin
               /*
               jobs.tests.cc-wrapper.default.x86_64-darwin
-              jobs.tests.cc-wrapper.gcc7Stdenv.x86_64-darwin
-              jobs.tests.cc-wrapper.gcc8Stdenv.x86_64-darwin
               jobs.tests.cc-wrapper.llvmPackages.clang.x86_64-darwin
               jobs.tests.cc-wrapper.llvmPackages.libcxx.x86_64-darwin
               jobs.tests.stdenv-inputs.x86_64-darwin
