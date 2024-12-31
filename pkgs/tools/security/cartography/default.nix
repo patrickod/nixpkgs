@@ -15,7 +15,7 @@ python38Packages.buildPythonApplication rec {
     pytest
   ];
 
-  propagatedBuildInputs = with python38Packages; [
+  propagatedBuildInputs = with python39Packages; [
     boto3
     botocore
     dnspython
