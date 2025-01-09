@@ -1371,6 +1371,8 @@ let
 
     ocamline = callPackage ../development/ocaml-modules/ocamline { };
 
+    ocamlmerlin-mlx = callPackage ../development/ocaml-modules/mlx/ocamlmerlin-mlx.nix { };
+
     ocamlmod = callPackage ../development/tools/ocaml/ocamlmod { };
 
     ocamlnet = callPackage ../development/ocaml-modules/ocamlnet { };
@@ -1488,6 +1490,8 @@ let
     parmap = callPackage ../development/ocaml-modules/parmap { };
 
     parse-argv = callPackage ../development/ocaml-modules/parse-argv { };
+
+    patch = callPackage ../development/ocaml-modules/patch { };
 
     path_glob = callPackage ../development/ocaml-modules/path_glob { };
 
@@ -1651,6 +1655,10 @@ let
     ### R ###
 
     randomconv = callPackage ../development/ocaml-modules/randomconv { };
+
+    raylib = callPackage ../development/ocaml-modules/raylib { };
+
+    raygui = callPackage ../development/ocaml-modules/raylib/raygui.nix { };
 
     rdbg = callPackage ../development/ocaml-modules/rdbg { };
 

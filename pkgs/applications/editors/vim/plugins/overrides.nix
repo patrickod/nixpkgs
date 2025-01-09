@@ -21,6 +21,7 @@
   coc-css,
   coc-diagnostic,
   coc-pyright,
+  coc-toml,
   code-minimap,
   dasht,
   deno,
@@ -588,6 +589,12 @@ in
     pname = "coc-nginx";
     inherit (nodePackages."@yaegassy/coc-nginx") version meta;
     src = "${nodePackages."@yaegassy/coc-nginx"}/lib/node_modules/@yaegassy/coc-nginx";
+  };
+
+  coc-toml = buildVimPlugin {
+    pname = "coc-toml";
+    inherit (coc-toml) version meta;
+    src = "${coc-toml}/lib/node_modules/coc-toml";
   };
 
   codecompanion-nvim = super.codecompanion-nvim.overrideAttrs {
@@ -2122,6 +2129,41 @@ in
     dependencies = [ self.nvim-treesitter ];
   };
 
+  nvim-java = super.nvim-java.overrideAttrs {
+    dependencies = with self; [
+      lua-async-await
+      mason-nvim
+      nui-nvim
+      nvim-dap
+      nvim-java-core
+      nvim-java-dap
+      nvim-java-refactor
+      nvim-java-test
+      nvim-lspconfig
+    ];
+  };
+
+  nvim-java-core = super.nvim-java-core.overrideAttrs {
+    dependencies = with self; [
+      mason-nvim
+      nvim-lspconfig
+    ];
+  };
+
+  nvim-java-dap = super.nvim-java-dap.overrideAttrs {
+    dependencies = [ self.nvim-java-core ];
+  };
+
+  nvim-java-refactor = super.nvim-java-refactor.overrideAttrs {
+    dependencies = [ self.nvim-java-core ];
+    nvimSkipModule = [
+      # Requires the `java.utils.ui` module which seems to be provided by `nvim-java` (cyclic dependency)
+      # -> Skip to avoid infinite recursion
+      "java-refactor.action"
+      "java-refactor.refactor"
+    ];
+  };
+
   nvim-lsp-file-operations = super.nvim-lsp-file-operations.overrideAttrs {
     dependencies = [ self.plenary-nvim ];
     nvimRequireCheck = "lsp-file-operations";
@@ -2299,6 +2341,11 @@ in
 
   nvim-treesitter-textsubjects = super.nvim-treesitter-textsubjects.overrideAttrs {
     dependencies = [ self.nvim-treesitter ];
+  };
+
+  nvim-trevJ-lua = super.nvim-trevJ-lua.overrideAttrs {
+    dependencies = [ self.nvim-treesitter ];
+    nvimRequireCheck = "trevj";
   };
 
   nvim-ufo = super.nvim-ufo.overrideAttrs {
@@ -2607,6 +2654,10 @@ in
 
   rust-tools-nvim = super.rust-tools-nvim.overrideAttrs {
     dependencies = [ self.nvim-lspconfig ];
+  };
+
+  rzls-nvim = super.rzls-nvim.overrideAttrs {
+    dependencies = [ self.roslyn-nvim ];
   };
 
   samodostal-image-nvim = super.samodostal-image-nvim.overrideAttrs {
@@ -3711,7 +3762,6 @@ in
       "coc-sumneko-lua"
       "coc-tabnine"
       "coc-texlab"
-      "coc-toml"
       "coc-tsserver"
       "coc-ultisnips"
       "coc-vetur"
