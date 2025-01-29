@@ -1302,6 +1302,18 @@ final: prev:
     meta.homepage = "https://github.com/Saghen/blink.compat/";
   };
 
+  blink-copilot = buildVimPlugin {
+    pname = "blink-copilot";
+    version = "2025-01-27";
+    src = fetchFromGitHub {
+      owner = "fang2hou";
+      repo = "blink-copilot";
+      rev = "7e63f20b8e96191e5c87bf96fc35da3547993be2";
+      sha256 = "10lm90xa7w3ww94acivshnzkp4q2bfrq9zff2z5amrp3cxlga0rf";
+    };
+    meta.homepage = "https://github.com/fang2hou/blink-copilot/";
+  };
+
   blink-emoji-nvim = buildVimPlugin {
     pname = "blink-emoji.nvim";
     version = "2025-01-04";
@@ -5219,6 +5231,18 @@ final: prev:
     meta.homepage = "https://github.com/pimalaya/himalaya-vim/";
   };
 
+  hlchunk-nvim = buildVimPlugin {
+    pname = "hlchunk.nvim";
+    version = "2024-11-23";
+    src = fetchFromGitHub {
+      owner = "shellRaining";
+      repo = "hlchunk.nvim";
+      rev = "5465dd33ade8676d63f6e8493252283060cd72ca";
+      sha256 = "0vksi1idliaxk5l3hksfhhbps4sw6d8lk58m5ja4wrnmjxz5b5bz";
+    };
+    meta.homepage = "https://github.com/shellRaining/hlchunk.nvim/";
+  };
+
   hlint-refactor-vim = buildVimPlugin {
     pname = "hlint-refactor-vim";
     version = "2015-12-05";
@@ -6290,6 +6314,18 @@ final: prev:
     meta.homepage = "https://github.com/smjonas/live-command.nvim/";
   };
 
+  llama-vim = buildVimPlugin {
+    pname = "llama.vim";
+    version = "2025-01-24";
+    src = fetchFromGitHub {
+      owner = "ggml-org";
+      repo = "llama.vim";
+      rev = "81e6802ebd00f177a8db73d62c7eeaf14a30819a";
+      sha256 = "0fcg0xmdjc9z25ssjmg9pl5q0vk1h1k65ipd4dfzxchvmfzirl5j";
+    };
+    meta.homepage = "https://github.com/ggml-org/llama.vim/";
+  };
+
   llm-nvim = buildVimPlugin {
     pname = "llm.nvim";
     version = "2025-01-09";
@@ -6483,18 +6519,6 @@ final: prev:
 
   lua-async = buildVimPlugin {
     pname = "lua-async";
-    version = "2024-03-31";
-    src = fetchFromGitHub {
-      owner = "nvim-java";
-      repo = "lua-async";
-      rev = "652d94df34e97abe2d4a689edbc4270e7ead1a98";
-      sha256 = "0jpw9008xghqmzjnikwq417p497lj7v9hkjbrach5p652yca07s8";
-    };
-    meta.homepage = "https://github.com/nvim-java/lua-async/";
-  };
-
-  lua-async-await = buildVimPlugin {
-    pname = "lua-async-await";
     version = "2024-03-31";
     src = fetchFromGitHub {
       owner = "nvim-java";
@@ -10458,7 +10482,7 @@ final: prev:
     meta.homepage = "https://github.com/salkin-mada/openscad.nvim/";
   };
 
-  orgmode = buildVimPlugin {
+  orgmode = buildNeovimPlugin {
     pname = "orgmode";
     version = "2025-01-19";
     src = fetchFromGitHub {
