@@ -27,21 +27,18 @@
   polars,
   pytestCheckHook,
   tqdm,
-
-  # passthru
-  nix-update-script,
 }:
 
 buildPythonPackage rec {
   pname = "pylance";
-  version = "0.23.1";
+  version = "0.25.1";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "lancedb";
     repo = "lance";
     tag = "v${version}";
-    hash = "sha256-H5C4gaXC/Vvzq/5Mr0ZeO3waJJ+v43IWDOVziSb9rgk=";
+    hash = "sha256-mAVHpQfuAr4RQ8ZwsJHwKtlAtWO3ssm0ic6Y2/c1tZk=";
   };
 
   sourceRoot = "${src.name}/python";
@@ -53,7 +50,7 @@ buildPythonPackage rec {
       src
       sourceRoot
       ;
-    hash = "sha256-QSqDxkI4O11s34fL397KPCSBKRieNhzAQu2QZuqD3yE=";
+    hash = "sha256-auL8d8gu2V7kCb4LKdP7mmJZys4YLi2s856/aE73e7Q=";
   };
 
   nativeBuildInputs = [
@@ -121,8 +118,6 @@ buildPythonPackage rec {
       "test_iter_over_dataset_fixed_shape_tensor"
       "test_iter_over_dataset_fixed_size_lists"
     ];
-
-  passthru.updateScript = nix-update-script { };
 
   meta = {
     description = "Python wrapper for Lance columnar format";

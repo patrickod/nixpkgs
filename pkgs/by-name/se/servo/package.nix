@@ -62,24 +62,24 @@ in
 
 rustPlatform.buildRustPackage {
   pname = "servo";
-  version = "0-unstable-2025-02-20";
+  version = "0-unstable-2025-03-18";
 
   src = fetchFromGitHub {
     owner = "servo";
     repo = "servo";
-    rev = "54b5c7b632ecb48f134b232ee1b9aa8bc8c286c0";
-    hash = "sha256-MHxGL7NFa6+QexeBITy0WPcBLCO6NrnPOEBlJMF7iZA=";
+    rev = "8d39d7706aee50971e848a5e31fc6bfd7ef552c1";
+    hash = "sha256-PdkES7tvECVoJWa78t/K4ab+brqCLHY47c+TnDNQ3Ps=";
+    # Breaks reproducibility depending on whether the picked commit
+    # has other ref-names or not, which may change over time, i.e. with
+    # "ref-names: HEAD -> main" as long this commit is the branch HEAD
+    # and "ref-names:" when it is not anymore.
+    postFetch = ''
+      rm $out/tests/wpt/tests/tools/third_party/attrs/.git_archival.txt
+    '';
   };
 
   useFetchCargoVendor = true;
-  cargoHash = "sha256-ZVHM+z1ZYAu6GIar602FoAB77EhbjV3Mf9oFHe5q3LY=";
-
-  postPatch = ''
-    # Remap absolute path between modules to include SEMVER
-    substituteInPlace ../servo-0-unstable-*-vendor/servo_atoms-0.0.1/build.rs --replace-fail \
-      "../style/counter_style/predefined.rs" \
-      "../style-0.0.1/counter_style/predefined.rs"
-  '';
+  cargoHash = "sha256-mxbRqJ+ex9k1h6wOgjPHWfG8RA0vVRBAqsHtwSRI12Y=";
 
   # set `HOME` to a temp dir for write access
   # Fix invalid option errors during linking (https://github.com/mozilla/nixpkgs-mozilla/commit/c72ff151a3e25f14182569679ed4cd22ef352328)

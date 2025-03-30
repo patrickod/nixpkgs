@@ -9,17 +9,17 @@
 
 buildGoModule rec {
   pname = "museum";
-  version = "0.9.81";
+  version = "0.9.99";
 
   src = fetchFromGitHub {
     owner = "ente-io";
     repo = "ente";
     sparseCheckout = [ "server" ];
     rev = "photos-v${version}";
-    hash = "sha256-4vX3UWbYYCjNxtSNUAE9hg9NokeJFPTjLvHYTkQlB0w=";
+    hash = "sha256-+EL81zSOjoBfew8LRl0awWXgc2r8KDBBCYBBtDU1s5g=";
   };
 
-  vendorHash = "sha256-Vz9AodHoClSmo51ExdOS4bWH13i1Sug++LQMIsZY2xY=";
+  vendorHash = "sha256-px4pMqeH73Fe06va4+n6hklIUDMbPmAQNKKRIhwv6ec=";
 
   sourceRoot = "${src.name}/server";
 

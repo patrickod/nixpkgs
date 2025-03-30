@@ -2,7 +2,6 @@
   lib,
   buildGoModule,
   fetchFromGitHub,
-  fetchpatch,
   buildEnv,
   linkFarm,
   makeWrapper,
@@ -44,17 +43,17 @@ assert builtins.elem acceleration [
 let
   pname = "ollama";
   # don't forget to invalidate all hashes each update
-  version = "0.5.11";
+  version = "0.6.2";
 
   src = fetchFromGitHub {
     owner = "ollama";
     repo = "ollama";
     tag = "v${version}";
-    hash = "sha256-Yc/FwIoPvzYSxlrhjkc6xFL5iCunDYmZkG16MiWVZck=";
+    hash = "sha256-ZQiBbVQbMYxC73DAPyWi6Yn/cPySpsPcTiCOHK3F35w=";
     fetchSubmodules = true;
   };
 
-  vendorHash = "sha256-wtmtuwuu+rcfXsyte1C4YLQA4pnjqqxFmH1H18Fw75g=";
+  vendorHash = "sha256-Zpzn2YWpiDAl4cwgrrSpN8CFy4GqqhE1mWsRxtYwdDA=";
 
   validateFallback = lib.warnIf (config.rocmSupport && config.cudaSupport) (lib.concatStrings [
     "both `nixpkgs.config.rocmSupport` and `nixpkgs.config.cudaSupport` are enabled, "
@@ -172,15 +171,6 @@ goBuild {
     lib.optionals enableRocm (rocmLibs ++ [ libdrm ])
     ++ lib.optionals enableCuda cudaLibs
     ++ lib.optionals stdenv.hostPlatform.isDarwin metalFrameworks;
-
-  patches = [
-    # don't try to build x86_64 architectures on linux-aarch64
-    # NOTE: should be removed after 0.5.11
-    (fetchpatch {
-      url = "https://github.com/ollama/ollama/commit/08a299e1d0636056b09d669f9aa347139cde6ec0.patch";
-      hash = "sha256-PC9jQklPAN/ZdHlQEQ6/RweGGBiUPDehHyaboX0tRZk=";
-    })
-  ];
 
   # replace inaccurate version number with actual release version
   postPatch = ''
