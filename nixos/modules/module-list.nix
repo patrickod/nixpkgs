@@ -186,7 +186,6 @@
   ./programs/corefreq.nix
   ./programs/cpu-energy-meter.nix
   ./programs/criu.nix
-  ./programs/darling.nix
   ./programs/dconf.nix
   ./programs/digitalbitbox/default.nix
   ./programs/direnv.nix
@@ -440,6 +439,7 @@
   ./services/backup/duplicati.nix
   ./services/backup/duplicity.nix
   ./services/backup/mysql-backup.nix
+  ./services/backup/pgbackrest.nix
   ./services/backup/postgresql-backup.nix
   ./services/backup/postgresql-wal-receiver.nix
   ./services/backup/restic-rest-server.nix
@@ -800,6 +800,7 @@
   ./services/misc/domoticz.nix
   ./services/misc/duckdns.nix
   ./services/misc/duckling.nix
+  ./services/misc/dump1090-fa.nix
   ./services/misc/dwm-status.nix
   ./services/misc/dysnomia.nix
   ./services/misc/errbot.nix
@@ -985,6 +986,7 @@
   ./services/monitoring/pgscv.nix
   ./services/monitoring/prometheus/alertmanager-gotify-bridge.nix
   ./services/monitoring/prometheus/alertmanager-irc-relay.nix
+  ./services/monitoring/prometheus/alertmanager-ntfy.nix
   ./services/monitoring/prometheus/alertmanager-webhook-logger.nix
   ./services/monitoring/prometheus/alertmanager.nix
   ./services/monitoring/prometheus/default.nix
@@ -1073,6 +1075,7 @@
   ./services/networking/bitlbee.nix
   ./services/networking/blockbook-frontend.nix
   ./services/networking/blocky.nix
+  ./services/networking/cato-client.nix
   ./services/networking/centrifugo.nix
   ./services/networking/cgit.nix
   ./services/networking/charybdis.nix
@@ -1500,7 +1503,6 @@
   ./services/web-apps/akkoma.nix
   ./services/web-apps/alps.nix
   ./services/web-apps/anuko-time-tracker.nix
-  ./services/web-apps/archtika.nix
   ./services/web-apps/artalk.nix
   ./services/web-apps/audiobookshelf.nix
   ./services/web-apps/baikal.nix
@@ -1606,6 +1608,7 @@
   ./services/web-apps/nostr-rs-relay.nix
   ./services/web-apps/ocis.nix
   ./services/web-apps/olivetin.nix
+  ./services/web-apps/oncall.nix
   ./services/web-apps/onlyoffice.nix
   ./services/web-apps/open-web-calendar.nix
   ./services/web-apps/openvscode-server.nix

@@ -14,10 +14,9 @@
   clblast,
   libdrm,
   rocmPackages,
-  rocmGpuTargets ? rocmPackages.clr.gpuTargets or [ ],
+  rocmGpuTargets ? rocmPackages.clr.localGpuTargets or (rocmPackages.clr.gpuTargets or [ ]),
   cudaPackages,
-  cudaArches ? cudaPackages.cudaFlags.realArches or [ ],
-  darwin,
+  cudaArches ? cudaPackages.flags.realArches or [ ],
   autoAddDriverRunpath,
 
   # passthru
@@ -89,13 +88,6 @@ let
 
   cudaPath = lib.removeSuffix "-${cudaMajorVersion}" cudaToolkit;
 
-  metalFrameworks = with darwin.apple_sdk_11_0.frameworks; [
-    Accelerate
-    Metal
-    MetalKit
-    MetalPerformanceShaders
-  ];
-
   wrapperOptions =
     [
       # ollama embeds llama-cpp binaries which actually run the ai models
@@ -145,12 +137,6 @@ goBuild (finalAttrs: {
       CFLAGS = "-Wno-c++17-extensions -I${rocmPath}/include";
       CXXFLAGS = "-Wno-c++17-extensions -I${rocmPath}/include";
     }
-    // lib.optionalAttrs (enableRocm && (rocmPackages.clr.localGpuTargets or false)) {
-
-      # If rocm CLR is set to build for an exact set of targets reuse that target list,
-      # otherwise let ollama use its builtin defaults
-      HIP_ARCHS = lib.concatStringsSep ";" rocmPackages.clr.localGpuTargets;
-    }
     // lib.optionalAttrs enableCuda { CUDA_PATH = cudaPath; };
 
   nativeBuildInputs =
@@ -166,13 +152,11 @@ goBuild (finalAttrs: {
     ++ lib.optionals (enableRocm || enableCuda) [
       makeWrapper
       autoAddDriverRunpath
-    ]
-    ++ lib.optionals stdenv.hostPlatform.isDarwin metalFrameworks;
+    ];
 
   buildInputs =
     lib.optionals enableRocm (rocmLibs ++ [ libdrm ])
-    ++ lib.optionals enableCuda cudaLibs
-    ++ lib.optionals stdenv.hostPlatform.isDarwin metalFrameworks;
+    ++ lib.optionals enableCuda cudaLibs;
 
   # replace inaccurate version number with actual release version
   postPatch = ''
