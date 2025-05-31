@@ -16934,11 +16934,6 @@ with pkgs;
 
   inherit (callPackage ../applications/misc/zettlr { }) zettlr;
 
-  fac-build = callPackage ../development/tools/build-managers/fac {
-    inherit (darwin.apple_sdk.frameworks) CoreServices;
-  };
-
-  
   xcolor = callPackage ../tools/graphics/xcolor { };
 
   xcfun = callPackage ../development/libraries/science/chemistry/xcfun { };
