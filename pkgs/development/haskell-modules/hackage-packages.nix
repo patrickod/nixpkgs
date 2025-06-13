@@ -430986,9 +430986,7 @@ self: {
       ];
       description = "Conduit implementing the official LZ4 frame streaming format";
       license = lib.licenses.mit;
-      hydraPlatforms = lib.platforms.none;
       mainProgram = "haskell-lz4c";
-      broken = true;
     }
   ) { };
 
@@ -692780,7 +692778,6 @@ self: {
       description = "Unleash feature toggle client";
       license = lib.licenses.mit;
       mainProgram = "example";
-      maintainers = [ lib.maintainers.evenbrenden ];
     }
   ) { };
 
@@ -692827,7 +692824,6 @@ self: {
       ];
       description = "Unleash feature toggle client core";
       license = lib.licenses.mit;
-      maintainers = [ lib.maintainers.evenbrenden ];
     }
   ) { };
 
